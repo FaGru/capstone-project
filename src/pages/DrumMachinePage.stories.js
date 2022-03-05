@@ -1,8 +1,8 @@
-import DrumMachine from './DrumMachine';
+import DrumMachine from './DrumMachinePage';
 
 
 export default {
-  title: 'Component/DrumMachine',
+  title: 'Pages/DrumMachine',
   component: DrumMachine,
 };
     
