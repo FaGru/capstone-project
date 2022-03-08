@@ -1,10 +1,10 @@
-import DrumPad from './DrumPad.js';
+import DrumPads from './DrumPads.js';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-describe('DrumPad', () => {
+describe('DrumPads', () => {
   it('renders a button', () => {
-    render(<DrumPad />);
+    render(<DrumPads />);
 
     const drumPad = screen.getByRole('button', { name: 'Drum Pad' });
 
@@ -12,7 +12,7 @@ describe('DrumPad', () => {
   });
   it('calls the function, which plays the sample', () => {
     const padClick = jest.fn();
-    render(<DrumPad handleClick={padClick} />);
+    render(<DrumPads handleClick={padClick} />);
 
     const drumPad = screen.getByRole('button', { name: 'Drum Pad' });
     userEvent.click(drumPad);
