@@ -8,4 +8,4 @@ export default {
     
 const Template = args => <DrumLoopPlayer {...args}/>;
     
-export const DrumPadComplete = Template.bind({});
+export const DrumLoopPlayerComplete = Template.bind({});

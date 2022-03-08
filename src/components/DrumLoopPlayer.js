@@ -8,7 +8,6 @@ import * as Tone from 'tone';
 export default function DrumLoopPlayer() {
   const [currentDrumLoop, setCurrentDrumLoop] = useState();
   const [isPlayin, setIsPlayin] = useState(playbutton);
-
   const loopPlayer = useRef();
   loopPlayer.current = new Tone.Player(
     `./audio/DrumLoops/${currentDrumLoop}.wav`
@@ -37,6 +36,10 @@ export default function DrumLoopPlayer() {
       </DrumLoopSelect>
     </DrumLoopContainer>
   );
+
+
+
+
   function startDrumLoop() {
     if (isPlayin === playbutton) {
       Tone.loaded().then(() => {

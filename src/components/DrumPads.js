@@ -1,13 +1,9 @@
 import styled from 'styled-components';
-import * as Tone from 'tone';
 
-export default function DrumPads() {
+
+export default function DrumPads({handleClick}) {
  
-  function handleClick(event) {
-    const currentPad = event.target.value;
-    const player = new Tone.Player(currentPad).toDestination();
-    player.autostart = true;
-  }
+
   return (
     <PadList>
       <DrumPad
@@ -74,6 +70,7 @@ export default function DrumPads() {
   );
 
 }
+
 
 const DrumPad = styled.button`
   background-color: #4895ef;
