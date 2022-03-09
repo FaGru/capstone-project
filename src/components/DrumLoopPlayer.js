@@ -8,19 +8,16 @@ export default function DrumLoopPlayer() {
   const [currentDrumLoop, setCurrentDrumLoop] = useState();
   const [isPlayin, setIsPlayin] = useState(playbutton);
 
-
-const loopPlayer = useRef();
-loopPlayer.current = new Tone.Player(
-  `./audio/DrumLoops/${currentDrumLoop}.wav`
-).toDestination();
-loopPlayer.current.loop = true;
-
-
+  const loopPlayer = useRef();
+  loopPlayer.current = new Tone.Player(
+    `./audio/DrumLoops/${currentDrumLoop}.wav`
+  ).toDestination();
+  loopPlayer.current.loop = true;
 
   return (
     <DrumLoopContainer>
-      <PlayPauseButton onClick={startDrumLoop} aria-label="play button">
-        <img src={isPlayin} height="50px" width="50px" alt="play" />
+      <PlayPauseButton onClick={startDrumLoop} aria-label="play pause">
+        <img src={isPlayin} height="50px" width="50px" alt="play pause" />
       </PlayPauseButton>
       <DrumLoopLabel htmlFor="drum-loop-select">
         Choose a Drum Loop
@@ -39,9 +36,6 @@ loopPlayer.current.loop = true;
       </DrumLoopSelect>
     </DrumLoopContainer>
   );
-
-
-
 
   function startDrumLoop() {
     if (isPlayin === playbutton) {
