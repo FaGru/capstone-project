@@ -1,10 +1,15 @@
-import DrumMachine from "./pages/DrumMachinePage";
+import { Route, Routes } from 'react-router-dom';
+import DrumMachinePage from "./pages/DrumMachinePage";
+import SettingsPage from "./pages/SettingsPage"
 
 
 function App() {
   return (
-    <div className="App">
-      <DrumMachine />
+    <div>
+      <Routes>
+        <Route path="/" element={<DrumMachinePage />} />
+        <Route path="/settings" element={<SettingsPage /> }/>
+      </Routes>
     </div>
   );
 }

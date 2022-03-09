@@ -56,7 +56,7 @@ export default function DrumLoopPlayer() {
 }
 
 const DrumLoopContainer = styled.div`
-  display: grid;
+  grid-column: 2 / 3;  display: grid;
   max-width: 450px;
   grid-template-columns: 80px 1fr;
   grid-template-rows: 1fr 2fr;

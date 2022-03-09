@@ -1,76 +1,71 @@
 import styled from 'styled-components';
 
-
-export default function DrumPads({handleClick}) {
- 
-
+export default function DrumPads({ drumPadClick }) {
   return (
     <PadList>
       <DrumPad
         aria-label="Drum Pad"
-        onClick={handleClick}
+        onClick={drumPadClick}
         value={'./audio/Samples/Scratch1.wav'}
       />
       <DrumPad
         aria-label="Drum Pad"
-        onClick={handleClick}
+        onClick={drumPadClick}
         value={'./audio/Samples/Horn1.mp3'}
       />
       <DrumPad
         aria-label="Drum Pad"
-        onClick={handleClick}
+        onClick={drumPadClick}
         value={'./audio/Samples/SynthShot1.wav'}
       />
       <DrumPad
         aria-label="Drum Pad"
-        onClick={handleClick}
+        onClick={drumPadClick}
         value="./audio/Samples/CongaFinger.wav"
       />
       <DrumPad
         aria-label="Drum Pad"
-        onClick={handleClick}
+        onClick={drumPadClick}
         value="./audio/Samples/BassShot3.wav"
       />
       <DrumPad
         aria-label="Drum Pad"
-        onClick={handleClick}
+        onClick={drumPadClick}
         value="./audio/Samples/BassShot2.wav"
       />
       <DrumPad
         aria-label="Drum Pad"
-        onClick={handleClick}
+        onClick={drumPadClick}
         value="./audio/Samples/Clap1.wav"
       />
       <DrumPad
         aria-label="Drum Pad"
-        onClick={handleClick}
+        onClick={drumPadClick}
         value="./audio/Samples/Brass1.wav"
       />
       <DrumPad
         aria-label="Drum Pad"
-        onClick={handleClick}
+        onClick={drumPadClick}
         value="./audio/Samples/Brass2.wav"
       />
       <DrumPad
         aria-label="Drum Pad"
-        onClick={handleClick}
+        onClick={drumPadClick}
         value="./audio/Samples/Kick1.wav"
       />
       <DrumPad
         aria-label="Drum Pad"
-        onClick={handleClick}
+        onClick={drumPadClick}
         value="./audio/Samples/Snare1.wav"
       />
       <DrumPad
         aria-label="Drum Pad"
-        onClick={handleClick}
+        onClick={drumPadClick}
         value="./audio/Samples/Vocal1.wav"
       />
     </PadList>
   );
-
 }
-
 
 const DrumPad = styled.button`
   background-color: #4895ef;
@@ -90,6 +85,8 @@ const DrumPad = styled.button`
   }
 `;
 const PadList = styled.div`
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
   display: grid;
   max-width: 450px;
   grid-template-columns: 1fr 1fr 1fr;
