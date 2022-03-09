@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 describe('DrumPads', () => {
-  it('renders a button', () => {
+  it('renders 12 button', () => {
     render(<DrumPads />);
 
     const drumPad = screen.getAllByRole('button', { name: 'Drum Pad' });
@@ -18,6 +18,6 @@ describe('DrumPads', () => {
     drumPads.forEach(drumPad => {
       userEvent.click(drumPad);
       expect(padClick).toHaveBeenCalled();
-    })    
+    });
   });
 });
