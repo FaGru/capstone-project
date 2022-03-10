@@ -29,7 +29,7 @@ function App() {
     <div>
       <Routes>
         <Route path="/" element={<DrumMachinePage padSettings={padSettings} />} />
-        <Route path="/settings" element={<SettingsPage setPadSettings={setPadSettings} /> }/>
+        <Route path="/settings" element={<SettingsPage padSettings={padSettings} setPadSettings={setPadSettings} /> }/>
       </Routes>
     </div>
   );

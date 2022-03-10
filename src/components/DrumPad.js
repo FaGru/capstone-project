@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export default function DrumPad({key, color, drumPadClick, sample }) {
-  
+  console.log(key)
   return (
 
       <Pad
@@ -9,6 +9,7 @@ export default function DrumPad({key, color, drumPadClick, sample }) {
         onClick={drumPadClick}
         value={sample}
         color={color}
+        key={key}
       />
  
   );

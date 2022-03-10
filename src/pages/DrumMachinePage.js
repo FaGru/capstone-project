@@ -5,25 +5,31 @@ import { NavLink } from 'react-router-dom';
 import * as Tone from 'tone';
 import styled from 'styled-components';
 
-export default function DrumMachinePage({padSettings}) {
+export default function DrumMachinePage({ padSettings }) {
 
-
-  console.log(padSettings)
+console.log(padSettings.id)
 
   return (
     <DrumMachineContainer>
-      <LinkButton to="/settings"><img src={settingsButton} height="50px" width="50px" alt="settings" /></LinkButton>
+      <LinkButton to="/settings">
+        <img src={settingsButton} height="50px" width="50px" alt="settings" />
+      </LinkButton>
       <PadList>
-      {padSettings.map(pad => (
-        <DrumPad key={pad.id} color={pad.color} sample={pad.sample} drumPadClick={drumPadClick}></DrumPad>
-      ))}
+        {padSettings.sort().map(pad => (
+          <DrumPad
+            key={pad.id}
+            color={pad.color}
+            sample={pad.sample}
+            drumPadClick={drumPadClick}
+          ></DrumPad>
+        ))}
       </PadList>
 
       <DrumLoopPlayer />
     </DrumMachineContainer>
   );
 
-function drumPadClick(event) {
+  function drumPadClick(event) {
     const currentPad = event.target.value;
     const player = new Tone.Player(currentPad).toDestination();
     player.autostart = true;
@@ -34,14 +40,14 @@ const DrumMachineContainer = styled.section`
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   grid-template-rows: auto 1fr auto;
-`
+`;
 const LinkButton = styled(NavLink)`
   grid-column: 2 / 3;
   grid-row: 1 / 2;
   justify-self: end;
   padding-top: 20px;
   padding-right: 20px;
-`
+`;
 const PadList = styled.div`
   grid-column: 2 / 3;
   grid-row: 2 / 3;
