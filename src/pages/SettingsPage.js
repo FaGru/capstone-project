@@ -1,40 +1,55 @@
-import styled from 'styled-components'
+import { useState } from 'react';
+import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 
-export default function SettingsPage(){
+export default function SettingsPage({setPadSettings}) {
+
+  const [selectedPad, setSelectedPad] = useState('DrumPad1')
+  const [padColor, setPadColor] = useState('blue')
+  
   return (
-    <SettingsContainer>
-      <form>
+    <>
+    <NavLink to="/" >back</NavLink>
+    <DrumPadForm>
       <label>select your pad</label>
-      <select>
-        <option>Drum Pad 1</option>
-        <option>Drum Pad 2</option>
-        <option>Drum Pad 3</option>
-        <option>Drum Pad 4</option>
-        <option>Drum Pad 5</option>
-        <option>Drum Pad 6</option>
-        <option>Drum Pad 7</option>
-        <option>Drum Pad 8</option>
-        <option>Drum Pad 9</option>
-        <option>Drum Pad 10</option>
-        <option>Drum Pad 11</option>
-        <option>Drum Pad 12</option>
+      <select onChange={(e) => setSelectedPad(e.target.value)}>
+        <option>DrumPad1</option>
+        <option>DrumPad2</option>
+        <option>DrumPad3</option>
+        <option>DrumPad4</option>
+        <option>DrumPad5</option>
+        <option>DrumPad6</option>
+        <option>DrumPad7</option>
+        <option>DrumPad8</option>
+        <option>DrumPad9</option>
+        <option>DrumPad10</option>
+        <option>DrumPad11</option>
+        <option>DrumPad12</option>
       </select>
       <label>select a color</label>
-      <select>
+      <select onChange={(e) => setPadColor(e.target.value)}>
         <option>blue</option>
         <option>red</option>
         <option>green</option>
         <option>purple</option>
         <option>orange</option>
       </select>
-      <button>save</button>
-      </form>
-    </SettingsContainer>
-  )
+      <button onClick={saveClick} >save</button>
+    </DrumPadForm>
+    </>
+  );
+
+  function saveClick(){
+    
+    setPadSettings([selectedPad, padColor])    
+  }
 }
 
 
 
-const SettingsContainer = styled.section`
-
-`
+const DrumPadForm = styled.section`
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-content: center;
+`;

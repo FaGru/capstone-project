@@ -4,6 +4,29 @@ const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
   }
+
+
+  :root {
+    --black: #000000;
+
+    --blue: #099FFF;  
+    --red: #FF0000;
+    --green: #44D62C;
+    --purple: #C724B1;
+    --yellow: #E0E722;
+    --orange: #FFAD00; 
+    
+
+    --blue-active: #00FFFF;  
+    --purple-active: #ff47b8;
+    --yellow-active: #cfe74a;
+    --orange-active: #fdce33;  
+    --red-active: #fd5f54;
+    --green-active: #56ff7b; 
+    
+  }
+
+
   body {
     margin: 0;
     padding: 0;
