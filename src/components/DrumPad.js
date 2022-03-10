@@ -1,15 +1,15 @@
 import styled from 'styled-components';
 
-export default function DrumPad({key, color, drumPadClick, sample }) {
-  console.log(key)
+export default function DrumPad({ id, color, drumPadClick, sample }) {
+
   return (
 
       <Pad
-        aria-label={`drum pad ${key}`}
+        aria-label={`drum pad`}
         onClick={drumPadClick}
         value={sample}
         color={color}
-        key={key}
+        key={id}
       />
  
   );

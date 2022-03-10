@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 export default function DrumMachinePage({ padSettings }) {
 
-console.log(padSettings.id)
+
 
   return (
     <DrumMachineContainer>
@@ -15,13 +15,15 @@ console.log(padSettings.id)
         <img src={settingsButton} height="50px" width="50px" alt="settings" />
       </LinkButton>
       <PadList>
-        {padSettings.sort().map(pad => (
+        {padSettings.map(pad => (
           <DrumPad
             key={pad.id}
+            id={pad.id}
             color={pad.color}
             sample={pad.sample}
             drumPadClick={drumPadClick}
           ></DrumPad>
+          
         ))}
       </PadList>
 

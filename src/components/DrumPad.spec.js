@@ -1,23 +1,18 @@
-import DrumPads from './DrumPad.js';
+import DrumPad from './DrumPad.js';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-describe('DrumPads', () => {
-  it('renders 12 button', () => {
-    render(<DrumPads />);
-
-    const drumPad = screen.getAllByRole('button', { name: 'Drum Pad' });
-
-    expect(drumPad.length).toBe(12);
+describe('DrumPad', () => {
+  it('renders a button', () => {
+    render(<DrumPad />);
+    const drumPad = screen.getByRole('button', { name: 'drum pad' });
+    expect(drumPad).toBeInTheDocument();
   });
   it('calls the function, which plays the sample', () => {
     const padClick = jest.fn();
-    render(<DrumPads drumPadClick={padClick} />);
-
-    const drumPads = screen.getAllByRole('button', { name: 'Drum Pad' });
-    drumPads.forEach(drumPad => {
-      userEvent.click(drumPad);
-      expect(padClick).toHaveBeenCalled();
-    });
+    render(<DrumPad drumPadClick={padClick} />);
+    const drumPad = screen.getByRole('button', { name: 'drum pad' });
+    userEvent.click(drumPad);
+    expect(padClick).toHaveBeenCalled();
   });
 });
