@@ -1,17 +1,47 @@
 import styled from 'styled-components';
+import { useState, useEffect } from 'react';
 
 export default function DrumPad({ id, color, drumPadClick, sample }) {
+  const [isDesktop, setDesktop] = useState(false);
+
+  useEffect(() => {
+    if (window.innerWidth > 500) {
+      setDesktop(true);
+    } else {
+      setDesktop(false);
+    }
+
+    const updateMedia = () => {
+      if (window.innerWidth > 500) {
+        setDesktop(true);
+      } else {
+        setDesktop(false);
+      }
+    };
+    window.addEventListener('resize', updateMedia);
+    return () => window.removeEventListener('resize', updateMedia);
+  }, []);
 
   return (
-
-      <Pad
-        aria-label={`drum pad`}
-        onClick={drumPadClick}
-        value={sample}
-        color={color}
-        key={id}
-      />
- 
+    <>
+      {isDesktop ? (
+        <Pad
+          aria-label={`drum pad`}
+          onMouseDown={drumPadClick}
+          value={sample}
+          color={color}
+          key={id}
+        />
+      ) : (
+        <Pad
+          aria-label={`drum pad`}
+          onTouchStart={drumPadClick}
+          value={sample}
+          color={color}
+          key={id}
+        />
+      )}
+    </>
   );
 }
 
@@ -22,7 +52,6 @@ const Pad = styled.button`
   width: 100px;
   height: 100px;
   box-shadow: var(--box-shadow-classic);
-  
 
   &:active {
     background-color: var(--${props => props.color}-active);
