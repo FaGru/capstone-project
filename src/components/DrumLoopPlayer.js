@@ -1,18 +1,8 @@
 import styled from 'styled-components';
-import { useState, useRef } from 'react';
-import playbutton from '../images/play.svg';
-import pausebutton from '../images/pause.svg';
-import * as Tone from 'tone';
 
-export default function DrumLoopPlayer() {
-  const [currentDrumLoop, setCurrentDrumLoop] = useState();
-  const [isPlayin, setIsPlayin] = useState(playbutton);
 
-  const loopPlayer = useRef();
-  loopPlayer.current = new Tone.Player(
-    `./audio/DrumLoops/${currentDrumLoop}.wav`
-  ).toDestination();
-  loopPlayer.current.loop = true;
+
+export default function DrumLoopPlayer({startDrumLoop, getDrumLoop, isPlayin}) {
 
   return (
     <DrumLoopContainer>
@@ -37,22 +27,7 @@ export default function DrumLoopPlayer() {
     </DrumLoopContainer>
   );
 
-  function startDrumLoop() {
-    if (isPlayin === playbutton) {
-      Tone.loaded().then(() => {
-        loopPlayer.current.start();
-      });
-      setIsPlayin(pausebutton);
-    } else {
-      loopPlayer.current.stop();
-      setIsPlayin(playbutton);
-    }
-  }
-  function getDrumLoop(event) {
-    setCurrentDrumLoop(event.target.value);
-    loopPlayer.current.stop();
-    setIsPlayin(playbutton);
-  }
+
 }
 
 const DrumLoopContainer = styled.div`

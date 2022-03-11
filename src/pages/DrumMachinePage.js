@@ -4,14 +4,23 @@ import settingsButton from '../images/settings.svg';
 import { NavLink } from 'react-router-dom';
 import * as Tone from 'tone';
 import styled from 'styled-components';
+import { useState, useRef } from 'react';
+import playbutton from '../images/play.svg';
+import pausebutton from '../images/pause.svg';
 
 export default function DrumMachinePage({ padSettings }) {
+  const [currentDrumLoop, setCurrentDrumLoop] = useState();
+  const [isPlayin, setIsPlayin] = useState(playbutton);
 
-
+  const loopPlayer = useRef();
+  loopPlayer.current = new Tone.Player(
+    `./audio/DrumLoops/${currentDrumLoop}.wav`
+  ).toDestination();
+  loopPlayer.current.loop = true;
 
   return (
     <DrumMachineContainer>
-      <LinkButton to="/settings">
+      <LinkButton onClick={handleNavigate} to="/settings">
         <img src={settingsButton} height="50px" width="50px" alt="settings" />
       </LinkButton>
       <PadList>
@@ -23,11 +32,14 @@ export default function DrumMachinePage({ padSettings }) {
             sample={pad.sample}
             drumPadClick={drumPadClick}
           ></DrumPad>
-          
         ))}
       </PadList>
 
-      <DrumLoopPlayer />
+      <DrumLoopPlayer
+        startDrumLoop={startDrumLoop}
+        getDrumLoop={getDrumLoop}
+        isPlayin={isPlayin}
+      />
     </DrumMachineContainer>
   );
 
@@ -35,6 +47,25 @@ export default function DrumMachinePage({ padSettings }) {
     const currentPad = event.target.value;
     const player = new Tone.Player(currentPad).toDestination();
     player.autostart = true;
+  }
+  function startDrumLoop() {
+    if (isPlayin === playbutton) {
+      Tone.loaded().then(() => {
+        loopPlayer.current.start();
+      });
+      setIsPlayin(pausebutton);
+    } else {
+      loopPlayer.current.stop();
+      setIsPlayin(playbutton);
+    }
+  }
+  function getDrumLoop(event) {
+    setCurrentDrumLoop(event.target.value);
+    loopPlayer.current.stop();
+    setIsPlayin(playbutton);
+  }
+  function handleNavigate(){
+    loopPlayer.current.stop()
   }
 }
 
