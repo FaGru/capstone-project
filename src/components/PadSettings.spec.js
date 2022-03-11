@@ -61,7 +61,7 @@ describe('PadSettings', () => {
 
 
   
-  it('calls the save function if button get clicked', () => {
+  it('calls the save function if the button gets clicked', () => {
     const savePadClick = jest.fn()
 
     render(
