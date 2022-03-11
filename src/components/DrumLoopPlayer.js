@@ -1,18 +1,8 @@
 import styled from 'styled-components';
-import { useState, useRef } from 'react';
-import playbutton from '../images/play.svg';
-import pausebutton from '../images/pause.svg';
-import * as Tone from 'tone';
 
-export default function DrumLoopPlayer() {
-  const [currentDrumLoop, setCurrentDrumLoop] = useState();
-  const [isPlayin, setIsPlayin] = useState(playbutton);
 
-  const loopPlayer = useRef();
-  loopPlayer.current = new Tone.Player(
-    `./audio/DrumLoops/${currentDrumLoop}.wav`
-  ).toDestination();
-  loopPlayer.current.loop = true;
+
+export default function DrumLoopPlayer({startDrumLoop, getDrumLoop, isPlayin}) {
 
   return (
     <DrumLoopContainer>
@@ -37,32 +27,19 @@ export default function DrumLoopPlayer() {
     </DrumLoopContainer>
   );
 
-  function startDrumLoop() {
-    if (isPlayin === playbutton) {
-      Tone.loaded().then(() => {
-        loopPlayer.current.start();
-      });
-      setIsPlayin(pausebutton);
-    } else {
-      loopPlayer.current.stop();
-      setIsPlayin(playbutton);
-    }
-  }
-  function getDrumLoop(event) {
-    setCurrentDrumLoop(event.target.value);
-    loopPlayer.current.stop();
-    setIsPlayin(playbutton);
-  }
+
 }
 
 const DrumLoopContainer = styled.div`
+  background-color: var(--black);
   display: grid;
+  grid-column: 2 / 3;
   max-width: 450px;
   grid-template-columns: 80px 1fr;
   grid-template-rows: 1fr 2fr;
   margin: 20px;
   padding: 10px;
-  border: 2px solid white;
+  border: 2px solid var(--white);
   border-radius: 10px;
 `;
 
@@ -82,10 +59,11 @@ const DrumLoopSelect = styled.select`
   height: 30px;
   max-width: 250px;
   color: white;
-  background-color: black;
-  border: 1px solid white;
+  background-color: var(--black);
+  border: 1px solid var(--white);
   border-radius: 5px;
   align-self: start;
   grid-column: 2;
   grid-row: 2 / 3;
+  box-shadow: var(--box-shadow-classic);
 `;
