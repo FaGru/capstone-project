@@ -1,15 +1,15 @@
-import SettingsPage from "./SettingsPage";
+import PadSettings from "./PadSettings";
 
 
 export default {
-  title: 'Pages/SettingsPage',
-  component: SettingsPage,
+  title: 'Component/PadSettings',
+  component: PadSettings,
 };
     
-const Template = (args) => <SettingsPage {...args}/>;
+const Template = (args) => <PadSettings {...args}/>;
     
-export const SettingsPageComplete = Template.bind({});
-SettingsPageComplete.args =  {
+export const PadSettingsComplete = Template.bind({});
+PadSettingsComplete.args =  {
   padSettings: [
   {id: '1', color: 'yellow', sample: './audio/Samples/Scratch1.wav'},
   {id: '2', color: 'red', sample: './audio/Samples/Horn1.mp3'},

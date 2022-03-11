@@ -56,13 +56,15 @@ export default function DrumLoopPlayer() {
 }
 
 const DrumLoopContainer = styled.div`
-  grid-column: 2 / 3;  display: grid;
+  background-color: var(--black);
+  display: grid;
+  grid-column: 2 / 3;
   max-width: 450px;
   grid-template-columns: 80px 1fr;
   grid-template-rows: 1fr 2fr;
   margin: 20px;
   padding: 10px;
-  border: 2px solid white;
+  border: 2px solid var(--white);
   border-radius: 10px;
 `;
 
@@ -82,10 +84,11 @@ const DrumLoopSelect = styled.select`
   height: 30px;
   max-width: 250px;
   color: white;
-  background-color: black;
-  border: 1px solid white;
+  background-color: var(--black);
+  border: 1px solid var(--white);
   border-radius: 5px;
   align-self: start;
   grid-column: 2;
   grid-row: 2 / 3;
+  box-shadow: var(--box-shadow-classic);
 `;
