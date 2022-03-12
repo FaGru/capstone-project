@@ -18,6 +18,9 @@ export default function DrumMachinePage({ padSettings }) {
   ).toDestination();
   loopPlayer.current.loop = true;
 
+
+  
+
   return (
     <DrumMachineContainer>
       <LinkButton onClick={handleNavigate} to="/settings">
