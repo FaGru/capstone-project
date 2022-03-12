@@ -5,14 +5,14 @@ export default function DrumPad({ id, color, drumPadClick, sample }) {
   const [isDesktop, setDesktop] = useState(false);
 
   useEffect(() => {
-    if (window.innerWidth > 500) {
+    if (window.innerWidth > 450) {
       setDesktop(true);
     } else {
       setDesktop(false);
     }
 
     const updateMedia = () => {
-      if (window.innerWidth > 500) {
+      if (window.innerWidth > 450) {
         setDesktop(true);
       } else {
         setDesktop(false);

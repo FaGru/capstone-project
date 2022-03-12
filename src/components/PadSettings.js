@@ -1,6 +1,10 @@
 import styled from 'styled-components';
+import { allSamples } from '../data';
 
-export default function PadSettings({ savePadClick, colorChange, padChange }) {
+export default function PadSettings({ savePadClick, colorChange, padChange, sampleChange }) {
+
+
+
   return (
     <>
       <DrumPadForm>
@@ -28,6 +32,13 @@ export default function PadSettings({ savePadClick, colorChange, padChange }) {
           <option data-testid="color-purple">purple</option>
           <option data-testid="color-orange">orange</option>
         </SettingsSelect>
+        <label htmlFor="sample-select">select a sample</label>
+        <SettingsSelect name="samples" id="sample-select" onChange={sampleChange}>
+          {allSamples.map(sample => (
+            <option key={sample.id} value={sample.path}>{sample.name}</option>
+          ))}
+          </SettingsSelect>
+
         <SaveButton onClick={savePadClick}>save this pad</SaveButton>
       </DrumPadForm>
     </>

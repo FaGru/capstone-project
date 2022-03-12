@@ -8,6 +8,7 @@ export default function SettingsPage({ padSettings, setPadSettings }) {
   
   const [selectedPad, setSelectedPad] = useState('0');
   const [padColor, setPadColor] = useState('blue');
+  const [selectedSample, setSelectedSample] = useState('./BassShot1.wav')
   padSettings.sort(function (a, b) {
     return a.id - b.id;
   });
@@ -19,23 +20,28 @@ export default function SettingsPage({ padSettings, setPadSettings }) {
       savePadClick={savePadClick}
       colorChange={colorChange}
       padChange={padChange}
+      sampleChange={sampleChange}
     />
     </SettingsContainer>
   );
 
-
-  function colorChange(e){
-    setPadColor(e.target.value)
-  }
+  
   function padChange(e){
     setSelectedPad(e.target.value)
   }
+  function colorChange(e){
+    setPadColor(e.target.value)
+  }
+  function sampleChange(e){
+    setSelectedSample(e.target.value)
+  }
+
   function savePadClick() {
     const removedPad = padSettings.splice(selectedPad, 1);
     const newPad = {
       id: removedPad[0].id,
       color: padColor,
-      sample: removedPad[0].sample,
+      sample: selectedSample,
     };
     setPadSettings([...padSettings, newPad]);
   }
