@@ -45,5 +45,5 @@ export const allSamples = [
   { id: '29', name: 'SynthShot 2', path: './audio/Samples/SynthShot2.wav' },
   { id: '30', name: 'Vocal 1', path: './audio/Samples/Vocal1.wav' },
   { id: '31', name: 'Vocal 2', path: './audio/Samples/Vocal2.wav' },
-  { id: '32', name: 'Wobble 1', path: './audio/Samples/Wooble1.wav' },
+  { id: '32', name: 'Wobble 1', path: './audio/Samples/Wobble1.wav' },
 ];
