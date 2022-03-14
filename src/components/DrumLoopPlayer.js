@@ -28,6 +28,7 @@ export default function DrumLoopPlayer({startDrumLoop, getDrumLoop, isPlayin}) {
   );
 }
 
+
 const DrumLoopContainer = styled.div`
   background-color: var(--black);
   display: grid;

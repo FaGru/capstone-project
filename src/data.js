@@ -13,6 +13,7 @@ export const defaultPadSettings = [
   { id: '11', color: 'orange', sample: './audio/Samples/Vocal1.wav' },
 ];
 
+
 export const allSamples = [
   { id: '1', name: 'BackSpin 1', path: './audio/Samples/Backspin1.wav' },
   { id: '2', name: 'BassLoop 1', path: './audio/Samples/BassLoop1.wav' },
