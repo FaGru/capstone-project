@@ -10,7 +10,7 @@ function App() {
     'storagedPadSettings',
     []
   );
-  const myPadSettings = storagedPadSettings;
+  const myPadSettings = [...storagedPadSettings];
   myPadSettings.sort(function (a, b) {
     return a.id - b.id;
   });
