@@ -4,18 +4,21 @@ import { NavLink } from 'react-router-dom';
 import backButton from '../images/back.svg';
 import styled from 'styled-components'
 
-export default function SettingsPage({ padSettings, setPadSettings }) {
+
+export default function SettingsPage({ allPads, setAllPads, myPadSettings, setMyPadSettings }) {
+  
   
   const [selectedPad, setSelectedPad] = useState('0');
   const [padColor, setPadColor] = useState('blue');
-  const [selectedSample, setSelectedSample] = useState('./BassShot1.wav')
-  padSettings.sort(function (a, b) {
+  const [selectedSample, setSelectedSample] = useState('./audio/Samples/Backspin1.wav')
+  allPads.sort(function (a, b) {
     return a.id - b.id;
   });
 
+
   return (
     <SettingsContainer>
-    <LinkButton to="/"><img src={backButton} alt='back-button' width='50px' height='50px' /></LinkButton>
+    <LinkButton to="/"  ><img src={backButton} alt='back-button' width='50px' height='50px' /></LinkButton>
     <PadSettings
       savePadClick={savePadClick}
       colorChange={colorChange}
@@ -35,15 +38,15 @@ export default function SettingsPage({ padSettings, setPadSettings }) {
   function sampleChange(e){
     setSelectedSample(e.target.value)
   }
-
   function savePadClick() {
-    const removedPad = padSettings.splice(selectedPad, 1);
+    const removedPad = allPads.splice(selectedPad, 1);
     const newPad = {
       id: removedPad[0].id,
       color: padColor,
       sample: selectedSample,
     };
-    setPadSettings([...padSettings, newPad]);
+    setAllPads([...allPads, newPad]);
+    setMyPadSettings([...allPads, newPad])
   }
 }
 

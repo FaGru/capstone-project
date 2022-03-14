@@ -26,8 +26,6 @@ export default function DrumLoopPlayer({startDrumLoop, getDrumLoop, isPlayin}) {
       </DrumLoopSelect>
     </DrumLoopContainer>
   );
-
-
 }
 
 const DrumLoopContainer = styled.div`

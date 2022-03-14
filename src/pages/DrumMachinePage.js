@@ -8,7 +8,7 @@ import { useState, useRef } from 'react';
 import playbutton from '../images/play.svg';
 import pausebutton from '../images/pause.svg';
 
-export default function DrumMachinePage({ padSettings }) {
+export default function DrumMachinePage({ allPads }) {
   const [currentDrumLoop, setCurrentDrumLoop] = useState();
   const [isPlayin, setIsPlayin] = useState(playbutton);
 
@@ -22,12 +22,13 @@ export default function DrumMachinePage({ padSettings }) {
   
 
   return (
+ 
     <DrumMachineContainer>
       <LinkButton onClick={handleNavigate} to="/settings">
         <img src={settingsButton} height="50px" width="50px" alt="settings" />
       </LinkButton>
       <PadList>
-        {padSettings.map(pad => (
+        {allPads.map(pad => (
           <DrumPad
             key={pad.id}
             id={pad.id}
@@ -44,6 +45,7 @@ export default function DrumMachinePage({ padSettings }) {
         isPlayin={isPlayin}
       />
     </DrumMachineContainer>
+  
   );
 
   function drumPadClick(event) {
@@ -76,6 +78,7 @@ const DrumMachineContainer = styled.section`
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   grid-template-rows: auto 1fr auto;
+  border: 2px solid var(--gray);
 `;
 const LinkButton = styled(NavLink)`
   grid-column: 2 / 3;
