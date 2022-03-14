@@ -34,7 +34,7 @@ export const allSamples = [
   { id: '18', name: 'Glitch 2', path: './audio/Samples/Glitch2.wav' },
   { id: '19', name: 'HiHat 1', path: './audio/Samples/Hihat1.wav' },
   { id: '20', name: 'HiHat 2', path: './audio/Samples/Hihat2.wav' },
-  { id: '21', name: 'Horn 1', path: './audio/Samples/Horn1.wav' },
+  { id: '21', name: 'Horn 1', path: './audio/Samples/Horn1.mp3' },
   { id: '22', name: 'Kick 1', path: './audio/Samples/Kick1.wav' },
   { id: '23', name: 'Kick 2', path: './audio/Samples/Kick2.wav' },
   { id: '24', name: 'Kick 3', path: './audio/Samples/Kick3.wav' },
