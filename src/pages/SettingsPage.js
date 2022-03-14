@@ -5,15 +5,17 @@ import backButton from '../images/back.svg';
 import styled from 'styled-components'
 
 
-export default function SettingsPage({ allPads, setAllPads, myPadSettings, setMyPadSettings }) {
+export default function SettingsPage({ allPads, setAllPads, setStoragedPadSettings }) {
   
   
   const [selectedPad, setSelectedPad] = useState('0');
   const [padColor, setPadColor] = useState('blue');
   const [selectedSample, setSelectedSample] = useState('./audio/Samples/Backspin1.wav')
-  allPads.sort(function (a, b) {
+  const newPadSettings = allPads
+  newPadSettings.sort(function (a, b) {
     return a.id - b.id;
   });
+  
 
 
   return (
@@ -39,14 +41,15 @@ export default function SettingsPage({ allPads, setAllPads, myPadSettings, setMy
     setSelectedSample(e.target.value)
   }
   function savePadClick() {
-    const removedPad = allPads.splice(selectedPad, 1);
+    const removedPad = newPadSettings.splice(selectedPad, 1);
     const newPad = {
       id: removedPad[0].id,
       color: padColor,
       sample: selectedSample,
     };
-    setAllPads([...allPads, newPad]);
-    setMyPadSettings([...allPads, newPad])
+    
+    setAllPads([...newPadSettings, newPad]);
+    setStoragedPadSettings([...newPadSettings, newPad])
   }
 }
 
