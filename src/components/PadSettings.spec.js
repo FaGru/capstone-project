@@ -114,47 +114,45 @@ describe('PadSettings', () => {
     const colorChange = jest.fn();
     const sampleChange = jest.fn();
     render(
-      <MemoryRouter>
-        <PadSettings
-          padChange={padChange}
-          colorChange={colorChange}
-          sampleChange={sampleChange}
-          allPads={[
-            {
-              id: '1',
-              color: 'yellow',
-              sample: './audio/Samples/Scratch1.wav',
-            },
-            { id: '2', color: 'red', sample: './audio/Samples/Horn1.mp3' },
-            {
-              id: '3',
-              color: 'purple',
-              sample: './audio/Samples/SynthShot1.wav',
-            },
-            {
-              id: '4',
-              color: 'yellow',
-              sample: './audio/Samples/CongaFinger.wav',
-            },
-            {
-              id: '5',
-              color: 'purple',
-              sample: './audio/Samples/BassShot3.wav',
-            },
-            {
-              id: '6',
-              color: 'purple',
-              sample: './audio/Samples/BassShot2.wav',
-            },
-            { id: '7', color: 'green', sample: './audio/Samples/Clap1.wav' },
-            { id: '8', color: 'blue', sample: './audio/Samples/Brass1.wav' },
-            { id: '9', color: 'blue', sample: './audio/Samples/Brass2.wav' },
-            { id: '10', color: 'green', sample: './audio/Samples/Kick1.wav' },
-            { id: '11', color: 'green', sample: './audio/Samples/Snare1.wav' },
-            { id: '12', color: 'orange', sample: './audio/Samples/Vocal1.wav' },
-          ]}
-        />
-      </MemoryRouter>
+      <PadSettings
+        padChange={padChange}
+        colorChange={colorChange}
+        sampleChange={sampleChange}
+        allPads={[
+          {
+            id: '1',
+            color: 'yellow',
+            sample: './audio/Samples/Scratch1.wav',
+          },
+          { id: '2', color: 'red', sample: './audio/Samples/Horn1.mp3' },
+          {
+            id: '3',
+            color: 'purple',
+            sample: './audio/Samples/SynthShot1.wav',
+          },
+          {
+            id: '4',
+            color: 'yellow',
+            sample: './audio/Samples/CongaFinger.wav',
+          },
+          {
+            id: '5',
+            color: 'purple',
+            sample: './audio/Samples/BassShot3.wav',
+          },
+          {
+            id: '6',
+            color: 'purple',
+            sample: './audio/Samples/BassShot2.wav',
+          },
+          { id: '7', color: 'green', sample: './audio/Samples/Clap1.wav' },
+          { id: '8', color: 'blue', sample: './audio/Samples/Brass1.wav' },
+          { id: '9', color: 'blue', sample: './audio/Samples/Brass2.wav' },
+          { id: '10', color: 'green', sample: './audio/Samples/Kick1.wav' },
+          { id: '11', color: 'green', sample: './audio/Samples/Snare1.wav' },
+          { id: '12', color: 'orange', sample: './audio/Samples/Vocal1.wav' },
+        ]}
+      />
     );
     const padSelect = screen.getByRole('combobox', { name: 'select a pad' });
     const colorSelect = screen.getByRole('combobox', {
@@ -163,17 +161,16 @@ describe('PadSettings', () => {
     const sampleSelect = screen.getByRole('combobox', {
       name: 'select a sample',
     });
-    fireEvent.change(padSelect);
-    fireEvent.change(colorSelect);
-    fireEvent.change(sampleSelect);
-    
+    userEvent.selectOptions(padSelect, 'DrumPad1');
+    userEvent.selectOptions(colorSelect, 'yellow');
+    userEvent.selectOptions(sampleSelect, 'Wobble 1');
+
     expect(padChange).toHaveBeenCalled();
     expect(colorChange).toHaveBeenCalled();
     expect(sampleChange).toHaveBeenCalled();
-    
   });
   it('calls the preview sample function', () => {
-    const samplePreview = jest.fn()
+    const samplePreview = jest.fn();
     render(
       <MemoryRouter>
         <PadSettings
@@ -215,7 +212,9 @@ describe('PadSettings', () => {
         />
       </MemoryRouter>
     );
-    userEvent.click(screen.getByRole('button', {name: 'play preview sample play preview'}))
-    expect(samplePreview).toHaveBeenCalled()
+    userEvent.click(
+      screen.getByRole('button', { name: 'play preview sample play preview' })
+    );
+    expect(samplePreview).toHaveBeenCalled();
   });
 });
