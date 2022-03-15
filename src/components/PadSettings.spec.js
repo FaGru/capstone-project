@@ -157,18 +157,20 @@ describe('PadSettings', () => {
       </MemoryRouter>
     );
     const padSelect = screen.getByRole('combobox', { name: 'select a pad' });
-    fireEvent.change(padSelect);
-    expect(padChange).toHaveBeenCalled();
     const colorSelect = screen.getByRole('combobox', {
       name: 'select a color',
     });
-    fireEvent.change(colorSelect);
-    expect(colorChange).toHaveBeenCalled();
     const sampleSelect = screen.getByRole('combobox', {
       name: 'select a sample',
     });
+    fireEvent.change(padSelect);
+    fireEvent.change(colorSelect);
     fireEvent.change(sampleSelect);
+    
+    expect(padChange).toHaveBeenCalled();
+    expect(colorChange).toHaveBeenCalled();
     expect(sampleChange).toHaveBeenCalled();
+    
   });
   it('calls the preview sample function', () => {
     const samplePreview = jest.fn()

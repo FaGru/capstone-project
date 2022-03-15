@@ -72,7 +72,7 @@ const SettingsContainer = styled.div`
   flex-direction: column;
   flex-wrap: wrap;
 `;
-const HeadingContainer = styled.div`
+const HeadingContainer = styled.header`
   display: grid;
   grid-template-columns: auto 1fr;
 `
