@@ -79,13 +79,20 @@ const DrumMachineContainer = styled.section`
   grid-template-columns: 1fr auto 1fr;
   grid-template-rows: auto 1fr auto;
   border: 2px solid var(--gray);
+  background-color: var(--darkgray);
+
+  @media (max-width: 1000px){
+  @media (orientation: landscape) {
+    display: none;
+  }}
+
 `;
 const LinkButton = styled(NavLink)`
   grid-column: 2 / 3;
   grid-row: 1 / 2;
   justify-self: end;
-  padding-top: 20px;
-  padding-right: 20px;
+  padding-top: 15px;
+  padding-right: 15px;
 `;
 const PadList = styled.div`
   grid-column: 2 / 3;

@@ -11,6 +11,7 @@ const GlobalStyle = createGlobalStyle`
     --black: #000000;
     --white: #ccd;
     --gray: #5a5a5a;
+    --darkgray: #141414;
 
     --blue: #099FFF;  
     --red: #FF0000;
@@ -28,6 +29,7 @@ const GlobalStyle = createGlobalStyle`
     --green-active: #56ff7b; 
     
     --box-shadow-classic: 1px 1px 2px 1px var(--gray);
+    --box-shadow-keyboard: inset -3px -2px 5px  #e2e2e5;
   }
 
 

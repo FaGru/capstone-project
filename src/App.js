@@ -4,8 +4,10 @@ import DrumMachinePage from './pages/DrumMachinePage';
 import SettingsPage from './pages/SettingsPage';
 import { defaultPadSettings } from './data';
 import useLocalStorage from './hooks/useLocalSorage';
+import KeyboardPage from './pages/KeyboardPage';
+import styled from 'styled-components';
 
-function App() {
+export default function App() {
   const [storagedPadSettings, setStoragedPadSettings] = useLocalStorage(
     'storagedPadSettings',
     []
@@ -21,7 +23,14 @@ function App() {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<DrumMachinePage allPads={allPads} />} />
+        <Route
+          path="/"
+          element={
+            <InstrumentContainer>
+              <DrumMachinePage allPads={allPads} /> <KeyboardPage />
+            </InstrumentContainer>
+          }
+        />
         <Route
           path="/settings"
           element={
@@ -37,4 +46,9 @@ function App() {
   );
 }
 
-export default App;
+const InstrumentContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+`;
