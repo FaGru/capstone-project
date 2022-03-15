@@ -54,6 +54,7 @@ const Pad = styled.button`
   box-shadow: var(--box-shadow-classic);
 
   &:active {
+    transition: ease-in 0.1s;
     background-color: var(--${props => props.color}-active);
     box-shadow: 0 0 5px 2px var(--${props => props.color});
   }
