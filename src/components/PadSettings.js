@@ -1,12 +1,30 @@
 import styled from 'styled-components';
 import { allSamples } from '../data';
+import playbutton from '../images/play.svg';
 
-export default function PadSettings({ savePadClick, colorChange, padChange, sampleChange }) {
-
-
-
+export default function PadSettings({
+  savePadClick,
+  colorChange,
+  padChange,
+  sampleChange,
+  allPads,
+  samplePreview,
+}) {
   return (
     <>
+      <PreviewContainer>
+        <SamplePreviewButton onClick={samplePreview}>
+          <img src={playbutton} alt='play preview sample' />
+          <p>play preview</p>
+        </SamplePreviewButton>
+        <PreviewGrid>
+          {allPads.map(pad => (
+            <ButtonPreview key={pad.id} color={pad.color}>
+              {Number(pad.id) + 1}
+            </ButtonPreview>
+          ))}
+        </PreviewGrid>
+      </PreviewContainer>
       <DrumPadForm>
         <label htmlFor="pad-select">select a pad</label>
         <SettingsSelect name="pads" id="pad-select" onChange={padChange}>
@@ -33,17 +51,74 @@ export default function PadSettings({ savePadClick, colorChange, padChange, samp
           <option data-testid="color-orange">orange</option>
         </SettingsSelect>
         <label htmlFor="sample-select">select a sample</label>
-        <SettingsSelect name="samples" id="sample-select" onChange={sampleChange}>
+        <SettingsSelect
+          name="samples"
+          id="sample-select"
+          onChange={sampleChange}
+        >
           {allSamples.map(sample => (
-            <option key={sample.id} value={sample.path}>{sample.name}</option>
+            <option key={sample.id} value={sample.path}>
+              {sample.name}
+            </option>
           ))}
-          </SettingsSelect>
-
-        <SaveButton onClick={savePadClick}>save this pad</SaveButton>
+        </SettingsSelect>
+        <SaveButton onClick={savePadClick}>SAVE THIS PAD</SaveButton>
       </DrumPadForm>
     </>
   );
 }
+const PreviewContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+`;
+
+const SamplePreviewButton = styled.button`
+  align-self: center;
+  height: 124px;
+  width: 95px;
+  color: var(--white);
+  background-color: var(--black);
+  margin: 20px;
+
+  border-radius: 5px;
+  border: 2px solid var(--white);
+  border-top: 1px solid var(--gray);
+  border-left: 1px solid var(--gray);
+  box-shadow: var(--box-shadow-classic);
+
+  &:active {
+    transition: ease 0.2s;
+    border: 1px solid var(--gray);
+    border-top: 1px solid var(--white);
+    border-left: 1px solid var(--white);
+  }
+`;
+
+const PreviewGrid = styled.div`
+  border: 2px solid var(--white);
+  box-shadow: var(--box-shadow-classic);
+  align-self: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  margin: 20px;
+  border-radius: 5px;
+  box-shadow: var(--box-shadow-classic);
+`;
+const ButtonPreview = styled.div`
+  background-color: var(--${props => props.color});
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  padding: 2px;
+  color: black;
+  border: 0.5px solid black;
+  border-radius: 2px;
+  
+  
+`;
+
 const DrumPadForm = styled.section`
   display: flex;
   flex-wrap: wrap;
@@ -65,21 +140,23 @@ const SettingsSelect = styled.select`
 
 const SaveButton = styled.button`
   align-self: center;
-  height: 30px;
+  height: 40px;
   width: 150px;
-  color: var(--white);
+  color: var(--green);
   background-color: var(--black);
   margin: 20px;
   border-radius: 5px;
-  border: 1px solid var(--gray);
-  border-top: 1px solid var(--white);
-  border-left: 1px solid var(--white);
-  box-shadow: var(--box-shadow-classic);
+  border: 1px solid var(--green);
+  border-top: 1px solid var(--gray);
+  border-left: 1px solid var(--gray);
+  box-shadow: 1px 1px 5px 0.5px var(--green);
+  letter-spacing: 1px;
 
   &:active {
-    transition: ease 0.3s;
-    border: 1px solid var(--white);
-    border-top: 1px solid var(--gray);
-    border-left: 1px solid var(--gray);
+    transition: ease 0.2s;
+    border: 1px solid var(--gray);
+    border-top: 1px solid var(--green);
+    border-left: 1px solid var(--green);
+    /* box-shadow: var(--box-shadow-classic); */
   }
 `;

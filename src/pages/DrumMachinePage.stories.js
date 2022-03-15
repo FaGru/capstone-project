@@ -10,7 +10,7 @@ const Template = args => <DrumMachine {...args}/>;
     
 export const DrumMachineComplete = Template.bind({});
 DrumMachineComplete.args = {
-  padSettings: [
+  allPads: [
     {id: '1', color: 'yellow', sample: './audio/Samples/Scratch1.wav'},
     {id: '2', color: 'red', sample: './audio/Samples/Horn1.mp3'},
     {id: '3', color: 'purple', sample: './audio/Samples/SynthShot1.wav'},
