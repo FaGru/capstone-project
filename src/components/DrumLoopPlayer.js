@@ -1,13 +1,14 @@
 import styled from 'styled-components';
 
-
-
-export default function DrumLoopPlayer({startDrumLoop, getDrumLoop, isPlayin}) {
-
+export default function DrumLoopPlayer({
+  startDrumLoop,
+  getDrumLoop,
+  isPlayin,
+}) {
   return (
     <DrumLoopContainer>
       <PlayPauseButton onClick={startDrumLoop} aria-label="play pause">
-        <img src={isPlayin} height="50px" width="50px" alt="play pause" />
+        <img src={isPlayin} height="40px" width="40px" alt="play pause" />
       </PlayPauseButton>
       <DrumLoopLabel htmlFor="drum-loop-select">
         Choose a Drum Loop
@@ -28,16 +29,15 @@ export default function DrumLoopPlayer({startDrumLoop, getDrumLoop, isPlayin}) {
   );
 }
 
-
 const DrumLoopContainer = styled.div`
   background-color: var(--black);
   display: grid;
   grid-column: 2 / 3;
-  max-width: 450px;
-  grid-template-columns: 80px 1fr;
+  max-width: 260px;
+  grid-template-columns: 50px 1fr;
   grid-template-rows: 1fr 2fr;
   margin: 20px;
-  padding: 10px;
+  padding: 5px;
   border: 2px solid var(--white);
   border-radius: 10px;
 `;
@@ -56,7 +56,7 @@ const DrumLoopLabel = styled.label`
 const DrumLoopSelect = styled.select`
   text-align: center;
   height: 30px;
-  max-width: 250px;
+  max-width: 200px;
   color: white;
   background-color: var(--black);
   border: 1px solid var(--white);

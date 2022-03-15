@@ -1,6 +1,5 @@
+import KeyboardButtons from '../components/KeyboardButtons';
 import * as Tone from 'tone';
-import styled from 'styled-components';
-
 
 export default function KeyboardboardPage() {
   const synth = new Tone.Synth({
@@ -72,130 +71,16 @@ export default function KeyboardboardPage() {
     },
   }).toDestination();
 
-  // synth.volume.value = -6;
-  // const distortion = new Tone.Distortion(0);
 
-  // synth.chain(distortion, Tone.Destination);
 
   return (
     <>
-      <ButtonContainer>
-        <Button value="C3" onMouseDown={handleClick}>
-          C3
-        </Button>
-
-        <Button value="D3" onMouseDown={handleClick}>
-          D3
-        </Button>
-        <Button value="E3" onMouseDown={handleClick}>
-          E3
-        </Button>
-        <Button value="F3" onMouseDown={handleClick}>
-          F3
-        </Button>
-        <Button value="G3" onMouseDown={handleClick}>
-          G3
-        </Button>
-        <Button value="A3" onMouseDown={handleClick}>
-          A3
-        </Button>
-        <Button value="B3" onMouseDown={handleClick}>
-          B3
-        </Button>
-        <Button value="C4" onMouseDown={handleClick}>
-          C4
-        </Button>
-        <Button value="D4" onMouseDown={handleClick}>
-          D4
-        </Button>
-        <Button value="E4" onMouseDown={handleClick}>
-          E4
-        </Button>
-        <Button value="F4" onMouseDown={handleClick}>
-          F4
-        </Button>
-        <Button value="G4" onMouseDown={handleClick}>
-          G4
-        </Button>
-        <Button value="A4" onMouseDown={handleClick}>
-          A4
-        </Button>
-        <Button value="B4" onMouseDown={handleClick}>
-          B4
-        </Button>
-        <BlackButtonGrid>
-          <BlackButton value="C#3" onMouseDown={handleClick}></BlackButton>
-          <BlackButton value="D#3" onMouseDown={handleClick}></BlackButton>
-          <BlackButton value="F#3" onMouseDown={handleClick}></BlackButton>
-          <BlackButton value="G#3" onMouseDown={handleClick}></BlackButton>
-          <BlackButton value="A#3" onMouseDown={handleClick}></BlackButton>
-          <BlackButton value="C#4" onMouseDown={handleClick}></BlackButton>
-          <BlackButton value="D#4" onMouseDown={handleClick}></BlackButton>
-          <BlackButton value="F#4" onMouseDown={handleClick}></BlackButton>
-          <BlackButton value="G#4" onMouseDown={handleClick}></BlackButton>
-          <BlackButton value="A#4" onMouseDown={handleClick}></BlackButton>
-        </BlackButtonGrid>
-      </ButtonContainer>
+      <KeyboardButtons keyboardClick={keyboardClick} />
     </>
   );
-  function handleClick(event) {
+  function keyboardClick(event) {
     const currentButton = event.target.value;
     mono.triggerAttackRelease(currentButton, '8n');
     synth.triggerAttackRelease(currentButton, '8n');
   }
 }
-const ButtonContainer = styled.section`
-  display: flex;
-  justify-content: center;
-  background-color: var(--darkgray);
-  border: 2px solid var(--gray);
-  padding: 20px;
-
-  @media (orientation: portrait) {
-    display: none;
-  }
-`;
-const BlackButtonGrid = styled.div`
-  display: grid;
-  grid-template-columns: 45px 90px 45px 45px 90px 45px 90px 45px 45px 35px;
-  position: absolute;
-`;
-
-const Button = styled.button`
-  height: 200px;
-  width: 45px;
-  z-index: 1;
-  border: 1px solid var(--black);
-  border-top: none;
-  background-color: white;
-  &:active {
-    transition: ease 0.1s;
-    border-width: 2px;
-    border-style: solid;
-    border-image: linear-gradient(to bottom, white, #b6b6b6bd, #141414, black) 1
-      100%;
-  }
-`;
-
-const BlackButton = styled.button`
-  height: 150px;
-  width: 35px;
-  background-color: var(--black);
-  z-index: 2000;
-  border: 1px solid var(--gray);
-  border-top: none;
-  background: rgb(0, 0, 0);
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 1) 0%,
-    rgba(37, 36, 36, 1) 49%,
-    rgba(0, 0, 0, 1) 100%
-  );
-
-  &:active {
-    transition: 0.1s;
-    border-width: 1.5px;
-    border-style: solid;
-    border-image: linear-gradient(to top, white, #b6b6b6bd, black) 1 100%;
-  }
-`;

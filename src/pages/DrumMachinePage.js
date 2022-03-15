@@ -80,8 +80,10 @@ const DrumMachineContainer = styled.section`
   grid-template-rows: auto 1fr auto;
   border: 2px solid var(--gray);
   background-color: var(--darkgray);
+  
 
   @media (max-width: 1000px){
+    
   @media (orientation: landscape) {
     display: none;
   }}

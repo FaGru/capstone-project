@@ -46,7 +46,7 @@ export default function DrumPad({ id, color, drumPadClick, sample }) {
 }
 
 const Pad = styled.button`
-  background-color: var(--${props => props.color});
+  background: var(--${props => props.color});
   border: none;
   border-radius: 5px;
   width: 85px;
@@ -54,8 +54,8 @@ const Pad = styled.button`
   box-shadow: var(--box-shadow-classic);
 
   &:active {
-    transition: ease-in 0.1s;
-    background-color: var(--${props => props.color}-active);
+    transition: ease-in 0.05s;
+    background: var(--${props => props.color}-active);
     box-shadow: 0 0 5px 2px var(--${props => props.color});
   }
   @media (max-width: 500px) {
