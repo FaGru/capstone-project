@@ -6,8 +6,8 @@ import userEvent from '@testing-library/user-event';
 
 describe('DrumLoopPlayer', () => {
   it('renders a play/pause button and a select', () => {
-    
     render(<DrumLoopPlayer />);
+    
     const playPauseButton = screen.getByRole('button', { name: 'play pause' });
     const loopSelect = screen.getByRole('combobox', {
       name: 'Choose a Drum Loop',
