@@ -60,7 +60,9 @@ export default function DrumMachinePage({ allPads }) {
 
   function drumPadClick(event) {
     const currentPlayer = event.target.value;
-    drumPadPlayers.player(`Player${currentPlayer}`).start();
+    Tone.loaded().then(() => {
+      drumPadPlayers.player(`Player${currentPlayer}`).start();
+    });
   }
   function startDrumLoop() {
     if (isPlayin === playbutton) {

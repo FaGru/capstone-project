@@ -2,7 +2,7 @@
 import styled from 'styled-components';
 
 
-export default function KeyboardButtons({keyboardClick}){
+export default function KeyboardButtons({ keyboardClick }){
 
 
 

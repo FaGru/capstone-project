@@ -34,13 +34,13 @@ const GlobalStyle = createGlobalStyle`
 
 
   body {
-    margin: 0;
-    padding: 0;
+
     background-color: #111120;
     color: #ccd;
     font-family: "Poppins", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
       'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
       sans-serif;
+    font-size: 1rem;
   }
   code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
