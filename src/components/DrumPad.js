@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 
-export default function DrumPad({ id, color, drumPadClick, sample }) {
+export default function DrumPad({ id, color, drumPadClick}) {
   const [isDesktop, setDesktop] = useState(false);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function DrumPad({ id, color, drumPadClick, sample }) {
         <Pad
           aria-label={`drum pad`}
           onMouseDown={drumPadClick}
-          value={sample}
+          value={id}
           color={color}
           key={id}
         />
@@ -36,7 +36,7 @@ export default function DrumPad({ id, color, drumPadClick, sample }) {
         <Pad
           aria-label={`drum pad`}
           onTouchStart={drumPadClick}
-          value={sample}
+          value={id}
           color={color}
           key={id}
         />
