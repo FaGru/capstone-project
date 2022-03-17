@@ -34,14 +34,16 @@ export default function DrumLoopPlayer({
 }
 
 const DrumLoopContainer = styled.div`
+  justify-self: center;
   background-color: var(--black);
   display: grid;
+  grid-row: 3 / 4;
   grid-column: 2 / 3;
   max-width: 260px;
   grid-template-columns: 50px 1fr;
   grid-template-rows: 1fr 2fr;
-  margin: 20px;
-  padding: 5px;
+  margin: 5px;
+  padding: 3px;
   border: 2px solid var(--white);
   border-radius: 10px;
 `;
