@@ -13,9 +13,9 @@ export default function PadSettings({
   return (
     <>
       <PreviewContainer>
-        <SamplePreviewButton onClick={samplePreview}>
+        <SamplePreviewButton data-testid="sample-preview" type="button" onClick={samplePreview}>
           <img src={playbutton} alt='play preview sample' />
-          <p>play preview</p>
+          <p>play sample preview</p>
         </SamplePreviewButton>
         <PreviewGrid>
           {allPads.map(pad => (

@@ -7,7 +7,11 @@ export default function DrumLoopPlayer({
 }) {
   return (
     <DrumLoopContainer>
-      <PlayPauseButton onClick={startDrumLoop} aria-label="play pause">
+      <PlayPauseButton
+        type="button"
+        onClick={startDrumLoop}
+        aria-label="play pause"
+      >
         <img src={isPlayin} height="40px" width="40px" alt="play pause" />
       </PlayPauseButton>
       <DrumLoopLabel htmlFor="drum-loop-select">

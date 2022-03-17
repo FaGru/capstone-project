@@ -206,7 +206,7 @@ describe('PadSettings', () => {
       />
     );
     userEvent.click(
-      screen.getByRole('button', { name: 'play preview sample play preview' })
+      screen.getByTestId('sample-preview')
     );
     expect(samplePreview).toHaveBeenCalled();
   });

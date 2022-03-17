@@ -9,31 +9,31 @@ export default function KeyboardButtons({ keyboardClick }){
 return (
   <>
     <ButtonContainer>
-      <Button aria-label='keyboard-button' value="C3" onMouseDown={keyboardClick}></Button>
-      <Button aria-label='keyboard-button' value="D3" onMouseDown={keyboardClick}></Button>
-      <Button aria-label='keyboard-button' value="E3" onMouseDown={keyboardClick}></Button>
-      <Button aria-label='keyboard-button' value="F3" onMouseDown={keyboardClick}></Button>
-      <Button aria-label='keyboard-button' value="G3" onMouseDown={keyboardClick}></Button>
-      <Button aria-label='keyboard-button' value="A3" onMouseDown={keyboardClick}></Button>
-      <Button aria-label='keyboard-button' value="B3" onMouseDown={keyboardClick}></Button>
-      <Button aria-label='keyboard-button' value="C4" onMouseDown={keyboardClick}></Button>
-      <Button aria-label='keyboard-button' value="D4" onMouseDown={keyboardClick}></Button>
-      <Button aria-label='keyboard-button' value="E4" onMouseDown={keyboardClick}></Button>
-      <Button aria-label='keyboard-button' value="F4" onMouseDown={keyboardClick}></Button>
-      <Button aria-label='keyboard-button' value="G4" onMouseDown={keyboardClick}></Button>
-      <Button aria-label='keyboard-button' value="A4" onMouseDown={keyboardClick}></Button>
-      <Button aria-label='keyboard-button' value="B4" onMouseDown={keyboardClick}></Button>
+      <Button type="button" aria-label='keyboard-button' value="C3" onMouseDown={keyboardClick}></Button>
+      <Button type="button" aria-label='keyboard-button' value="D3" onMouseDown={keyboardClick}></Button>
+      <Button type="button" aria-label='keyboard-button' value="E3" onMouseDown={keyboardClick}></Button>
+      <Button type="button" aria-label='keyboard-button' value="F3" onMouseDown={keyboardClick}></Button>
+      <Button type="button" aria-label='keyboard-button' value="G3" onMouseDown={keyboardClick}></Button>
+      <Button type="button" aria-label='keyboard-button' value="A3" onMouseDown={keyboardClick}></Button>
+      <Button type="button" aria-label='keyboard-button' value="B3" onMouseDown={keyboardClick}></Button>
+      <Button type="button" aria-label='keyboard-button' value="C4" onMouseDown={keyboardClick}></Button>
+      <Button type="button" aria-label='keyboard-button' value="D4" onMouseDown={keyboardClick}></Button>
+      <Button type="button" aria-label='keyboard-button' value="E4" onMouseDown={keyboardClick}></Button>
+      <Button type="button" aria-label='keyboard-button' value="F4" onMouseDown={keyboardClick}></Button>
+      <Button type="button" aria-label='keyboard-button' value="G4" onMouseDown={keyboardClick}></Button>
+      <Button type="button" aria-label='keyboard-button' value="A4" onMouseDown={keyboardClick}></Button>
+      <Button type="button" aria-label='keyboard-button' value="B4" onMouseDown={keyboardClick}></Button>
       <BlackButtonGrid>
-        <BlackButton aria-label='keyboard-button' value="C#3" onMouseDown={keyboardClick}></BlackButton>
-        <BlackButton aria-label='keyboard-button' value="D#3" onMouseDown={keyboardClick}></BlackButton>
-        <BlackButton aria-label='keyboard-button' value="F#3" onMouseDown={keyboardClick}></BlackButton>
-        <BlackButton aria-label='keyboard-button' value="G#3" onMouseDown={keyboardClick}></BlackButton>
-        <BlackButton aria-label='keyboard-button' value="A#3" onMouseDown={keyboardClick}></BlackButton>
-        <BlackButton aria-label='keyboard-button' value="C#4" onMouseDown={keyboardClick}></BlackButton>
-        <BlackButton aria-label='keyboard-button' value="D#4" onMouseDown={keyboardClick}></BlackButton>
-        <BlackButton aria-label='keyboard-button' value="F#4" onMouseDown={keyboardClick}></BlackButton>
-        <BlackButton aria-label='keyboard-button' value="G#4" onMouseDown={keyboardClick}></BlackButton>
-        <BlackButton aria-label='keyboard-button' value="A#4" onMouseDown={keyboardClick}></BlackButton>
+        <BlackButton type="button" aria-label='keyboard-button' value="C#3" onMouseDown={keyboardClick}></BlackButton>
+        <BlackButton type="button" aria-label='keyboard-button' value="D#3" onMouseDown={keyboardClick}></BlackButton>
+        <BlackButton type="button" aria-label='keyboard-button' value="F#3" onMouseDown={keyboardClick}></BlackButton>
+        <BlackButton type="button" aria-label='keyboard-button' value="G#3" onMouseDown={keyboardClick}></BlackButton>
+        <BlackButton type="button" aria-label='keyboard-button' value="A#3" onMouseDown={keyboardClick}></BlackButton>
+        <BlackButton type="button" aria-label='keyboard-button' value="C#4" onMouseDown={keyboardClick}></BlackButton>
+        <BlackButton type="button" aria-label='keyboard-button' value="D#4" onMouseDown={keyboardClick}></BlackButton>
+        <BlackButton type="button" aria-label='keyboard-button' value="F#4" onMouseDown={keyboardClick}></BlackButton>
+        <BlackButton type="button" aria-label='keyboard-button' value="G#4" onMouseDown={keyboardClick}></BlackButton>
+        <BlackButton type="button" aria-label='keyboard-button' value="A#4" onMouseDown={keyboardClick}></BlackButton>
       </BlackButtonGrid>
     </ButtonContainer>
   </>
