@@ -1,26 +1,34 @@
 import DrumLoopPlayer from '../components/DrumLoopPlayer';
 import DrumPad from '../components/DrumPad';
-import settingsButton from '../images/settings.svg';
+import Recorder from '../components/Recorder';
+
 import { NavLink } from 'react-router-dom';
 import * as Tone from 'tone';
 import styled from 'styled-components';
 import { useState, useRef } from 'react';
+
+import settingsButton from '../images/settings.svg';
 import playbutton from '../images/play.svg';
 import pausebutton from '../images/pause.svg';
-import recordButton from '../images/record.svg';
 
 export default function DrumMachinePage({ allPads }) {
   const [currentDrumLoop, setCurrentDrumLoop] = useState();
   const [isPlayin, setIsPlayin] = useState(playbutton);
   const [recordingSrc, setRecordingSrc] = useState('');
+  const [isRecording, setIsRecording] = useState(false);
+  console.log(isRecording, 'beim state');
 
+  ///////////////LoopPlayer///////////////
   const loopPlayer = useRef();
   loopPlayer.current = new Tone.Player(
     `./audio/DrumLoops/${currentDrumLoop}.wav`
   ).toDestination();
   loopPlayer.current.loop = true;
+  ///////////////LoopPlayer///////////////
 
-  const drumPadPlayers = new Tone.Players({
+  ///////////////DrumPadPlayers///////////////
+  const drumPadPlayers = useRef();
+  drumPadPlayers.current = new Tone.Players({
     Player0: allPads[0].sample,
     Player1: allPads[1].sample,
     Player2: allPads[2].sample,
@@ -34,35 +42,31 @@ export default function DrumMachinePage({ allPads }) {
     Player10: allPads[10].sample,
     Player11: allPads[11].sample,
   }).toDestination();
-  /////test/////
-  const actx = Tone.context;
-  const dest = actx.createMediaStreamDestination();
-  const recorder = new MediaRecorder(dest.stream);
+  ///////////////DrumPadPlayers///////////////
 
-  drumPadPlayers.connect(dest);
+  ///////////////Recorder///////////////
+  const actx = useRef();
+  actx.current = Tone.context;
+  const dest = useRef();
+  dest.current = actx.current.createMediaStreamDestination();
+  const recorder = useRef();
+  recorder.current = new MediaRecorder(dest.current.stream);
 
-  const chunks = [];
+  drumPadPlayers.current.connect(dest.current);
 
-  recorder.ondataavailable = event => chunks.push(event.data);
-  recorder.onstop = event => {
-    let blob = new Blob(chunks, { type: 'audio/mp3; codecs=opus' });
+  const chunks = useRef();
+  chunks.current = [];
+
+  recorder.current.ondataavailable = event => chunks.current.push(event.data);
+  recorder.current.onstop = event => {
+    let blob = new Blob(chunks.current, { type: 'audio/mp3; codecs=opus' });
     let audio = URL.createObjectURL(blob);
     setRecordingSrc(audio);
   };
-
-  /////test////
+  ///////////////Recorder//////////////
 
   return (
     <DrumMachineContainer>
-      <RecButton type="button" onClick={recordClick}>
-        <img
-          src={recordButton}
-          height="50px"
-          width="120px"
-          alt="recording-button"
-        />
-      </RecButton>
-      <button onClick={recordStopClick}>stooooooooooooop pls </button>
       <LinkButton onClick={handleNavigate} to="/settings">
         <img src={settingsButton} height="50px" width="50px" alt="settings" />
       </LinkButton>
@@ -77,7 +81,11 @@ export default function DrumMachinePage({ allPads }) {
           />
         ))}
       </PadList>
-      <audio src={recordingSrc} controls></audio>
+      <Recorder
+        recordStopClick={recordStopClick}
+        recordClick={recordClick}
+        recordingSrc={recordingSrc}
+      />
 
       <DrumLoopPlayer
         startDrumLoop={startDrumLoop}
@@ -89,53 +97,21 @@ export default function DrumMachinePage({ allPads }) {
 
   ////////////////////record////////////////////
   function recordStopClick() {
-    recorder.stop();
+    recorder.current.stop();
   }
 
   function recordClick() {
-    recorder.start();
-
-    // const recordAudio = () =>
-    //   new Promise(async resolve => {
-    //     const stream = await navigator.mediaDevices.getUserMedia({
-    //       audio: true,
-    //     });
-    //     const mediaRecorder = new MediaRecorder(stream);
-    //     const audioChunks = [];
-    //     mediaRecorder.addEventListener('dataavailable', event => {
-    //       audioChunks.push(event.data);
-    //     });
-    //     const start = () => mediaRecorder.start();
-    //     const stop = () =>
-    //       new Promise(resolve => {
-    //         mediaRecorder.addEventListener('stop', () => {
-    //           const audioBlob = new Blob(audioChunks);
-    //           const audioUrl = URL.createObjectURL(audioBlob);
-    //           const audio = new Audio(audioUrl);
-    //           const play = () => audio.play();
-    //           resolve({ audioBlob, audioUrl, play });
-    //         });
-    //         mediaRecorder.stop();
-    //       });
-    //     resolve({ start, stop });
-    //   });
-    // const sleep = time => new Promise(resolve => setTimeout(resolve, time));
-    // (async () => {
-    //   const recorder = await recordAudio();
-    //   recorder.start();
-    //   await sleep(3000);
-    //   const audio = await recorder.stop();
-    //   audio.play();
-    // })();
+    console.log(isRecording);
+    isRecording ? recorder.current.stop() : recorder.current.start();
+    setIsRecording(!isRecording);
   }
-
   ////////////////////record////////////////////
 
   ////////////////////drumPad////////////////////
   function drumPadClick(event) {
     const currentPlayer = event.target.value;
     Tone.loaded().then(() => {
-      drumPadPlayers.player(`Player${currentPlayer}`).start();
+      drumPadPlayers.current.player(`Player${currentPlayer}`).start();
     });
   }
   ////////////////////drumPad////////////////////
@@ -175,14 +151,6 @@ const DrumMachineContainer = styled.section`
       display: none;
     }
   }
-`;
-const RecButton = styled.button`
-  grid-column: 2 / 3;
-  grid-row: 1 / 2;
-  justify-self: center;
-  background-color: var(--black);
-  margin-top: 10px;
-  padding: 3px;
 `;
 
 const LinkButton = styled(NavLink)`
