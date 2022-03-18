@@ -10,7 +10,7 @@ export default function DrumLoopPlayer({
       <PlayPauseButton
         type="button"
         onClick={startDrumLoop}
-        aria-label="play pause"
+        aria-label="pause play"
       >
         <img src={isPlayin} height="35px" width="35px" alt="play pause" />
       </PlayPauseButton>
