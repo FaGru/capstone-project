@@ -51,8 +51,8 @@ const Pad = styled.button`
   background: var(--${props => props.color});
   border: none;
   border-radius: 5px;
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   box-shadow: var(--box-shadow-classic);
 
   &:active {

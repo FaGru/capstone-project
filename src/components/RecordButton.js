@@ -1,19 +1,32 @@
-import recordButton from '../images/record.svg';
-import stopRecordButton from '../images/stop-record.svg';
+import recordButton from '../images/record-single.svg';
 import styled from 'styled-components';
 import { useState } from 'react';
-
+import isRecordingButton from '../images/recording-wave.gif';
 
 export default function Recorder({ recordStopClick, recordStartClick }) {
   const [isRecording, setIsRecording] = useState(false);
 
   return (
     <>
-      <RecButton type="button" onClick={handleClick} data-testid="record-button" >
+      <RecButton
+        type="button"
+        onClick={handleClick}
+        data-testid="record-button"
+      >
         {isRecording ? (
-          <img src={stopRecordButton} height="30px" alt="recording-button" />
+          <RecImg
+            src={isRecordingButton}
+            width="60px"
+            height="60px"
+            alt="stop-recording-button"
+          />
         ) : (
-          <img src={recordButton} height="30px" alt="recording-button" />
+          <RecImg
+            src={recordButton}
+            height="60px"
+            width="60px"
+            alt="start-recording-button"
+          />
         )}
       </RecButton>
     </>
@@ -22,15 +35,38 @@ export default function Recorder({ recordStopClick, recordStartClick }) {
     isRecording ? recordStopClick() : recordStartClick();
     setIsRecording(!isRecording);
   }
-
 }
+const RecImg = styled.img`
+  transition: ease-in 0.2s;
+  border: none;
+  border-top: 2px solid var(--lightgray);
+  border-left: 2px solid var(--lightgray);
+  border-radius: 100%;
+  place-self: center;
+  justify-self: center;
+  padding: 5px;
+
+  &:active {
+    transition: 0.5s;
+    border-bottom: 2px solid var(--lightgray);
+    border-right: 2px solid var(--lightgray);
+    filter: grayscale(100%) blur(1px) brightness(70%);
+
+    border-top: none;
+    border-left: none;
+  }
+`;
 
 const RecButton = styled.button`
   grid-column: 2 / 3;
-  grid-row: 1 / 2;
-  justify-self: center;
+  grid-row: 3 / 4;
+  place-self: start;
+  justify-self: start;
   background-color: var(--darkgray);
-  margin-top: 10px;
-  height: 45px;
-  width: 100px;
+  margin-top: 5px;
+  margin-left: 10px;
+  height: 60px;
+  width: 60px;
+  border-radius: 100%;
+  border: none;
 `;

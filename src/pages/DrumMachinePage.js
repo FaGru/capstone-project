@@ -93,15 +93,15 @@ export default function DrumMachinePage({ allPads }) {
     });
   }
   ////////////////////drumPad////////////////////
-    ////////////////////record////////////////////
-    function recordStopClick() {
-      recorder.stop();
-    }
-  
-    function recordStartClick() {
-      recorder.start();
-    }
-    ////////////////////record////////////////////
+  ////////////////////record////////////////////
+  function recordStopClick() {
+    recorder.stop();
+  }
+
+  function recordStartClick() {
+    recorder.start();
+  }
+  ////////////////////record////////////////////
   ////////////////////DrumLoop////////////////////
   function startDrumLoop() {
     if (isPlayin === playbutton) {
@@ -129,7 +129,7 @@ const DrumMachineContainer = styled.section`
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   grid-template-rows: auto 1fr auto auto;
-  border: 2px solid var(--gray);
+  border: 2px solid var(--lightgray);
   background-color: var(--darkgray);
 
   @media (max-width: 1000px) {
@@ -143,8 +143,7 @@ const LinkButton = styled(NavLink)`
   grid-column: 2 / 3;
   grid-row: 1 / 2;
   justify-self: end;
-  padding-top: 15px;
-  padding-right: 15px;
+  padding: 12px;
 `;
 const PadList = styled.div`
   grid-column: 2 / 3;
@@ -154,14 +153,56 @@ const PadList = styled.div`
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr 1fr;
   grid-gap: 5px;
-  margin: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 5px;
 `;
 
 const RecordingPlayer = styled.audio`
-  width: 250px;
-  height: 40px;
+  width: 230px;
+  height: 50px;
   grid-column: 2 / 3;
-  grid-row: 4 / 5;
-  place-self: center;
+  grid-row: 3 / 4;
+  place-self: end;
+  margin-right: 5px;
   margin-bottom: 5px;
+  &::-webkit-media-controls-enclosure {
+    border-radius: 40px;
+    border: 2px solid var(--white);
+    background-color: var(--gray);
+  }
+  &::-webkit-media-controls-play-button {
+    -webkit-appearance: media-play-button;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    margin-right: 3px;
+    border-radius: 100%;
+    background-color: var(--white);
+    opacity: 100%;
+  }
+  &::-webkit-media-controls-current-time-display,
+  ::-webkit-media-controls-time-remaining-display {
+    -webkit-appearance: media-current-time-display;
+    height: 30px;
+    margin: 0 1px 0 1px;
+    padding: 0;
+    line-height: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    font-style: normal;
+    color: white;
+  }
+  &::-webkit-media-controls-mute-button {
+    -webkit-appearance: media-mute-button;
+    display: flex;
+    flex: none;
+    border-radius: 100%;
+    background-color: var(--white);
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    margin: 0 1px 0 0;
+  }
 `;
