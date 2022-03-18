@@ -1,18 +1,34 @@
 import styled from 'styled-components';
+import { useState, useEffect } from 'react';
+
+import playbutton from '../images/play.svg';
+import pausebutton from '../images/pause.svg';
 
 export default function DrumLoopPlayer({
   startDrumLoop,
   getDrumLoop,
-  isPlayin,
+  recordingSrc
 }) {
+  const [isPlayin, setIsPlayin] = useState(false);
+  useEffect(() => {
+    if (recordingSrc !== '') {
+      setIsPlayin(false);
+    }
+  }, [recordingSrc]);
+  
   return (
     <DrumLoopContainer>
       <PlayPauseButton
         type="button"
-        onClick={startDrumLoop}
+        onClick={handleClick}
         aria-label="pause play"
       >
-        <img src={isPlayin} height="35px" width="35px" alt="play pause" />
+        <img
+          src={isPlayin ? pausebutton : playbutton}
+          height="35px"
+          width="35px"
+          alt="play pause"
+        />
       </PlayPauseButton>
       <DrumLoopLabel htmlFor="drum-loop-select">
         Choose a Drum Loop
@@ -20,7 +36,7 @@ export default function DrumLoopPlayer({
       <DrumLoopSelect
         name="drum-loops"
         id="drum-loop-select"
-        onChange={getDrumLoop}
+        onChange={onChange}
       >
         <option>--- select your Loop ---</option>
         <option>Strings90BPM</option>
@@ -31,6 +47,16 @@ export default function DrumLoopPlayer({
       </DrumLoopSelect>
     </DrumLoopContainer>
   );
+
+  function handleClick() {
+    startDrumLoop(isPlayin);
+    setIsPlayin(!isPlayin);
+  }
+  function onChange(event) {
+      const currentLoop = event.target.value;
+      getDrumLoop(isPlayin, currentLoop);
+      isPlayin ? setIsPlayin(false) : setIsPlayin(false);
+  }
 }
 
 const DrumLoopContainer = styled.div`

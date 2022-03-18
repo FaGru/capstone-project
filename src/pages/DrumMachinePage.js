@@ -8,14 +8,26 @@ import styled from 'styled-components';
 import { useState, useRef } from 'react';
 
 import settingsButton from '../images/settings.svg';
-import playbutton from '../images/play.svg';
-import pausebutton from '../images/pause.svg';
 
 export default function DrumMachinePage({ allPads }) {
   const [currentDrumLoop, setCurrentDrumLoop] = useState();
-  const [isPlayin, setIsPlayin] = useState(playbutton);
   const [recordingSrc, setRecordingSrc] = useState('');
 
+  ///////////////Recorder///////////////
+  const actx = Tone.context;
+  const dest = actx.createMediaStreamDestination();
+  const recorder = useRef(null);
+  recorder.current = new MediaRecorder(dest.stream);
+  const chunks = [];
+
+  recorder.current.ondataavailable = event => chunks.push(event.data);
+  recorder.current.onstop = () => {
+    let blob = new Blob(chunks, { type: 'audio/mp3; codecs=opus' });
+    let audio = URL.createObjectURL(blob);
+    setRecordingSrc(audio);
+  };
+  ///////////////Recorder/////////////
+  
   ///////////////LoopPlayer///////////////
   const loopPlayer = useRef();
   loopPlayer.current = new Tone.Player(
@@ -40,21 +52,8 @@ export default function DrumMachinePage({ allPads }) {
     Player11: allPads[11].sample,
   }).toDestination();
   ///////////////DrumPadPlayers///////////////
-
-  ///////////////Recorder///////////////
-  const actx = Tone.context;
-  const dest = actx.createMediaStreamDestination();
-  const recorder = new MediaRecorder(dest.stream);
   drumPadPlayers.connect(dest);
-  const chunks = [];
-
-  recorder.ondataavailable = event => chunks.push(event.data);
-  recorder.onstop = event => {
-    let blob = new Blob(chunks, { type: 'audio/mp3; codecs=opus' });
-    let audio = URL.createObjectURL(blob);
-    setRecordingSrc(audio);
-  };
-  ///////////////Recorder/////////////
+  loopPlayer.current.connect(dest);
 
   return (
     <DrumMachineContainer>
@@ -76,11 +75,14 @@ export default function DrumMachinePage({ allPads }) {
       <RecordButton
         recordStartClick={recordStartClick}
         recordStopClick={recordStopClick}
+        recordingSrc={recordingSrc}
       />
       <DrumLoopPlayer
         startDrumLoop={startDrumLoop}
         getDrumLoop={getDrumLoop}
-        isPlayin={isPlayin}
+        recordStopClick={recordStopClick}
+        recorder={recorder}
+        recordingSrc={recordingSrc}
       />
     </DrumMachineContainer>
   );
@@ -93,31 +95,38 @@ export default function DrumMachinePage({ allPads }) {
     });
   }
   ////////////////////drumPad////////////////////
+
   ////////////////////record////////////////////
-  function recordStopClick() {
-    recorder.stop();
+  function recordStartClick() {
+    recorder.current.start();
   }
 
-  function recordStartClick() {
-    recorder.start();
+  function recordStopClick() {
+    recorder.current.stop();
+    loopPlayer.current.stop();
   }
   ////////////////////record////////////////////
+
   ////////////////////DrumLoop////////////////////
-  function startDrumLoop() {
-    if (isPlayin === playbutton) {
+  function startDrumLoop(isPlayin) {
+    if (isPlayin === false) {
       Tone.loaded().then(() => {
         loopPlayer.current.start();
       });
-      setIsPlayin(pausebutton);
     } else {
       loopPlayer.current.stop();
-      setIsPlayin(playbutton);
     }
   }
-  function getDrumLoop(event) {
-    setCurrentDrumLoop(event.target.value);
-    loopPlayer.current.stop();
-    setIsPlayin(playbutton);
+  function getDrumLoop(isPlayin, currentLoop) {
+    if (recorder.current.state === 'inactive') {
+      loopPlayer.current.stop()
+      setCurrentDrumLoop(currentLoop);
+    } else {
+      recordStopClick();
+      setCurrentDrumLoop(currentLoop);
+  
+      
+    }
   }
   function handleNavigate() {
     loopPlayer.current.stop();
