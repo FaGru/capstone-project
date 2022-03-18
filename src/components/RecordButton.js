@@ -9,7 +9,7 @@ export default function Recorder({ recordStopClick, recordStartClick }) {
 
   return (
     <>
-      <RecButton type="button" onClick={handleClick}>
+      <RecButton type="button" onClick={handleClick} data-testid="record-button" >
         {isRecording ? (
           <img src={stopRecordButton} height="30px" alt="recording-button" />
         ) : (
