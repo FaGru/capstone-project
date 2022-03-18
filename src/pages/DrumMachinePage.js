@@ -54,7 +54,7 @@ export default function DrumMachinePage({ allPads }) {
     let audio = URL.createObjectURL(blob);
     setRecordingSrc(audio);
   };
-  ///////////////Recorder//////////////
+  ///////////////Recorder/////////////
 
   return (
     <DrumMachineContainer>
@@ -74,8 +74,8 @@ export default function DrumMachinePage({ allPads }) {
       </PadList>
       <RecordingPlayer src={recordingSrc} controls></RecordingPlayer>
       <RecordButton
-        recordStopClick={recordStopClick}
         recordStartClick={recordStartClick}
+        recordStopClick={recordStopClick}
       />
       <DrumLoopPlayer
         startDrumLoop={startDrumLoop}
@@ -85,16 +85,6 @@ export default function DrumMachinePage({ allPads }) {
     </DrumMachineContainer>
   );
 
-  ////////////////////record////////////////////
-  function recordStopClick() {
-    recorder.stop();
-  }
-
-  function recordStartClick() {
-    recorder.start();
-  }
-  ////////////////////record////////////////////
-
   ////////////////////drumPad////////////////////
   function drumPadClick(event) {
     const currentPlayer = event.target.value;
@@ -103,7 +93,15 @@ export default function DrumMachinePage({ allPads }) {
     });
   }
   ////////////////////drumPad////////////////////
-
+    ////////////////////record////////////////////
+    function recordStopClick() {
+      recorder.stop();
+    }
+  
+    function recordStartClick() {
+      recorder.start();
+    }
+    ////////////////////record////////////////////
   ////////////////////DrumLoop////////////////////
   function startDrumLoop() {
     if (isPlayin === playbutton) {

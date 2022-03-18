@@ -3,7 +3,9 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Tone from 'tone';
 
+
 jest.mock('tone', () => {
+
   return {
     Player: jest.fn().mockReturnValue({
       toDestination: jest.fn().mockReturnValue({}),
@@ -14,6 +16,7 @@ jest.mock('tone', () => {
     loaded: jest.fn().mockReturnValue({ then: jest.fn() }),
   };
 });
+
 
 describe('DrumMaschinePage', () => {
   render(

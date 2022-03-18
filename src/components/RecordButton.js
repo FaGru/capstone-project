@@ -3,8 +3,10 @@ import stopRecordButton from '../images/stop-record.svg';
 import styled from 'styled-components';
 import { useState } from 'react';
 
+
 export default function Recorder({ recordStopClick, recordStartClick }) {
   const [isRecording, setIsRecording] = useState(false);
+
   return (
     <>
       <RecButton type="button" onClick={handleClick}>
@@ -20,6 +22,7 @@ export default function Recorder({ recordStopClick, recordStartClick }) {
     isRecording ? recordStopClick() : recordStartClick();
     setIsRecording(!isRecording);
   }
+
 }
 
 const RecButton = styled.button`
