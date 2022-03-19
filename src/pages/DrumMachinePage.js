@@ -10,9 +10,7 @@ import { useState, useRef } from 'react';
 import settingsButton from '../images/settings.svg';
 
 export default function DrumMachinePage({ allPads }) {
-  const [currentDrumLoop, setCurrentDrumLoop] = useState(
-    './audio/DrumLoops/DrumLoop90BPM.wav'
-  );
+  const [currentDrumLoop, setCurrentDrumLoop] = useState('DrumLoop90BPM');
   const [recordingSrc, setRecordingSrc] = useState('');
 
   ///////////////Recorder///////////////
