@@ -10,7 +10,9 @@ import { useState, useRef } from 'react';
 import settingsButton from '../images/settings.svg';
 
 export default function DrumMachinePage({ allPads }) {
-  const [currentDrumLoop, setCurrentDrumLoop] = useState();
+  const [currentDrumLoop, setCurrentDrumLoop] = useState(
+    './audio/DrumLoops/DrumLoop90BPM.wav'
+  );
   const [recordingSrc, setRecordingSrc] = useState('');
 
   ///////////////Recorder///////////////
@@ -27,7 +29,7 @@ export default function DrumMachinePage({ allPads }) {
     setRecordingSrc(audio);
   };
   ///////////////Recorder/////////////
-  
+
   ///////////////LoopPlayer///////////////
   const loopPlayer = useRef();
   loopPlayer.current = new Tone.Player(
@@ -119,13 +121,11 @@ export default function DrumMachinePage({ allPads }) {
   }
   function getDrumLoop(isPlayin, currentLoop) {
     if (recorder.current.state === 'inactive') {
-      loopPlayer.current.stop()
+      loopPlayer.current.stop();
       setCurrentDrumLoop(currentLoop);
     } else {
       recordStopClick();
       setCurrentDrumLoop(currentLoop);
-  
-      
     }
   }
   function handleNavigate() {
