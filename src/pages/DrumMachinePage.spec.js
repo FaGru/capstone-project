@@ -3,15 +3,19 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Tone from 'tone';
 
+
+window.MediaRecorder = jest.fn()
+
 jest.mock('tone', () => {
   return {
     Player: jest.fn().mockReturnValue({
-      toDestination: jest.fn().mockReturnValue({}),
+      toDestination: jest.fn().mockReturnValue({ connect: jest.fn() }),
     }),
     Players: jest.fn().mockReturnValue({
-      toDestination: jest.fn().mockReturnValue({}),
+      toDestination: jest.fn().mockReturnValue({ connect: jest.fn() }),
     }),
     loaded: jest.fn().mockReturnValue({ then: jest.fn() }),
+    context: { createMediaStreamDestination: jest.fn().mockReturnValue({ stream: {}}) },
   };
 });
 
@@ -56,7 +60,10 @@ describe('DrumMaschinePage', () => {
   });
 
   it('calls Tone.Players', () => {
-    expect(Tone.Players).toHaveBeenCalled()
-    expect(Tone.Players().toDestination).toHaveBeenCalled()
-  })
+    expect(Tone.Players).toHaveBeenCalled();
+    expect(Tone.Players().toDestination).toHaveBeenCalled();
+  });
+  it('calls MediaRecorder', () => {
+    expect(MediaRecorder).toHaveBeenCalled();
+  });
 });

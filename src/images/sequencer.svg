@@ -1,0 +1,19 @@
+<svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="40" cy="40" r="38.5" stroke="white" stroke-width="3"/>
+<rect x="17.5" y="17.5" width="9" height="9" rx="2.5" fill="#34A832" stroke="#C4C4C4"/>
+<rect x="17.5" y="29.5" width="9" height="9" rx="2.5" stroke="#C4C4C4"/>
+<rect x="17.5" y="41.5" width="9" height="9" rx="2.5" fill="#34A832" stroke="#C4C4C4"/>
+<rect x="17.5" y="53.5" width="9" height="9" rx="2.5" stroke="#C4C4C4"/>
+<rect x="41.5" y="17.5" width="9" height="9" rx="2.5" fill="#3066F0" stroke="#C4C4C4"/>
+<rect x="41.5" y="29.5" width="9" height="9" rx="2.5" fill="#3066F0" stroke="#C4C4C4"/>
+<rect x="41.5" y="41.5" width="9" height="9" rx="2.5" fill="#3066F0" stroke="#C4C4C4"/>
+<rect x="41.5" y="53.5" width="9" height="9" rx="2.5" fill="#3066F0" stroke="#C4C4C4"/>
+<rect x="29.5" y="17.5" width="9" height="9" rx="2.5" stroke="#C4C4C4"/>
+<rect x="29.5" y="29.5" width="9" height="9" rx="2.5" fill="#7C2CAD" stroke="#C4C4C4"/>
+<rect x="29.5" y="41.5" width="9" height="9" rx="2.5" stroke="#C4C4C4"/>
+<rect x="29.5" y="53.5" width="9" height="9" rx="2.5" stroke="#C4C4C4"/>
+<rect x="53.5" y="17.5" width="9" height="9" rx="2.5" stroke="#C4C4C4"/>
+<rect x="53.5" y="29.5" width="9" height="9" rx="2.5" stroke="#C4C4C4"/>
+<rect x="53.5" y="41.5" width="9" height="9" rx="2.5" stroke="#C4C4C4"/>
+<rect x="53.5" y="53.5" width="9" height="9" rx="2.5" fill="#F08130" stroke="#C4C4C4"/>
+</svg>

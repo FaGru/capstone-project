@@ -13,9 +13,13 @@ export default function PadSettings({
   return (
     <>
       <PreviewContainer>
-        <SamplePreviewButton onClick={samplePreview}>
-          <img src={playbutton} alt='play preview sample' />
-          <p>play preview</p>
+        <SamplePreviewButton
+          data-testid="sample-preview"
+          type="button"
+          onClick={samplePreview}
+        >
+          <img src={playbutton} alt="play preview sample" />
+          <p>play sample preview</p>
         </SamplePreviewButton>
         <PreviewGrid>
           {allPads.map(pad => (
@@ -83,13 +87,13 @@ const SamplePreviewButton = styled.button`
 
   border-radius: 5px;
   border: 2px solid var(--white);
-  border-top: 1px solid var(--gray);
-  border-left: 1px solid var(--gray);
+  border-top: 1px solid var(--lightgray);
+  border-left: 1px solid var(--lightgray);
   box-shadow: var(--box-shadow-classic);
 
   &:active {
     transition: ease 0.2s;
-    border: 1px solid var(--gray);
+    border: 1px solid var(--lightgray);
     border-top: 1px solid var(--white);
     border-left: 1px solid var(--white);
   }
@@ -115,8 +119,6 @@ const ButtonPreview = styled.div`
   color: black;
   border: 0.5px solid black;
   border-radius: 2px;
-  
-  
 `;
 
 const DrumPadForm = styled.section`
@@ -147,14 +149,14 @@ const SaveButton = styled.button`
   margin: 20px;
   border-radius: 5px;
   border: 1px solid var(--green);
-  border-top: 1px solid var(--gray);
-  border-left: 1px solid var(--gray);
+  border-top: 1px solid var(--lightgray);
+  border-left: 1px solid var(--lightgray);
   box-shadow: 1px 1px 5px 0.5px var(--green);
   letter-spacing: 1px;
 
   &:active {
     transition: ease 0.2s;
-    border: 1px solid var(--gray);
+    border: 1px solid var(--lightgray);
     border-top: 1px solid var(--green);
     border-left: 1px solid var(--green);
     /* box-shadow: var(--box-shadow-classic); */

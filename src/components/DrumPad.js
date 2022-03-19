@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 
-export default function DrumPad({ id, color, drumPadClick}) {
+export default function DrumPad({ id, color, drumPadClick }) {
   const [isDesktop, setDesktop] = useState(false);
 
   useEffect(() => {
@@ -26,20 +26,22 @@ export default function DrumPad({ id, color, drumPadClick}) {
     <>
       {isDesktop ? (
         <Pad
+          type="button"
           aria-label={`drum pad`}
           onMouseDown={drumPadClick}
           value={id}
           color={color}
           key={id}
-        />
+        ></Pad>
       ) : (
         <Pad
+          type="button"
           aria-label={`drum pad`}
           onTouchStart={drumPadClick}
           value={id}
           color={color}
           key={id}
-        />
+        ></Pad>
       )}
     </>
   );
@@ -49,8 +51,8 @@ const Pad = styled.button`
   background: var(--${props => props.color});
   border: none;
   border-radius: 5px;
-  width: 85px;
-  height: 85px;
+  width: 100px;
+  height: 100px;
   box-shadow: var(--box-shadow-classic);
 
   &:active {
