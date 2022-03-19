@@ -36,7 +36,7 @@ export default function DrumLoopPlayer({
       <DrumLoopSelect
         name="drum-loops"
         id="drum-loop-select"
-        onChange={onChange}
+        onChange={handleChange}
       >
         <option>--- select your Loop ---</option>
         <option>Strings90BPM</option>
@@ -52,7 +52,7 @@ export default function DrumLoopPlayer({
     startDrumLoop(isPlayin);
     setIsPlayin(!isPlayin);
   }
-  function onChange(event) {
+  function handleChange(event) {
       const currentLoop = event.target.value;
       getDrumLoop(isPlayin, currentLoop);
       isPlayin ? setIsPlayin(false) : setIsPlayin(false);
