@@ -38,9 +38,8 @@ export default function DrumLoopPlayer({
         id="drum-loop-select"
         onChange={handleChange}
       >
-        <option>--- select your Loop ---</option>
-        <option>Strings90BPM</option>
         <option>DrumLoop90BPM</option>
+        <option>Strings90BPM</option>
         <option>GS-Mixdown94BPM</option>
         <option>GS-Mixdown98BPM</option>
         <option>DirtyBass120BPM</option>
