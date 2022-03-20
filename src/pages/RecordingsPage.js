@@ -15,18 +15,22 @@ export default function RecordingsPage({ myRecordings }) {
         <Heading>My Recordings</Heading>
       </HeadingContainer>
       <RecordingsContainer>
-        {myRecordings.map(recording => (
-          <div key={nanoid()}>
-            <RecordingNumber key={nanoid()}>
-              Recording {myRecordings.length - playerCounter++}
-            </RecordingNumber>
-            <RecordingPlayer
-              key={recording.id}
-              src={recording.audio}
-              controls
-            ></RecordingPlayer>
-          </div>
-        ))}
+        {myRecordings.length === 0 ? (
+          <p>It's still quiet here! You have to recorod something...</p>
+        ) : (
+          myRecordings.map(recording => (
+            <div key={nanoid()}>
+              <RecordingNumber key={nanoid()}>
+                Recording {myRecordings.length - playerCounter++}
+              </RecordingNumber>
+              <RecordingPlayer
+                key={recording.id}
+                src={recording.audio}
+                controls
+              ></RecordingPlayer>
+            </div>
+          ))
+        )}
       </RecordingsContainer>
     </>
   );
