@@ -16,7 +16,7 @@ export default function RecordingsPage({ myRecordings }) {
       </HeadingContainer>
       <RecordingsContainer>
         {myRecordings.length === 0 ? (
-          <p>It's still quiet here! You have to recorod something...</p>
+          <p>It's still quiet here! You have to record something...</p>
         ) : (
           myRecordings.map(recording => (
             <div key={nanoid()}>
