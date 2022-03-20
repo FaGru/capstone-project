@@ -17,13 +17,14 @@ export default function SettingsPage({
   );
 
   return (
-    <SettingsContainer>
+    <>
       <HeadingContainer>
-        <LinkButton to="/">
+        <BackButton to="/">
           <img src={backButton} alt="back-button" width="35px" height="35px" />
-        </LinkButton>
+        </BackButton>
         <Heading>Settings</Heading>
       </HeadingContainer>
+    <SettingsContainer>
       <PadSettings
         savePadClick={savePadClick}
         colorChange={colorChange}
@@ -34,6 +35,7 @@ export default function SettingsPage({
         samplePreview={samplePreview}
       />
     </SettingsContainer>
+    </>
   );
 
   function padChange(e) {
@@ -67,20 +69,24 @@ export default function SettingsPage({
   }
 }
 
-const SettingsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-`;
 const HeadingContainer = styled.header`
   display: grid;
-  grid-template-columns: auto 1fr;
-`
+  grid-template-columns: 15% 1fr 15%;
+  
+`;
 const Heading = styled.h2`
   margin-top: 32px;
-  margin-right: 100px;
-  text-align: center
-`
-const LinkButton = styled(NavLink)`
-  margin: 30px;
+  text-align: center;
+  grid-column: 2 / 3;
 `;
+const BackButton = styled(NavLink)`
+  margin: 15px;
+  justify-self: start;
+  grid-column: 1 / 2;
+  
+`;
+  const SettingsContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+  `;

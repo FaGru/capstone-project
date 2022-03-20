@@ -6,15 +6,17 @@ import isRecordingButton from '../images/recording-wave.gif';
 export default function Recorder({
   recordStopClick,
   recordStartClick,
-  recordingSrc,
+  devicesState,
+  setDevicesState,
 }) {
   const [isRecording, setIsRecording] = useState(false);
 
   useEffect(() => {
-    if (recordingSrc !== '') {
+    if (devicesState !== '') {
       setIsRecording(false);
+      setDevicesState('');
     }
-  }, [recordingSrc]);
+  }, [devicesState, setDevicesState]);
 
   return (
     <>
@@ -47,7 +49,7 @@ export default function Recorder({
   }
 }
 const RecImg = styled.img`
-  transition: ease-in 0.2s;
+  transition: ease-in 0.4s;
   border: none;
   border-top: 2px solid var(--lightgray);
   border-left: 2px solid var(--lightgray);
@@ -57,7 +59,7 @@ const RecImg = styled.img`
   padding: 5px;
 
   &:active {
-    transition: 0.5s;
+    transition: 0.3s;
     border-bottom: 2px solid var(--lightgray);
     border-right: 2px solid var(--lightgray);
     filter: grayscale(100%) blur(1px) brightness(70%);

@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 
 describe('DrumLoopPlayer', () => {
   it('renders a play/pause button and a select', () => {
-    render(<DrumLoopPlayer />);
+    render(<DrumLoopPlayer devicesState={''}/>);
 
     const playPauseButton = screen.getByRole('button', { name: 'pause play' });
     const loopSelect = screen.getByRole('combobox', {
@@ -16,7 +16,7 @@ describe('DrumLoopPlayer', () => {
 
   it('calls the play function', () => {
     const startDrumLoop = jest.fn();
-    render(<DrumLoopPlayer startDrumLoop={startDrumLoop} />);
+    render(<DrumLoopPlayer startDrumLoop={startDrumLoop} devicesState={''}/>);
     const playPauseButton = screen.getByRole('button', { name: 'pause play' });
     userEvent.click(playPauseButton);
     expect(startDrumLoop).toHaveBeenCalled();

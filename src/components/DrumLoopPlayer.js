@@ -7,14 +7,16 @@ import pausebutton from '../images/pause.svg';
 export default function DrumLoopPlayer({
   startDrumLoop,
   getDrumLoop,
-  recordingSrc
+  devicesState,
+  setDevicesState
 }) {
   const [isPlayin, setIsPlayin] = useState(false);
   useEffect(() => {
-    if (recordingSrc !== '') {
+    if (devicesState !== '') {
       setIsPlayin(false);
+      setDevicesState('')
     }
-  }, [recordingSrc]);
+  }, [devicesState, setDevicesState]);
   
   return (
     <DrumLoopContainer>

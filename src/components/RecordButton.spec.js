@@ -4,7 +4,7 @@ import RecordButton from './RecordButton';
 
 describe('RecordButton', () => {
   it('renders a record-button', () => {
-    render(<RecordButton />);
+    render(<RecordButton devicesState={''}/>);
     expect(screen.getByTestId('record-button')).toBeInTheDocument();
   });
   it('calls the functions to start and stop the record', () => {
@@ -14,6 +14,7 @@ describe('RecordButton', () => {
       <RecordButton
         recordStopClick={recordStopClick}
         recordStartClick={recordStartClick}
+        devicesState={''}
       />
     );
     const recordButton = screen.getByTestId('record-button');
