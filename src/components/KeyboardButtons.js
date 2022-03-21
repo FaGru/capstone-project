@@ -158,13 +158,8 @@ export default function KeyboardButtons({ keyboardClick }) {
 const ButtonContainer = styled.section`
   display: flex;
   justify-content: center;
-  background-color: var(--darkgray);
-  border: 2px solid var(--lightgray);
-  padding: 20px;
 
-  @media (orientation: portrait) {
-    display: none;
-  }
+
 `;
 const BlackButtonGrid = styled.div`
   display: grid;
