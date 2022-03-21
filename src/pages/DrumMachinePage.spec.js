@@ -9,12 +9,13 @@ window.MediaRecorder = jest.fn()
 jest.mock('tone', () => {
   return {
     Player: jest.fn().mockReturnValue({
-      toDestination: jest.fn().mockReturnValue({ connect: jest.fn() }),
+      toDestination: jest.fn().mockReturnValue({ connect: jest.fn(), volume: jest.fn() }),
     }),
     Players: jest.fn().mockReturnValue({
       toDestination: jest.fn().mockReturnValue({ connect: jest.fn() }),
     }),
     loaded: jest.fn().mockReturnValue({ then: jest.fn() }),
+    
     context: { createMediaStreamDestination: jest.fn().mockReturnValue({ stream: {}}) },
   };
 });

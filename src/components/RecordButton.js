@@ -1,22 +1,16 @@
 import recordButton from '../images/record-single.svg';
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import isRecordingButton from '../images/recording-wave.gif';
 
 export default function Recorder({
   recordStopClick,
   recordStartClick,
-  devicesState,
-  setDevicesState,
+
 }) {
   const [isRecording, setIsRecording] = useState(false);
 
-  useEffect(() => {
-    if (devicesState !== '') {
-      setIsRecording(false);
-      setDevicesState('');
-    }
-  }, [devicesState, setDevicesState]);
+
 
   return (
     <>
@@ -76,7 +70,7 @@ const RecButton = styled.button`
   justify-self: start;
   background-color: var(--darkgray);
   margin-top: 5px;
-  margin-left: 10px;
+  margin-left: 5px;
   height: 60px;
   width: 60px;
   border-radius: 100%;

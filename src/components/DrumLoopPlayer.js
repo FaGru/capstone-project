@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import playbutton from '../images/play.svg';
 import pausebutton from '../images/pause.svg';
@@ -7,16 +7,9 @@ import pausebutton from '../images/pause.svg';
 export default function DrumLoopPlayer({
   startDrumLoop,
   getDrumLoop,
-  devicesState,
-  setDevicesState
 }) {
-  const [isPlayin, setIsPlayin] = useState(false);
-  useEffect(() => {
-    if (devicesState !== '') {
-      setIsPlayin(false);
-      setDevicesState('')
-    }
-  }, [devicesState, setDevicesState]);
+  const [isPlaying, setIsPlaying] = useState(false);
+
   
   return (
     <DrumLoopContainer>
@@ -26,7 +19,7 @@ export default function DrumLoopPlayer({
         aria-label="pause play"
       >
         <img
-          src={isPlayin ? pausebutton : playbutton}
+          src={isPlaying ? pausebutton : playbutton}
           height="35px"
           width="35px"
           alt="play pause"
@@ -50,23 +43,23 @@ export default function DrumLoopPlayer({
   );
 
   function handleClick() {
-    startDrumLoop(isPlayin);
-    setIsPlayin(!isPlayin);
+    startDrumLoop(isPlaying);
+    setIsPlaying(!isPlaying);
   }
   function handleChange(event) {
       const currentLoop = event.target.value;
-      getDrumLoop(isPlayin, currentLoop);
-      isPlayin ? setIsPlayin(false) : setIsPlayin(false);
+      getDrumLoop(currentLoop);
+      isPlaying ? setIsPlaying(false) : setIsPlaying(false);
   }
 }
 
 const DrumLoopContainer = styled.div`
-  justify-self: center;
+  justify-self: end;
   background-color: var(--gray);
   display: grid;
   grid-column: 2 / 3;
-  grid-row: 4 / 5;
-  width: 250px;
+  grid-row: 3 / 4;
+  width: 230px;
   height: 55px;
   grid-template-columns: 50px 1fr;
   grid-template-rows: 1fr 2fr;
@@ -91,7 +84,7 @@ const DrumLoopLabel = styled.label`
 const DrumLoopSelect = styled.select`
   text-align: center;
   height: 25px;
-  max-width: 160px;
+  max-width: 150px;
   color: var(--white);
   background-color: var(--lightgray);
   border: 1px solid var(--white);
