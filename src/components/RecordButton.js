@@ -76,7 +76,7 @@ const RecButton = styled.button`
   justify-self: start;
   background-color: var(--darkgray);
   margin-top: 5px;
-  margin-left: 10px;
+  margin-left: 5px;
   height: 60px;
   width: 60px;
   border-radius: 100%;

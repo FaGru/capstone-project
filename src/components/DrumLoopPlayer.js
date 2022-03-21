@@ -55,18 +55,18 @@ export default function DrumLoopPlayer({
   }
   function handleChange(event) {
       const currentLoop = event.target.value;
-      getDrumLoop(isPlayin, currentLoop);
+      getDrumLoop(currentLoop);
       isPlayin ? setIsPlayin(false) : setIsPlayin(false);
   }
 }
 
 const DrumLoopContainer = styled.div`
-  justify-self: center;
+  justify-self: end;
   background-color: var(--gray);
   display: grid;
   grid-column: 2 / 3;
-  grid-row: 4 / 5;
-  width: 250px;
+  grid-row: 3 / 4;
+  width: 230px;
   height: 55px;
   grid-template-columns: 50px 1fr;
   grid-template-rows: 1fr 2fr;
@@ -91,7 +91,7 @@ const DrumLoopLabel = styled.label`
 const DrumLoopSelect = styled.select`
   text-align: center;
   height: 25px;
-  max-width: 160px;
+  max-width: 150px;
   color: var(--white);
   background-color: var(--lightgray);
   border: 1px solid var(--white);

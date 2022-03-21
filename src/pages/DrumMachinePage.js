@@ -1,6 +1,7 @@
 import DrumLoopPlayer from '../components/DrumLoopPlayer';
 import DrumPad from '../components/DrumPad';
 import RecordButton from '../components/RecordButton';
+import VolumeControl from '../components/VolumeControl';
 
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
@@ -9,20 +10,25 @@ import { useState, useRef } from 'react';
 import { nanoid } from 'nanoid';
 
 import settingsButton from '../images/settings.svg';
-import recordingsPageButton from '../images/record-page-wave.svg';
+import recordingsPageButton from '../images/recording-page.svg';
+import EQimg from '../images/EQ.svg';
 
 export default function DrumMachinePage({
   allPads,
   setMyRecordings,
   myRecordings,
 }) {
+  const recorder = useRef();
+  const loopPlayer = useRef();
   const [currentDrumLoop, setCurrentDrumLoop] = useState('DrumLoop90BPM');
   const [devicesState, setDevicesState] = useState('');
+  const [padVolume, setPadVolume] = useState(0);
+  console.log(padVolume);
 
   ///////////////Recorder///////////////
   const actx = Tone.context;
   const dest = actx.createMediaStreamDestination();
-  const recorder = useRef(null);
+ 
   recorder.current = new MediaRecorder(dest.stream);
   const chunks = [];
 
@@ -40,7 +46,7 @@ export default function DrumMachinePage({
   ///////////////Recorder/////////////
 
   ///////////////LoopPlayer///////////////
-  const loopPlayer = useRef();
+  
   loopPlayer.current = new Tone.Player(
     `./audio/DrumLoops/${currentDrumLoop}.wav`
   ).toDestination();
@@ -64,26 +70,33 @@ export default function DrumMachinePage({
       Player11: allPads[11].sample,
     },
     {
-      volume: -5,
+      volume: padVolume,
     }
   ).toDestination();
   ///////////////DrumPadPlayers///////////////
   drumPadPlayers.connect(dest);
   loopPlayer.current.connect(dest);
+  const volumeRef = useRef();
 
   return (
     <DrumMachineContainer>
-      <RecordingsLinkButton onClick={handleNavigate} to="/recordings">
-        <img
-          src={recordingsPageButton}
-          height="40px"
-          width="40px"
-          alt="recordings"
-        />
-      </RecordingsLinkButton>
-      <SettingsLinkButton onClick={handleNavigate} to="/settings">
-        <img src={settingsButton} height="40px" width="40px" alt="settings" />
-      </SettingsLinkButton>
+      <LinkContainer>
+        <RecordingsLinkButton onClick={handleNavigate} to="/recordings">
+          <img
+            src={recordingsPageButton}
+            height="40px"
+            width="40px"
+            alt="recordings"
+          />
+        </RecordingsLinkButton>
+        <EQButton onClick={handleVolume}>
+          <img src={EQimg} height="40px" width="40px" alt="volume-settings" />
+        </EQButton>
+        <SettingsLinkButton onClick={handleNavigate} to="/settings">
+          <img src={settingsButton} height="40px" width="40px" alt="settings" />
+        </SettingsLinkButton>
+      </LinkContainer>
+      <VolumeControl ref={volumeRef} />
       <PadList>
         {allPads.map(pad => (
           <DrumPad
@@ -143,7 +156,7 @@ export default function DrumMachinePage({
       loopPlayer.current.stop();
     }
   }
-  function getDrumLoop(isPlayin, currentLoop) {
+  function getDrumLoop(currentLoop) {
     if (recorder.current.state === 'inactive') {
       loopPlayer.current.stop();
       setCurrentDrumLoop(currentLoop);
@@ -155,8 +168,13 @@ export default function DrumMachinePage({
   function handleNavigate() {
     loopPlayer.current.stop();
   }
+  ////////////////////DrumLoop////////////////////
+  function handleVolume() {
+    volumeRef.current.alterVisible();
+    setPadVolume(volumeRef.current.padVolume - 10);
+    console.log('pad', volumeRef.current.padVolume);
+  }
 }
-////////////////////DrumLoop////////////////////
 
 const DrumMachineContainer = styled.section`
   display: grid;
@@ -171,19 +189,23 @@ const DrumMachineContainer = styled.section`
     }
   }
 `;
-
-const SettingsLinkButton = styled(NavLink)`
+const LinkContainer = styled.div`
   grid-column: 2 / 3;
   grid-row: 1 / 2;
-  justify-self: end;
+  display: flex;
+  justify-content: space-around;
+`;
+
+const SettingsLinkButton = styled(NavLink)`
   padding: 12px;
 `;
 
 const RecordingsLinkButton = styled(NavLink)`
-  grid-column: 2 / 3;
-  grid-row: 1 / 2;
-  justify-self: start;
   padding: 12px;
+`;
+const EQButton = styled.button`
+  background: none;
+  border: none;
 `;
 
 const PadList = styled.div`
