@@ -1,22 +1,16 @@
 import recordButton from '../images/record-single.svg';
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import isRecordingButton from '../images/recording-wave.gif';
 
 export default function Recorder({
   recordStopClick,
   recordStartClick,
-  devicesState,
-  setDevicesState,
+
 }) {
   const [isRecording, setIsRecording] = useState(false);
 
-  useEffect(() => {
-    if (devicesState !== '') {
-      setIsRecording(false);
-      setDevicesState('');
-    }
-  }, [devicesState, setDevicesState]);
+
 
   return (
     <>

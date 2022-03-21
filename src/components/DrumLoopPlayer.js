@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import playbutton from '../images/play.svg';
 import pausebutton from '../images/pause.svg';
@@ -7,16 +7,9 @@ import pausebutton from '../images/pause.svg';
 export default function DrumLoopPlayer({
   startDrumLoop,
   getDrumLoop,
-  devicesState,
-  setDevicesState
 }) {
-  const [isPlayin, setIsPlayin] = useState(false);
-  useEffect(() => {
-    if (devicesState !== '') {
-      setIsPlayin(false);
-      setDevicesState('')
-    }
-  }, [devicesState, setDevicesState]);
+  const [isPlaying, setIsPlaying] = useState(false);
+
   
   return (
     <DrumLoopContainer>
@@ -26,7 +19,7 @@ export default function DrumLoopPlayer({
         aria-label="pause play"
       >
         <img
-          src={isPlayin ? pausebutton : playbutton}
+          src={isPlaying ? pausebutton : playbutton}
           height="35px"
           width="35px"
           alt="play pause"
@@ -50,13 +43,13 @@ export default function DrumLoopPlayer({
   );
 
   function handleClick() {
-    startDrumLoop(isPlayin);
-    setIsPlayin(!isPlayin);
+    startDrumLoop(isPlaying);
+    setIsPlaying(!isPlaying);
   }
   function handleChange(event) {
       const currentLoop = event.target.value;
       getDrumLoop(currentLoop);
-      isPlayin ? setIsPlayin(false) : setIsPlayin(false);
+      isPlaying ? setIsPlaying(false) : setIsPlaying(false);
   }
 }
 

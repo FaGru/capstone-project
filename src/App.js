@@ -50,6 +50,7 @@ export default function App() {
         />
         <Route path="/recordings" element={<RecordingsPage myRecordings={myRecordings} />} />
       </Routes>
+     
     </div>
   );
 }

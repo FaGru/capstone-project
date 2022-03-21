@@ -6,7 +6,7 @@ import VolumeControl from '../components/VolumeControl';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import * as Tone from 'tone';
-import { useState, useRef } from 'react';
+import { useState, useMemo } from 'react';
 import { nanoid } from 'nanoid';
 
 import settingsButton from '../images/settings.svg';
@@ -18,39 +18,41 @@ export default function DrumMachinePage({
   setMyRecordings,
   myRecordings,
 }) {
-  const recorder = useRef();
-  const loopPlayer = useRef();
   const [currentDrumLoop, setCurrentDrumLoop] = useState('DrumLoop90BPM');
   const [devicesState, setDevicesState] = useState('');
-  const [padVolume, setPadVolume] = useState(0);
-  console.log(padVolume);
+  const [padVolume, setPadVolume] = useState(5);
+  const [loopPlayerVolume, setLoopPlayerVolume] = useState(5);
+  const [isControlsVisible, setIsControlsVisible] = useState(false);
 
   ///////////////Recorder///////////////
   const actx = Tone.context;
   const dest = actx.createMediaStreamDestination();
- 
-  recorder.current = new MediaRecorder(dest.stream);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const recorder = useMemo(() => new MediaRecorder(dest.stream), []);
   const chunks = [];
 
-  recorder.current.ondataavailable = event => chunks.push(event.data);
-  recorder.current.onstop = () => {
+  recorder.ondataavailable = event => chunks.push(event.data);
+  recorder.onstop = () => {
     let blob = new Blob(chunks, { type: 'audio/mp3; codecs=opus' });
     let audio = URL.createObjectURL(blob);
     const newRecording = {
       id: nanoid(),
       audio: audio,
     };
-    setDevicesState('stop');
     setMyRecordings([newRecording, ...myRecordings]);
   };
   ///////////////Recorder/////////////
 
   ///////////////LoopPlayer///////////////
-  
-  loopPlayer.current = new Tone.Player(
-    `./audio/DrumLoops/${currentDrumLoop}.wav`
-  ).toDestination();
-  loopPlayer.current.loop = true;
+  const loopPlayer = useMemo(
+    () =>
+      new Tone.Player(
+        `./audio/DrumLoops/${currentDrumLoop}.wav`
+      ).toDestination(),
+    [currentDrumLoop]
+  );
+  loopPlayer.loop = true;
+  loopPlayer.volume.value = loopPlayerVolume - 5;
   ///////////////LoopPlayer///////////////
 
   ///////////////DrumPadPlayers///////////////
@@ -70,13 +72,12 @@ export default function DrumMachinePage({
       Player11: allPads[11].sample,
     },
     {
-      volume: padVolume,
+      volume: padVolume - 5,
     }
   ).toDestination();
   ///////////////DrumPadPlayers///////////////
   drumPadPlayers.connect(dest);
-  loopPlayer.current.connect(dest);
-  const volumeRef = useRef();
+  loopPlayer.connect(dest);
 
   return (
     <DrumMachineContainer>
@@ -89,14 +90,20 @@ export default function DrumMachinePage({
             alt="recordings"
           />
         </RecordingsLinkButton>
-        <EQButton onClick={handleVolume}>
+        <EQButton onClick={() => setIsControlsVisible(!isControlsVisible)}>
           <img src={EQimg} height="40px" width="40px" alt="volume-settings" />
         </EQButton>
         <SettingsLinkButton onClick={handleNavigate} to="/settings">
           <img src={settingsButton} height="40px" width="40px" alt="settings" />
         </SettingsLinkButton>
       </LinkContainer>
-      <VolumeControl ref={volumeRef} />
+      <VolumeControl
+        isControlsVisible={isControlsVisible}
+        padVolume={padVolume}
+        handlePadVolume={handlePadVolume}
+        loopPlayerVolume={loopPlayerVolume}
+        handleLoopPlayerVolume={handleLoopPlayerVolume}
+      />
       <PadList>
         {allPads.map(pad => (
           <DrumPad
@@ -115,14 +122,7 @@ export default function DrumMachinePage({
         devicesState={devicesState}
         setDevicesState={setDevicesState}
       />
-      <DrumLoopPlayer
-        startDrumLoop={startDrumLoop}
-        getDrumLoop={getDrumLoop}
-        recordStopClick={recordStopClick}
-        recorder={recorder}
-        devicesState={devicesState}
-        setDevicesState={setDevicesState}
-      />
+      <DrumLoopPlayer startDrumLoop={startDrumLoop} getDrumLoop={getDrumLoop} />
     </DrumMachineContainer>
   );
 
@@ -137,42 +137,36 @@ export default function DrumMachinePage({
 
   ////////////////////record////////////////////
   function recordStartClick() {
-    recorder.current.start();
+    recorder.start();
   }
 
   function recordStopClick() {
-    recorder.current.stop();
-    loopPlayer.current.stop();
+    recorder.stop();
   }
   ////////////////////record////////////////////
 
   ////////////////////DrumLoop////////////////////
-  function startDrumLoop(isPlayin) {
-    if (isPlayin === false) {
-      Tone.loaded().then(() => {
-        loopPlayer.current.start();
-      });
-    } else {
-      loopPlayer.current.stop();
-    }
+  function startDrumLoop(isPlaying) {
+    isPlaying
+      ? loopPlayer.stop()
+      : Tone.loaded().then(() => {
+          loopPlayer.start();
+        });
   }
   function getDrumLoop(currentLoop) {
-    if (recorder.current.state === 'inactive') {
-      loopPlayer.current.stop();
-      setCurrentDrumLoop(currentLoop);
-    } else {
-      recordStopClick();
-      setCurrentDrumLoop(currentLoop);
-    }
+    loopPlayer.stop();
+    setCurrentDrumLoop(currentLoop);
   }
   function handleNavigate() {
-    loopPlayer.current.stop();
+    loopPlayer.stop();
   }
   ////////////////////DrumLoop////////////////////
-  function handleVolume() {
-    volumeRef.current.alterVisible();
-    setPadVolume(volumeRef.current.padVolume - 10);
-    console.log('pad', volumeRef.current.padVolume);
+  function handlePadVolume(e) {
+    setPadVolume(e.target.value / 10);
+  }
+
+  function handleLoopPlayerVolume(e) {
+    setLoopPlayerVolume(e.target.value / 10);
   }
 }
 
