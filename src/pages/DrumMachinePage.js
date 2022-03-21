@@ -9,9 +9,10 @@ import * as Tone from 'tone';
 import { useState, useMemo } from 'react';
 import { nanoid } from 'nanoid';
 
-import settingsButton from '../images/settings.svg';
-import recordingsPageButton from '../images/recording-page.svg';
-import EQimg from '../images/EQ.svg';
+import settingsLogo from '../images/settings.svg';
+import recordingsLogo from '../images/recording-page.svg';
+import volumeLogo from '../images/EQ.svg';
+import sequencerLogo from '../images/sequencer.svg';
 
 export default function DrumMachinePage({
   allPads,
@@ -82,20 +83,28 @@ export default function DrumMachinePage({
   return (
     <DrumMachineContainer>
       <LinkContainer>
-        <RecordingsLinkButton onClick={handleNavigate} to="/recordings">
+      <LinkButton onClick={handleNavigate} to="/sequencer">
           <img
-            src={recordingsPageButton}
+            src={sequencerLogo}
+            height="40px"
+            width="40px"
+            alt="sequencer"
+          />
+        </LinkButton>
+        <LinkButton onClick={handleNavigate} to="/recordings">
+          <img
+            src={recordingsLogo}
             height="40px"
             width="40px"
             alt="recordings"
           />
-        </RecordingsLinkButton>
-        <EQButton onClick={() => setIsControlsVisible(!isControlsVisible)}>
-          <img src={EQimg} height="40px" width="40px" alt="volume-settings" />
-        </EQButton>
-        <SettingsLinkButton onClick={handleNavigate} to="/settings">
-          <img src={settingsButton} height="40px" width="40px" alt="settings" />
-        </SettingsLinkButton>
+        </LinkButton>
+        <VolumeButton onClick={() => setIsControlsVisible(!isControlsVisible)}>
+          <img src={volumeLogo} height="40px" width="40px" alt="volume-settings" />
+        </VolumeButton>
+        <LinkButton onClick={handleNavigate} to="/settings">
+          <img src={settingsLogo} height="40px" width="40px" alt="settings" />
+        </LinkButton>
       </LinkContainer>
       <VolumeControl
         isControlsVisible={isControlsVisible}
@@ -190,14 +199,12 @@ const LinkContainer = styled.div`
   justify-content: space-around;
 `;
 
-const SettingsLinkButton = styled(NavLink)`
+const LinkButton = styled(NavLink)`
   padding: 12px;
 `;
 
-const RecordingsLinkButton = styled(NavLink)`
-  padding: 12px;
-`;
-const EQButton = styled.button`
+
+const VolumeButton = styled.button`
   background: none;
   border: none;
 `;

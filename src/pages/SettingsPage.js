@@ -1,7 +1,7 @@
 import PadSettings from '../components/PadSettings';
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import backButton from '../images/back.svg';
+import backLogo from '../images/back.svg';
 import styled from 'styled-components';
 import * as Tone from 'tone';
 
@@ -20,7 +20,7 @@ export default function SettingsPage({
     <>
       <HeadingContainer>
         <BackButton to="/">
-          <img src={backButton} alt="back-button" width="35px" height="35px" />
+          <img src={backLogo} alt="back-button" width="35px" height="35px" />
         </BackButton>
         <Heading>Settings</Heading>
       </HeadingContainer>
