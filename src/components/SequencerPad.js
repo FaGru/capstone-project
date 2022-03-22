@@ -1,15 +1,18 @@
 import styled from 'styled-components';
 
-export default function SeuencerPad({ id, color }) {
+export default function SeuencerPad({ id, color, sequencerPadClick }) {
   return (
     <Pad
       type="button"
       aria-label="sequencer-pad"
+      onClick={sequencerPadClick}
       value={id}
       color={color}
       key={id}
     ></Pad>
   );
+
+
 }
 
 const Pad = styled.button`
