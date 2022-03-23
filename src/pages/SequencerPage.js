@@ -24,7 +24,9 @@ export default function SequencerPage({ allPads }) {
     allPadSequences[selectedPad].settings
   );
   const [seqPlaying, setSeqPlaying] = useState(false);
-
+  console.log(seqPlaying);
+  
+  
   const allPlayerSettings = [
     { id: '0', name: 'Player0', sequences: allPadSequences['0'].settings },
     { id: '1', name: 'Player1', sequences: allPadSequences['1'].settings },
@@ -78,6 +80,7 @@ export default function SequencerPage({ allPads }) {
         ],
         '8n'
       ),
+   
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [allPlayerSettings]
   );
@@ -114,14 +117,13 @@ export default function SequencerPage({ allPads }) {
     </>
   );
 
-  function startSequence() {
+  function startSequence(event) {
+    setSeqPlaying(!seqPlaying);
     if (seqPlaying === true) {
       sequence.stop();
-      setSeqPlaying(false);
     } else {
       Tone.Transport.start('+0.2');
       sequence.start();
-      setSeqPlaying(true);
     }
   }
 
@@ -160,6 +162,7 @@ export default function SequencerPage({ allPads }) {
     };
 
     const notRemovedPadSequences = allPadSequences.filter(
+      // eslint-disable-next-line eqeqeq
       sequence => sequence.id != selectedPad
     );
 
@@ -175,9 +178,9 @@ export default function SequencerPage({ allPads }) {
 }
 
 const Button = styled.button`
-width: 100px;
-height: 60px;
-`
+  width: 100px;
+  height: 60px;
+`;
 
 const BackButton = styled(NavLink)`
   margin: 15px;
