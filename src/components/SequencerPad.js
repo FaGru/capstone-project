@@ -5,6 +5,7 @@ export default function SeuencerPad({ id, color, sequencerPadClick }) {
     <Pad
       type="button"
       aria-label="sequencer-pad"
+      data-testid="sequencer-pad"
       onClick={sequencerPadClick}
       value={id}
       color={color}

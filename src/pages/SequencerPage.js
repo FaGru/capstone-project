@@ -25,8 +25,7 @@ export default function SequencerPage({ allPads }) {
   );
   const [seqPlaying, setSeqPlaying] = useState(false);
   console.log(seqPlaying);
-  
-  
+
   const allPlayerSettings = [
     { id: '0', name: 'Player0', sequences: allPadSequences['0'].settings },
     { id: '1', name: 'Player1', sequences: allPadSequences['1'].settings },
@@ -80,7 +79,7 @@ export default function SequencerPage({ allPads }) {
         ],
         '8n'
       ),
-   
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [allPlayerSettings]
   );
@@ -96,9 +95,8 @@ export default function SequencerPage({ allPads }) {
             key={sequence.id}
             value={sequence.value}
             isActive={sequence.isActive}
-            allPads={allPads}
-            selectedPad={selectedPad}
-            updateSequence={updateSequence}
+            color={allPads[selectedPad].color}
+            updateSequenceClick={updateSequenceClick}
           />
         ))}
       </SequencerContainer>
@@ -135,7 +133,7 @@ export default function SequencerPage({ allPads }) {
       sequencerPlayers.player(`Player${currentPad}`).start();
     });
   }
-  function updateSequence(e) {
+  function updateSequenceClick(e) {
     ////////////////    selectedPadSequence     /////////////////////
     const oldSequence = e.target.value;
     const isActive = selectedPadSequence[oldSequence].isActive;
