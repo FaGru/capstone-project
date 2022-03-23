@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export default function SeuencerPad({ id, color, sequencerPadClick }) {
+export default function SequencerPad({ id, color, sequencerPadClick }) {
   return (
     <Pad
       type="button"

@@ -5,9 +5,11 @@ import { defaultSequencerSettings } from '../data';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import * as Tone from 'tone';
+import { useState, useCallback, useEffect } from 'react';
 
 import backLogo from '../images/back.svg';
-import { useState, useMemo } from 'react';
+import playbutton from '../images/play.svg';
+import pausebutton from '../images/pause.svg';
 // function intialize(length = 32) {
 //   return Array.from({ length }, (_, index) => ({
 //     id: index,
@@ -23,8 +25,8 @@ export default function SequencerPage({ allPads }) {
   const [selectedPadSequence, setSelectedPadSequence] = useState(
     allPadSequences[selectedPad].settings
   );
-  const [seqPlaying, setSeqPlaying] = useState(false);
-  console.log(seqPlaying);
+  const [isSequencePlaying, setIsSequencePlaying] = useState('stopped');
+  const [currentTimeStemp, setCurrentTimeStemp] = useState('');
 
   const allPlayerSettings = [
     { id: '0', name: 'Player0', sequences: allPadSequences['0'].settings },
@@ -63,32 +65,46 @@ export default function SequencerPage({ allPads }) {
 
   Tone.Transport.bpm.value = 100;
 
-  const sequence = useMemo(
-    () =>
-      new Tone.Sequence(
-        function (time, idx) {
-          allPlayerSettings.forEach(player => {
-            if (player.sequences[idx].isActive) {
-              sequencerPlayers.player(`${player.name}`).start();
-            }
-          });
-        },
-        [
-          0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-          20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
-        ],
-        '8n'
-      ),
-
+  useEffect(() => {
+    const sequence = new Tone.Sequence(
+      function (time, idx) {
+        allPlayerSettings.forEach(player => {
+          if (player.sequences[idx].isActive) {
+            sequencerPlayers.player(`${player.name}`).start();
+          }
+        });
+        // console.log(idx)
+        setCurrentTimeStemp(idx);
+      },
+      [
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+        20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+      ],
+      '16n'
+    ).start(0);
+    return () => sequence.dispose();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [allPlayerSettings]
-  );
+  }, [allPlayerSettings]);
+
+  const toggle = useCallback(() => {
+    Tone.Transport.toggle();
+    setIsSequencePlaying(Tone.Transport.state);
+  }, []);
 
   return (
     <>
-      <BackButton to="/">
-        <img src={backLogo} alt="back-button" width="35px" height="35px" />
-      </BackButton>
+      <HeadingContainer>
+        <NavLink to="/">
+          <StyledButtonImg
+            src={backLogo}
+            alt="back-button"
+            width="45px"
+            height="45px"
+          />
+        </NavLink>
+        <Heading>Sequencer</Heading>
+      </HeadingContainer>
+
       <SequencerContainer>
         {selectedPadSequence.map(sequence => (
           <Sequence
@@ -97,6 +113,7 @@ export default function SequencerPage({ allPads }) {
             isActive={sequence.isActive}
             color={allPads[selectedPad].color}
             updateSequenceClick={updateSequenceClick}
+            currentTimeStemp={currentTimeStemp}
           />
         ))}
       </SequencerContainer>
@@ -111,36 +128,31 @@ export default function SequencerPage({ allPads }) {
           />
         ))}
       </PadList>
-      <Button onClick={startSequence}>start sequence</Button>
+      <StartSequenceButton onClick={toggle} type="button">
+        <StartSequenceImg
+          src={isSequencePlaying === 'stopped' ? playbutton : pausebutton}
+          alt=""
+        />
+      </StartSequenceButton>
     </>
   );
 
-  function startSequence(event) {
-    setSeqPlaying(!seqPlaying);
-    if (seqPlaying === true) {
-      sequence.stop();
-    } else {
-      Tone.Transport.start('+0.2');
-      sequence.start();
-    }
-  }
-
-  function sequencerPadClick(e) {
-    const currentPad = e.target.value;
+  function sequencerPadClick(event) {
+    const currentPad = event.target.value;
     setSelectedPadSequence(allPadSequences[currentPad].settings);
     setSelectedPad(currentPad);
     Tone.loaded().then(() => {
       sequencerPlayers.player(`Player${currentPad}`).start();
     });
   }
-  function updateSequenceClick(e) {
+  function updateSequenceClick(event) {
     ////////////////    selectedPadSequence     /////////////////////
-    const oldSequence = e.target.value;
+    const oldSequence = event.target.value;
     const isActive = selectedPadSequence[oldSequence].isActive;
     const newSequence = {
       id: oldSequence,
       name: `sequence${oldSequence}`,
-      value: oldSequence,
+      value: Number(oldSequence),
       isActive: !isActive,
     };
     const notRemovedSequences = selectedPadSequence.filter(
@@ -160,8 +172,7 @@ export default function SequencerPage({ allPads }) {
     };
 
     const notRemovedPadSequences = allPadSequences.filter(
-      // eslint-disable-next-line eqeqeq
-      sequence => sequence.id != selectedPad
+      sequence => sequence.id !== selectedPad.toString()
     );
 
     const sortedAllPadSequences = [...notRemovedPadSequences, newPadSequence];
@@ -174,16 +185,52 @@ export default function SequencerPage({ allPads }) {
     //////////////    allPadSequences    ///////////////
   }
 }
+const HeadingContainer = styled.header`
+  display: grid;
+  grid-template-columns: 15% 1fr 15%;
+`;
+const Heading = styled.h2`
+  margin-top: 20px;
+  text-align: center;
+  grid-column: 2 / 3;
+`;
+const StyledButtonImg = styled.img`
+  transition: ease 0.4s;
+  border: none;
+  border-bottom: 3px solid var(--gray);
+  border-right: 3px solid var(--gray);
+  border-radius: 100%;
+  padding: 5px;
 
-const Button = styled.button`
-  width: 100px;
-  height: 60px;
+  &:active {
+    transition: ease 0.2s;
+    border-top: 2px solid var(--gray);
+    border-left: 2px solid var(--gray);
+  }
 `;
 
-const BackButton = styled(NavLink)`
-  margin: 15px;
-  justify-self: start;
-  grid-column: 1 / 2;
+const StartSequenceButton = styled.button`
+  width: 100px;
+  height: 60px;
+  background: none;
+  border: none;
+`;
+
+const StartSequenceImg = styled.img`
+  transition: ease 0.4s;
+  border: none;
+  border-bottom: 3px solid var(--lightgray);
+  border-right: 3px solid var(--lightgray);
+  border-radius: 100%;
+  place-self: center;
+  justify-self: center;
+  padding: 5px;
+
+  &:active {
+    transition: ease 0.2s;
+    border-top: 2px solid var(--lightgray);
+    border-left: 2px solid var(--lightgray);
+  }
 `;
 
 const SequencerContainer = styled.section`

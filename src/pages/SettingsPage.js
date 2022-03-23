@@ -19,9 +19,9 @@ export default function SettingsPage({
   return (
     <>
       <HeadingContainer>
-        <BackButton to="/">
-          <img src={backLogo} alt="back-button" width="35px" height="35px" />
-        </BackButton>
+        <NavLink to="/">
+          <StyledButtonImg src={backLogo} alt="back-button" width="45px" height="45px" />
+        </NavLink>
         <Heading>Settings</Heading>
       </HeadingContainer>
     <SettingsContainer>
@@ -79,11 +79,21 @@ const Heading = styled.h2`
   text-align: center;
   grid-column: 2 / 3;
 `;
-const BackButton = styled(NavLink)`
-  margin: 15px;
-  justify-self: start;
-  grid-column: 1 / 2;
-  
+const StyledButtonImg = styled.img`
+  transition: ease 0.4s;
+  border: none;
+  border-bottom: 3px solid var(--gray);
+  border-right: 3px solid var(--gray);
+  border-radius: 100%;
+  padding: 5px;
+
+
+
+  &:active {
+    transition: ease 0.2s;
+    border-top: 2px solid var(--gray);
+    border-left: 2px solid var(--gray);
+  }
 `;
   const SettingsContainer = styled.div`
     display: flex;

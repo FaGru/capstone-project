@@ -18,7 +18,7 @@ export default function DrumLoopPlayer({
         onClick={handleClick}
         aria-label="pause play"
       >
-        <img
+        <PlayPauseImg
           src={isPlaying ? pausebutton : playbutton}
           height="35px"
           width="35px"
@@ -75,6 +75,23 @@ const PlayPauseButton = styled.button`
   grid-column: 1;
   grid-row: 1 / 3;
 `;
+const PlayPauseImg = styled.img`
+  transition: ease 0.4s;
+  border: none;
+  border-bottom: 3px solid var(--black);
+  border-right: 3px solid var(--black);
+  border-radius: 100%;
+  padding: 1px;
+
+
+  &:active {
+    transition: ease 0.2s;
+
+    border-top: 2px solid var(--black);
+    border-left: 2px solid var(--black);
+  }
+`
+
 const DrumLoopLabel = styled.label`
   font-size: 0.8rem;
   grid-column: 2;

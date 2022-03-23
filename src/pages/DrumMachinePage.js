@@ -83,28 +83,38 @@ export default function DrumMachinePage({
   return (
     <DrumMachineContainer>
       <LinkContainer>
-      <LinkButton onClick={handleNavigate} to="/sequencer">
-          <img
+        <NavLink onClick={handleNavigate} to="/sequencer">
+          <StyledButtonImg
             src={sequencerLogo}
-            height="40px"
-            width="40px"
+            height="60px"
+            width="60px"
             alt="sequencer"
           />
-        </LinkButton>
-        <LinkButton onClick={handleNavigate} to="/recordings">
-          <img
+        </NavLink>
+        <NavLink onClick={handleNavigate} to="/recordings">
+          <StyledButtonImg
             src={recordingsLogo}
-            height="40px"
-            width="40px"
+            height="60px"
+            width="60px"
             alt="recordings"
           />
-        </LinkButton>
-        <VolumeButton onClick={() => setIsControlsVisible(!isControlsVisible)}>
-          <img src={volumeLogo} height="40px" width="40px" alt="volume-settings" />
+        </NavLink>
+        <VolumeButton type='button' onClick={() => setIsControlsVisible(!isControlsVisible)}>
+          <StyledButtonImg
+            src={volumeLogo}
+            height="60px"
+            width="60px"
+            alt="volume-settings"
+          />
         </VolumeButton>
-        <LinkButton onClick={handleNavigate} to="/settings">
-          <img src={settingsLogo} height="40px" width="40px" alt="settings" />
-        </LinkButton>
+        <NavLink onClick={handleNavigate} to="/settings">
+          <StyledButtonImg
+            src={settingsLogo}
+            height="60px"
+            width="60px"
+            alt="settings"
+          />
+        </NavLink>
       </LinkContainer>
       <VolumeControl
         isControlsVisible={isControlsVisible}
@@ -197,11 +207,25 @@ const LinkContainer = styled.div`
   grid-row: 1 / 2;
   display: flex;
   justify-content: space-around;
-`;
-
-const LinkButton = styled(NavLink)`
   padding: 12px;
 `;
+const StyledButtonImg = styled.img`
+  transition: ease 0.4s;
+  border: none;
+  border-bottom: 3px solid var(--gray);
+  border-right: 3px solid var(--gray);
+  border-radius: 100%;
+  padding: 5px;
+
+
+
+  &:active {
+    transition: ease 0.2s;
+    border-top: 2px solid var(--gray);
+    border-left: 2px solid var(--gray);
+  }
+`;
+
 
 
 const VolumeButton = styled.button`

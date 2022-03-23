@@ -5,9 +5,10 @@ export default function Sequencer({
   isActive,
   value,
   updateSequenceClick,
+  currentTimeStemp
 }) {
   return (
-    <Button
+    <SequencerButton
       type="button"
       data-testid="sequencer-button"
       aria-label="sequencer-button"
@@ -15,14 +16,16 @@ export default function Sequencer({
       value={value}
       isActive={isActive}
       color={color}
-    ></Button>
+      currentTimeStemp={currentTimeStemp}
+    ></SequencerButton>
   );
 }
 
-const Button = styled.button`
+const SequencerButton = styled.button`
   background: none;
-  background-color: ${props => (props.isActive ? props.color : 'none')};
-  border: 2px solid var(--gray);
+  background-color: ${props => (props.isActive ? 'var(--' + props.color + ')' : 'none')};
+  border: 2px solid   ${props => (props.currentTimeStemp === props.value ? 'var(--orange)' : 'var(--gray)')};
+  box-shadow: ${props => (props.currentTimeStemp === props.value ? '0px 0px 5px 3px var(--green-active)' : 'none')};
   border-radius: 5px;
   width: 50px;
   height: 50px;

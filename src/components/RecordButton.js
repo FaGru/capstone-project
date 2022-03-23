@@ -3,14 +3,8 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import isRecordingButton from '../images/recording-wave.gif';
 
-export default function Recorder({
-  recordStopClick,
-  recordStartClick,
-
-}) {
+export default function Recorder({ recordStopClick, recordStartClick }) {
   const [isRecording, setIsRecording] = useState(false);
-
-
 
   return (
     <>
@@ -45,21 +39,20 @@ export default function Recorder({
 const RecImg = styled.img`
   transition: ease-in 0.4s;
   border: none;
-  border-top: 2px solid var(--lightgray);
-  border-left: 2px solid var(--lightgray);
+  border-bottom: 2px solid var(--lightgray);
+  border-right: 2px solid var(--lightgray);
   border-radius: 100%;
   place-self: center;
   justify-self: center;
   padding: 5px;
 
   &:active {
-    transition: 0.3s;
-    border-bottom: 2px solid var(--lightgray);
-    border-right: 2px solid var(--lightgray);
-    filter: grayscale(100%) blur(1px) brightness(70%);
+    transition: ease 0.3s;
+    border-top: 2px solid var(--lightgray);
+    border-left: 2px solid var(--lightgray);
 
-    border-top: none;
-    border-left: none;
+    filter: grayscale(100%) blur(1px) brightness(90%);
+
   }
 `;
 
