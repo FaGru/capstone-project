@@ -20,8 +20,8 @@ export default function DrumLoopPlayer({
       >
         <PlayPauseImg
           src={isPlaying ? pausebutton : playbutton}
-          height="35px"
-          width="35px"
+          height="42px"
+          width="42px"
           alt="play pause"
         />
       </PlayPauseButton>
@@ -74,21 +74,22 @@ const PlayPauseButton = styled.button`
   border: none;
   grid-column: 1;
   grid-row: 1 / 3;
+  
 `;
 const PlayPauseImg = styled.img`
   transition: ease 0.4s;
-  border: none;
-  border-bottom: 3px solid var(--black);
-  border-right: 3px solid var(--black);
+  border: 1px solid var(--darkgray);
+  border-bottom: 4px solid var(--darkgray);
+  border-right: 4px solid var(--darkgray);
   border-radius: 100%;
-  padding: 1px;
+  padding: 3px;
 
 
   &:active {
     transition: ease 0.2s;
 
-    border-top: 2px solid var(--black);
-    border-left: 2px solid var(--black);
+    border-top: 4px solid var(--darkgray);
+    border-left: 4px solid var(--darkgray);
   }
 `
 

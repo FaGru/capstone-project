@@ -1,17 +1,21 @@
 import SequencerPad from '../components/SequencerPad';
 import Sequence from '../components/Sequence';
 import { defaultSequencerSettings } from '../data';
+import SequencerSettings from '../components/SequencerSettings';
 
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import * as Tone from 'tone';
 import { useState, useCallback, useEffect, useMemo } from 'react';
 
-import backLogo from '../images/back.svg';
+import backLogo from '../images/back-right.svg';
 import playbutton from '../images/play.svg';
 import pausebutton from '../images/pause.svg';
+import sequencerSettings from '../images/EQ.svg';
 
 export default function SequencerPage({ allPads }) {
+  const [currentBpm, setCurrentBpm] = useState(100);
+  const [isSettingsVisible, setIsSettingsVisible] = useState(false);
   const [selectedPad, setSelectedPad] = useState(0);
 
   const [allPadSequences, setAllPadSequences] = useState(
@@ -22,6 +26,15 @@ export default function SequencerPage({ allPads }) {
   );
   const [isSequencePlaying, setIsSequencePlaying] = useState('stopped');
   const [currentTimeStemp, setCurrentTimeStemp] = useState('');
+
+  // var AudioContext = window.AudioContext || window.webkitAudioContext;
+
+  // // var audioCtx = new AudioContext({
+  // //   latencyHint: 'interactive',
+  // //   sampleRate: 44100,
+  // // });
+  const audioCtx = Tone.context;
+  const dest = audioCtx.createMediaStreamDestination();
 
   const allPlayerSettings = useMemo(
     () => [
@@ -61,12 +74,12 @@ export default function SequencerPage({ allPads }) {
         {
           volume: 0,
         }
-      ).toDestination(),
+      ).toDestination(dest.stream),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
-  Tone.Transport.bpm.value = 100;
+  Tone.Transport.bpm.value = currentBpm;
 
   useEffect(() => {
     const sequence = new Tone.Sequence(
@@ -76,7 +89,6 @@ export default function SequencerPage({ allPads }) {
             sequencerPlayers.player(`${player.name}`).start();
           }
         });
-        // console.log(idx)
         setCurrentTimeStemp(idx);
       },
       [
@@ -96,18 +108,35 @@ export default function SequencerPage({ allPads }) {
   return (
     <>
       <HeadingContainer>
-        <NavLink to="/">
+        <SettingsButton
+          aria-label="show settings"
+          type="button"
+          onClick={() => setIsSettingsVisible(!isSettingsVisible)}
+        >
+          <StyledButtonImg
+            src={sequencerSettings}
+            height="50px"
+            width="50px"
+            alt="volume-settings"
+          />
+        </SettingsButton>
+        <Heading>Sequencer</Heading>
+        <NavLink aria-label="back" to="/">
           <StyledButtonImg
             src={backLogo}
             alt="back-button"
-            width="45px"
-            height="45px"
+            width="50px"
+            height="50px"
           />
         </NavLink>
-        <Heading>Sequencer</Heading>
       </HeadingContainer>
-
       <SequencerContainer>
+        <SequencerSettings
+          isSettingsVisible={isSettingsVisible}
+          currentBpm={currentBpm}
+          setCurrentBpm={setCurrentBpm}
+          setIsSettingsVisible={setIsSettingsVisible}
+        />
         {selectedPadSequence.map(sequence => (
           <Sequence
             key={sequence.id}
@@ -130,10 +159,16 @@ export default function SequencerPage({ allPads }) {
           />
         ))}
       </PadList>
-      <StartSequenceButton onClick={toggle} type="button">
-        <StartSequenceImg
+      <StartSequenceButton
+        aria-label="start-stop sequencer"
+        onClick={toggle}
+        type="button"
+      >
+        <StyledButtonImg
           src={isSequencePlaying === 'stopped' ? playbutton : pausebutton}
-          alt=""
+          alt="play-pause"
+          width="50px"
+          height="50px"
         />
       </StartSequenceButton>
     </>
@@ -187,27 +222,38 @@ export default function SequencerPage({ allPads }) {
     //////////////    allPadSequences    ///////////////
   }
 }
+
+const SettingsButton = styled.button`
+  background: none;
+  border: none;
+`;
+
 const HeadingContainer = styled.header`
-  display: grid;
-  grid-template-columns: 15% 1fr 15%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 `;
 const Heading = styled.h2`
-  margin-top: 20px;
   text-align: center;
-  grid-column: 2 / 3;
+  padding: 5px;
+  background-color: var(--darkgray);
+  border-top: 4px solid var(--lightgray);
+  border-bottom: 4px solid var(--lightgray);
+  border-radius: 10px;
 `;
+
 const StyledButtonImg = styled.img`
   transition: ease 0.4s;
-  border: none;
-  border-bottom: 3px solid var(--gray);
-  border-right: 3px solid var(--gray);
+  border: 1px solid var(--gray);
+  border-bottom: 4px solid var(--gray);
+  border-right: 4px solid var(--gray);
   border-radius: 100%;
-  padding: 5px;
+  padding: 3px;
 
   &:active {
     transition: ease 0.2s;
-    border-top: 2px solid var(--gray);
-    border-left: 2px solid var(--gray);
+    border-top: 4px solid var(--gray);
+    border-left: 4px solid var(--gray);
   }
 `;
 
@@ -216,23 +262,6 @@ const StartSequenceButton = styled.button`
   height: 60px;
   background: none;
   border: none;
-`;
-
-const StartSequenceImg = styled.img`
-  transition: ease 0.4s;
-  border: none;
-  border-bottom: 3px solid var(--lightgray);
-  border-right: 3px solid var(--lightgray);
-  border-radius: 100%;
-  place-self: center;
-  justify-self: center;
-  padding: 5px;
-
-  &:active {
-    transition: ease 0.2s;
-    border-top: 2px solid var(--lightgray);
-    border-left: 2px solid var(--lightgray);
-  }
 `;
 
 const SequencerContainer = styled.section`
@@ -247,12 +276,22 @@ const SequencerContainer = styled.section`
 const PadList = styled.div`
   grid-column: 2 / 3;
   grid-row: 2 / 3;
-  display: grid;
   max-width: 410px;
+  display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   grid-gap: 5px;
   margin-left: 5px;
   margin-right: 5px;
   margin-bottom: 5px;
+
+  button:nth-child(3n + 3) {
+    grid-row: 1 / 2;
+  }
+  button:nth-child(3n + 2) {
+    grid-row: 2 / 3;
+  }
+  button:nth-child(3n + 1) {
+    grid-row: 3 / 4;
+  }
 `;

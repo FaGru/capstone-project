@@ -81,18 +81,18 @@ const Heading = styled.h2`
 `;
 const StyledButtonImg = styled.img`
   transition: ease 0.4s;
-  border: none;
+  border: 1px solid var(--gray);
   border-bottom: 3px solid var(--gray);
   border-right: 3px solid var(--gray);
   border-radius: 100%;
-  padding: 5px;
+  padding: 3px;
 
 
 
   &:active {
     transition: ease 0.2s;
-    border-top: 2px solid var(--gray);
-    border-left: 2px solid var(--gray);
+    border-top: 3px solid var(--gray);
+    border-left: 3px solid var(--gray);
   }
 `;
   const SettingsContainer = styled.div`
