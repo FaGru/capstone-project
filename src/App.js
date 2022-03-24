@@ -1,14 +1,19 @@
 import KeyboardPage from './pages/KeyboardPage';
-import useLocalStorage from './hooks/useLocalSorage';
 import DrumMachinePage from './pages/DrumMachinePage';
 import SettingsPage from './pages/SettingsPage';
 import RecordingsPage from './pages/RecordingsPage';
+import SequencerPage from './pages/SequencerPage';
+
+import useLocalStorage from './hooks/useLocalSorage';
 import { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { defaultPadSettings } from './data';
 import styled from 'styled-components';
 
 export default function App() {
+
+
+  
   const [storagedPadSettings, setStoragedPadSettings] = useLocalStorage(
     'storagedPadSettings',
     []
@@ -49,6 +54,7 @@ export default function App() {
           }
         />
         <Route path="/recordings" element={<RecordingsPage myRecordings={myRecordings} />} />
+        <Route path="/sequencer" element={<SequencerPage allPads={allPads} />} />
       </Routes>
      
     </div>

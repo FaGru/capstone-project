@@ -9,9 +9,10 @@ import * as Tone from 'tone';
 import { useState, useMemo } from 'react';
 import { nanoid } from 'nanoid';
 
-import settingsButton from '../images/settings.svg';
-import recordingsPageButton from '../images/recording-page.svg';
-import EQimg from '../images/EQ.svg';
+import settingsLogo from '../images/settings.svg';
+import recordingsLogo from '../images/recording-page.svg';
+import volumeLogo from '../images/EQ.svg';
+import sequencerLogo from '../images/sequencer.svg';
 
 export default function DrumMachinePage({
   allPads,
@@ -82,20 +83,38 @@ export default function DrumMachinePage({
   return (
     <DrumMachineContainer>
       <LinkContainer>
-        <RecordingsLinkButton onClick={handleNavigate} to="/recordings">
-          <img
-            src={recordingsPageButton}
-            height="40px"
-            width="40px"
+        <NavLink onClick={handleNavigate} to="/sequencer">
+          <StyledButtonImg
+            src={sequencerLogo}
+            height="60px"
+            width="60px"
+            alt="sequencer"
+          />
+        </NavLink>
+        <NavLink onClick={handleNavigate} to="/recordings">
+          <StyledButtonImg
+            src={recordingsLogo}
+            height="60px"
+            width="60px"
             alt="recordings"
           />
-        </RecordingsLinkButton>
-        <EQButton onClick={() => setIsControlsVisible(!isControlsVisible)}>
-          <img src={EQimg} height="40px" width="40px" alt="volume-settings" />
-        </EQButton>
-        <SettingsLinkButton onClick={handleNavigate} to="/settings">
-          <img src={settingsButton} height="40px" width="40px" alt="settings" />
-        </SettingsLinkButton>
+        </NavLink>
+        <VolumeButton type='button' onClick={() => setIsControlsVisible(!isControlsVisible)}>
+          <StyledButtonImg
+            src={volumeLogo}
+            height="60px"
+            width="60px"
+            alt="volume-settings"
+          />
+        </VolumeButton>
+        <NavLink onClick={handleNavigate} to="/settings">
+          <StyledButtonImg
+            src={settingsLogo}
+            height="60px"
+            width="60px"
+            alt="settings"
+          />
+        </NavLink>
       </LinkContainer>
       <VolumeControl
         isControlsVisible={isControlsVisible}
@@ -188,16 +207,28 @@ const LinkContainer = styled.div`
   grid-row: 1 / 2;
   display: flex;
   justify-content: space-around;
-`;
-
-const SettingsLinkButton = styled(NavLink)`
   padding: 12px;
 `;
+const StyledButtonImg = styled.img`
+  transition: ease 0.4s;
+  border: none;
+  border-bottom: 3px solid var(--gray);
+  border-right: 3px solid var(--gray);
+  border-radius: 100%;
+  padding: 5px;
 
-const RecordingsLinkButton = styled(NavLink)`
-  padding: 12px;
+
+
+  &:active {
+    transition: ease 0.2s;
+    border-top: 2px solid var(--gray);
+    border-left: 2px solid var(--gray);
+  }
 `;
-const EQButton = styled.button`
+
+
+
+const VolumeButton = styled.button`
   background: none;
   border: none;
 `;
