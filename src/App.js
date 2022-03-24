@@ -11,6 +11,9 @@ import { defaultPadSettings } from './data';
 import styled from 'styled-components';
 
 export default function App() {
+
+
+  
   const [storagedPadSettings, setStoragedPadSettings] = useLocalStorage(
     'storagedPadSettings',
     []

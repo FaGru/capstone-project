@@ -5,7 +5,7 @@ import { defaultSequencerSettings } from '../data';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import * as Tone from 'tone';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 
 import backLogo from '../images/back.svg';
 import playbutton from '../images/play.svg';
@@ -28,40 +28,66 @@ export default function SequencerPage({ allPads }) {
   const [isSequencePlaying, setIsSequencePlaying] = useState('stopped');
   const [currentTimeStemp, setCurrentTimeStemp] = useState('');
 
-  const allPlayerSettings = [
-    { id: '0', name: 'Player0', sequences: allPadSequences['0'].settings },
-    { id: '1', name: 'Player1', sequences: allPadSequences['1'].settings },
-    { id: '2', name: 'Player2', sequences: allPadSequences['2'].settings },
-    { id: '3', name: 'Player3', sequences: allPadSequences['3'].settings },
-    { id: '4', name: 'Player4', sequences: allPadSequences['4'].settings },
-    { id: '5', name: 'Player5', sequences: allPadSequences['5'].settings },
-    { id: '6', name: 'Player6', sequences: allPadSequences['6'].settings },
-    { id: '7', name: 'Player7', sequences: allPadSequences['7'].settings },
-    { id: '8', name: 'Player8', sequences: allPadSequences['8'].settings },
-    { id: '9', name: 'Player9', sequences: allPadSequences['9'].settings },
-    { id: '10', name: 'Player10', sequences: allPadSequences['10'].settings },
-    { id: '11', name: 'Player11', sequences: allPadSequences['11'].settings },
-  ];
+  const allPlayerSettings = useMemo(
+    () => [
+      { id: '0', name: 'Player0', sequences: allPadSequences['0'].settings },
+      { id: '1', name: 'Player1', sequences: allPadSequences['1'].settings },
+      { id: '2', name: 'Player2', sequences: allPadSequences['2'].settings },
+      { id: '3', name: 'Player3', sequences: allPadSequences['3'].settings },
+      { id: '4', name: 'Player4', sequences: allPadSequences['4'].settings },
+      { id: '5', name: 'Player5', sequences: allPadSequences['5'].settings },
+      { id: '6', name: 'Player6', sequences: allPadSequences['6'].settings },
+      { id: '7', name: 'Player7', sequences: allPadSequences['7'].settings },
+      { id: '8', name: 'Player8', sequences: allPadSequences['8'].settings },
+      { id: '9', name: 'Player9', sequences: allPadSequences['9'].settings },
+      { id: '10', name: 'Player10', sequences: allPadSequences['10'].settings },
+      { id: '11', name: 'Player11', sequences: allPadSequences['11'].settings },
+    ],
+    [allPadSequences]
+  );
 
-  const sequencerPlayers = new Tone.Players(
-    {
-      Player0: allPads[0].sample,
-      Player1: allPads[1].sample,
-      Player2: allPads[2].sample,
-      Player3: allPads[3].sample,
-      Player4: allPads[4].sample,
-      Player5: allPads[5].sample,
-      Player6: allPads[6].sample,
-      Player7: allPads[7].sample,
-      Player8: allPads[8].sample,
-      Player9: allPads[9].sample,
-      Player10: allPads[10].sample,
-      Player11: allPads[11].sample,
-    },
-    {
-      volume: 0,
-    }
-  ).toDestination();
+  // const drumRackSamples = useMemo(
+  //   () =>
+  //     new Tone.ToneAudioBuffers({
+  //       A0: allPads[0].sample,
+  //       A1: allPads[1].sample,
+  //       A2: allPads[2].sample,
+  //       A3: allPads[3].sample,
+  //       A4: allPads[4].sample,
+  //       A5: allPads[5].sample,
+  //       A6: allPads[6].sample,
+  //       A7: allPads[7].sample,
+  //       A8: allPads[8].sample,
+  //       A9: allPads[9].sample,
+  //       A10: allPads[10].sample,
+  //       A11: allPads[11].sample,
+  //     }),
+  //   []
+  // );
+
+  const sequencerPlayers = useMemo(
+    () =>
+      new Tone.Players(
+        {
+          Player0: allPads[0].sample,
+          Player1: allPads[1].sample,
+          Player2: allPads[2].sample,
+          Player3: allPads[3].sample,
+          Player4: allPads[4].sample,
+          Player5: allPads[5].sample,
+          Player6: allPads[6].sample,
+          Player7: allPads[7].sample,
+          Player8: allPads[8].sample,
+          Player9: allPads[9].sample,
+          Player10: allPads[10].sample,
+          Player11: allPads[11].sample,
+        },
+        {
+          volume: 0,
+        }
+      ).toDestination(),
+    []
+  );
 
   Tone.Transport.bpm.value = 100;
 
@@ -83,8 +109,7 @@ export default function SequencerPage({ allPads }) {
       '16n'
     ).start(0);
     return () => sequence.dispose();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allPlayerSettings]);
+  }, [allPlayerSettings, sequencerPlayers]);
 
   const toggle = useCallback(() => {
     Tone.Transport.toggle();
