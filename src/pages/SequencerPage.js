@@ -86,6 +86,7 @@ export default function SequencerPage({ allPads }) {
           volume: 0,
         }
       ).toDestination(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
