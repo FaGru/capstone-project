@@ -10,12 +10,7 @@ import { useState, useCallback, useEffect, useMemo } from 'react';
 import backLogo from '../images/back.svg';
 import playbutton from '../images/play.svg';
 import pausebutton from '../images/pause.svg';
-// function intialize(length = 32) {
-//   return Array.from({ length }, (_, index) => ({
-//     id: index,
-//     active: index % 3 === 0,
-//   }));
-// }
+
 export default function SequencerPage({ allPads }) {
   const [selectedPad, setSelectedPad] = useState(0);
 
@@ -45,25 +40,6 @@ export default function SequencerPage({ allPads }) {
     ],
     [allPadSequences]
   );
-
-  // const drumRackSamples = useMemo(
-  //   () =>
-  //     new Tone.ToneAudioBuffers({
-  //       A0: allPads[0].sample,
-  //       A1: allPads[1].sample,
-  //       A2: allPads[2].sample,
-  //       A3: allPads[3].sample,
-  //       A4: allPads[4].sample,
-  //       A5: allPads[5].sample,
-  //       A6: allPads[6].sample,
-  //       A7: allPads[7].sample,
-  //       A8: allPads[8].sample,
-  //       A9: allPads[9].sample,
-  //       A10: allPads[10].sample,
-  //       A11: allPads[11].sample,
-  //     }),
-  //   []
-  // );
 
   const sequencerPlayers = useMemo(
     () =>
