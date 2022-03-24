@@ -18,7 +18,12 @@ export default function PadSettings({
           type="button"
           onClick={samplePreview}
         >
-          <img src={playbutton} alt="play preview sample" />
+          <img
+            src={playbutton}
+            alt="play preview sample"
+            height="40px"
+            width="40px"
+          />
           <p>play sample preview</p>
         </SamplePreviewButton>
         <PreviewGrid>

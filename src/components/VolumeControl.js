@@ -1,7 +1,9 @@
 import styled from 'styled-components';
+import close from '../images/close.svg'
 
 export default function VolumeControl({
   isControlsVisible,
+  setIsControlsVisible,
   handlePadVolume,
   padVolume,
   loopPlayerVolume,
@@ -11,7 +13,12 @@ export default function VolumeControl({
     <>
       {isControlsVisible ? (
         <ControlsContainer>
+          <Heading>
           <H2>Volume</H2>
+          <CloseButton type="button" aria-label='close' onClick={() => setIsControlsVisible(!isControlsVisible)}>
+            <img src={close} height="20px" width="20px" alt="close" />
+          </CloseButton>
+          </Heading>
           <label htmlFor="drum-pad-volume">Drumpads {padVolume}</label>
           <input
             data-testid="pad-volume"
@@ -56,9 +63,22 @@ const ControlsContainer = styled.section`
   place-self: center;
   padding: 10px;
 `;
+const Heading = styled.header`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr
+  
+`
 
 const H2 = styled.h2`
   margin: 0px;
   margin-bottom: 20px;
   text-align: center;
+  grid-column: 2 / 3
+`;
+const CloseButton = styled.button`
+  background: none;
+  border: none;
+  grid-column: 3 / 3;
+  align-self: start;
+  justify-self: end;
 `;
