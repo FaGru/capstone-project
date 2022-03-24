@@ -106,7 +106,7 @@ export default function SequencerPage({ allPads }) {
   }, []);
 
   return (
-    <>
+    <PageContainer>
       <HeadingContainer>
         <SettingsButton
           aria-label="show settings"
@@ -171,7 +171,7 @@ export default function SequencerPage({ allPads }) {
           height="50px"
         />
       </StartSequenceButton>
-    </>
+    </PageContainer>
   );
 
   function sequencerPadClick(event) {
@@ -222,6 +222,15 @@ export default function SequencerPage({ allPads }) {
     //////////////    allPadSequences    ///////////////
   }
 }
+const PageContainer = styled.main`
+  display: grid;
+  grid-template-rows: repeat(4, auto);
+  grid-template-columns: 1fr auto 1fr;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--black);
+
+`;
 
 const SettingsButton = styled.button`
   background: none;
@@ -229,6 +238,7 @@ const SettingsButton = styled.button`
 `;
 
 const HeadingContainer = styled.header`
+  grid-column: 2 / 3;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -258,6 +268,7 @@ const StyledButtonImg = styled.img`
 `;
 
 const StartSequenceButton = styled.button`
+  grid-column: 2 / 3;
   width: 100px;
   height: 60px;
   background: none;
@@ -265,6 +276,7 @@ const StartSequenceButton = styled.button`
 `;
 
 const SequencerContainer = styled.section`
+  grid-column: 2 / 3;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(4, 1fr);
@@ -275,7 +287,6 @@ const SequencerContainer = styled.section`
 
 const PadList = styled.div`
   grid-column: 2 / 3;
-  grid-row: 2 / 3;
   max-width: 410px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
