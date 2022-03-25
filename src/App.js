@@ -10,6 +10,9 @@ import { Route, Routes } from 'react-router-dom';
 import { defaultPadSettings } from './data';
 import styled from 'styled-components';
 
+
+
+
 export default function App() {
 
 
@@ -55,6 +58,7 @@ export default function App() {
         />
         <Route path="/recordings" element={<RecordingsPage myRecordings={myRecordings} />} />
         <Route path="/sequencer" element={<SequencerPage allPads={allPads} />} />
+ 
       </Routes>
      
     </div>

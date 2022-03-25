@@ -33,6 +33,8 @@ export default function SequencerPage({ allPads }) {
   // //   latencyHint: 'interactive',
   // //   sampleRate: 44100,
   // // });
+
+  
   const audioCtx = Tone.context;
   const dest = audioCtx.createMediaStreamDestination();
 

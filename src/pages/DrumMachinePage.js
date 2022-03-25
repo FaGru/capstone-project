@@ -2,17 +2,56 @@ import DrumLoopPlayer from '../components/DrumLoopPlayer';
 import DrumPad from '../components/DrumPad';
 import RecordButton from '../components/RecordButton';
 import VolumeControl from '../components/VolumeControl';
+import InstructionsDrumMachine from '../components/InstructionsDrumMachine';
 
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import * as Tone from 'tone';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import { nanoid } from 'nanoid';
 
 import settingsLogo from '../images/settings.svg';
 import recordingsLogo from '../images/recording-page.svg';
 import volumeLogo from '../images/EQ.svg';
 import sequencerLogo from '../images/sequencer.svg';
+
+const useRecorder = onStop => {
+  const [dest, setDest] = useState(null);
+  // const dest = useMemo(() => Tone.context.createMediaStreamDestination(), []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const recorder = useMemo(
+    () => (dest ? new MediaRecorder(dest.stream) : null),
+    [dest]
+  );
+  const chunks = useMemo(() => [], []);
+  useEffect(() => {
+    const handleUserInteraction = () => {
+      setDest(Tone.context.createMediaStreamDestination());
+    };
+    window.addEventListener('mousedown', handleUserInteraction);
+    return () => {
+      window.removeEventListener('mousedown', handleUserInteraction);
+    };
+  }, []);
+  useEffect(() => {
+    if (recorder) {
+      recorder.ondataavailable = event => chunks.push(event.data);
+      recorder.onstop = () => {
+        const blob = new Blob(chunks, { type: 'audio/mp3; codecs=opus' });
+        const audio = URL.createObjectURL(blob);
+        if (onStop) {
+          onStop({
+            id: nanoid(),
+            audio: audio,
+          });
+        }
+
+        // setMyRecordings([newRecording, ...myRecordings]);
+      };
+    }
+  }, [chunks, recorder, onStop, dest]);
+  return { recorder, dest };
+};
 
 export default function DrumMachinePage({
   allPads,
@@ -25,24 +64,14 @@ export default function DrumMachinePage({
   const [loopPlayerVolume, setLoopPlayerVolume] = useState(5);
   const [isControlsVisible, setIsControlsVisible] = useState(false);
 
-  ///////////////Recorder///////////////
-  const actx = Tone.context;
-  const dest = actx.createMediaStreamDestination();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const recorder = useMemo(() => new MediaRecorder(dest.stream), []);
-  const chunks = [];
-
-  recorder.ondataavailable = event => chunks.push(event.data);
-  recorder.onstop = () => {
-    let blob = new Blob(chunks, { type: 'audio/mp3; codecs=opus' });
-    let audio = URL.createObjectURL(blob);
-    const newRecording = {
-      id: nanoid(),
-      audio: audio,
-    };
-    setMyRecordings([newRecording, ...myRecordings]);
-  };
-  ///////////////Recorder/////////////
+  const { recorder, dest } = useRecorder(
+    useCallback(
+      newRecording => {
+        setMyRecordings(previousState => [newRecording, ...previousState]);
+      },
+      [setMyRecordings]
+    )
+  );
 
   ///////////////LoopPlayer///////////////
   const loopPlayer = useMemo(
@@ -52,36 +81,45 @@ export default function DrumMachinePage({
       ).toDestination(),
     [currentDrumLoop]
   );
-  loopPlayer.loop = true;
-  loopPlayer.volume.value = loopPlayerVolume - 5;
+  useEffect(() => {
+    loopPlayer.loop = true;
+    loopPlayer.volume.value = loopPlayerVolume - 5;
+  }, [loopPlayer, loopPlayerVolume]);
   ///////////////LoopPlayer///////////////
 
   ///////////////DrumPadPlayers///////////////
-  const drumPadPlayers = new Tone.Players(
-    {
-      Player0: allPads[0].sample,
-      Player1: allPads[1].sample,
-      Player2: allPads[2].sample,
-      Player3: allPads[3].sample,
-      Player4: allPads[4].sample,
-      Player5: allPads[5].sample,
-      Player6: allPads[6].sample,
-      Player7: allPads[7].sample,
-      Player8: allPads[8].sample,
-      Player9: allPads[9].sample,
-      Player10: allPads[10].sample,
-      Player11: allPads[11].sample,
-    },
-    {
-      volume: padVolume - 5,
-    }
-  ).toDestination();
+  const drumPadPlayers = useEffect(() => {
+    new Tone.Players(
+      {
+        Player0: allPads[0].sample,
+        Player1: allPads[1].sample,
+        Player2: allPads[2].sample,
+        Player3: allPads[3].sample,
+        Player4: allPads[4].sample,
+        Player5: allPads[5].sample,
+        Player6: allPads[6].sample,
+        Player7: allPads[7].sample,
+        Player8: allPads[8].sample,
+        Player9: allPads[9].sample,
+        Player10: allPads[10].sample,
+        Player11: allPads[11].sample,
+      },
+      {
+        volume: padVolume - 5,
+      }
+    ).toDestination();
+  }, [allPads, padVolume]);
   ///////////////DrumPadPlayers///////////////
-  drumPadPlayers.connect(dest);
-  loopPlayer.connect(dest);
+  useEffect(() => {
+    if (loopPlayer && dest && drumPadPlayers) {
+      drumPadPlayers.connect(dest);
+      loopPlayer.connect(dest);
+    }
+  }, [dest, loopPlayer, drumPadPlayers]);
 
   return (
     <DrumMachineContainer>
+      <InstructionsDrumMachine />
       <LinkContainer>
         <NavLink onClick={handleNavigate} to="/sequencer">
           <StyledButtonImg
@@ -99,7 +137,10 @@ export default function DrumMachinePage({
             alt="recordings"
           />
         </NavLink>
-        <VolumeButton type='button' onClick={() => setIsControlsVisible(!isControlsVisible)}>
+        <VolumeButton
+          type="button"
+          onClick={() => setIsControlsVisible(!isControlsVisible)}
+        >
           <StyledButtonImg
             src={volumeLogo}
             height="60px"
@@ -196,7 +237,7 @@ const DrumMachineContainer = styled.section`
   grid-template-rows: auto 1fr auto auto;
   border: 2px solid var(--lightgray);
   background-color: var(--darkgray);
-
+  position: relative;
   @media (max-width: 1000px) {
     @media (orientation: landscape) {
       display: none;
@@ -218,16 +259,12 @@ const StyledButtonImg = styled.img`
   border-radius: 100%;
   padding: 3px;
 
-
-
   &:active {
     transition: ease 0.2s;
     border-top: 3px solid var(--gray);
     border-left: 3px solid var(--gray);
   }
 `;
-
-
 
 const VolumeButton = styled.button`
   background: none;
