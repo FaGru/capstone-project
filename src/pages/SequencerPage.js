@@ -27,12 +27,7 @@ export default function SequencerPage({ allPads }) {
   const [isSequencePlaying, setIsSequencePlaying] = useState('stopped');
   const [currentTimeStemp, setCurrentTimeStemp] = useState('');
 
-  // var AudioContext = window.AudioContext || window.webkitAudioContext;
 
-  // // var audioCtx = new AudioContext({
-  // //   latencyHint: 'interactive',
-  // //   sampleRate: 44100,
-  // // });
 
 
 
