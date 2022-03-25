@@ -34,9 +34,7 @@ export default function SequencerPage({ allPads }) {
   // //   sampleRate: 44100,
   // // });
 
-  
-  const audioCtx = Tone.context;
-  const dest = audioCtx.createMediaStreamDestination();
+
 
   const allPlayerSettings = useMemo(
     () => [
@@ -76,7 +74,7 @@ export default function SequencerPage({ allPads }) {
         {
           volume: 0,
         }
-      ).toDestination(dest.stream),
+      ).toDestination(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );

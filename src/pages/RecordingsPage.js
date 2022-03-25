@@ -2,10 +2,11 @@ import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import backButton from '../images/back.svg';
 import { nanoid } from 'nanoid';
+import useStore from '../hooks/useStore';
 
-export default function RecordingsPage({ myRecordings }) {
+export default function RecordingsPage() {
   let playerCounter = 0;
-
+  const myRecordings = useStore(state => state.recordings)
   return (
     <>
       <HeadingContainer>

@@ -7,71 +7,25 @@ import InstructionsDrumMachine from '../components/InstructionsDrumMachine';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import * as Tone from 'tone';
-import { useState, useMemo, useEffect, useCallback } from 'react';
-import { nanoid } from 'nanoid';
+import { useState, useMemo, useEffect } from 'react';
+import useStore from '../hooks/useStore';
 
 import settingsLogo from '../images/settings.svg';
 import recordingsLogo from '../images/recording-page.svg';
 import volumeLogo from '../images/EQ.svg';
 import sequencerLogo from '../images/sequencer.svg';
 
-const useRecorder = onStop => {
-  const [dest, setDest] = useState(null);
-  // const dest = useMemo(() => Tone.context.createMediaStreamDestination(), []);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const recorder = useMemo(
-    () => (dest ? new MediaRecorder(dest.stream) : null),
-    [dest]
-  );
-  const chunks = useMemo(() => [], []);
-  useEffect(() => {
-    const handleUserInteraction = () => {
-      setDest(Tone.context.createMediaStreamDestination());
-    };
-    window.addEventListener('mousedown', handleUserInteraction);
-    return () => {
-      window.removeEventListener('mousedown', handleUserInteraction);
-    };
-  }, []);
-  useEffect(() => {
-    if (recorder) {
-      recorder.ondataavailable = event => chunks.push(event.data);
-      recorder.onstop = () => {
-        const blob = new Blob(chunks, { type: 'audio/mp3; codecs=opus' });
-        const audio = URL.createObjectURL(blob);
-        if (onStop) {
-          onStop({
-            id: nanoid(),
-            audio: audio,
-          });
-        }
 
-        // setMyRecordings([newRecording, ...myRecordings]);
-      };
-    }
-  }, [chunks, recorder, onStop, dest]);
-  return { recorder, dest };
-};
-
-export default function DrumMachinePage({
-  allPads,
-  setMyRecordings,
-  myRecordings,
-}) {
+export default function DrumMachinePage({ allPads }) {
   const [currentDrumLoop, setCurrentDrumLoop] = useState('DrumLoop90BPM');
   const [devicesState, setDevicesState] = useState('');
   const [padVolume, setPadVolume] = useState(5);
   const [loopPlayerVolume, setLoopPlayerVolume] = useState(5);
   const [isControlsVisible, setIsControlsVisible] = useState(false);
 
-  const { recorder, dest } = useRecorder(
-    useCallback(
-      newRecording => {
-        setMyRecordings(previousState => [newRecording, ...previousState]);
-      },
-      [setMyRecordings]
-    )
-  );
+  const recorder = useStore(state => state.recorder);
+  const dest = useStore(state => state.dest);
+  
 
   ///////////////LoopPlayer///////////////
   const loopPlayer = useMemo(
@@ -88,28 +42,31 @@ export default function DrumMachinePage({
   ///////////////LoopPlayer///////////////
 
   ///////////////DrumPadPlayers///////////////
-  const drumPadPlayers = useEffect(() => {
-    new Tone.Players(
-      {
-        Player0: allPads[0].sample,
-        Player1: allPads[1].sample,
-        Player2: allPads[2].sample,
-        Player3: allPads[3].sample,
-        Player4: allPads[4].sample,
-        Player5: allPads[5].sample,
-        Player6: allPads[6].sample,
-        Player7: allPads[7].sample,
-        Player8: allPads[8].sample,
-        Player9: allPads[9].sample,
-        Player10: allPads[10].sample,
-        Player11: allPads[11].sample,
-      },
-      {
-        volume: padVolume - 5,
-      }
-    ).toDestination();
-  }, [allPads, padVolume]);
+  const drumPadPlayers = useMemo(
+    () =>
+      new Tone.Players(
+        {
+          Player0: allPads[0].sample,
+          Player1: allPads[1].sample,
+          Player2: allPads[2].sample,
+          Player3: allPads[3].sample,
+          Player4: allPads[4].sample,
+          Player5: allPads[5].sample,
+          Player6: allPads[6].sample,
+          Player7: allPads[7].sample,
+          Player8: allPads[8].sample,
+          Player9: allPads[9].sample,
+          Player10: allPads[10].sample,
+          Player11: allPads[11].sample,
+        },
+        {
+          volume: padVolume - 5,
+        }
+      ).toDestination(),
+    [allPads, padVolume]
+  );
   ///////////////DrumPadPlayers///////////////
+
   useEffect(() => {
     if (loopPlayer && dest && drumPadPlayers) {
       drumPadPlayers.connect(dest);
@@ -198,10 +155,12 @@ export default function DrumMachinePage({
 
   ////////////////////record////////////////////
   function recordStartClick() {
+    console.log('start rec', recorder);
     recorder.start();
   }
 
   function recordStopClick() {
+    console.log('stop rec', recorder);
     recorder.stop();
   }
   ////////////////////record////////////////////
