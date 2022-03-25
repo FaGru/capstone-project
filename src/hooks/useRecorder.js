@@ -6,10 +6,6 @@ const useRecorder = () => {
   const dest = useStore(state => state.dest);
   const recorder = useStore(state => state.recorder);
 
-  // const [dest, setDest] = useState(null);
-  // const dest = useMemo(() => Tone.context.createMediaStreamDestination(), []);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-
   const chunks = useMemo(() => [], []);
 
   useEffect(() => {

@@ -1,53 +1,66 @@
 import styled from 'styled-components';
 import useStore from '../hooks/useStore';
 import { useNavigate } from 'react-router-dom';
-import backLogo from '../images/back.svg';
+import backLogo from '../images/back-right.svg';
+import controlsLogo from '../images/EQ.svg';
 
-export default function InstructionsPadSettings() {
+export default function InstructionsSequencer() {
   let navigate = useNavigate('');
-  const isInstructionThreeVisible = useStore(
-    state => state.isInstructionThreeVisible
-  );
-  const setInstructionThreeVisible = useStore(
-    state => state.setInstructionThreeVisible
+  const isInstructionFourVisible = useStore(
+    state => state.isInstructionFourVisible
   );
   const setInstructionFourVisible = useStore(
     state => state.setInstructionFourVisible
   );
+  const setInstructionFiveVisible = useStore(
+    state => state.setInstructionFiveVisible
+  );
 
   return (
     <>
-      <InstructionOne isVisible={isInstructionThreeVisible}>
+      <InstructionOne isVisible={isInstructionFourVisible}>
         click on <br />
         <img src={backLogo} alt="back" height="25px" width="25px" />
         <br />
         to get back to the Drum Machine
       </InstructionOne>
-      <InstructionTwo isVisible={isInstructionThreeVisible}>
-        click on play preview to listen to the currently selected sample
+      <InstructionTwo isVisible={isInstructionFourVisible}>
+        click on <br />
+        <img src={controlsLogo} alt="controls" height="25px" width="25px" />
+        <br />
+        to change the BPM (speed) of the Sequencer
       </InstructionTwo>
-      <InstructionThree isVisible={isInstructionThreeVisible}>
-        here you can see the layout of the drum pads and their current colors
+      <InstructionThree isVisible={isInstructionFourVisible}>
+        here you can insert your selected sample in several places. It will be
+        played as soon as the Sequencer reaches the marked point.
       </InstructionThree>
-      <InstructionFour isVisible={isInstructionThreeVisible}>
-        here you can choose a drum pad and assign it a new color and sample
+      <InstructionFour isVisible={isInstructionFourVisible}>
+        here you can select a sample which can placed in the Sequencer
       </InstructionFour>
 
-      <ExitButton type='button' visible={isInstructionThreeVisible} onClick={exitClick}>
+      <ExitButton
+        type="button"
+        visible={isInstructionFourVisible}
+        onClick={exitClick}
+      >
         EXIT
       </ExitButton>
-      <NextButton type='button' visible={isInstructionThreeVisible} onClick={nextClick}>
+      <NextButton
+        type="button"
+        visible={isInstructionFourVisible}
+        onClick={nextClick}
+      >
         NEXT
       </NextButton>
     </>
   );
   function nextClick() {
-    setInstructionThreeVisible(false);
-    setInstructionFourVisible(true);
-    navigate('/sequencer', { replace: true });
+    setInstructionFourVisible(false);
+    setInstructionFiveVisible(true);
+    navigate('/', { replace: true });
   }
   function exitClick() {
-    setInstructionThreeVisible(false);
+    setInstructionFourVisible(false);
   }
 }
 
@@ -64,7 +77,7 @@ const ExitButton = styled.button`
   font-size: 1.2rem;
 
   top: 48%;
-  left: -15%;
+  left: 5%;
 `;
 const NextButton = styled.button`
   ${props => (props.visible ? '' : 'display: none')};
@@ -79,7 +92,7 @@ const NextButton = styled.button`
   font-size: 1.2rem;
 
   top: 48%;
-  right: -15%;
+  right: 5%;
 `;
 
 const InstructionOne = styled.p`
@@ -90,19 +103,27 @@ const InstructionOne = styled.p`
   border: 2px solid var(--red);
   border-radius: 10px;
   background-color: var(--black);
-  width: 160px;
-  top: -20%;
-  left: 20%;
+  width: 140px;
+  top: 0%;
+  left: 40%;
+  @media (min-width: 650px) {
+    left: 70%;
+  } ;
 `;
 const InstructionTwo = styled(InstructionOne)`
-  top: 20%;
-  left: -15%;
+  top: 9%;
+  left: 5%;
+  @media (min-width: 650px) {
+    left: 20%;
+    top: 0%;
+  } ;
 `;
 const InstructionThree = styled(InstructionOne)`
+  width: 180px;
   top: 20%;
-  left: 55%;
+  left: 50%;
 `;
 const InstructionFour = styled(InstructionOne)`
-  top: 55%;
+  top: 60%;
   left: 55%;
 `;

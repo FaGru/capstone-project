@@ -2,6 +2,7 @@ import SequencerPad from '../components/SequencerPad';
 import Sequence from '../components/Sequence';
 import { defaultSequencerSettings } from '../data';
 import SequencerSettings from '../components/SequencerSettings';
+import InstructionsSequencer from '../components/InstructionsSequencer';
 
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
@@ -26,10 +27,6 @@ export default function SequencerPage({ allPads }) {
   );
   const [isSequencePlaying, setIsSequencePlaying] = useState('stopped');
   const [currentTimeStemp, setCurrentTimeStemp] = useState('');
-
-
-
-
 
   const allPlayerSettings = useMemo(
     () => [
@@ -144,6 +141,7 @@ export default function SequencerPage({ allPads }) {
         ))}
       </SequencerContainer>
       <PadList>
+        <InstructionsSequencer />
         {allPads.map(pad => (
           <SequencerPad
             key={pad.id}
@@ -224,7 +222,6 @@ const PageContainer = styled.main`
   justify-content: center;
   align-items: center;
   background-color: var(--black);
-
 `;
 
 const SettingsButton = styled.button`

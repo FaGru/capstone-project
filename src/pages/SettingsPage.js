@@ -1,4 +1,5 @@
 import PadSettings from '../components/PadSettings';
+import InstructionPadSettings from '../components/InstructionsPadSettings';
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import backLogo from '../images/back.svg';
@@ -17,25 +18,31 @@ export default function SettingsPage({
   );
 
   return (
-    <>
+    <PageContainer>
       <HeadingContainer>
         <NavLink to="/">
-          <StyledButtonImg src={backLogo} alt="back-button" width="45px" height="45px" />
+          <StyledButtonImg
+            src={backLogo}
+            alt="back-button"
+            width="45px"
+            height="45px"
+          />
         </NavLink>
         <Heading>Settings</Heading>
       </HeadingContainer>
-    <SettingsContainer>
-      <PadSettings
-        savePadClick={savePadClick}
-        colorChange={colorChange}
-        padChange={padChange}
-        sampleChange={sampleChange}
-        allPads={allPads}
-        selectedSample={selectedSample}
-        samplePreview={samplePreview}
-      />
-    </SettingsContainer>
-    </>
+      <SettingsContainer>
+        <InstructionPadSettings />
+        <PadSettings
+          savePadClick={savePadClick}
+          colorChange={colorChange}
+          padChange={padChange}
+          sampleChange={sampleChange}
+          allPads={allPads}
+          selectedSample={selectedSample}
+          samplePreview={samplePreview}
+        />
+      </SettingsContainer>
+    </PageContainer>
   );
 
   function padChange(e) {
@@ -69,10 +76,15 @@ export default function SettingsPage({
   }
 }
 
+const PageContainer = styled.main`
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+`;
+
 const HeadingContainer = styled.header`
+  grid-column: 1 / 4;
   display: grid;
   grid-template-columns: 15% 1fr 15%;
-  
 `;
 const Heading = styled.h2`
   margin-top: 32px;
@@ -87,16 +99,16 @@ const StyledButtonImg = styled.img`
   border-radius: 100%;
   padding: 3px;
 
-
-
   &:active {
     transition: ease 0.2s;
     border-top: 3px solid var(--gray);
     border-left: 3px solid var(--gray);
   }
 `;
-  const SettingsContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-  `;
+const SettingsContainer = styled.div`
+  grid-column: 2 / 3;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  position: relative;
+`;
