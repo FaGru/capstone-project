@@ -25,6 +25,7 @@ export default function DrumMachinePage({ allPads }) {
 
   const recorder = useStore(state => state.recorder);
   const dest = useStore(state => state.dest);
+  const saveRecording = useStore(state => state.saveRecording)
   
 
   ///////////////LoopPlayer///////////////
@@ -155,13 +156,12 @@ export default function DrumMachinePage({ allPads }) {
 
   ////////////////////record////////////////////
   function recordStartClick() {
-    console.log('start rec', recorder);
     recorder.start();
   }
 
   function recordStopClick() {
-    console.log('stop rec', recorder);
     recorder.stop();
+    saveRecording()
   }
   ////////////////////record////////////////////
 

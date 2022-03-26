@@ -5,14 +5,19 @@ import RecordingsPage from './pages/RecordingsPage';
 import SequencerPage from './pages/SequencerPage';
 
 import useLocalStorage from './hooks/useLocalSorage';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { defaultPadSettings } from './data';
 import styled from 'styled-components';
-import useRecorder from './hooks/useRecorder';
+import useStore from './hooks/useStore';
 
 export default function App() {
-  useRecorder();
+
+
+  const handleUserInteraction = useStore(state => state.handleUserInteraction);
+  useEffect(() => {
+    handleUserInteraction();
+  });
 
   const [storagedPadSettings, setStoragedPadSettings] = useLocalStorage(
     'storagedPadSettings',
