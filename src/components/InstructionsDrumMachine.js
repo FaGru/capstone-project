@@ -142,8 +142,9 @@ const PopUp = styled.div`
   background-color: var(--black);
   border: 2px solid var(--red);
   border-radius: 10px;
-  width: 260px;
+  max-width: 320px;
   text-align: center;
+  padding-left: 10px;
   top: 2%;
   left: 5%;
 `;
