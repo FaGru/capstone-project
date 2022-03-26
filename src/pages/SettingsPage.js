@@ -76,7 +76,7 @@ export default function SettingsPage({
   }
 }
 
-const PageContainer = styled.main`
+const PageContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr auto 1fr;
 `;
@@ -105,7 +105,7 @@ const StyledButtonImg = styled.img`
     border-left: 3px solid var(--gray);
   }
 `;
-const SettingsContainer = styled.div`
+const SettingsContainer = styled.main`
   grid-column: 2 / 3;
   display: flex;
   flex-direction: column;

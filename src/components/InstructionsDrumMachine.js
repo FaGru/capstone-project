@@ -45,10 +45,13 @@ export default function InstructionsDrumMachine() {
     <>
       <PopUp visible={isInstructionPopUpVisible}>
         New?
-        <PopUpButton type='button' onClick={instructionClick}>
+        <PopUpButton type="button" onClick={instructionClick}>
           click for Instructions
         </PopUpButton>
-        <PopUpButton type='button' onClick={() => setInstructionPopUpVisible(false)}>
+        <PopUpButton
+          type="button"
+          onClick={() => setInstructionPopUpVisible(false)}
+        >
           X
         </PopUpButton>
       </PopUp>
@@ -88,16 +91,20 @@ export default function InstructionsDrumMachine() {
       </InstructionSeven>
       <LastInstruction visible={isInstructionFiveVisible}>
         If you are on a mobile device, then you can rotate it to be able to play
-        on a piano. <br /> And now Have fun ;)
+        on a piano. <br /> And now Have fun 😉
       </LastInstruction>
 
-      <DoneButton type='button' visible={isInstructionFiveVisible} onClick={exitClick}>
+      <DoneButton
+        type="button"
+        visible={isInstructionFiveVisible}
+        onClick={exitClick}
+      >
         DONE
       </DoneButton>
-      <ExitButton type='button' visible={isNavVisible} onClick={exitClick}>
+      <ExitButton type="button" visible={isNavVisible} onClick={exitClick}>
         EXIT
       </ExitButton>
-      <NextButton type='button' visible={isNavVisible} onClick={nextClick}>
+      <NextButton type="button" visible={isNavVisible} onClick={nextClick}>
         NEXT
       </NextButton>
     </>

@@ -35,7 +35,7 @@ export default function InstructionsSequencer() {
         played as soon as the Sequencer reaches the marked point.
       </InstructionThree>
       <InstructionFour isVisible={isInstructionFourVisible}>
-        here you can select a sample which can placed in the Sequencer
+        here you can select a sample which can be placed in the Sequencer
       </InstructionFour>
 
       <ExitButton
