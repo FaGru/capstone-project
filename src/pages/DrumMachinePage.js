@@ -15,7 +15,7 @@ import recordingsLogo from '../images/recording-page.svg';
 import volumeLogo from '../images/EQ.svg';
 import sequencerLogo from '../images/sequencer.svg';
 
-export default function DrumMachinePage({ allPads }) {
+export default function DrumMachinePage() {
   const [devicesState, setDevicesState] = useState('');
   const [isControlsVisible, setIsControlsVisible] = useState(false);
 
@@ -31,6 +31,7 @@ export default function DrumMachinePage({ allPads }) {
   const getDrumPadPlayersVolume = useStore(
     state => state.getDrumPadPlayersVolume
   );
+  const allPads = useStore(state => state.allPads);
 
   return (
     <DrumMachineContainer>

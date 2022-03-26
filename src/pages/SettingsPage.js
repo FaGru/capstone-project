@@ -5,10 +5,9 @@ import { NavLink } from 'react-router-dom';
 import backLogo from '../images/back.svg';
 import styled from 'styled-components';
 import * as Tone from 'tone';
+import useStore from '../hooks/useStore';
 
 export default function SettingsPage({
-  allPads,
-  setAllPads,
   setStoragedPadSettings,
 }) {
   const [selectedPad, setSelectedPad] = useState('0');
@@ -16,7 +15,8 @@ export default function SettingsPage({
   const [selectedSample, setSelectedSample] = useState(
     './audio/Samples/Backspin1.wav'
   );
-
+  const allPads = useStore(state => state.allPads);
+  const getAllPads = useStore(state => state.getAllPads);
   return (
     <PageContainer>
       <HeadingContainer>
@@ -65,8 +65,9 @@ export default function SettingsPage({
     sortedPads.sort(function (a, b) {
       return a.id - b.id;
     });
-    setAllPads(sortedPads);
-    setStoragedPadSettings(sortedPads);
+    setStoragedPadSettings(sortedPads)
+    getAllPads(sortedPads);
+    useStore.getState().initDrumPadPlayers();
   }
   function samplePreview() {
     const player = new Tone.Player(selectedSample).toDestination();

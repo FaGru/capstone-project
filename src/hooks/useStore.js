@@ -62,6 +62,9 @@ const useStore = create(set => ({
         drumPadPlayers.connect(dest);
     set({ drumPadPlayers })
   },
+  getAllPads: allPads => {
+    set({ allPads: allPads })
+  },
   getDrumPadPlayersVolume: drumPadPlayersVolume => {
     const loopPlayer = useStore.getState().drumPadPlayers;
     loopPlayer.volume.value = drumPadPlayersVolume - 5;

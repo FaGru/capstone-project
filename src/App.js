@@ -5,7 +5,7 @@ import RecordingsPage from './pages/RecordingsPage';
 import SequencerPage from './pages/SequencerPage';
 
 import useLocalStorage from './hooks/useLocalSorage';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { defaultPadSettings } from './data';
 import styled from 'styled-components';
@@ -16,21 +16,23 @@ export default function App() {
   useEffect(() => {
     handleUserInteraction();
   });
+
+  const getAllPads = useStore(state => state.getAllPads);
  
 
   const [storagedPadSettings, setStoragedPadSettings] = useLocalStorage(
     'storagedPadSettings',
     []
   );
-
   const myPadSettings = [...storagedPadSettings];
   myPadSettings.sort(function (a, b) {
     return a.id - b.id;
   });
-  const [allPads, setAllPads] = useState(
-    myPadSettings.length === 12 ? myPadSettings : defaultPadSettings
-  );
-  // const [myRecordings, setMyRecordings] = useState([])
+
+  useEffect(() => {
+    getAllPads(myPadSettings.length === 12 ? myPadSettings : defaultPadSettings);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div>
@@ -39,7 +41,7 @@ export default function App() {
           path="/"
           element={
             <InstrumentContainer>
-              <DrumMachinePage allPads={allPads} /> <KeyboardPage />
+              <DrumMachinePage  /> <KeyboardPage />
             </InstrumentContainer>
           }
         />
@@ -47,8 +49,6 @@ export default function App() {
           path="/settings"
           element={
             <SettingsPage
-              allPads={allPads}
-              setAllPads={setAllPads}
               setStoragedPadSettings={setStoragedPadSettings}
             />
           }
@@ -56,7 +56,7 @@ export default function App() {
         <Route path="/recordings" element={<RecordingsPage />} />
         <Route
           path="/sequencer"
-          element={<SequencerPage allPads={allPads} />}
+          element={<SequencerPage/>}
         />
       </Routes>
     </div>

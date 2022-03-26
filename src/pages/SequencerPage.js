@@ -13,8 +13,9 @@ import backLogo from '../images/back-right.svg';
 import playbutton from '../images/play.svg';
 import pausebutton from '../images/pause.svg';
 import sequencerSettings from '../images/EQ.svg';
+import useStore from '../hooks/useStore';
 
-export default function SequencerPage({ allPads }) {
+export default function SequencerPage() {
   const [currentBpm, setCurrentBpm] = useState(100);
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
   const [selectedPad, setSelectedPad] = useState(0);
@@ -27,6 +28,8 @@ export default function SequencerPage({ allPads }) {
   );
   const [isSequencePlaying, setIsSequencePlaying] = useState('stopped');
   const [currentTimeStemp, setCurrentTimeStemp] = useState('');
+  const allPads = useStore(state => state.allPads);
+  const sequencerPlayers = useStore(state => state.drumPadPlayers)
 
   const allPlayerSettings = useMemo(
     () => [
@@ -46,30 +49,6 @@ export default function SequencerPage({ allPads }) {
     [allPadSequences]
   );
 
-  const sequencerPlayers = useMemo(
-    () =>
-      new Tone.Players(
-        {
-          Player0: allPads[0].sample,
-          Player1: allPads[1].sample,
-          Player2: allPads[2].sample,
-          Player3: allPads[3].sample,
-          Player4: allPads[4].sample,
-          Player5: allPads[5].sample,
-          Player6: allPads[6].sample,
-          Player7: allPads[7].sample,
-          Player8: allPads[8].sample,
-          Player9: allPads[9].sample,
-          Player10: allPads[10].sample,
-          Player11: allPads[11].sample,
-        },
-        {
-          volume: 0,
-        }
-      ).toDestination(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
 
   Tone.Transport.bpm.value = currentBpm;
 
