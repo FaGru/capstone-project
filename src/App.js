@@ -12,12 +12,11 @@ import styled from 'styled-components';
 import useStore from './hooks/useStore';
 
 export default function App() {
-
-
   const handleUserInteraction = useStore(state => state.handleUserInteraction);
   useEffect(() => {
     handleUserInteraction();
   });
+ 
 
   const [storagedPadSettings, setStoragedPadSettings] = useLocalStorage(
     'storagedPadSettings',

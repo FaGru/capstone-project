@@ -1,14 +1,17 @@
+
 import styled from 'styled-components';
+import useStore from '../hooks/useStore';
 import close from '../images/close.svg'
 
 export default function VolumeControl({
   isControlsVisible,
   setIsControlsVisible,
   handlePadVolume,
-  padVolume,
-  loopPlayerVolume,
   handleLoopPlayerVolume,
 }) {
+  const loopPlayerVolume = useStore(state => state.loopPlayerVolume)
+  const drumPadPlayersVolume = useStore(state => state.drumPadPlayersVolume)
+
   return (
     <>
       {isControlsVisible ? (
@@ -19,7 +22,7 @@ export default function VolumeControl({
             <img src={close} height="20px" width="20px" alt="close" />
           </CloseButton>
           </Heading>
-          <label htmlFor="drum-pad-volume">Drumpads {padVolume}</label>
+          <label htmlFor="drum-pad-volume">Drumpads {drumPadPlayersVolume}</label>
           <input
             data-testid="pad-volume"
             name="drum-pad-volume"
@@ -27,7 +30,7 @@ export default function VolumeControl({
             type="range"
             min="0"
             max="100"
-            value={padVolume * 10}
+            value={drumPadPlayersVolume * 10}
             onChange={handlePadVolume}
           ></input>
           <label htmlFor="drum-pad-volume">

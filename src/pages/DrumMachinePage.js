@@ -7,7 +7,7 @@ import InstructionsDrumMachine from '../components/InstructionsDrumMachine';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import * as Tone from 'tone';
-import { useState, useMemo, useEffect } from 'react';
+import { useState } from 'react';
 import useStore from '../hooks/useStore';
 
 import settingsLogo from '../images/settings.svg';
@@ -15,65 +15,22 @@ import recordingsLogo from '../images/recording-page.svg';
 import volumeLogo from '../images/EQ.svg';
 import sequencerLogo from '../images/sequencer.svg';
 
-
 export default function DrumMachinePage({ allPads }) {
-  const [currentDrumLoop, setCurrentDrumLoop] = useState('DrumLoop90BPM');
   const [devicesState, setDevicesState] = useState('');
-  const [padVolume, setPadVolume] = useState(5);
-  const [loopPlayerVolume, setLoopPlayerVolume] = useState(5);
   const [isControlsVisible, setIsControlsVisible] = useState(false);
 
   const recorder = useStore(state => state.recorder);
-  const dest = useStore(state => state.dest);
-  const saveRecording = useStore(state => state.saveRecording)
-  
+  const saveRecording = useStore(state => state.saveRecording);
 
-  ///////////////LoopPlayer///////////////
-  const loopPlayer = useMemo(
-    () =>
-      new Tone.Player(
-        `./audio/DrumLoops/${currentDrumLoop}.wav`
-      ).toDestination(),
-    [currentDrumLoop]
+  const initLoopPlayer = useStore(state => state.initLoopPlayer);
+  const loopPlayer = useStore(state => state.loopPlayer);
+  const getCurrentDrumLoop = useStore(state => state.getCurrentDrumLoop);
+  const getLoopPlayerVolume = useStore(state => state.getLoopPlayerVolume);
+
+  const drumPadPlayers = useStore(state => state.drumPadPlayers);
+  const getDrumPadPlayersVolume = useStore(
+    state => state.getDrumPadPlayersVolume
   );
-  useEffect(() => {
-    loopPlayer.loop = true;
-    loopPlayer.volume.value = loopPlayerVolume - 5;
-  }, [loopPlayer, loopPlayerVolume]);
-  ///////////////LoopPlayer///////////////
-
-  ///////////////DrumPadPlayers///////////////
-  const drumPadPlayers = useMemo(
-    () =>
-      new Tone.Players(
-        {
-          Player0: allPads[0].sample,
-          Player1: allPads[1].sample,
-          Player2: allPads[2].sample,
-          Player3: allPads[3].sample,
-          Player4: allPads[4].sample,
-          Player5: allPads[5].sample,
-          Player6: allPads[6].sample,
-          Player7: allPads[7].sample,
-          Player8: allPads[8].sample,
-          Player9: allPads[9].sample,
-          Player10: allPads[10].sample,
-          Player11: allPads[11].sample,
-        },
-        {
-          volume: padVolume - 5,
-        }
-      ).toDestination(),
-    [allPads, padVolume]
-  );
-  ///////////////DrumPadPlayers///////////////
-
-  useEffect(() => {
-    if (loopPlayer && dest && drumPadPlayers) {
-      drumPadPlayers.connect(dest);
-      loopPlayer.connect(dest);
-    }
-  }, [dest, loopPlayer, drumPadPlayers]);
 
   return (
     <DrumMachineContainer>
@@ -118,9 +75,7 @@ export default function DrumMachinePage({ allPads }) {
       <VolumeControl
         isControlsVisible={isControlsVisible}
         setIsControlsVisible={setIsControlsVisible}
-        padVolume={padVolume}
         handlePadVolume={handlePadVolume}
-        loopPlayerVolume={loopPlayerVolume}
         handleLoopPlayerVolume={handleLoopPlayerVolume}
       />
       <PadList>
@@ -161,7 +116,7 @@ export default function DrumMachinePage({ allPads }) {
 
   function recordStopClick() {
     recorder.stop();
-    saveRecording()
+    saveRecording();
   }
   ////////////////////record////////////////////
 
@@ -175,18 +130,19 @@ export default function DrumMachinePage({ allPads }) {
   }
   function getDrumLoop(currentLoop) {
     loopPlayer.stop();
-    setCurrentDrumLoop(currentLoop);
+    getCurrentDrumLoop(currentLoop);
+    initLoopPlayer();
   }
   function handleNavigate() {
     loopPlayer.stop();
   }
   ////////////////////DrumLoop////////////////////
   function handlePadVolume(e) {
-    setPadVolume(e.target.value / 10);
+    getDrumPadPlayersVolume(e.target.value / 10);
   }
 
   function handleLoopPlayerVolume(e) {
-    setLoopPlayerVolume(e.target.value / 10);
+    getLoopPlayerVolume(e.target.value / 10);
   }
 }
 
