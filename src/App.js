@@ -9,16 +9,16 @@ import { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { defaultPadSettings } from './data';
 import styled from 'styled-components';
+import useRecorder from './hooks/useRecorder';
 
 export default function App() {
+  useRecorder();
 
-
-  
   const [storagedPadSettings, setStoragedPadSettings] = useLocalStorage(
     'storagedPadSettings',
     []
   );
-  
+
   const myPadSettings = [...storagedPadSettings];
   myPadSettings.sort(function (a, b) {
     return a.id - b.id;
@@ -26,11 +26,7 @@ export default function App() {
   const [allPads, setAllPads] = useState(
     myPadSettings.length === 12 ? myPadSettings : defaultPadSettings
   );
-  const [myRecordings, setMyRecordings] = useState([])
- 
-
-
-
+  // const [myRecordings, setMyRecordings] = useState([])
 
   return (
     <div>
@@ -39,7 +35,7 @@ export default function App() {
           path="/"
           element={
             <InstrumentContainer>
-              <DrumMachinePage allPads={allPads} setMyRecordings={setMyRecordings} myRecordings={myRecordings} /> <KeyboardPage />
+              <DrumMachinePage allPads={allPads} /> <KeyboardPage />
             </InstrumentContainer>
           }
         />
@@ -53,10 +49,12 @@ export default function App() {
             />
           }
         />
-        <Route path="/recordings" element={<RecordingsPage myRecordings={myRecordings} />} />
-        <Route path="/sequencer" element={<SequencerPage allPads={allPads} />} />
+        <Route path="/recordings" element={<RecordingsPage />} />
+        <Route
+          path="/sequencer"
+          element={<SequencerPage allPads={allPads} />}
+        />
       </Routes>
-     
     </div>
   );
 }
