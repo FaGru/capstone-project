@@ -2,6 +2,7 @@ import create from 'zustand';
 import * as Tone from 'tone';
 import { nanoid } from 'nanoid';
 import { defaultPadSettings } from '../data';
+import { defaultSequencerSettings } from '../data';
 
 const useStore = create(set => ({
   tone: null,
@@ -13,16 +14,16 @@ const useStore = create(set => ({
   recordings: [],
   allPads: defaultPadSettings,
   drumPadPlayersVolume: 5,
+  allPadSequences: defaultSequencerSettings,
+  selectedSequencerPad: 0,
+  currentTimeStamp: 0,
+  selectedPadSequence: defaultSequencerSettings[0].settings,
   isInstructionPopUpVisible: true,
   isInstructionOneVisible: false,
   isInstructionTwoVisible: false,
   isInstructionThreeVisible: false,
   isInstructionFourVisible: false,
   isInstructionFiveVisible: false,
-
-  addRecording: recording => {
-    set(state => ({ recordings: [recording, ...state.recordings] }));
-  },
 
   deleteRecording: recording => {},
 
@@ -33,47 +34,42 @@ const useStore = create(set => ({
 
     set({ tone, dest, recorder });
   },
-  ///////     init DrumPadPlayers     /////////
 
+  ///////     init DrumPadPlayers, set PadSettings and Volume    /////////
   initDrumPadPlayers: () => {
-    const allPads = useStore.getState().allPads
-    const drumPadPlayersVolume = useStore.getState().drumPadPlayersVolume
-    const drumPadPlayers = 
-        new Tone.Players(
-          {
-            Player0: allPads[0].sample,
-            Player1: allPads[1].sample,
-            Player2: allPads[2].sample,
-            Player3: allPads[3].sample,
-            Player4: allPads[4].sample,
-            Player5: allPads[5].sample,
-            Player6: allPads[6].sample,
-            Player7: allPads[7].sample,
-            Player8: allPads[8].sample,
-            Player9: allPads[9].sample,
-            Player10: allPads[10].sample,
-            Player11: allPads[11].sample,
-          },
-          {
-            volume: drumPadPlayersVolume - 5,
-          }
-        ).toDestination()
-        const dest = useStore.getState().dest;
-        drumPadPlayers.connect(dest);
-    set({ drumPadPlayers })
+    const allPads = useStore.getState().allPads;
+    const drumPadPlayersVolume = useStore.getState().drumPadPlayersVolume;
+    const drumPadPlayers = new Tone.Players(
+      {
+        Player0: allPads[0].sample,
+        Player1: allPads[1].sample,
+        Player2: allPads[2].sample,
+        Player3: allPads[3].sample,
+        Player4: allPads[4].sample,
+        Player5: allPads[5].sample,
+        Player6: allPads[6].sample,
+        Player7: allPads[7].sample,
+        Player8: allPads[8].sample,
+        Player9: allPads[9].sample,
+        Player10: allPads[10].sample,
+        Player11: allPads[11].sample,
+      },
+      {
+        volume: drumPadPlayersVolume - 5,
+      }
+    ).toDestination();
+    const dest = useStore.getState().dest;
+    drumPadPlayers.connect(dest);
+    set({ drumPadPlayers });
   },
   getAllPads: allPads => {
-    set({ allPads: allPads })
+    set({ allPads: allPads });
   },
   getDrumPadPlayersVolume: drumPadPlayersVolume => {
     const loopPlayer = useStore.getState().drumPadPlayers;
     loopPlayer.volume.value = drumPadPlayersVolume - 5;
     set({ drumPadPlayersVolume: drumPadPlayersVolume });
   },
-
-
-
-
 
   ////////    init LoopPlayer, set DrumLoop and Volume    //////////
   initLoopPlayer: () => {
@@ -94,7 +90,6 @@ const useStore = create(set => ({
     set({ loopPlayerVolume: loopPlayerVolume });
   },
   ////////    init LoopPlayer, set DrumLoop and Volume    //////////
-
   handleUserInteraction: () => {
     const handleUserInteraction = () => {
       const tone = useStore.getState().tone;
@@ -109,7 +104,7 @@ const useStore = create(set => ({
       window.removeEventListener('mousemove', handleUserInteraction);
     };
   },
-
+  //////////////////    save and add recordings    //////////////////////
   saveRecording: () => {
     const recorder = useStore.getState().recorder;
     const chunks = [];
@@ -124,6 +119,9 @@ const useStore = create(set => ({
         });
       };
     }
+  },
+  addRecording: recording => {
+    set(state => ({ recordings: [recording, ...state.recordings] }));
   },
 
   //////////////////    Instructions    //////////////////////
@@ -144,6 +142,21 @@ const useStore = create(set => ({
   },
   setInstructionFiveVisible: isInstructionFiveVisible => {
     set({ isInstructionFiveVisible: isInstructionFiveVisible });
+  },
+
+  ////////////////    Sequencer    //////////////////////
+
+  getAllPadSequences: allPadSequences => {
+    set({ allPadSequences: allPadSequences });
+  },
+  getSelectedSequencerPad: selectedSequencerPad => {
+    set({ selectedSequencerPad: selectedSequencerPad });
+  },
+  getCurrentTimeStamp: currentTimeStamp => {
+    set({ currentTimeStamp: currentTimeStamp });
+  },
+  getSelectedPadSequence: selectedPadSequence => {
+    set({ selectedPadSequence: selectedPadSequence });
   },
 }));
 

@@ -1,73 +1,37 @@
 import SequencerPad from '../components/SequencerPad';
 import Sequencer from '../components/Sequencer';
-import { defaultSequencerSettings } from '../data';
 import SequencerSettings from '../components/SequencerSettings';
 import InstructionsSequencer from '../components/InstructionsSequencer';
 
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import * as Tone from 'tone';
-import { useState, useCallback, useEffect, useMemo } from 'react';
+import { useState, useCallback } from 'react';
 
 import backLogo from '../images/back-right.svg';
 import playbutton from '../images/play.svg';
 import pausebutton from '../images/pause.svg';
-import sequencerSettings from '../images/EQ.svg';
+import EQLogo from '../images/EQ.svg';
 import useStore from '../hooks/useStore';
 
 export default function SequencerPage() {
   const [currentBpm, setCurrentBpm] = useState(100);
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
-  const [selectedPad, setSelectedPad] = useState(0);
 
-  const [allPadSequences, setAllPadSequences] = useState(
-    defaultSequencerSettings
-  );
-  const [selectedPadSequence, setSelectedPadSequence] = useState(
-    allPadSequences[selectedPad].settings
-  );
   const [isSequencePlaying, setIsSequencePlaying] = useState('stopped');
-  const [currentTimeStemp, setCurrentTimeStemp] = useState('');
+
+  const selectedSequencerPad = useStore(state => state.selectedSequencerPad);
+  const getSelectedSequencerPad = useStore(
+    state => state.getSelectedSequencerPad
+  );
+  const allPadSequences = useStore(state => state.allPadSequences);
+
   const allPads = useStore(state => state.allPads);
   const sequencerPlayers = useStore(state => state.drumPadPlayers);
 
-  const allPlayerSettings = useMemo(
-    () => [
-      { id: '0', name: 'Player0', sequences: allPadSequences['0'].settings },
-      { id: '1', name: 'Player1', sequences: allPadSequences['1'].settings },
-      { id: '2', name: 'Player2', sequences: allPadSequences['2'].settings },
-      { id: '3', name: 'Player3', sequences: allPadSequences['3'].settings },
-      { id: '4', name: 'Player4', sequences: allPadSequences['4'].settings },
-      { id: '5', name: 'Player5', sequences: allPadSequences['5'].settings },
-      { id: '6', name: 'Player6', sequences: allPadSequences['6'].settings },
-      { id: '7', name: 'Player7', sequences: allPadSequences['7'].settings },
-      { id: '8', name: 'Player8', sequences: allPadSequences['8'].settings },
-      { id: '9', name: 'Player9', sequences: allPadSequences['9'].settings },
-      { id: '10', name: 'Player10', sequences: allPadSequences['10'].settings },
-      { id: '11', name: 'Player11', sequences: allPadSequences['11'].settings },
-    ],
-    [allPadSequences]
+  const getSelectedPadSequence = useStore(
+    state => state.getSelectedPadSequence
   );
-
-  Tone.Transport.bpm.value = currentBpm;
-  useEffect(() => {
-    const sequence = new Tone.Sequence(
-      function (time, idx) {
-        allPlayerSettings.forEach(player => {
-          if (player.sequences[idx].isActive) {
-            sequencerPlayers.player(`${player.name}`).start();
-          }
-        });
-        setCurrentTimeStemp(idx);
-      },
-      [
-        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-        20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
-      ],
-      '16n'
-    ).start(0);
-    return () => sequence.dispose();
-  }, [allPlayerSettings, sequencerPlayers]);
 
   const toggle = useCallback(() => {
     Tone.Transport.toggle();
@@ -83,7 +47,7 @@ export default function SequencerPage() {
           onClick={() => setIsSettingsVisible(!isSettingsVisible)}
         >
           <StyledButtonImg
-            src={sequencerSettings}
+            src={EQLogo}
             height="50px"
             width="50px"
             alt="volume-settings"
@@ -106,13 +70,10 @@ export default function SequencerPage() {
           setCurrentBpm={setCurrentBpm}
           setIsSettingsVisible={setIsSettingsVisible}
         />
-          <Sequencer
-          currentTimeStemp={currentTimeStemp}
-          color={allPads[selectedPad].color}
-          updateSequenceClick={updateSequenceClick}
-          selectedPadSequence={selectedPadSequence}
-          />
-     
+        <Sequencer
+          color={allPads[selectedSequencerPad].color}
+          currentBpm={currentBpm}
+        />
       </SequencerContainer>
       <PadList>
         <InstructionsSequencer />
@@ -143,53 +104,15 @@ export default function SequencerPage() {
 
   function sequencerPadClick(event) {
     const currentPad = event.target.value;
-    setSelectedPadSequence(allPadSequences[currentPad].settings);
-    setSelectedPad(currentPad);
+    getSelectedPadSequence(allPadSequences[currentPad].settings);
+    getSelectedSequencerPad(currentPad);
     Tone.loaded().then(() => {
       sequencerPlayers.player(`Player${currentPad}`).start();
     });
   }
-  function updateSequenceClick(event) {
-    ////////////////    selectedPadSequence     /////////////////////
-    const oldSequence = event.target.value;
-    const isActive = selectedPadSequence[oldSequence].isActive;
-    const newSequence = {
-      id: oldSequence,
-      name: `sequence${oldSequence}`,
-      value: Number(oldSequence),
-      isActive: !isActive,
-    };
-    const notRemovedSequences = selectedPadSequence.filter(
-      sequence => sequence.id !== newSequence.id
-    );
-    const sortedPadSequence = [...notRemovedSequences, newSequence];
-    sortedPadSequence.sort(function (a, b) {
-      return a.id - b.id;
-    });
-    setSelectedPadSequence(sortedPadSequence);
-    //////////////    selectedPadSequence    ///////////////
 
-    //////////////    allPadSequences    ///////////////
-    const newPadSequence = {
-      id: selectedPad.toString(),
-      settings: sortedPadSequence,
-    };
-
-    const notRemovedPadSequences = allPadSequences.filter(
-      sequence => sequence.id !== selectedPad.toString()
-    );
-
-    const sortedAllPadSequences = [...notRemovedPadSequences, newPadSequence];
-
-    sortedAllPadSequences.sort(function (a, b) {
-      return a.id - b.id;
-    });
-
-    setAllPadSequences(sortedAllPadSequences);
-    //////////////    allPadSequences    ///////////////
-  }
 }
-const PageContainer = styled.main`
+const PageContainer = styled.div`
   display: grid;
   grid-template-rows: repeat(4, auto);
   grid-template-columns: 1fr auto 1fr;
@@ -251,7 +174,7 @@ const SequencerContainer = styled.section`
   margin: 10px;
 `;
 
-const PadList = styled.div`
+const PadList = styled.section`
   grid-column: 2 / 3;
   max-width: 410px;
   display: grid;
