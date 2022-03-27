@@ -1,11 +1,11 @@
 import { userEvent } from '@storybook/testing-library';
 import { render, screen } from '@testing-library/react';
-import Sequence from './Sequence';
+import Sequencer from './Sequencer';
 
 describe('Sequence', () => {
   it('renders a button and calls the update function on click', () => {
     const updateSequenceClick = jest.fn();
-    render(<Sequence updateSequenceClick={updateSequenceClick} />);
+    render(<Sequencer updateSequenceClick={updateSequenceClick} />);
 
     const sequencerButton = screen.getByTestId('sequencer-button');
 

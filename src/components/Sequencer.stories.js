@@ -1,14 +1,14 @@
-import Sequence from './Sequence';
+import Sequencer from './Sequencer';
 
 export default {
-  title: 'Component/Sequence',
-  component: Sequence,
+  title: 'Component/Sequencer',
+  component: Sequencer,
 };
 
-const Template = args => <Sequence {...args} />;
+const Template = args => <Sequencer {...args} />;
 
-export const SequenceComplete = Template.bind({});
-SequenceComplete.args = {
+export const SequencerComplete = Template.bind({});
+SequencerComplete.args = {
   allPads: [
     { id: '1', color: 'yellow', sample: './audio/Samples/Scratch1.wav' },
     { id: '2', color: 'red', sample: './audio/Samples/Horn1.mp3' },

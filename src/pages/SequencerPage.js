@@ -1,5 +1,5 @@
 import SequencerPad from '../components/SequencerPad';
-import Sequence from '../components/Sequence';
+import Sequencer from '../components/Sequencer';
 import { defaultSequencerSettings } from '../data';
 import SequencerSettings from '../components/SequencerSettings';
 import InstructionsSequencer from '../components/InstructionsSequencer';
@@ -29,7 +29,7 @@ export default function SequencerPage() {
   const [isSequencePlaying, setIsSequencePlaying] = useState('stopped');
   const [currentTimeStemp, setCurrentTimeStemp] = useState('');
   const allPads = useStore(state => state.allPads);
-  const sequencerPlayers = useStore(state => state.drumPadPlayers)
+  const sequencerPlayers = useStore(state => state.drumPadPlayers);
 
   const allPlayerSettings = useMemo(
     () => [
@@ -49,9 +49,7 @@ export default function SequencerPage() {
     [allPadSequences]
   );
 
-
   Tone.Transport.bpm.value = currentBpm;
-
   useEffect(() => {
     const sequence = new Tone.Sequence(
       function (time, idx) {
@@ -108,16 +106,13 @@ export default function SequencerPage() {
           setCurrentBpm={setCurrentBpm}
           setIsSettingsVisible={setIsSettingsVisible}
         />
-        {selectedPadSequence.map(sequence => (
-          <Sequence
-            key={sequence.id}
-            value={sequence.value}
-            isActive={sequence.isActive}
-            color={allPads[selectedPad].color}
-            updateSequenceClick={updateSequenceClick}
-            currentTimeStemp={currentTimeStemp}
+          <Sequencer
+          currentTimeStemp={currentTimeStemp}
+          color={allPads[selectedPad].color}
+          updateSequenceClick={updateSequenceClick}
+          selectedPadSequence={selectedPadSequence}
           />
-        ))}
+     
       </SequencerContainer>
       <PadList>
         <InstructionsSequencer />

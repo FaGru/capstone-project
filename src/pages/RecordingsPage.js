@@ -6,7 +6,7 @@ import useStore from '../hooks/useStore';
 
 export default function RecordingsPage() {
   let playerCounter = 0;
-  const myRecordings = useStore(state => state.recordings)
+  const myRecordings = useStore(state => state.recordings);
   return (
     <>
       <HeadingContainer>
@@ -83,7 +83,6 @@ const RecordingPlayer = styled.audio`
   }
   &::-webkit-media-controls-current-time-display,
   ::-webkit-media-controls-time-remaining-display {
-    -webkit-appearance: media-current-time-display;
     height: 30px;
     margin: 0 1px 0 1px;
     padding: 0;
