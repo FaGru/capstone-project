@@ -6,6 +6,7 @@ import backLogo from '../images/back.svg';
 import styled from 'styled-components';
 import * as Tone from 'tone';
 import useStore from '../hooks/useStore';
+import { StyledButtonImg } from '../components/Buttons';
 
 export default function SettingsPage({
   setStoragedPadSettings,
@@ -92,20 +93,7 @@ const Heading = styled.h2`
   text-align: center;
   grid-column: 2 / 3;
 `;
-const StyledButtonImg = styled.img`
-  transition: ease 0.4s;
-  border: 1px solid var(--gray);
-  border-bottom: 3px solid var(--gray);
-  border-right: 3px solid var(--gray);
-  border-radius: 100%;
-  padding: 3px;
 
-  &:active {
-    transition: ease 0.2s;
-    border-top: 3px solid var(--gray);
-    border-left: 3px solid var(--gray);
-  }
-`;
 const SettingsContainer = styled.main`
   grid-column: 2 / 3;
   display: flex;

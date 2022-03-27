@@ -17,6 +17,7 @@ const useStore = create(set => ({
   allPadSequences: defaultSequencerSettings,
   selectedSequencerPad: 0,
   currentTimeStamp: 0,
+  currentBpm: 100,
   selectedPadSequence: defaultSequencerSettings[0].settings,
   isInstructionPopUpVisible: true,
   isInstructionOneVisible: false,
@@ -27,8 +28,23 @@ const useStore = create(set => ({
 
   deleteRecording: recording => {},
 
+  handleUserInteraction: () => {
+    const handleUserInteraction = () => {
+      const tone = useStore.getState().tone;
+      if (!tone) {
+        useStore.getState().initTone();
+        useStore.getState().initLoopPlayer();
+        useStore.getState().initDrumPadPlayers();
+      }
+    };
+    window.addEventListener('click', handleUserInteraction);
+    return () => {
+      window.removeEventListener('click', handleUserInteraction);
+    };
+  },
   initTone: () => {
     const tone = Tone.context;
+    tone._latencyHint = 'balanced';
     const dest = tone.createMediaStreamDestination();
     const recorder = new MediaRecorder(dest.stream);
 
@@ -89,21 +105,7 @@ const useStore = create(set => ({
     loopPlayer.volume.value = loopPlayerVolume - 5;
     set({ loopPlayerVolume: loopPlayerVolume });
   },
-  ////////    init LoopPlayer, set DrumLoop and Volume    //////////
-  handleUserInteraction: () => {
-    const handleUserInteraction = () => {
-      const tone = useStore.getState().tone;
-      if (!tone) {
-        useStore.getState().initTone();
-        useStore.getState().initLoopPlayer();
-        useStore.getState().initDrumPadPlayers();
-      }
-    };
-    window.addEventListener('mousemove', handleUserInteraction);
-    return () => {
-      window.removeEventListener('mousemove', handleUserInteraction);
-    };
-  },
+
   //////////////////    save and add recordings    //////////////////////
   saveRecording: () => {
     const recorder = useStore.getState().recorder;
@@ -158,6 +160,13 @@ const useStore = create(set => ({
   getSelectedPadSequence: selectedPadSequence => {
     set({ selectedPadSequence: selectedPadSequence });
   },
+  getCurrentBpm: currentBpm => {
+    Tone.Transport.bpm.value = currentBpm
+    set({ currentBpm: currentBpm })
+  },
+  // initNewBpm: currentBpm => {
+  //   Tone.Transport.bpm.value = currentBpm
+  // }
 }));
 
 export default useStore;

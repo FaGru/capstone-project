@@ -30,7 +30,7 @@ export default function VolumeControl({
             type="range"
             min="0"
             max="100"
-            value={drumPadPlayersVolume * 10}
+            defaultValue={drumPadPlayersVolume * 10}
             onChange={handlePadVolume}
           ></input>
           <label htmlFor="drum-pad-volume">
@@ -43,7 +43,7 @@ export default function VolumeControl({
             type="range"
             min="0"
             max="100"
-            value={loopPlayerVolume * 10}
+            defaultValue={loopPlayerVolume * 10}
             onChange={handleLoopPlayerVolume}
           ></input>
         </ControlsContainer>

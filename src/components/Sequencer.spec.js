@@ -1,17 +1,20 @@
-import { userEvent } from '@storybook/testing-library';
 import { render, screen } from '@testing-library/react';
 import Sequencer from './Sequencer';
 
+jest.mock('tone', () => {
+  return {
+    Sequence: jest.fn().mockReturnValue({start: jest.fn()}),
+  };
+});
+
 describe('Sequence', () => {
-  it('renders a button and calls the update function on click', () => {
-    const updateSequenceClick = jest.fn();
-    render(<Sequencer updateSequenceClick={updateSequenceClick} />);
+  it('renders 32 buttons', () => {
+    render(<Sequencer />);
 
-    const sequencerButton = screen.getByTestId('sequencer-button');
+    const sequencerButton = screen.getAllByTestId('sequencer-button');
 
-    userEvent.click(sequencerButton);
 
-    expect(sequencerButton).toBeInTheDocument();
-    expect(updateSequenceClick).toHaveBeenCalled();
+
+    expect(sequencerButton.length).toBe(32);
   });
 });

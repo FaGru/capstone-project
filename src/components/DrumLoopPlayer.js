@@ -4,13 +4,9 @@ import { useState } from 'react';
 import playbutton from '../images/play.svg';
 import pausebutton from '../images/pause.svg';
 
-export default function DrumLoopPlayer({
-  startDrumLoop,
-  getDrumLoop,
-}) {
+export default function DrumLoopPlayer({ startDrumLoop, getDrumLoop }) {
   const [isPlaying, setIsPlaying] = useState(false);
 
-  
   return (
     <DrumLoopContainer>
       <PlayPauseButton
@@ -47,9 +43,9 @@ export default function DrumLoopPlayer({
     setIsPlaying(!isPlaying);
   }
   function handleChange(event) {
-      const currentLoop = event.target.value;
-      getDrumLoop(currentLoop);
-      isPlaying ? setIsPlaying(false) : setIsPlaying(false);
+    const currentLoop = event.target.value;
+    getDrumLoop(currentLoop);
+    isPlaying ? setIsPlaying(false) : setIsPlaying(false);
   }
 }
 
@@ -72,9 +68,8 @@ const DrumLoopContainer = styled.div`
 const PlayPauseButton = styled.button`
   background: none;
   border: none;
-  grid-column: 1;
+  grid-column: 1 / 2;
   grid-row: 1 / 3;
-  
 `;
 const PlayPauseImg = styled.img`
   transition: ease 0.4s;
@@ -84,19 +79,18 @@ const PlayPauseImg = styled.img`
   border-radius: 100%;
   padding: 3px;
 
-
   &:active {
     transition: ease 0.2s;
 
     border-top: 4px solid var(--darkgray);
     border-left: 4px solid var(--darkgray);
   }
-`
+`;
 
 const DrumLoopLabel = styled.label`
   font-size: 0.8rem;
-  grid-column: 2;
-  grid-row: 0 / 1;
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
 `;
 
 const DrumLoopSelect = styled.select`

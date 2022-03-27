@@ -4,6 +4,8 @@ import RecordButton from '../components/RecordButton';
 import VolumeControl from '../components/VolumeControl';
 import InstructionsDrumMachine from '../components/InstructionsDrumMachine';
 
+import { StyledButtonImg, InvisibleButton } from '../components/Buttons';
+
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import * as Tone from 'tone';
@@ -53,7 +55,7 @@ export default function DrumMachinePage() {
             alt="recordings"
           />
         </NavLink>
-        <VolumeButton
+        <InvisibleButton
           type="button"
           onClick={() => setIsControlsVisible(!isControlsVisible)}
         >
@@ -63,7 +65,7 @@ export default function DrumMachinePage() {
             width="60px"
             alt="volume-settings"
           />
-        </VolumeButton>
+        </InvisibleButton>
         <NavLink onClick={handleNavigate} to="/settings">
           <StyledButtonImg
             src={settingsLogo}
@@ -166,25 +168,6 @@ const LinkContainer = styled.div`
   display: flex;
   justify-content: space-around;
   padding: 12px;
-`;
-const StyledButtonImg = styled.img`
-  transition: ease 0.2s;
-  border: 1px solid var(--gray);
-  border-bottom: 3px solid var(--gray);
-  border-right: 3px solid var(--gray);
-  border-radius: 100%;
-  padding: 3px;
-
-  &:active {
-    transition: ease 0.2s;
-    border-top: 3px solid var(--gray);
-    border-left: 3px solid var(--gray);
-  }
-`;
-
-const VolumeButton = styled.button`
-  background: none;
-  border: none;
 `;
 
 const PadList = styled.div`

@@ -3,7 +3,7 @@ import useStore from '../hooks/useStore';
 import * as Tone from 'tone';
 import { useEffect } from 'react';
 
-export default function Sequencer({ color, currentBpm }) {
+export default function Sequencer({ color }) {
   const currentTimeStamp = useStore(state => state.currentTimeStamp);
   const getAllPadSequences = useStore(state => state.getAllPadSequences);
   const allPadSequences = useStore(state => state.allPadSequences);
@@ -15,7 +15,6 @@ export default function Sequencer({ color, currentBpm }) {
   );
   const selectedSequencerPad = useStore(state => state.selectedSequencerPad);
 
-  Tone.Transport.bpm.value = currentBpm;
 
   useEffect(() => {
     const sequence = new Tone.Sequence(
@@ -34,6 +33,7 @@ export default function Sequencer({ color, currentBpm }) {
       '16n'
     ).start(0);
     return () => sequence.dispose();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allPadSequences, sequencerPlayers]);
 
   return (

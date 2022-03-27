@@ -164,6 +164,5 @@ const SaveButton = styled.button`
     border: 1px solid var(--lightgray);
     border-top: 1px solid var(--green);
     border-left: 1px solid var(--green);
-    /* box-shadow: var(--box-shadow-classic); */
   }
 `;

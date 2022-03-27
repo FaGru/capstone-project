@@ -3,6 +3,12 @@ import Sequencer from '../components/Sequencer';
 import SequencerSettings from '../components/SequencerSettings';
 import InstructionsSequencer from '../components/InstructionsSequencer';
 
+import {
+  StyledButtonImg,
+  InvisibleButton,
+  StartSequenceButton,
+} from '../components/Buttons';
+
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import * as Tone from 'tone';
@@ -15,9 +21,7 @@ import EQLogo from '../images/EQ.svg';
 import useStore from '../hooks/useStore';
 
 export default function SequencerPage() {
-  const [currentBpm, setCurrentBpm] = useState(100);
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
-
   const [isSequencePlaying, setIsSequencePlaying] = useState('stopped');
 
   const selectedSequencerPad = useStore(state => state.selectedSequencerPad);
@@ -41,7 +45,7 @@ export default function SequencerPage() {
   return (
     <PageContainer>
       <HeadingContainer>
-        <SettingsButton
+        <InvisibleButton
           aria-label="show settings"
           type="button"
           onClick={() => setIsSettingsVisible(!isSettingsVisible)}
@@ -52,7 +56,7 @@ export default function SequencerPage() {
             width="50px"
             alt="volume-settings"
           />
-        </SettingsButton>
+        </InvisibleButton>
         <Heading>Sequencer</Heading>
         <NavLink aria-label="back" to="/">
           <StyledButtonImg
@@ -66,14 +70,9 @@ export default function SequencerPage() {
       <SequencerContainer>
         <SequencerSettings
           isSettingsVisible={isSettingsVisible}
-          currentBpm={currentBpm}
-          setCurrentBpm={setCurrentBpm}
           setIsSettingsVisible={setIsSettingsVisible}
         />
-        <Sequencer
-          color={allPads[selectedSequencerPad].color}
-          currentBpm={currentBpm}
-        />
+        <Sequencer color={allPads[selectedSequencerPad].color} />
       </SequencerContainer>
       <PadList>
         <InstructionsSequencer />
@@ -110,7 +109,6 @@ export default function SequencerPage() {
       sequencerPlayers.player(`Player${currentPad}`).start();
     });
   }
-
 }
 const PageContainer = styled.div`
   display: grid;
@@ -119,11 +117,6 @@ const PageContainer = styled.div`
   justify-content: center;
   align-items: center;
   background-color: var(--black);
-`;
-
-const SettingsButton = styled.button`
-  background: none;
-  border: none;
 `;
 
 const HeadingContainer = styled.header`
@@ -139,29 +132,6 @@ const Heading = styled.h2`
   border-top: 4px solid var(--lightgray);
   border-bottom: 4px solid var(--lightgray);
   border-radius: 10px;
-`;
-
-const StyledButtonImg = styled.img`
-  transition: ease 0.4s;
-  border: 1px solid var(--gray);
-  border-bottom: 4px solid var(--gray);
-  border-right: 4px solid var(--gray);
-  border-radius: 100%;
-  padding: 3px;
-
-  &:active {
-    transition: ease 0.2s;
-    border-top: 4px solid var(--gray);
-    border-left: 4px solid var(--gray);
-  }
-`;
-
-const StartSequenceButton = styled.button`
-  grid-column: 2 / 3;
-  width: 100px;
-  height: 60px;
-  background: none;
-  border: none;
 `;
 
 const SequencerContainer = styled.section`

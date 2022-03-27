@@ -3,6 +3,7 @@ import useStore from '../hooks/useStore';
 import { useNavigate } from 'react-router-dom';
 import backLogo from '../images/back-right.svg';
 import controlsLogo from '../images/EQ.svg';
+import { InstructionNavButton } from './Buttons';
 
 export default function InstructionsSequencer() {
   let navigate = useNavigate('');
@@ -64,33 +65,11 @@ export default function InstructionsSequencer() {
   }
 }
 
-const ExitButton = styled.button`
-  ${props => (props.visible ? '' : 'display: none')};
-  position: absolute;
-  padding: 5px;
-  color: var(--red);
-  background-color: white;
-  border: 2px solid var(--red);
-  border-radius: 10px;
-  width: 70px;
-  height: 40px;
-  font-size: 1.2rem;
-
+const ExitButton = styled(InstructionNavButton)`
   top: 48%;
   left: 5%;
 `;
-const NextButton = styled.button`
-  ${props => (props.visible ? '' : 'display: none')};
-  position: absolute;
-  padding: 5px;
-  color: var(--red);
-  background-color: white;
-  border: 2px solid var(--red);
-  border-radius: 10px;
-  width: 70px;
-  height: 40px;
-  font-size: 1.2rem;
-
+const NextButton = styled(InstructionNavButton)`
   top: 48%;
   right: 5%;
 `;

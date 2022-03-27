@@ -1,17 +1,23 @@
 import styled from 'styled-components';
+import useStore from '../hooks/useStore';
 import close from '../images/close.svg';
 
 export default function SequencerSettings({
   isSettingsVisible,
-  currentBpm,
-  setCurrentBpm,
   setIsSettingsVisible,
 }) {
+  const getCurrentBpm = useStore(state => state.getCurrentBpm);
+  const currentBpm = useStore(state => state.currentBpm);
+
   return (
     <>
       {isSettingsVisible ? (
         <SettingsContainer>
-          <CloseButton aria-label='close' type='button' onClick={() => setIsSettingsVisible(!isSettingsVisible)}>
+          <CloseButton
+            aria-label="close"
+            type="button"
+            onClick={() => setIsSettingsVisible(!isSettingsVisible)}
+          >
             <img src={close} height="20px" width="20px" alt="close" />
           </CloseButton>
           <label htmlFor="Sequencer-BPM">BPM {currentBpm}</label>
@@ -22,8 +28,8 @@ export default function SequencerSettings({
             type="range"
             min="0"
             max="160"
-            value={currentBpm}
-            onChange={event => setCurrentBpm(event.target.value)}
+            defaultValue={currentBpm}
+            onChange={event => getCurrentBpm(event.target.value)}
           ></input>
         </SettingsContainer>
       ) : (
