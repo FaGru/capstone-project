@@ -3,6 +3,7 @@ import DrumMachinePage from './pages/DrumMachinePage';
 import SettingsPage from './pages/SettingsPage';
 import RecordingsPage from './pages/RecordingsPage';
 import SequencerPage from './pages/SequencerPage';
+import LandingPage from './pages/LandingPage';
 
 import useLocalStorage from './hooks/useLocalSorage';
 import { useEffect } from 'react';
@@ -37,8 +38,9 @@ export default function App() {
   return (
     <div>
       <Routes>
+        <Route path="/" element={<LandingPage />} />
         <Route
-          path="/"
+          path="/drum-machine"
           element={
             <InstrumentContainer>
               <DrumMachinePage  /> <KeyboardPage />

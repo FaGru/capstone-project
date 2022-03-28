@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
+
 const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
@@ -42,6 +43,7 @@ const GlobalStyle = createGlobalStyle`
       'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
       sans-serif;
     font-size: 1rem;
+
   }
   code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',

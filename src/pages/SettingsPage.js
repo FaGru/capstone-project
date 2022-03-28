@@ -21,7 +21,7 @@ export default function SettingsPage({
   return (
     <PageContainer>
       <HeadingContainer>
-        <NavLink to="/">
+        <NavLink to="/drum-machine">
           <StyledButtonImg
             src={backLogo}
             alt="back-button"

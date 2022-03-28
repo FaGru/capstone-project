@@ -127,8 +127,8 @@ const useStore = create(set => ({
   },
 
   //////////////////    Instructions    //////////////////////
-  setInstructionPopUpVisible: isInstructionPopUpVisible => {
-    set({ isInstructionPopUpVisible: isInstructionPopUpVisible });
+  setIsInstructionNavVisible: isInstructionNavVisible => {
+    set({ isInstructionNavVisible: isInstructionNavVisible });
   },
   setInstructionOneVisible: isInstructionOneVisible => {
     set({ isInstructionOneVisible: isInstructionOneVisible });
@@ -161,12 +161,9 @@ const useStore = create(set => ({
     set({ selectedPadSequence: selectedPadSequence });
   },
   getCurrentBpm: currentBpm => {
-    Tone.Transport.bpm.value = currentBpm
-    set({ currentBpm: currentBpm })
+    Tone.Transport.bpm.value = currentBpm;
+    set({ currentBpm: currentBpm });
   },
-  // initNewBpm: currentBpm => {
-  //   Tone.Transport.bpm.value = currentBpm
-  // }
 }));
 
 export default useStore;

@@ -11,7 +11,7 @@ export default function RecordingsPage() {
   return (
     <>
       <HeadingContainer>
-        <BackButton to="/">
+        <BackButton to="/drum-machine">
           <StyledButtonImg src={backButton} alt="back-button" width="45px" height="45px" />
         </BackButton>
         <Heading>My Recordings</Heading>
