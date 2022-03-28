@@ -16,7 +16,7 @@ import settingsLogo from '../images/settings.svg';
 import recordingsLogo from '../images/recording-page.svg';
 import volumeLogo from '../images/EQ.svg';
 import sequencerLogo from '../images/sequencer.svg';
-import infoLogo from '../images/information.svg'
+import infoLogo from '../images/information.svg';
 
 export default function DrumMachinePage() {
   const [devicesState, setDevicesState] = useState('');
@@ -39,7 +39,9 @@ export default function DrumMachinePage() {
   return (
     <DrumMachineContainer>
       <InstructionsDrumMachine />
-      <LandingPageLink to="/"><img src={infoLogo} height="30px" width="30px" alt="landingpage" /></LandingPageLink>
+      <LandingPageLink to="/">
+        <img src={infoLogo} height="30px" width="30px" alt="landingpage" />
+      </LandingPageLink>
       <LinkContainer>
         <NavLink onClick={handleNavigate} to="/sequencer">
           <StyledButtonImg
@@ -191,4 +193,4 @@ const LandingPageLink = styled(NavLink)`
   border-radius: 100%;
   top: -15px;
   right: -5px;
-`
+`;
