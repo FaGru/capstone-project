@@ -5,6 +5,7 @@ import EQ from '../images/EQ.svg';
 import recordingLogo from '../images/recording-page.svg';
 import sequencerLogo from '../images/sequencer.svg';
 import settingsLogo from '../images/settings.svg';
+import { InstructionNavButton } from './Buttons';
 
 import { useNavigate } from 'react-router-dom';
 import useStore from '../hooks/useStore';
@@ -155,50 +156,17 @@ const PopUpButton = styled.button`
   padding: 5px;
 `;
 
-const ExitButton = styled.button`
-  ${props => (props.visible ? '' : 'display: none')};
-  position: absolute;
-  padding: 5px;
-  color: var(--red);
-  background-color: white;
-  border: 2px solid var(--red);
-  border-radius: 10px;
-  width: 70px;
-  height: 40px;
-  font-size: 1.2rem;
-
+const ExitButton = styled(InstructionNavButton)`
   top: 48%;
   left: 3%;
 `;
-const NextButton = styled.button`
-  ${props => (props.visible ? '' : 'display: none')};
-  position: absolute;
-  padding: 5px;
-  color: var(--red);
-  background-color: white;
-  border: 2px solid var(--red);
-  border-radius: 10px;
-  width: 70px;
-  height: 40px;
-  font-size: 1.2rem;
-
+const NextButton = styled(InstructionNavButton)`
   top: 48%;
   right: 3%;
 `;
-const DoneButton = styled.button`
-  ${props => (props.visible ? '' : 'display: none')};
-  position: absolute;
-  padding: 5px;
-  color: var(--red);
-  background-color: white;
-  border: 2px solid var(--red);
-  border-radius: 10px;
-  width: 70px;
-  height: 40px;
-  font-size: 1.2rem;
-
+const DoneButton = styled(InstructionNavButton)`
   top: 55%;
-  left: 40%;
+  left: 38%;
 `;
 
 const InstructionOne = styled.p`

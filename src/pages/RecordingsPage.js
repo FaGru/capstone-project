@@ -3,15 +3,16 @@ import styled from 'styled-components';
 import backButton from '../images/back.svg';
 import { nanoid } from 'nanoid';
 import useStore from '../hooks/useStore';
+import { StyledButtonImg } from '../components/Buttons';
 
 export default function RecordingsPage() {
   let playerCounter = 0;
-  const myRecordings = useStore(state => state.recordings)
+  const myRecordings = useStore(state => state.recordings);
   return (
     <>
       <HeadingContainer>
         <BackButton to="/">
-          <img src={backButton} alt="back-button" width="35px" height="35px" />
+          <StyledButtonImg src={backButton} alt="back-button" width="45px" height="45px" />
         </BackButton>
         <Heading>My Recordings</Heading>
       </HeadingContainer>
@@ -42,6 +43,7 @@ const RecordingsContainer = styled.section`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-align: center;
 `;
 
 const HeadingContainer = styled.header`
@@ -83,7 +85,6 @@ const RecordingPlayer = styled.audio`
   }
   &::-webkit-media-controls-current-time-display,
   ::-webkit-media-controls-time-remaining-display {
-    -webkit-appearance: media-current-time-display;
     height: 30px;
     margin: 0 1px 0 1px;
     padding: 0;

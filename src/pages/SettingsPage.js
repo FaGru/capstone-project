@@ -5,10 +5,10 @@ import { NavLink } from 'react-router-dom';
 import backLogo from '../images/back.svg';
 import styled from 'styled-components';
 import * as Tone from 'tone';
+import useStore from '../hooks/useStore';
+import { StyledButtonImg } from '../components/Buttons';
 
 export default function SettingsPage({
-  allPads,
-  setAllPads,
   setStoragedPadSettings,
 }) {
   const [selectedPad, setSelectedPad] = useState('0');
@@ -16,7 +16,8 @@ export default function SettingsPage({
   const [selectedSample, setSelectedSample] = useState(
     './audio/Samples/Backspin1.wav'
   );
-
+  const allPads = useStore(state => state.allPads);
+  const getAllPads = useStore(state => state.getAllPads);
   return (
     <PageContainer>
       <HeadingContainer>
@@ -65,8 +66,9 @@ export default function SettingsPage({
     sortedPads.sort(function (a, b) {
       return a.id - b.id;
     });
-    setAllPads(sortedPads);
-    setStoragedPadSettings(sortedPads);
+    setStoragedPadSettings(sortedPads)
+    getAllPads(sortedPads);
+    useStore.getState().initDrumPadPlayers();
   }
   function samplePreview() {
     const player = new Tone.Player(selectedSample).toDestination();
@@ -91,20 +93,7 @@ const Heading = styled.h2`
   text-align: center;
   grid-column: 2 / 3;
 `;
-const StyledButtonImg = styled.img`
-  transition: ease 0.4s;
-  border: 1px solid var(--gray);
-  border-bottom: 3px solid var(--gray);
-  border-right: 3px solid var(--gray);
-  border-radius: 100%;
-  padding: 3px;
 
-  &:active {
-    transition: ease 0.2s;
-    border-top: 3px solid var(--gray);
-    border-left: 3px solid var(--gray);
-  }
-`;
 const SettingsContainer = styled.main`
   grid-column: 2 / 3;
   display: flex;
