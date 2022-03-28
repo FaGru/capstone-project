@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import useStore from '../hooks/useStore';
-import backround from '../images/background.jpg'
+import backround from '../images/background.jpg';
 
 export default function LandingPage() {
   let navigate = useNavigate();
@@ -55,8 +55,6 @@ const LandingPageContainer = styled.div`
   background-image: url(${backround});
   background-repeat: no-repeat;
   background-position: center center;
-  
-
 `;
 
 const H1 = styled.h1`
@@ -69,7 +67,7 @@ const LandingPageButton = styled.button`
   border-radius: 15px;
   background-color: var(--darkgray);
   color: var(--red);
-  box-shadow: 1px 1px 5px ;
+  box-shadow: 1px 1px 5px;
 
   &:hover {
     transition: ease 0.4s;
