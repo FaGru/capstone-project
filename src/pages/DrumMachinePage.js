@@ -16,6 +16,7 @@ import settingsLogo from '../images/settings.svg';
 import recordingsLogo from '../images/recording-page.svg';
 import volumeLogo from '../images/EQ.svg';
 import sequencerLogo from '../images/sequencer.svg';
+import infoLogo from '../images/information.svg';
 
 export default function DrumMachinePage() {
   const [devicesState, setDevicesState] = useState('');
@@ -38,20 +39,23 @@ export default function DrumMachinePage() {
   return (
     <DrumMachineContainer>
       <InstructionsDrumMachine />
+      <LandingPageLink to="/">
+        <img src={infoLogo} height="30px" width="30px" alt="landingpage" />
+      </LandingPageLink>
       <LinkContainer>
         <NavLink onClick={handleNavigate} to="/sequencer">
           <StyledButtonImg
             src={sequencerLogo}
-            height="60px"
-            width="60px"
+            height="55px"
+            width="55px"
             alt="sequencer"
           />
         </NavLink>
         <NavLink onClick={handleNavigate} to="/recordings">
           <StyledButtonImg
             src={recordingsLogo}
-            height="60px"
-            width="60px"
+            height="55px"
+            width="55px"
             alt="recordings"
           />
         </NavLink>
@@ -61,16 +65,16 @@ export default function DrumMachinePage() {
         >
           <StyledButtonImg
             src={volumeLogo}
-            height="60px"
-            width="60px"
+            height="55px"
+            width="55px"
             alt="volume-settings"
           />
         </InvisibleButton>
         <NavLink onClick={handleNavigate} to="/settings">
           <StyledButtonImg
             src={settingsLogo}
-            height="60px"
-            width="60px"
+            height="55px"
+            width="55px"
             alt="settings"
           />
         </NavLink>
@@ -156,6 +160,7 @@ const DrumMachineContainer = styled.section`
   border: 2px solid var(--lightgray);
   background-color: var(--darkgray);
   position: relative;
+  margin-top: 15px;
   @media (max-width: 1000px) {
     @media (orientation: landscape) {
       display: none;
@@ -167,7 +172,7 @@ const LinkContainer = styled.div`
   grid-row: 1 / 2;
   display: flex;
   justify-content: space-around;
-  padding: 12px;
+  padding: 10px;
 `;
 
 const PadList = styled.div`
@@ -181,4 +186,11 @@ const PadList = styled.div`
   margin-left: 5px;
   margin-right: 5px;
   margin-bottom: 5px;
+`;
+const LandingPageLink = styled(NavLink)`
+  position: absolute;
+  background-color: var(--black);
+  border-radius: 100%;
+  top: -15px;
+  right: -5px;
 `;

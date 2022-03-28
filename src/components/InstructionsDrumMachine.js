@@ -1,19 +1,23 @@
-import { useState } from 'react';
-import styled from 'styled-components';
-
 import EQ from '../images/EQ.svg';
 import recordingLogo from '../images/recording-page.svg';
 import sequencerLogo from '../images/sequencer.svg';
 import settingsLogo from '../images/settings.svg';
 import { InstructionNavButton } from './Buttons';
 
+import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import useStore from '../hooks/useStore';
 
 export default function InstructionsDrumMachine() {
   let navigate = useNavigate('');
 
-  const [isNavVisible, setIsNavVisible] = useState(false);
+  const setIsInstructionNavVisible = useStore(
+    state => state.setIsInstructionNavVisible
+  );
+  const isInstructionNavVisible = useStore(
+    state => state.isInstructionNavVisible
+  );
+
   const setInstructionThreeVisible = useStore(
     state => state.setInstructionThreeVisible
   );
@@ -35,27 +39,9 @@ export default function InstructionsDrumMachine() {
   const setInstructionFiveVisible = useStore(
     state => state.setInstructionFiveVisible
   );
-  const isInstructionPopUpVisible = useStore(
-    state => state.isInstructionPopUpVisible
-  );
-  const setInstructionPopUpVisible = useStore(
-    state => state.setInstructionPopUpVisible
-  );
 
   return (
     <>
-      <PopUp visible={isInstructionPopUpVisible}>
-        New?
-        <PopUpButton type="button" onClick={instructionClick}>
-          click for Instructions
-        </PopUpButton>
-        <PopUpButton
-          type="button"
-          onClick={() => setInstructionPopUpVisible(false)}
-        >
-          X
-        </PopUpButton>
-      </PopUp>
       <IPhoneInstruction visible={isInstructionOneVisible}>
         If you are using an iPhone, please turn off silent mode to use the app
       </IPhoneInstruction>
@@ -92,7 +78,7 @@ export default function InstructionsDrumMachine() {
       </InstructionSeven>
       <LastInstruction visible={isInstructionFiveVisible}>
         If you are on a mobile device, then you can rotate it to be able to play
-        on a piano. <br /> And now Have fun 😉
+        on a piano. <br /> And now have fun 😉
       </LastInstruction>
 
       <DoneButton
@@ -102,10 +88,18 @@ export default function InstructionsDrumMachine() {
       >
         DONE
       </DoneButton>
-      <ExitButton type="button" visible={isNavVisible} onClick={exitClick}>
+      <ExitButton
+        type="button"
+        visible={isInstructionNavVisible}
+        onClick={exitClick}
+      >
         EXIT
       </ExitButton>
-      <NextButton type="button" visible={isNavVisible} onClick={nextClick}>
+      <NextButton
+        type="button"
+        visible={isInstructionNavVisible}
+        onClick={nextClick}
+      >
         NEXT
       </NextButton>
     </>
@@ -125,36 +119,11 @@ export default function InstructionsDrumMachine() {
 
   function exitClick() {
     setInstructionOneVisible(false);
-    setIsNavVisible(false);
+    setIsInstructionNavVisible(false);
     setInstructionTwoVisible(false);
     setInstructionFiveVisible(false);
   }
-
-  function instructionClick() {
-    setInstructionOneVisible(true);
-    setIsNavVisible(true);
-    setInstructionPopUpVisible(false);
-  }
 }
-const PopUp = styled.div`
-  ${props => (props.visible ? '' : 'display: none')};
-  position: absolute;
-  padding: 5px;
-  background-color: var(--black);
-  border: 2px solid var(--red);
-  border-radius: 10px;
-  max-width: 320px;
-  text-align: center;
-  padding-left: 10px;
-  top: 2%;
-  left: 5%;
-`;
-const PopUpButton = styled.button`
-  background: none;
-  color: red;
-  margin-left: 20px;
-  padding: 5px;
-`;
 
 const ExitButton = styled(InstructionNavButton)`
   top: 48%;

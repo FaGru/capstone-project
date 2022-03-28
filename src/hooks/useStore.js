@@ -9,6 +9,8 @@ const useStore = create(set => ({
   dest: null,
   recorder: null,
   loopPlayer: null,
+  monoSynth: null,
+  synth: null,
   currentDrumLoop: 'DrumLoop90BPM',
   loopPlayerVolume: 5,
   recordings: [],
@@ -19,6 +21,7 @@ const useStore = create(set => ({
   currentTimeStamp: 0,
   currentBpm: 100,
   selectedPadSequence: defaultSequencerSettings[0].settings,
+  keyboardVolume: 5,
   isInstructionPopUpVisible: true,
   isInstructionOneVisible: false,
   isInstructionTwoVisible: false,
@@ -26,13 +29,12 @@ const useStore = create(set => ({
   isInstructionFourVisible: false,
   isInstructionFiveVisible: false,
 
-  deleteRecording: recording => {},
-
   handleUserInteraction: () => {
     const handleUserInteraction = () => {
       const tone = useStore.getState().tone;
       if (!tone) {
         useStore.getState().initTone();
+        useStore.getState().initKeyboard();
         useStore.getState().initLoopPlayer();
         useStore.getState().initDrumPadPlayers();
       }
@@ -47,7 +49,6 @@ const useStore = create(set => ({
     tone._latencyHint = 'balanced';
     const dest = tone.createMediaStreamDestination();
     const recorder = new MediaRecorder(dest.stream);
-
     set({ tone, dest, recorder });
   },
 
@@ -86,7 +87,89 @@ const useStore = create(set => ({
     loopPlayer.volume.value = drumPadPlayersVolume - 5;
     set({ drumPadPlayersVolume: drumPadPlayersVolume });
   },
+  ////////////////    Keyboard    //////////////////////
+  initKeyboard: () => {
+    const dest = useStore.getState().dest;
+    const keyboardVolume = useStore.getState().keyboardVolume;
+    const monoSynth = new Tone.MonoSynth({
+      volume: keyboardVolume - 8,
+      detune: 0,
+      portamento: 0,
+      envelope: {
+        attack: 0.05,
+        attackCurve: 'linear',
+        decay: 0.3,
+        decayCurve: 'exponential',
+        release: 0.8,
+        releaseCurve: 'exponential',
+        sustain: 0.4,
+      },
+      filter: {
+        Q: 1,
+        detune: 0,
+        frequency: 0,
+        gain: 0,
+        rolloff: -12,
+        type: 'lowpass',
+      },
+      filterEnvelope: {
+        attack: 0.001,
+        attackCurve: 'linear',
+        decay: 0.7,
+        decayCurve: 'exponential',
+        release: 0.8,
+        releaseCurve: 'exponential',
+        sustain: 0.1,
+        baseFrequency: 300,
+        exponent: 2,
+        octaves: 4,
+      },
+      oscillator: {
+        detune: 0,
+        frequency: 700,
+        partialCount: 8,
+        partials: [
+          1.2732395447351628, 0, 0.4244131815783876, 0, 0.25464790894703254, 0,
+          0.18189136353359467, 0,
+        ],
+        phase: 0,
+        type: 'square8',
+      },
+    }).toDestination();
+    monoSynth.connect(dest);
 
+    const synth = new Tone.Synth({
+      volume: keyboardVolume - 8,
+      detune: 0,
+      portamento: 0.05,
+      envelope: {
+        attack: 0.05,
+        attackCurve: 'exponential',
+        decay: 0.2,
+        decayCurve: 'exponential',
+        release: 1.5,
+        releaseCurve: 'exponential',
+        sustain: 0.2,
+      },
+      oscillator: {
+        partialCount: 0,
+        partials: [],
+        phase: 0,
+        type: 'amtriangle',
+        harmonicity: 0.5,
+        modulationType: 'sine',
+      },
+    }).toDestination();
+    synth.connect(dest);
+    set({ monoSynth, synth });
+  },
+  setKeyboardVolume: keyboardVolume => {
+    const monoSynth = useStore.getState().monoSynth;
+    const synth = useStore.getState().synth;
+    synth.volume.value = keyboardVolume - 5;
+    monoSynth.volume.value = keyboardVolume - 5;
+    set({ keyboardVolume: keyboardVolume });
+  },
   ////////    init LoopPlayer, set DrumLoop and Volume    //////////
   initLoopPlayer: () => {
     const loopPlayer = new Tone.Player(
@@ -105,7 +188,23 @@ const useStore = create(set => ({
     loopPlayer.volume.value = loopPlayerVolume - 5;
     set({ loopPlayerVolume: loopPlayerVolume });
   },
-
+  ////////////////    Sequencer    //////////////////////
+  getAllPadSequences: allPadSequences => {
+    set({ allPadSequences: allPadSequences });
+  },
+  getSelectedSequencerPad: selectedSequencerPad => {
+    set({ selectedSequencerPad: selectedSequencerPad });
+  },
+  getCurrentTimeStamp: currentTimeStamp => {
+    set({ currentTimeStamp: currentTimeStamp });
+  },
+  getSelectedPadSequence: selectedPadSequence => {
+    set({ selectedPadSequence: selectedPadSequence });
+  },
+  getCurrentBpm: currentBpm => {
+    Tone.Transport.bpm.value = currentBpm;
+    set({ currentBpm: currentBpm });
+  },
   //////////////////    save and add recordings    //////////////////////
   saveRecording: () => {
     const recorder = useStore.getState().recorder;
@@ -127,8 +226,8 @@ const useStore = create(set => ({
   },
 
   //////////////////    Instructions    //////////////////////
-  setInstructionPopUpVisible: isInstructionPopUpVisible => {
-    set({ isInstructionPopUpVisible: isInstructionPopUpVisible });
+  setIsInstructionNavVisible: isInstructionNavVisible => {
+    set({ isInstructionNavVisible: isInstructionNavVisible });
   },
   setInstructionOneVisible: isInstructionOneVisible => {
     set({ isInstructionOneVisible: isInstructionOneVisible });
@@ -145,28 +244,6 @@ const useStore = create(set => ({
   setInstructionFiveVisible: isInstructionFiveVisible => {
     set({ isInstructionFiveVisible: isInstructionFiveVisible });
   },
-
-  ////////////////    Sequencer    //////////////////////
-
-  getAllPadSequences: allPadSequences => {
-    set({ allPadSequences: allPadSequences });
-  },
-  getSelectedSequencerPad: selectedSequencerPad => {
-    set({ selectedSequencerPad: selectedSequencerPad });
-  },
-  getCurrentTimeStamp: currentTimeStamp => {
-    set({ currentTimeStamp: currentTimeStamp });
-  },
-  getSelectedPadSequence: selectedPadSequence => {
-    set({ selectedPadSequence: selectedPadSequence });
-  },
-  getCurrentBpm: currentBpm => {
-    Tone.Transport.bpm.value = currentBpm
-    set({ currentBpm: currentBpm })
-  },
-  // initNewBpm: currentBpm => {
-  //   Tone.Transport.bpm.value = currentBpm
-  // }
 }));
 
 export default useStore;

@@ -19,6 +19,7 @@ import playbutton from '../images/play.svg';
 import pausebutton from '../images/pause.svg';
 import EQLogo from '../images/EQ.svg';
 import useStore from '../hooks/useStore';
+import settingsLogo from '../images/settings.svg';
 
 export default function SequencerPage() {
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
@@ -57,8 +58,15 @@ export default function SequencerPage() {
             alt="volume-settings"
           />
         </InvisibleButton>
-        <Heading>Sequencer</Heading>
-        <NavLink aria-label="back" to="/">
+        <NavLink to="/settings">
+          <StyledButtonImg
+            src={settingsLogo}
+            height="50px"
+            width="50px"
+            alt="settings"
+          />
+        </NavLink>
+        <NavLink aria-label="back" to="/drum-machine">
           <StyledButtonImg
             src={backLogo}
             alt="back-button"
@@ -124,14 +132,6 @@ const HeadingContainer = styled.header`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-`;
-const Heading = styled.h2`
-  text-align: center;
-  padding: 5px;
-  background-color: var(--darkgray);
-  border-top: 4px solid var(--lightgray);
-  border-bottom: 4px solid var(--lightgray);
-  border-radius: 10px;
 `;
 
 const SequencerContainer = styled.section`

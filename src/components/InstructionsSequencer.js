@@ -16,6 +16,9 @@ export default function InstructionsSequencer() {
   const setInstructionFiveVisible = useStore(
     state => state.setInstructionFiveVisible
   );
+  const setIsInstructionNavVisible = useStore(
+    state => state.setIsInstructionNavVisible
+  );
 
   return (
     <>
@@ -58,7 +61,8 @@ export default function InstructionsSequencer() {
   function nextClick() {
     setInstructionFourVisible(false);
     setInstructionFiveVisible(true);
-    navigate('/', { replace: true });
+    setIsInstructionNavVisible(false)
+    navigate('/drum-machine', { replace: true });
   }
   function exitClick() {
     setInstructionFourVisible(false);

@@ -71,7 +71,7 @@ export default function PadSettings({
             </option>
           ))}
         </SettingsSelect>
-        <SaveButton onClick={savePadClick}>SAVE THIS PAD</SaveButton>
+        <SaveButton type='button' onClick={savePadClick}>SAVE THIS PAD</SaveButton>
       </DrumPadForm>
     </>
   );

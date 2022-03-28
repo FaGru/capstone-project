@@ -1,12 +1,10 @@
 import { createGlobalStyle } from 'styled-components';
 
+
 const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
   }
-
-
-
   :root {
     --black: #000000;
     --white: #ccd;
@@ -32,10 +30,7 @@ const GlobalStyle = createGlobalStyle`
     --box-shadow-classic: 1px 1px 2px 1px var(--lightgray);
     --box-shadow-keyboard: inset -3px -2px 5px  #e2e2e5;
   }
-
-
   body {
-
     background-color: #111120;
     color: #ccd;
     font-family: "Poppins", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -48,5 +43,4 @@ const GlobalStyle = createGlobalStyle`
       monospace;
   }
 `;
-
 export default GlobalStyle;
