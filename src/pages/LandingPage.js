@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import useStore from '../hooks/useStore';
 import backround from '../images/background.jpg';
+import { motion } from 'framer-motion';
+import { type } from '@testing-library/user-event/dist/type';
 
 export default function LandingPage() {
   let navigate = useNavigate();
@@ -15,24 +17,36 @@ export default function LandingPage() {
     <LandingPageContainer>
       <H1>Welcome to DrumMachine</H1>
       <LandingPageButton
+        animate={{ x: [-800, 50, 0] }}
+        transition={{ duration: 0.4 }}
         type="button"
         onClick={() => navigate('/drum-machine', { replace: true })}
       >
+        {' '}
         DrumMachine
       </LandingPageButton>
       <LandingPageButton
+        animate={{ x: [800, -50, 0] }}
+        transition={{ duration: 0.4, delay: 0.15 }}
         type="button"
         onClick={() => navigate('/sequencer', { replace: true })}
       >
         Sequencer
       </LandingPageButton>
       <LandingPageButton
+        animate={{ x: [-800, 50, 0] }}
+        transition={{ duration: 0.4, delay: 0.3 }}
         type="button"
         onClick={() => navigate('/settings', { replace: true })}
       >
         Settings
       </LandingPageButton>
-      <LandingPageButton type="button" onClick={instructionClick}>
+      <LandingPageButton
+        animate={{ x: [800, -50, 0] }}
+        transition={{ duration: 0.4, delay: 0.45 }}
+        type="button"
+        onClick={instructionClick}
+      >
         Instructions
       </LandingPageButton>
     </LandingPageContainer>
@@ -61,13 +75,13 @@ const H1 = styled.h1`
   text-align: center;
   margin-bottom: 50px;
 `;
-const LandingPageButton = styled.button`
+const LandingPageButton = styled(motion.button)`
   min-width: 260px;
   height: 40px;
   border-radius: 15px;
   background-color: var(--darkgray);
-  color: var(--red);
-  box-shadow: 1px 1px 5px;
+  color: yellowgreen;
+  box-shadow: 3px 3px 8px 1px;
 
   &:hover {
     transition: ease 0.4s;

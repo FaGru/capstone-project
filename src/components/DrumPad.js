@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 export default function DrumPad({ id, color, drumPadClick }) {
   const [isDesktop, setDesktop] = useState(false);
@@ -26,6 +27,8 @@ export default function DrumPad({ id, color, drumPadClick }) {
     <>
       {isDesktop ? (
         <Pad
+          animate={{ opacity: [0, 1, 0.2, 1, 1], scale: [0.2, 1, 1, 1] }}
+          transition={{ duration: 1.5 }}
           type="button"
           aria-label={`drum pad`}
           onMouseDown={drumPadClick}
@@ -35,6 +38,8 @@ export default function DrumPad({ id, color, drumPadClick }) {
         ></Pad>
       ) : (
         <Pad
+          animate={{ opacity: [0, 1, 0.2, 1, 1], scale: [0.2, 1, 1, 1] }}
+          transition={{ duration: 1.5 }}
           type="button"
           aria-label={`drum pad`}
           onTouchStart={drumPadClick}
@@ -47,7 +52,7 @@ export default function DrumPad({ id, color, drumPadClick }) {
   );
 }
 
-const Pad = styled.button`
+const Pad = styled(motion.button)`
   background: var(--${props => props.color});
   border: none;
   border-radius: 5px;

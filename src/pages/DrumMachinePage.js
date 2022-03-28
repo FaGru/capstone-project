@@ -11,6 +11,7 @@ import styled from 'styled-components';
 import * as Tone from 'tone';
 import { useState } from 'react';
 import useStore from '../hooks/useStore';
+import { motion } from 'framer-motion';
 
 import settingsLogo from '../images/settings.svg';
 import recordingsLogo from '../images/recording-page.svg';

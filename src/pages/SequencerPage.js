@@ -45,67 +45,69 @@ export default function SequencerPage() {
 
   return (
     <PageContainer>
-      <HeadingContainer>
-        <InvisibleButton
-          aria-label="show settings"
+      <GridContainer>
+        <HeadingContainer>
+          <InvisibleButton
+            aria-label="show settings"
+            type="button"
+            onClick={() => setIsSettingsVisible(!isSettingsVisible)}
+          >
+            <StyledButtonImg
+              src={EQLogo}
+              height="50px"
+              width="50px"
+              alt="volume-settings"
+            />
+          </InvisibleButton>
+          <NavLink to="/settings">
+            <StyledButtonImg
+              src={settingsLogo}
+              height="50px"
+              width="50px"
+              alt="settings"
+            />
+          </NavLink>
+          <NavLink aria-label="back" to="/drum-machine">
+            <StyledButtonImg
+              src={backLogo}
+              alt="back-button"
+              width="50px"
+              height="50px"
+            />
+          </NavLink>
+        </HeadingContainer>
+        <SequencerContainer>
+          <SequencerSettings
+            isSettingsVisible={isSettingsVisible}
+            setIsSettingsVisible={setIsSettingsVisible}
+          />
+          <Sequencer color={allPads[selectedSequencerPad].color} />
+        </SequencerContainer>
+        <PadList>
+          <InstructionsSequencer />
+          {allPads.map(pad => (
+            <SequencerPad
+              key={pad.id}
+              id={pad.id}
+              color={pad.color}
+              sample={pad.sample}
+              sequencerPadClick={sequencerPadClick}
+            />
+          ))}
+        </PadList>
+        <StartSequenceButton
+          aria-label="start-stop sequencer"
+          onClick={toggle}
           type="button"
-          onClick={() => setIsSettingsVisible(!isSettingsVisible)}
         >
           <StyledButtonImg
-            src={EQLogo}
-            height="50px"
-            width="50px"
-            alt="volume-settings"
-          />
-        </InvisibleButton>
-        <NavLink to="/settings">
-          <StyledButtonImg
-            src={settingsLogo}
-            height="50px"
-            width="50px"
-            alt="settings"
-          />
-        </NavLink>
-        <NavLink aria-label="back" to="/drum-machine">
-          <StyledButtonImg
-            src={backLogo}
-            alt="back-button"
+            src={isSequencePlaying === 'stopped' ? playbutton : pausebutton}
+            alt="play-pause"
             width="50px"
             height="50px"
           />
-        </NavLink>
-      </HeadingContainer>
-      <SequencerContainer>
-        <SequencerSettings
-          isSettingsVisible={isSettingsVisible}
-          setIsSettingsVisible={setIsSettingsVisible}
-        />
-        <Sequencer color={allPads[selectedSequencerPad].color} />
-      </SequencerContainer>
-      <PadList>
-        <InstructionsSequencer />
-        {allPads.map(pad => (
-          <SequencerPad
-            key={pad.id}
-            id={pad.id}
-            color={pad.color}
-            sample={pad.sample}
-            sequencerPadClick={sequencerPadClick}
-          />
-        ))}
-      </PadList>
-      <StartSequenceButton
-        aria-label="start-stop sequencer"
-        onClick={toggle}
-        type="button"
-      >
-        <StyledButtonImg
-          src={isSequencePlaying === 'stopped' ? playbutton : pausebutton}
-          alt="play-pause"
-          width="50px"
-          height="50px"
-        />
-      </StartSequenceButton>
+        </StartSequenceButton>
+      </GridContainer>
     </PageContainer>
   );
 
@@ -124,36 +126,36 @@ const PageContainer = styled.div`
   grid-template-columns: 1fr auto 1fr;
   justify-content: center;
   align-items: center;
-  background-color: var(--black);
+`;
+const GridContainer = styled.div`
+  grid-column: 2 / 3;
+  background-color: var(--darkgray);
+  border: 2px solid var(--lightgray);
+  padding: 5px;
+  margin-top: 20px;
 `;
 
 const HeadingContainer = styled.header`
-  grid-column: 2 / 3;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
-`;
-
-const SequencerContainer = styled.section`
-  grid-column: 2 / 3;
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: repeat(4, 1fr);
-  max-width: 410px;
-  grid-gap: 2px;
   margin: 10px;
 `;
 
+const SequencerContainer = styled.section`
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  grid-gap: 2px;
+  margin-bottom: 10px;
+`;
+
 const PadList = styled.section`
-  grid-column: 2 / 3;
-  max-width: 410px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   grid-gap: 5px;
-  margin-left: 5px;
-  margin-right: 5px;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
 
   button:nth-child(3n + 3) {
     grid-row: 1 / 2;
