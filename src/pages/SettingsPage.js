@@ -91,6 +91,7 @@ const PageContainer = styled.div`
   border-radius: 10px;
   margin: auto;
   margin-top: 20px;
+  box-shadow: inset 0 0 20px 1px var(--black);
   &::before,
   ::after {
     content: '';
@@ -127,6 +128,8 @@ const HeadingContainer = styled.header`
   grid-column: 1 / 4;
   display: grid;
   grid-template-columns: 15% 1fr 15%;
+  margin-left: 10px;
+  margin-right: 10px;
 `;
 const Heading = styled.h2`
   text-align: center;

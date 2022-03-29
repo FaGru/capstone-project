@@ -177,6 +177,8 @@ const DrumMachineContainer = styled.section`
   background-color: var(--darkgray);
   position: relative;
   margin-top: 30px;
+  box-shadow: inset 0 0 15px 1px var(--black);
+
   @media (max-width: 1000px) {
     @media (orientation: landscape) {
       display: none;
