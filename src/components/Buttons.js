@@ -7,6 +7,7 @@ export const StyledButtonImg = styled.img`
   border-right: 4px solid var(--gray);
   border-radius: 100%;
   padding: 3px;
+  background-color: var(--darkgray);
 
   &:active {
     transition: ease 0.2s;

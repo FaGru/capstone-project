@@ -27,8 +27,8 @@ export default function DrumPad({ id, color, drumPadClick }) {
     <>
       {isDesktop ? (
         <Pad
-          animate={{ opacity: [0, 1, 0.2, 1, 1], scale: [0.2, 1, 1, 1] }}
-          transition={{ duration: 1.5 }}
+          animate={{ scale: [0.2, 1] }}
+          transition={{ duration: 0.5 }}
           type="button"
           aria-label={`drum pad`}
           onMouseDown={drumPadClick}
@@ -38,8 +38,8 @@ export default function DrumPad({ id, color, drumPadClick }) {
         ></Pad>
       ) : (
         <Pad
-          animate={{ opacity: [0, 1, 0.2, 1, 1], scale: [0.2, 1, 1, 1] }}
-          transition={{ duration: 1.5 }}
+          animate={{ scale: [0.2, 1] }}
+          transition={{ duration: 0.5 }}
           type="button"
           aria-label={`drum pad`}
           onTouchStart={drumPadClick}
@@ -58,7 +58,7 @@ const Pad = styled(motion.button)`
   border-radius: 5px;
   width: 100px;
   height: 100px;
-  box-shadow: var(--box-shadow-classic);
+  box-shadow: inset 0 0 20px var(--${props => props.color}-active);
 
   &:active {
     transition: ease-in 0.05s;
@@ -66,7 +66,7 @@ const Pad = styled(motion.button)`
     box-shadow: 0 0 5px 2px var(--${props => props.color});
   }
   @media (max-width: 500px) {
-    width: 30vw;
-    height: 30vw;
+    width: 28vw;
+    height: 28vw;
   }
 `;

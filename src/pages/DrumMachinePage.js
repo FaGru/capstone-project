@@ -7,7 +7,7 @@ import InstructionsDrumMachine from '../components/InstructionsDrumMachine';
 import { StyledButtonImg, InvisibleButton } from '../components/Buttons';
 
 import { NavLink } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import * as Tone from 'tone';
 import { useState } from 'react';
 import useStore from '../hooks/useStore';
@@ -43,7 +43,10 @@ export default function DrumMachinePage() {
       <LandingPageLink to="/">
         <img src={infoLogo} height="30px" width="30px" alt="landingpage" />
       </LandingPageLink>
-      <LinkContainer>
+      <LinkContainer
+        animate={{ scale: [0.2, 1] }}
+        transition={{ duration: 0.5 }}
+      >
         <NavLink onClick={handleNavigate} to="/sequencer">
           <StyledButtonImg
             src={sequencerLogo}
@@ -97,14 +100,22 @@ export default function DrumMachinePage() {
           />
         ))}
       </PadList>
+      <RecLoopContainer
+        animate={{ scale: [0.2, 1] }}
+        transition={{ duration: 0.5 }}
+      >
+        <RecordButton
+          recordStartClick={recordStartClick}
+          recordStopClick={recordStopClick}
+          devicesState={devicesState}
+          setDevicesState={setDevicesState}
+        />
 
-      <RecordButton
-        recordStartClick={recordStartClick}
-        recordStopClick={recordStopClick}
-        devicesState={devicesState}
-        setDevicesState={setDevicesState}
-      />
-      <DrumLoopPlayer startDrumLoop={startDrumLoop} getDrumLoop={getDrumLoop} />
+        <DrumLoopPlayer
+          startDrumLoop={startDrumLoop}
+          getDrumLoop={getDrumLoop}
+        />
+      </RecLoopContainer>
     </DrumMachineContainer>
   );
 
@@ -153,22 +164,58 @@ export default function DrumMachinePage() {
     getLoopPlayerVolume(e.target.value / 10);
   }
 }
-
+const spin = keyframes`
+0% {background-position: top center;}
+100% {background-position: bottom center;}
+`;
 const DrumMachineContainer = styled.section`
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   grid-template-rows: auto 1fr auto auto;
   border: 2px solid var(--lightgray);
+  border-radius: 10px;
   background-color: var(--darkgray);
   position: relative;
-  margin-top: 15px;
+  margin-top: 30px;
   @media (max-width: 1000px) {
     @media (orientation: landscape) {
       display: none;
     }
   }
+  &::before,
+  ::after {
+    content: '';
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    place-content: center;
+
+    position: absolute;
+    z-index: -1;
+    background-image: linear-gradient(
+      15deg,
+      #44d62c,
+      #099fff,
+      #6c90f6,
+      #5a05a9,
+      #6b0643,
+      #6b0643,
+      #970533,
+      #df1d5d,
+      #f631a7
+    );
+    background-size: 100% 200%;
+    background-position: center center;
+
+    animation: ${spin} 10s infinite alternate;
+  }
+  &::after {
+    filter: blur(60px);
+  }
 `;
-const LinkContainer = styled.div`
+const LinkContainer = styled(motion.div)`
   grid-column: 2 / 3;
   grid-row: 1 / 2;
   display: flex;
@@ -185,7 +232,7 @@ const PadList = styled.div`
   grid-template-rows: 1fr 1fr 1fr 1fr;
   grid-gap: 5px;
   margin-left: 5px;
-  margin-right: 5px;
+  margin-right: 7px;
   margin-bottom: 5px;
 `;
 const LandingPageLink = styled(NavLink)`
@@ -194,4 +241,10 @@ const LandingPageLink = styled(NavLink)`
   border-radius: 100%;
   top: -15px;
   right: -5px;
+`;
+const RecLoopContainer = styled(motion.div)`
+  grid-row: 3 / 4;
+  grid-column: 2 /3;
+  display: flex;
+  justify-content: space-around;
 `;

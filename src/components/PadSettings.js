@@ -151,7 +151,7 @@ const SaveButton = styled.button`
   width: 150px;
   color: var(--green);
   background-color: var(--black);
-  margin: 20px;
+  margin: 15px;
   border-radius: 5px;
   border: 1px solid var(--green);
   border-top: 1px solid var(--lightgray);

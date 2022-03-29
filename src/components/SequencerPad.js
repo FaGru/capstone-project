@@ -4,8 +4,8 @@ import { motion } from 'framer-motion';
 export default function SequencerPad({ id, color, sequencerPadClick }) {
   return (
     <Pad
-      animate={{ opacity: [0, 1, 0.2, 1, 1], scale: [0.2, 1, 1, 1] }}
-      transition={{ duration: 1.5 }}
+      animate={{ scale: [0.2,  1] }}
+      transition={{ duration: 0.5 }}
       type="button"
       aria-label="sequencer-pad"
       data-testid="sequencer-pad"
@@ -23,7 +23,7 @@ const Pad = styled(motion.button)`
   border-radius: 5px;
   width: 100px;
   height: 100px;
-  box-shadow: var(--box-shadow-classic);
+  box-shadow: inset 0 0 20px var(--${props => props.color}-active);
 
   &:active {
     transition: ease-in 0.05s;

@@ -9,10 +9,11 @@ import {
   StartSequenceButton,
 } from '../components/Buttons';
 
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import * as Tone from 'tone';
 import { useState, useCallback } from 'react';
+import { motion } from 'framer-motion';
 
 import backLogo from '../images/back-right.svg';
 import playbutton from '../images/play.svg';
@@ -46,7 +47,10 @@ export default function SequencerPage() {
   return (
     <PageContainer>
       <GridContainer>
-        <HeadingContainer>
+        <HeadingContainer
+          animate={{ scale: [0.2, 1] }}
+          transition={{ duration: 0.5 }}
+        >
           <InvisibleButton
             aria-label="show settings"
             type="button"
@@ -76,7 +80,10 @@ export default function SequencerPage() {
             />
           </NavLink>
         </HeadingContainer>
-        <SequencerContainer>
+        <SequencerContainer
+          animate={{ scale: [0.2, 1] }}
+          transition={{ duration: 0.5 }}
+        >
           <SequencerSettings
             isSettingsVisible={isSettingsVisible}
             setIsSettingsVisible={setIsSettingsVisible}
@@ -96,6 +103,9 @@ export default function SequencerPage() {
           ))}
         </PadList>
         <StartSequenceButton
+          as={motion.button}
+          animate={{ scale: [0.2, 1] }}
+          transition={{ duration: 0.5 }}
           aria-label="start-stop sequencer"
           onClick={toggle}
           type="button"
@@ -120,29 +130,68 @@ export default function SequencerPage() {
     });
   }
 }
+const animation = keyframes`
+0% {background-position: top center;}
+100% {background-position: bottom center;}
+`;
 const PageContainer = styled.div`
   display: grid;
   grid-template-rows: repeat(4, auto);
   grid-template-columns: 1fr auto 1fr;
   justify-content: center;
   align-items: center;
+
+  &::before,
+  ::after {
+    content: '';
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    place-content: center;
+
+    position: absolute;
+    z-index: -1;
+    background-image: linear-gradient(
+      15deg,
+      #44d62c,
+      #099fff,
+      #6c90f6,
+      #5a05a9,
+      #6b0643,
+      #6b0643,
+      #970533,
+      #df1d5d,
+      #f631a7
+    );
+    background-size: 100% 200%;
+    background-position: center center;
+
+    animation: ${animation} 10s infinite alternate;
+  }
+  &::after {
+    filter: blur(60px);
+  }
 `;
 const GridContainer = styled.div`
   grid-column: 2 / 3;
   background-color: var(--darkgray);
   border: 2px solid var(--lightgray);
   padding: 5px;
-  margin-top: 20px;
+  margin-top: 30px;
+  margin-bottom: auto;
+  border-radius: 10px;
 `;
 
-const HeadingContainer = styled.header`
+const HeadingContainer = styled(motion.header)`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 10px;
 `;
 
-const SequencerContainer = styled.section`
+const SequencerContainer = styled(motion.section)`
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(4, 1fr);

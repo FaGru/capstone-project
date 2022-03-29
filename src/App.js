@@ -12,6 +12,7 @@ import { defaultPadSettings } from './data';
 import styled from 'styled-components';
 import useStore from './hooks/useStore';
 
+
 export default function App() {
   const handleUserInteraction = useStore(state => state.handleUserInteraction);
   useEffect(() => {
@@ -19,7 +20,6 @@ export default function App() {
   });
 
   const getAllPads = useStore(state => state.getAllPads);
- 
 
   const [storagedPadSettings, setStoragedPadSettings] = useLocalStorage(
     'storagedPadSettings',
@@ -31,9 +31,11 @@ export default function App() {
   });
 
   useEffect(() => {
-    getAllPads(myPadSettings.length === 12 ? myPadSettings : defaultPadSettings);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    getAllPads(
+      myPadSettings.length === 12 ? myPadSettings : defaultPadSettings
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>
@@ -43,23 +45,18 @@ export default function App() {
           path="/drum-machine"
           element={
             <InstrumentContainer>
-              <DrumMachinePage  /> <KeyboardPage />
+              <DrumMachinePage /> <KeyboardPage />
             </InstrumentContainer>
           }
         />
         <Route
           path="/settings"
           element={
-            <SettingsPage
-              setStoragedPadSettings={setStoragedPadSettings}
-            />
+            <SettingsPage setStoragedPadSettings={setStoragedPadSettings} />
           }
         />
         <Route path="/recordings" element={<RecordingsPage />} />
-        <Route
-          path="/sequencer"
-          element={<SequencerPage/>}
-        />
+        <Route path="/sequencer" element={<SequencerPage />} />
       </Routes>
     </div>
   );
@@ -71,3 +68,5 @@ const InstrumentContainer = styled.div`
   align-items: center;
   gap: 60px;
 `;
+
+
