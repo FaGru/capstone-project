@@ -158,8 +158,6 @@ export default function KeyboardButtons({ keyboardClick }) {
 const ButtonContainer = styled.section`
   display: flex;
   justify-content: center;
-
-
 `;
 const BlackButtonGrid = styled.div`
   display: grid;
