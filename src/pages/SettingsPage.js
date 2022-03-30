@@ -7,7 +7,7 @@ import styled, { keyframes } from 'styled-components';
 import * as Tone from 'tone';
 import useStore from '../hooks/useStore';
 import { StyledButtonImg, InvisibleButton } from '../components/Buttons';
-import { motion } from 'framer-motion';
+import NavAnimation from '../components/FramerMotion';
 
 export default function SettingsPage({ setStoragedPadSettings }) {
   const [selectedPad, setSelectedPad] = useState('0');
@@ -16,35 +16,37 @@ export default function SettingsPage({ setStoragedPadSettings }) {
     './audio/Samples/Backspin1.wav'
   );
   const allPads = useStore(state => state.allPads);
-  const getAllPads = useStore(state => state.getAllPads);
-  let navigate = useNavigate();
+  const setAllPads = useStore(state => state.setAllPads);
+  const navigate = useNavigate();
 
   return (
-    <PageContainer>
-      <HeadingContainer>
-        <InvisibleButton type="button" onClick={() => navigate(-1)}>
-          <StyledButtonImg
-            src={backLogo}
-            alt="back-button"
-            width="45px"
-            height="45px"
+    <NavAnimation start="initialRight" end="outRight">
+      <PageContainer>
+        <HeadingContainer>
+          <InvisibleButton type="button" onClick={() => navigate(-1)}>
+            <StyledButtonImg
+              src={backLogo}
+              alt="back-button"
+              width="45px"
+              height="45px"
+            />
+          </InvisibleButton>
+          <Heading>Settings</Heading>
+        </HeadingContainer>
+        <SettingsContainer>
+          <InstructionPadSettings />
+          <PadSettings
+            savePadClick={savePadClick}
+            colorChange={colorChange}
+            padChange={padChange}
+            sampleChange={sampleChange}
+            allPads={allPads}
+            selectedSample={selectedSample}
+            samplePreview={samplePreview}
           />
-        </InvisibleButton>
-        <Heading>Settings</Heading>
-      </HeadingContainer>
-      <SettingsContainer>
-        <InstructionPadSettings />
-        <PadSettings
-          savePadClick={savePadClick}
-          colorChange={colorChange}
-          padChange={padChange}
-          sampleChange={sampleChange}
-          allPads={allPads}
-          selectedSample={selectedSample}
-          samplePreview={samplePreview}
-        />
-      </SettingsContainer>
-    </PageContainer>
+        </SettingsContainer>
+      </PageContainer>
+    </NavAnimation>
   );
 
   function padChange(e) {
@@ -68,7 +70,7 @@ export default function SettingsPage({ setStoragedPadSettings }) {
       return a.id - b.id;
     });
     setStoragedPadSettings(sortedPads);
-    getAllPads(sortedPads);
+    setAllPads(sortedPads);
     useStore.getState().initDrumPadPlayers();
   }
   function samplePreview() {
@@ -83,6 +85,7 @@ const animation = keyframes`
 100% {background-position: bottom center;}
 `;
 const PageContainer = styled.div`
+  position: relative;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   height: 90vh;
@@ -95,6 +98,7 @@ const PageContainer = styled.div`
   &::before,
   ::after {
     content: '';
+    border-radius: 10px;
     top: 0;
     bottom: 0;
     left: 0;

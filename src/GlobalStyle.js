@@ -20,14 +20,14 @@ const GlobalStyle = createGlobalStyle`
     --orange: #fe5e01; 
     
 
-    --blue-active: #00FFFF;  
+    --blue-active: #00FFFF;
     --purple-active: #F631A7;
     --yellow-active: #bbff3c;
-    --orange-active: #FFAD00; 
+    --orange-active: #FFAD00;
     --red-active: #fd5f54;
-    --green-active: #05f2b7; 
+    --green-active: #05f2b7;
     
-    --box-shadow-classic: 1px 1px 2px 1px var(--lightgray);
+    --box-shadow-classic: 1px 1px 2px 1px var(--gray);
     --box-shadow-keyboard: inset -3px -2px 5px  #e2e2e5;
   }
   body {

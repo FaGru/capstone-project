@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import useStore from '../hooks/useStore';
 import backround from '../images/background.jpg';
 import { motion } from 'framer-motion';
+import NavAnimation from '../components/FramerMotion';
 
 export default function LandingPage() {
   let navigate = useNavigate();
@@ -13,51 +14,52 @@ export default function LandingPage() {
     state => state.setIsInstructionNavVisible
   );
   return (
-    <LandingPageContainer>
-      <H1>
-        Welcome to <br />
-        <span>NanoBeats</span>
-      </H1>
-      <LandingPageButton
-        animate={{ x: [-1000, 50, 0] }}
-        transition={{ duration: 0.4 }}
-        type="button"
-        onClick={() => navigate('/drum-machine', { replace: true })}
-      >
-        {' '}
-        DrumMachine
-      </LandingPageButton>
-      <LandingPageButton
-        animate={{ x: [1000, -50, 0] }}
-        transition={{ duration: 0.4, delay: 0.15 }}
-        type="button"
-        onClick={() => navigate('/sequencer', { replace: true })}
-      >
-        Sequencer
-      </LandingPageButton>
-      <LandingPageButton
-        animate={{ x: [-1000, 50, 0] }}
-        transition={{ duration: 0.4, delay: 0.3 }}
-        type="button"
-        onClick={() => navigate('/settings', { replace: true })}
-      >
-        Settings
-      </LandingPageButton>
-      <LandingPageButton
-        animate={{ x: [1000, -50, 0] }}
-        transition={{ duration: 0.4, delay: 0.45 }}
-        type="button"
-        onClick={instructionClick}
-      >
-        Instructions
-      </LandingPageButton>
-    </LandingPageContainer>
+    <NavAnimation end="outTop">
+      <LandingPageContainer>
+        <H1>
+          Welcome to <br />
+          <span>NanoBeats</span>
+        </H1>
+        <LandingPageButton
+          animate={{ x: [-1000, 50, 0] }}
+          transition={{ duration: 0.4 }}
+          type="button"
+          onClick={() => navigate('/drum-machine', { replace: true })}
+        >
+          {' '}
+          DrumMachine
+        </LandingPageButton>
+        <LandingPageButton
+          animate={{ x: [1000, -50, 0] }}
+          transition={{ duration: 0.4, delay: 0.15 }}
+          type="button"
+          onClick={() => navigate('/sequencer', { replace: true })}
+        >
+          Sequencer
+        </LandingPageButton>
+        <LandingPageButton
+          animate={{ x: [-1000, 50, 0] }}
+          transition={{ duration: 0.4, delay: 0.3 }}
+          type="button"
+          onClick={() => navigate('/settings', { replace: true })}
+        >
+          Settings
+        </LandingPageButton>
+        <LandingPageButton
+          animate={{ x: [1000, -50, 0] }}
+          transition={{ duration: 0.4, delay: 0.45 }}
+          type="button"
+          onClick={instructionClick}
+        >
+          Instructions
+        </LandingPageButton>
+      </LandingPageContainer>
+    </NavAnimation>
   );
 
   function instructionClick() {
     setInstructionOneVisible(true);
     setIsInstructionNavVisible(true);
-
     navigate('/drum-machine', { replace: true });
   }
 }
@@ -80,9 +82,8 @@ const H1 = styled.h1`
   margin-bottom: 40px;
   font-size: 2rem;
   border-radius: 20px;
-  /* box-shadow: 2px 2px 5px 2px #970533;
-  background-color: #080405; */
-  padding: 5px;
+  box-shadow: inset 2px 2px 100px 10px #080405;
+  padding: 10px;
 
   span {
     margin: 5px;
@@ -117,8 +118,8 @@ const LandingPageButton = styled(motion.button)`
   background-color: #080405;
   color: #c40820;
   font-weight: bold;
-
   box-shadow: 1.5px 1.5px 3px;
+  cursor: pointer;
 
   &:hover {
     background: linear-gradient(

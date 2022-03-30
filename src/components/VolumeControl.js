@@ -1,7 +1,7 @@
-
 import styled from 'styled-components';
 import useStore from '../hooks/useStore';
-import close from '../images/close.svg'
+import close from '../images/close.svg';
+import { motion } from 'framer-motion';
 
 export default function VolumeControl({
   isControlsVisible,
@@ -9,21 +9,32 @@ export default function VolumeControl({
   handlePadVolume,
   handleLoopPlayerVolume,
 }) {
-  const loopPlayerVolume = useStore(state => state.loopPlayerVolume)
-  const drumPadPlayersVolume = useStore(state => state.drumPadPlayersVolume)
+  const loopPlayerVolume = useStore(state => state.loopPlayerVolume);
+  const drumPadPlayersVolume = useStore(state => state.drumPadPlayersVolume);
 
   return (
     <>
       {isControlsVisible ? (
-        <ControlsContainer>
+        <ControlsContainer
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          exit={{ scale: 0 }}
+
+        >
           <Heading>
-          <H2>Volume</H2>
-          <CloseButton type="button" aria-label='close' onClick={() => setIsControlsVisible(!isControlsVisible)}>
-            <img src={close} height="20px" width="20px" alt="close" />
-          </CloseButton>
+            <H2>Volume</H2>
+            <CloseButton
+              type="button"
+              aria-label="close"
+              onClick={() => setIsControlsVisible(!isControlsVisible)}
+            >
+              <img src={close} height="20px" width="20px" alt="close" />
+            </CloseButton>
           </Heading>
-          <label htmlFor="drum-pad-volume">Drumpads {drumPadPlayersVolume}</label>
-          <input
+          <label htmlFor="drum-pad-volume">
+            Drumpads {drumPadPlayersVolume}
+          </label>
+          <Input
             data-testid="pad-volume"
             name="drum-pad-volume"
             id="drum-pad-volume"
@@ -32,11 +43,11 @@ export default function VolumeControl({
             max="100"
             defaultValue={drumPadPlayersVolume * 10}
             onChange={handlePadVolume}
-          ></input>
+          ></Input>
           <label htmlFor="drum-pad-volume">
             Drumloop Player {loopPlayerVolume}
           </label>
-          <input
+          <Input
             data-testid="drumloop-volume"
             name="drum-pad-volume"
             id="drum-pad-volume"
@@ -45,7 +56,7 @@ export default function VolumeControl({
             max="100"
             defaultValue={loopPlayerVolume * 10}
             onChange={handleLoopPlayerVolume}
-          ></input>
+          ></Input>
         </ControlsContainer>
       ) : (
         ''
@@ -54,29 +65,29 @@ export default function VolumeControl({
   );
 }
 
-const ControlsContainer = styled.section`
+const ControlsContainer = styled(motion.section)`
   position: absolute;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  border: 5px solid var(--darkgray);
+  border: 2px solid var(--lightgray);
   border-radius: 10px;
   width: 300px;
-  background-color: var(--gray);
+  background-color: var(--darkgray);
   place-self: center;
   padding: 10px;
+  box-shadow: inset 0 0 20px 1px var(--black);
 `;
 const Heading = styled.header`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr
-  
-`
+  grid-template-columns: 1fr 1fr 1fr;
+`;
 
 const H2 = styled.h2`
   margin: 0px;
   margin-bottom: 20px;
   text-align: center;
-  grid-column: 2 / 3
+  grid-column: 2 / 3;
 `;
 const CloseButton = styled.button`
   background: none;
@@ -84,4 +95,8 @@ const CloseButton = styled.button`
   grid-column: 3 / 3;
   align-self: start;
   justify-self: end;
+  cursor: pointer;
+`;
+const Input = styled.input`
+  cursor: pointer;
 `;

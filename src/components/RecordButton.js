@@ -64,4 +64,5 @@ const RecButton = styled.button`
   width: 60px;
   border-radius: 100%;
   border: none;
+  cursor: pointer;
 `;

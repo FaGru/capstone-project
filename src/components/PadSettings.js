@@ -71,7 +71,9 @@ export default function PadSettings({
             </option>
           ))}
         </SettingsSelect>
-        <SaveButton type='button' onClick={savePadClick}>SAVE THIS PAD</SaveButton>
+        <SaveButton type="button" onClick={savePadClick}>
+          SAVE THIS PAD
+        </SaveButton>
       </DrumPadForm>
     </>
   );
@@ -87,26 +89,25 @@ const SamplePreviewButton = styled.button`
   height: 124px;
   width: 95px;
   color: var(--white);
-  background-color: var(--black);
+  background-color: var(--darkgray);
   margin: 20px;
 
   border-radius: 5px;
   border: 2px solid var(--white);
   border-top: 1px solid var(--lightgray);
   border-left: 1px solid var(--lightgray);
-  box-shadow: var(--box-shadow-classic);
+  box-shadow: inset 0 0 15px 5px var(--black);
+  cursor: pointer;
 
   &:active {
     transition: ease 0.2s;
-    border: 1px solid var(--lightgray);
-    border-top: 1px solid var(--white);
-    border-left: 1px solid var(--white);
+    border: 2px solid var(--lightgray);
+    border: 2px solid var(--white);
   }
 `;
 
 const PreviewGrid = styled.div`
   border: 2px solid var(--white);
-  box-shadow: var(--box-shadow-classic);
   align-self: center;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -124,6 +125,7 @@ const ButtonPreview = styled.div`
   color: black;
   border: 0.5px solid black;
   border-radius: 2px;
+  
 `;
 
 const DrumPadForm = styled.section`
@@ -139,10 +141,11 @@ const SettingsSelect = styled.select`
   height: 40px;
   width: 250px;
   color: var(--white);
-  background-color: var(--black);
-  border: 1px solid white;
+  background-color: var(--darkgray);
+  border: 2px solid var(--lightgray);
   border-radius: 5px;
-  box-shadow: var(--box-shadow-classic);
+  box-shadow: inset 0 0 15px 8px var(--black);
+  cursor: pointer;
 `;
 
 const SaveButton = styled.button`
@@ -158,6 +161,7 @@ const SaveButton = styled.button`
   border-left: 1px solid var(--lightgray);
   box-shadow: 1px 1px 5px 0.5px var(--green);
   letter-spacing: 1px;
+  cursor: pointer;
 
   &:active {
     transition: ease 0.2s;
