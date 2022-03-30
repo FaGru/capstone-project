@@ -61,8 +61,9 @@ const DrumLoopContainer = styled.div`
   grid-template-rows: 1fr 2fr;
   margin: 10px;
   padding: 3px;
-  border: 2px solid var(--white);
+  border: 1px solid var(--white);
   border-radius: 40px;
+  box-shadow: inset 0 0 5px 2px var(--darkgray);
 `;
 
 const PlayPauseButton = styled.button`
@@ -70,6 +71,7 @@ const PlayPauseButton = styled.button`
   border: none;
   grid-column: 1 / 2;
   grid-row: 1 / 3;
+  cursor: pointer;
 `;
 const PlayPauseImg = styled.img`
   transition: ease 0.4s;
@@ -104,5 +106,7 @@ const DrumLoopSelect = styled.select`
   align-self: start;
   grid-column: 2;
   grid-row: 2 / 3;
-  box-shadow: var(--box-shadow-classic);
+  box-shadow: inset 0 0 5px 2px var(--darkgray);
+  cursor: grab;
+
 `;

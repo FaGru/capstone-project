@@ -5,16 +5,15 @@ import { useEffect } from 'react';
 
 export default function Sequencer({ color }) {
   const currentTimeStamp = useStore(state => state.currentTimeStamp);
-  const getAllPadSequences = useStore(state => state.getAllPadSequences);
+  const setAllPadsequences = useStore(state => state.setAllPadsequences);
   const allPadSequences = useStore(state => state.allPadSequences);
-  const getCurrentTimeStamp = useStore(state => state.getCurrentTimeStamp);
+  const setCurrentTimeStamp = useStore(state => state.setCurrentTimeStamp);
   const selectedPadSequence = useStore(state => state.selectedPadSequence);
   const sequencerPlayers = useStore(state => state.drumPadPlayers);
-  const getSelectedPadSequence = useStore(
-    state => state.getSelectedPadSequence
+  const setSelectedPadSequence = useStore(
+    state => state.setSelectedPadSequence
   );
   const selectedSequencerPad = useStore(state => state.selectedSequencerPad);
-
 
   useEffect(() => {
     const sequence = new Tone.Sequence(
@@ -24,7 +23,7 @@ export default function Sequencer({ color }) {
             sequencerPlayers.player(`Player${sequence.id}`).start();
           }
         });
-        getCurrentTimeStamp(idx);
+        setCurrentTimeStamp(idx);
       },
       [
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
@@ -70,7 +69,7 @@ export default function Sequencer({ color }) {
     sortedPadSequence.sort(function (a, b) {
       return a.id - b.id;
     });
-    getSelectedPadSequence(sortedPadSequence);
+    setSelectedPadSequence(sortedPadSequence);
     //////////////    selectedPadSequence    ///////////////
 
     //////////////    allPadSequences    ///////////////
@@ -89,7 +88,7 @@ export default function Sequencer({ color }) {
       return a.id - b.id;
     });
 
-    getAllPadSequences(sortedAllPadSequences);
+    setAllPadsequences(sortedAllPadSequences);
     //////////////    allPadSequences    ///////////////
   }
 }
@@ -108,6 +107,7 @@ const SequencerButton = styled.button`
   border-radius: 5px;
   width: 50px;
   height: 50px;
+  cursor: cell;
 
   @media (max-width: 500px) {
     width: 11vw;

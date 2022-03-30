@@ -28,6 +28,7 @@ const useStore = create(set => ({
   isInstructionThreeVisible: false,
   isInstructionFourVisible: false,
   isInstructionFiveVisible: false,
+  navDirection: { start: 'initialBottom', end: 'outBottom' },
 
   handleUserInteraction: () => {
     const handleUserInteraction = () => {
@@ -79,10 +80,10 @@ const useStore = create(set => ({
     drumPadPlayers.connect(dest);
     set({ drumPadPlayers });
   },
-  getAllPads: allPads => {
+  setAllPads: allPads => {
     set({ allPads: allPads });
   },
-  getDrumPadPlayersVolume: drumPadPlayersVolume => {
+  setDrumPadPlayersVolume: drumPadPlayersVolume => {
     const loopPlayer = useStore.getState().drumPadPlayers;
     loopPlayer.volume.value = drumPadPlayersVolume - 5;
     set({ drumPadPlayersVolume: drumPadPlayersVolume });
@@ -180,28 +181,28 @@ const useStore = create(set => ({
     loopPlayer.loop = true;
     set({ loopPlayer });
   },
-  getCurrentDrumLoop: currentDrumLoop => {
+  setCurrentDrumLoop: currentDrumLoop => {
     set({ currentDrumLoop: currentDrumLoop });
   },
-  getLoopPlayerVolume: loopPlayerVolume => {
+  setLoopPlayerVolume: loopPlayerVolume => {
     const loopPlayer = useStore.getState().loopPlayer;
     loopPlayer.volume.value = loopPlayerVolume - 5;
     set({ loopPlayerVolume: loopPlayerVolume });
   },
   ////////////////    Sequencer    //////////////////////
-  getAllPadSequences: allPadSequences => {
+  setAllPadsequences: allPadSequences => {
     set({ allPadSequences: allPadSequences });
   },
-  getSelectedSequencerPad: selectedSequencerPad => {
+  setSelectedSequencerPad: selectedSequencerPad => {
     set({ selectedSequencerPad: selectedSequencerPad });
   },
-  getCurrentTimeStamp: currentTimeStamp => {
+  setCurrentTimeStamp: currentTimeStamp => {
     set({ currentTimeStamp: currentTimeStamp });
   },
-  getSelectedPadSequence: selectedPadSequence => {
+  setSelectedPadSequence: selectedPadSequence => {
     set({ selectedPadSequence: selectedPadSequence });
   },
-  getCurrentBpm: currentBpm => {
+  setCurrentBpm: currentBpm => {
     Tone.Transport.bpm.value = currentBpm;
     set({ currentBpm: currentBpm });
   },
@@ -243,6 +244,10 @@ const useStore = create(set => ({
   },
   setInstructionFiveVisible: isInstructionFiveVisible => {
     set({ isInstructionFiveVisible: isInstructionFiveVisible });
+  },
+  ///////////////     NavDirection DrumMachine      ///////////////
+  setNavDirection: navDirection => {
+    set({ navDirection: navDirection });
   },
 }));
 

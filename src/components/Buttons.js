@@ -7,6 +7,7 @@ export const StyledButtonImg = styled.img`
   border-right: 4px solid var(--gray);
   border-radius: 100%;
   padding: 3px;
+  background-color: var(--darkgray);
 
   &:active {
     transition: ease 0.2s;
@@ -17,10 +18,12 @@ export const StyledButtonImg = styled.img`
 export const InvisibleButton = styled.button`
   background: none;
   border: none;
+  cursor: pointer;
 `;
 export const StartSequenceButton = styled(InvisibleButton)`
   grid-column: 2 / 3;
   justify-self: start;
+  cursor: pointer;
 `;
 
 export const InstructionNavButton = styled.button`
@@ -34,4 +37,5 @@ export const InstructionNavButton = styled.button`
   width: 90px;
   height: 40px;
   font-size: 1.2rem;
+  cursor: pointer;
 `;

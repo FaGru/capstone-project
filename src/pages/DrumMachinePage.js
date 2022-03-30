@@ -3,20 +3,21 @@ import DrumPad from '../components/DrumPad';
 import RecordButton from '../components/RecordButton';
 import VolumeControl from '../components/VolumeControl';
 import InstructionsDrumMachine from '../components/InstructionsDrumMachine';
+import NavAnimation from '../components/FramerMotion';
 
 import { StyledButtonImg, InvisibleButton } from '../components/Buttons';
 
 import { NavLink } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import * as Tone from 'tone';
 import { useState } from 'react';
 import useStore from '../hooks/useStore';
+import { motion } from 'framer-motion';
 
 import settingsLogo from '../images/settings.svg';
 import recordingsLogo from '../images/recording-page.svg';
 import volumeLogo from '../images/EQ.svg';
 import sequencerLogo from '../images/sequencer.svg';
-import infoLogo from '../images/information.svg';
 
 export default function DrumMachinePage() {
   const [devicesState, setDevicesState] = useState('');
@@ -27,84 +28,101 @@ export default function DrumMachinePage() {
 
   const initLoopPlayer = useStore(state => state.initLoopPlayer);
   const loopPlayer = useStore(state => state.loopPlayer);
-  const getCurrentDrumLoop = useStore(state => state.getCurrentDrumLoop);
-  const getLoopPlayerVolume = useStore(state => state.getLoopPlayerVolume);
+  const setCurrentDrumLoop = useStore(state => state.setCurrentDrumLoop);
+  const setLoopPlayerVolume = useStore(state => state.setLoopPlayerVolume);
 
   const drumPadPlayers = useStore(state => state.drumPadPlayers);
-  const getDrumPadPlayersVolume = useStore(
-    state => state.getDrumPadPlayersVolume
+  const setDrumPadPlayersVolume = useStore(
+    state => state.setDrumPadPlayersVolume
   );
   const allPads = useStore(state => state.allPads);
 
-  return (
-    <DrumMachineContainer>
-      <InstructionsDrumMachine />
-      <LandingPageLink to="/">
-        <img src={infoLogo} height="30px" width="30px" alt="landingpage" />
-      </LandingPageLink>
-      <LinkContainer>
-        <NavLink onClick={handleNavigate} to="/sequencer">
-          <StyledButtonImg
-            src={sequencerLogo}
-            height="55px"
-            width="55px"
-            alt="sequencer"
-          />
-        </NavLink>
-        <NavLink onClick={handleNavigate} to="/recordings">
-          <StyledButtonImg
-            src={recordingsLogo}
-            height="55px"
-            width="55px"
-            alt="recordings"
-          />
-        </NavLink>
-        <InvisibleButton
-          type="button"
-          onClick={() => setIsControlsVisible(!isControlsVisible)}
-        >
-          <StyledButtonImg
-            src={volumeLogo}
-            height="55px"
-            width="55px"
-            alt="volume-settings"
-          />
-        </InvisibleButton>
-        <NavLink onClick={handleNavigate} to="/settings">
-          <StyledButtonImg
-            src={settingsLogo}
-            height="55px"
-            width="55px"
-            alt="settings"
-          />
-        </NavLink>
-      </LinkContainer>
-      <VolumeControl
-        isControlsVisible={isControlsVisible}
-        setIsControlsVisible={setIsControlsVisible}
-        handlePadVolume={handlePadVolume}
-        handleLoopPlayerVolume={handleLoopPlayerVolume}
-      />
-      <PadList>
-        {allPads.map(pad => (
-          <DrumPad
-            key={pad.id}
-            id={pad.id}
-            color={pad.color}
-            sample={pad.sample}
-            drumPadClick={drumPadClick}
-          />
-        ))}
-      </PadList>
+  const setNavDirection = useStore(state => state.setNavDirection);
+  const navDirection = useStore(state => state.navDirection);
 
-      <RecordButton
-        recordStartClick={recordStartClick}
-        recordStopClick={recordStopClick}
-        devicesState={devicesState}
-        setDevicesState={setDevicesState}
-      />
-      <DrumLoopPlayer startDrumLoop={startDrumLoop} getDrumLoop={getDrumLoop} />
-    </DrumMachineContainer>
+  return (
+    <NavAnimation start={navDirection.start} end={navDirection.end}>
+      <DrumMachineContainer>
+        <InstructionsDrumMachine />
+        <LinkContainer
+          animate={{ scale: [0.2, 1] }}
+          transition={{ duration: 1 }}
+        >
+          <NavLink onClick={handleNavigate} to="/sequencer">
+            <StyledButtonImg
+              src={sequencerLogo}
+              height="55px"
+              width="55px"
+              alt="sequencer"
+            />
+          </NavLink>
+          <NavLink onClick={handleNavigate} to="/recordings">
+            <StyledButtonImg
+              src={recordingsLogo}
+              height="55px"
+              width="55px"
+              alt="recordings"
+            />
+          </NavLink>
+          <InvisibleButton
+            type="button"
+            onClick={() => setIsControlsVisible(!isControlsVisible)}
+          >
+            <StyledButtonImg
+              src={volumeLogo}
+              height="55px"
+              width="55px"
+              alt="volume-settings"
+            />
+          </InvisibleButton>
+          <NavLink
+            value={['outLeft', 'initialLeft']}
+            onClick={handleNavigate}
+            to="/settings"
+          >
+            <StyledButtonImg
+              src={settingsLogo}
+              height="55px"
+              width="55px"
+              alt="settings"
+            />
+          </NavLink>
+        </LinkContainer>
+        <VolumeControl
+          isControlsVisible={isControlsVisible}
+          setIsControlsVisible={setIsControlsVisible}
+          handlePadVolume={handlePadVolume}
+          handleLoopPlayerVolume={handleLoopPlayerVolume}
+        />
+        <PadList>
+          {allPads.map(pad => (
+            <DrumPad
+              key={pad.id}
+              id={pad.id}
+              color={pad.color}
+              sample={pad.sample}
+              drumPadClick={drumPadClick}
+            />
+          ))}
+        </PadList>
+        <RecLoopContainer
+          animate={{ scale: [0.2, 1] }}
+          transition={{ duration: 1 }}
+        >
+          <RecordButton
+            recordStartClick={recordStartClick}
+            recordStopClick={recordStopClick}
+            devicesState={devicesState}
+            setDevicesState={setDevicesState}
+          />
+
+          <DrumLoopPlayer
+            startDrumLoop={startDrumLoop}
+            getDrumLoop={getDrumLoop}
+          />
+        </RecLoopContainer>
+      </DrumMachineContainer>
+    </NavAnimation>
   );
 
   ////////////////////drumPad////////////////////
@@ -137,37 +155,81 @@ export default function DrumMachinePage() {
   }
   function getDrumLoop(currentLoop) {
     loopPlayer.stop();
-    getCurrentDrumLoop(currentLoop);
+    setCurrentDrumLoop(currentLoop);
     initLoopPlayer();
   }
-  function handleNavigate() {
+  function handleNavigate(event) {
     loopPlayer.stop();
+    if (event.target.alt === 'sequencer') {
+      setNavDirection({ start: 'initialRight', end: 'outRight' });
+    } else if (event.target.alt === 'settings') {
+      setNavDirection({ start: 'initialLeft', end: 'outLeft' });
+    } else {
+      setNavDirection({ start: 'initialTop', end: 'outTop' });
+    }
   }
-  ////////////////////DrumLoop////////////////////
   function handlePadVolume(e) {
-    getDrumPadPlayersVolume(e.target.value / 10);
+    setDrumPadPlayersVolume(e.target.value / 10);
   }
 
   function handleLoopPlayerVolume(e) {
-    getLoopPlayerVolume(e.target.value / 10);
+    setLoopPlayerVolume(e.target.value / 10);
   }
 }
-
+const spin = keyframes`
+0% {background-position: top center;}
+100% {background-position: bottom center;}
+`;
 const DrumMachineContainer = styled.section`
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   grid-template-rows: auto 1fr auto auto;
-  border: 2px solid var(--lightgray);
+  border: 2px solid var(--darkgray);
+  border-radius: 10px;
   background-color: var(--darkgray);
   position: relative;
-  margin-top: 15px;
+  margin-top: 30px;
+  box-shadow: inset 0 0 15px 5px var(--black);
+
   @media (max-width: 1000px) {
     @media (orientation: landscape) {
       display: none;
     }
   }
+  &::before,
+  ::after {
+    content: '';
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    place-content: center;
+    border-radius: 10px;
+    position: absolute;
+    z-index: -1;
+    background-image: linear-gradient(
+      15deg,
+      #44d62c,
+      #099fff,
+      #6c90f6,
+      #5a05a9,
+      #6b0643,
+      #6b0643,
+      #970533,
+      #df1d5d,
+      #f631a7
+    );
+    background-size: 100% 200%;
+    background-position: center center;
+
+    animation: ${spin} 10s infinite alternate;
+  }
+  &::after {
+    filter: blur(60px);
+  }
 `;
-const LinkContainer = styled.div`
+const LinkContainer = styled(motion.div)`
   grid-column: 2 / 3;
   grid-row: 1 / 2;
   display: flex;
@@ -184,13 +246,13 @@ const PadList = styled.div`
   grid-template-rows: 1fr 1fr 1fr 1fr;
   grid-gap: 5px;
   margin-left: 5px;
-  margin-right: 5px;
+  margin-right: 7px;
   margin-bottom: 5px;
 `;
-const LandingPageLink = styled(NavLink)`
-  position: absolute;
-  background-color: var(--black);
-  border-radius: 100%;
-  top: -15px;
-  right: -5px;
+
+const RecLoopContainer = styled(motion.div)`
+  grid-row: 3 / 4;
+  grid-column: 2 /3;
+  display: flex;
+  justify-content: space-around;
 `;

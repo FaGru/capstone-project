@@ -1,18 +1,23 @@
 import styled from 'styled-components';
 import useStore from '../hooks/useStore';
 import close from '../images/close.svg';
+import { motion } from 'framer-motion';
 
 export default function SequencerSettings({
   isSettingsVisible,
   setIsSettingsVisible,
 }) {
-  const getCurrentBpm = useStore(state => state.getCurrentBpm);
+  const setCurrentBpm = useStore(state => state.setCurrentBpm);
   const currentBpm = useStore(state => state.currentBpm);
 
   return (
     <>
       {isSettingsVisible ? (
-        <SettingsContainer>
+        <SettingsContainer
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          exit={{ scale: 0 }}
+        >
           <CloseButton
             aria-label="close"
             type="button"
@@ -21,7 +26,7 @@ export default function SequencerSettings({
             <img src={close} height="20px" width="20px" alt="close" />
           </CloseButton>
           <label htmlFor="Sequencer-BPM">BPM {currentBpm}</label>
-          <input
+          <Input
             data-testid="Sequencer-BPM"
             name="Sequencer-BPM"
             id="Sequencer-BPM"
@@ -29,8 +34,8 @@ export default function SequencerSettings({
             min="0"
             max="160"
             defaultValue={currentBpm}
-            onChange={event => getCurrentBpm(event.target.value)}
-          ></input>
+            onChange={event => setCurrentBpm(event.target.value)}
+          ></Input>
         </SettingsContainer>
       ) : (
         ''
@@ -38,20 +43,25 @@ export default function SequencerSettings({
     </>
   );
 }
-const SettingsContainer = styled.section`
+const SettingsContainer = styled(motion.section)`
   position: absolute;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  border: 5px solid var(--darkgray);
+  border: 2px solid var(--lightgray);
   border-radius: 10px;
   width: 300px;
-  background-color: var(--gray);
+  background-color: var(--darkgray);
   place-self: center;
   padding: 10px;
+  box-shadow: inset 0 0 20px 1px var(--black);
 `;
 const CloseButton = styled.button`
   background: none;
   border: none;
   place-self: end;
+  cursor: pointer;
 `;
+const Input = styled.input`
+  cursor: pointer;
+`

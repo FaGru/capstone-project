@@ -2,6 +2,7 @@ import SequencerPad from '../components/SequencerPad';
 import Sequencer from '../components/Sequencer';
 import SequencerSettings from '../components/SequencerSettings';
 import InstructionsSequencer from '../components/InstructionsSequencer';
+import NavAnimation from '../components/FramerMotion';
 
 import {
   StyledButtonImg,
@@ -9,10 +10,11 @@ import {
   StartSequenceButton,
 } from '../components/Buttons';
 
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import * as Tone from 'tone';
 import { useState, useCallback } from 'react';
+import { motion } from 'framer-motion';
 
 import backLogo from '../images/back-right.svg';
 import playbutton from '../images/play.svg';
@@ -26,16 +28,16 @@ export default function SequencerPage() {
   const [isSequencePlaying, setIsSequencePlaying] = useState('stopped');
 
   const selectedSequencerPad = useStore(state => state.selectedSequencerPad);
-  const getSelectedSequencerPad = useStore(
-    state => state.getSelectedSequencerPad
+  const setSelectedSequencerPad = useStore(
+    state => state.setSelectedSequencerPad
   );
   const allPadSequences = useStore(state => state.allPadSequences);
 
   const allPads = useStore(state => state.allPads);
   const sequencerPlayers = useStore(state => state.drumPadPlayers);
 
-  const getSelectedPadSequence = useStore(
-    state => state.getSelectedPadSequence
+  const setSelectedPadSequence = useStore(
+    state => state.setSelectedPadSequence
   );
 
   const toggle = useCallback(() => {
@@ -44,116 +46,169 @@ export default function SequencerPage() {
   }, []);
 
   return (
-    <PageContainer>
-      <HeadingContainer>
-        <InvisibleButton
-          aria-label="show settings"
-          type="button"
-          onClick={() => setIsSettingsVisible(!isSettingsVisible)}
-        >
-          <StyledButtonImg
-            src={EQLogo}
-            height="50px"
-            width="50px"
-            alt="volume-settings"
-          />
-        </InvisibleButton>
-        <NavLink to="/settings">
-          <StyledButtonImg
-            src={settingsLogo}
-            height="50px"
-            width="50px"
-            alt="settings"
-          />
-        </NavLink>
-        <NavLink aria-label="back" to="/drum-machine">
-          <StyledButtonImg
-            src={backLogo}
-            alt="back-button"
-            width="50px"
-            height="50px"
-          />
-        </NavLink>
-      </HeadingContainer>
-      <SequencerContainer>
-        <SequencerSettings
-          isSettingsVisible={isSettingsVisible}
-          setIsSettingsVisible={setIsSettingsVisible}
-        />
-        <Sequencer color={allPads[selectedSequencerPad].color} />
-      </SequencerContainer>
-      <PadList>
-        <InstructionsSequencer />
-        {allPads.map(pad => (
-          <SequencerPad
-            key={pad.id}
-            id={pad.id}
-            color={pad.color}
-            sample={pad.sample}
-            sequencerPadClick={sequencerPadClick}
-          />
-        ))}
-      </PadList>
-      <StartSequenceButton
-        aria-label="start-stop sequencer"
-        onClick={toggle}
-        type="button"
-      >
-        <StyledButtonImg
-          src={isSequencePlaying === 'stopped' ? playbutton : pausebutton}
-          alt="play-pause"
-          width="50px"
-          height="50px"
-        />
-      </StartSequenceButton>
-    </PageContainer>
+    <NavAnimation start="initialLeft" end="outLeft">
+      <PageContainer>
+        <GridContainer>
+          <HeadingContainer
+            animate={{ scale: [0.2, 1] }}
+            transition={{ duration: 1 }}
+          >
+            <InvisibleButton
+              aria-label="show settings"
+              type="button"
+              onClick={() => setIsSettingsVisible(!isSettingsVisible)}
+            >
+              <StyledButtonImg
+                src={EQLogo}
+                height="50px"
+                width="50px"
+                alt="volume-settings"
+              />
+            </InvisibleButton>
+            <NavLink aria-label="settings" to="/settings">
+              <StyledButtonImg
+                src={settingsLogo}
+                height="50px"
+                width="50px"
+                alt="settings"
+              />
+            </NavLink>
+            <NavLink aria-label="back" to="/drum-machine">
+              <StyledButtonImg
+                src={backLogo}
+                alt="back-button"
+                width="50px"
+                height="50px"
+              />
+            </NavLink>
+          </HeadingContainer>
+          <SequencerContainer
+            animate={{ scale: [0.2, 1] }}
+            transition={{ duration: 1 }}
+          >
+            <SequencerSettings
+              isSettingsVisible={isSettingsVisible}
+              setIsSettingsVisible={setIsSettingsVisible}
+            />
+            <Sequencer color={allPads[selectedSequencerPad].color} />
+          </SequencerContainer>
+          <PadList>
+            <InstructionsSequencer />
+            {allPads.map(pad => (
+              <SequencerPad
+                key={pad.id}
+                id={pad.id}
+                color={pad.color}
+                sample={pad.sample}
+                sequencerPadClick={sequencerPadClick}
+              />
+            ))}
+          </PadList>
+          <StartSequenceButton
+            as={motion.button}
+            animate={{ scale: [0.2, 1] }}
+            transition={{ duration: 1 }}
+            aria-label="start-stop sequencer"
+            onClick={toggle}
+            type="button"
+          >
+            <StyledButtonImg
+              src={isSequencePlaying === 'stopped' ? playbutton : pausebutton}
+              alt="play-pause"
+              width="50px"
+              height="50px"
+            />
+          </StartSequenceButton>
+        </GridContainer>
+      </PageContainer>
+    </NavAnimation>
   );
 
   function sequencerPadClick(event) {
     const currentPad = event.target.value;
-    getSelectedPadSequence(allPadSequences[currentPad].settings);
-    getSelectedSequencerPad(currentPad);
+    setSelectedPadSequence(allPadSequences[currentPad].settings);
+    setSelectedSequencerPad(currentPad);
     Tone.loaded().then(() => {
       sequencerPlayers.player(`Player${currentPad}`).start();
     });
   }
 }
+const animation = keyframes`
+0% {background-position: top center;}
+100% {background-position: bottom center;}
+`;
 const PageContainer = styled.div`
   display: grid;
   grid-template-rows: repeat(4, auto);
   grid-template-columns: 1fr auto 1fr;
   justify-content: center;
   align-items: center;
-  background-color: var(--black);
+`;
+const GridContainer = styled.div`
+  position: relative;
+  grid-column: 2 / 3;
+  background-color: var(--darkgray);
+  border: 2px solid var(--darkgray);
+  padding: 5px;
+  margin-top: 30px;
+  margin-bottom: auto;
+  border-radius: 10px;
+  box-shadow: inset 0 0 15px 2px var(--black);
+  &::before,
+  ::after {
+    content: '';
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    place-content: center;
+    border-radius: 10px;
+    position: absolute;
+    z-index: -1;
+    background-image: linear-gradient(
+      15deg,
+      #44d62c,
+      #099fff,
+      #6c90f6,
+      #5a05a9,
+      #6b0643,
+      #6b0643,
+      #970533,
+      #df1d5d,
+      #f631a7
+    );
+    background-size: 100% 200%;
+    background-position: center center;
+
+    animation: ${animation} 10s infinite alternate;
+  }
+  &::after {
+    filter: blur(60px);
+  }
 `;
 
-const HeadingContainer = styled.header`
-  grid-column: 2 / 3;
+const HeadingContainer = styled(motion.header)`
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
-`;
-
-const SequencerContainer = styled.section`
-  grid-column: 2 / 3;
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: repeat(4, 1fr);
-  max-width: 410px;
-  grid-gap: 2px;
   margin: 10px;
 `;
 
+const SequencerContainer = styled(motion.section)`
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  grid-gap: 2px;
+  margin-bottom: 10px;
+`;
+
 const PadList = styled.section`
-  grid-column: 2 / 3;
-  max-width: 410px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   grid-gap: 5px;
-  margin-left: 5px;
-  margin-right: 5px;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
 
   button:nth-child(3n + 3) {
     grid-row: 1 / 2;
