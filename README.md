@@ -4,6 +4,7 @@
 
 NanoBeats is an application that lets you play various samples on a Drum Rack, play on a Keyboard or to create your own beat on a Sequencer.
 In the settings you can change the colors and the sample of your Drum Rack.
+
 https://user-images.githubusercontent.com/95469432/161125219-974aa3cf-26ac-470a-a528-aaf183731114.mov
 
 ## `Current version`
