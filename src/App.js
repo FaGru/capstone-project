@@ -5,7 +5,7 @@ import RecordingsPage from './pages/RecordingsPage';
 import SequencerPage from './pages/SequencerPage';
 import LandingPage from './pages/LandingPage';
 
-import useLocalStorage from './hooks/useLocalSorage';
+import useLocalStorage from './hooks/useLocalStorage';
 import { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import styled from 'styled-components';

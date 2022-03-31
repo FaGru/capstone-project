@@ -46,7 +46,7 @@ export default function DrumMachinePage() {
         <InstructionsDrumMachine />
         <LinkContainer
           animate={{ scale: [0.2, 1] }}
-          transition={{ duration: 1 }}
+          transition={{ delay: 0.5, duration: 1 }}
         >
           <NavLink onClick={handleNavigate} to="/sequencer">
             <StyledButtonImg
@@ -107,7 +107,7 @@ export default function DrumMachinePage() {
         </PadList>
         <RecLoopContainer
           animate={{ scale: [0.2, 1] }}
-          transition={{ duration: 1 }}
+          transition={{ delay: 0.5, duration: 1 }}
         >
           <RecordButton
             recordStartClick={recordStartClick}
@@ -174,7 +174,6 @@ export default function DrumMachinePage() {
     setLoopPlayerVolume(e.target.value / 10);
   }
 }
-
 
 const DrumMachineContainer = styled(BackgroundAnimation)`
   display: grid;

@@ -22,38 +22,38 @@ export default function LandingPage() {
           Welcome to <br />
           <span>NanoBeats</span>
         </H1>
-        <LandingPageButton
-          animate={{ x: [-1000, 50, 0] }}
-          transition={{ duration: 0.4 }}
-        >
-          <Link type="button" to="/drum-machine">
+        <Link type="button" to="/drum-machine">
+          <LandingPageButton
+            animate={{ x: [-1000, 50, 0] }}
+            transition={{ duration: 0.4 }}
+          >
             DrumMachine
-          </Link>
-        </LandingPageButton>
-        <LandingPageButton
-          animate={{ x: [1000, -50, 0] }}
-          transition={{ duration: 0.4, delay: 0.15 }}
-        >
-          <Link type="button" to="/sequencer">
+          </LandingPageButton>
+        </Link>
+        <Link type="button" to="/sequencer">
+          <LandingPageButton
+            animate={{ x: [1000, -50, 0] }}
+            transition={{ duration: 0.4, delay: 0.15 }}
+          >
             Sequencer
-          </Link>
-        </LandingPageButton>
-        <LandingPageButton
-          animate={{ x: [-1000, 50, 0] }}
-          transition={{ duration: 0.4, delay: 0.3 }}
-        >
-          <Link type="button" to="/settings">
+          </LandingPageButton>
+        </Link>
+        <Link type="button" to="/settings">
+          <LandingPageButton
+            animate={{ x: [-1000, 50, 0] }}
+            transition={{ duration: 0.4, delay: 0.3 }}
+          >
             Settings
-          </Link>
-        </LandingPageButton>
-        <LandingPageButton
-          animate={{ x: [1000, -50, 0] }}
-          transition={{ duration: 0.4, delay: 0.45 }}
-        >
-          <Link onClick={instructionClick} to="/drum-machine">
+          </LandingPageButton>
+        </Link>
+        <Link onClick={instructionClick} to="/drum-machine">
+          <LandingPageButton
+            animate={{ x: [1000, -50, 0] }}
+            transition={{ duration: 0.4, delay: 0.45 }}
+          >
             Instructions
-          </Link>
-        </LandingPageButton>
+          </LandingPageButton>
+        </Link>
       </LandingPageContainer>
     </NavAnimation>
   );
@@ -74,12 +74,6 @@ const LandingPageContainer = styled.div`
   background-repeat: no-repeat;
   background-position: center center;
   overflow: hidden;
-`;
-
-const Link = styled(NavLink)`
-  text-decoration: none;
-  color: #c40820;
-  font-weight: bold;
 `;
 
 const H1 = styled.h1`
@@ -116,6 +110,10 @@ const H1 = styled.h1`
     -webkit-background-clip: text;
   }
 `;
+const Link = styled(NavLink)`
+  text-decoration: none;
+`;
+
 const LandingPageButton = styled(motion.div)`
   min-width: 260px;
   height: 40px;
@@ -126,8 +124,11 @@ const LandingPageButton = styled(motion.div)`
   cursor: pointer;
   text-align: center;
   padding: 8px;
+  color: #c40820;
+  font-weight: bold;
 
   &:hover {
+    color: #080405;
     background: linear-gradient(
       220deg,
       #970533 10%,
@@ -136,6 +137,5 @@ const LandingPageButton = styled(motion.div)`
       #a206a3 70%,
       #970533 90%
     );
-    color: #080405;
   }
 `;
