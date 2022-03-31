@@ -1,11 +1,12 @@
+import NavAnimation from '../components/FramerMotion';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import useStore from '../hooks/useStore';
-import backround from '../images/background.jpg';
 import { motion } from 'framer-motion';
-import NavAnimation from '../components/FramerMotion';
+import backround from '../images/background.jpg';
 
 export default function LandingPage() {
+
   let navigate = useNavigate();
   const setInstructionOneVisible = useStore(
     state => state.setInstructionOneVisible
@@ -13,6 +14,7 @@ export default function LandingPage() {
   const setIsInstructionNavVisible = useStore(
     state => state.setIsInstructionNavVisible
   );
+  
   return (
     <NavAnimation end="outTop">
       <LandingPageContainer>
@@ -26,7 +28,6 @@ export default function LandingPage() {
           type="button"
           onClick={() => navigate('/drum-machine', { replace: true })}
         >
-          {' '}
           DrumMachine
         </LandingPageButton>
         <LandingPageButton
@@ -82,7 +83,7 @@ const H1 = styled.h1`
   margin-bottom: 40px;
   font-size: 2rem;
   border-radius: 20px;
-  box-shadow: inset 2px 2px 100px 10px #080405;
+  box-shadow: inset 2px 2px 100px 10px var(--black);
   padding: 10px;
 
   span {

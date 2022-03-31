@@ -53,8 +53,12 @@ const KeyboardContainer = styled.section`
   border: 2px solid var(--darkgray);
   border-radius: 10px;
   padding: 20px;
-  margin: 20px;
+  margin-top: 30px;
   box-shadow: inset 0 0 15px 5px var(--black);
+
+  @media (min-width: 1000px) {
+    margin-left: 80px;
+  }
   @media (orientation: portrait) {
     display: none;
   }
@@ -65,8 +69,6 @@ const KeyboardContainer = styled.section`
     bottom: 0;
     left: 0;
     right: 0;
-    margin: auto;
-    place-content: center;
     border-radius: 10px;
     position: absolute;
     z-index: -1;

@@ -80,25 +80,20 @@ export default function PadSettings({
 }
 const PreviewContainer = styled.div`
   display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
 `;
 
 const SamplePreviewButton = styled.button`
-  align-self: center;
   height: 124px;
   width: 95px;
   color: var(--white);
   background-color: var(--darkgray);
-  margin: 20px;
-
+  margin: 0 20px 20px 10px;
   border-radius: 5px;
   border: 2px solid var(--white);
   border-top: 1px solid var(--lightgray);
   border-left: 1px solid var(--lightgray);
   box-shadow: inset 0 0 15px 5px var(--black);
   cursor: pointer;
-
   &:active {
     transition: ease 0.2s;
     border: 2px solid var(--lightgray);
@@ -108,13 +103,11 @@ const SamplePreviewButton = styled.button`
 
 const PreviewGrid = styled.div`
   border: 2px solid var(--white);
-  align-self: center;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr 1fr;
-  margin: 20px;
+  margin: 0 10px 20px 20px;
   border-radius: 5px;
-  box-shadow: var(--box-shadow-classic);
 `;
 const ButtonPreview = styled.div`
   background-color: var(--${props => props.color});
@@ -122,22 +115,19 @@ const ButtonPreview = styled.div`
   width: 30px;
   height: 30px;
   padding: 2px;
-  color: black;
-  border: 0.5px solid black;
+  color: var(--black);
+  border: 0.5px solid var(--black);
   border-radius: 2px;
-  
 `;
 
 const DrumPadForm = styled.section`
   display: flex;
-  flex-wrap: wrap;
   flex-direction: column;
-  align-content: center;
-  gap: 10px;
 `;
 
 const SettingsSelect = styled.select`
   text-align: center;
+  margin-bottom: 15px;
   height: 40px;
   width: 250px;
   color: var(--white);

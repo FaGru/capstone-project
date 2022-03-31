@@ -90,22 +90,19 @@ const PageContainer = styled.div`
   grid-template-columns: 1fr auto 1fr;
   height: 90vh;
   width: 95vw;
+  margin: 5vh auto 5vh auto;
   background-color: var(--darkgray);
   border-radius: 10px;
-  margin: auto;
-  margin-top: 20px;
   box-shadow: inset 0 0 20px 1px var(--black);
   &::before,
   ::after {
     content: '';
     border-radius: 10px;
+    position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-    margin: auto;
-    place-content: center;
-    position: absolute;
     z-index: -1;
     background-image: linear-gradient(
       15deg,

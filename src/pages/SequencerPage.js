@@ -15,12 +15,12 @@ import { NavLink } from 'react-router-dom';
 import * as Tone from 'tone';
 import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
+import useStore from '../hooks/useStore';
 
 import backLogo from '../images/back-right.svg';
 import playbutton from '../images/play.svg';
 import pausebutton from '../images/pause.svg';
 import EQLogo from '../images/EQ.svg';
-import useStore from '../hooks/useStore';
 import settingsLogo from '../images/settings.svg';
 
 export default function SequencerPage() {
@@ -141,17 +141,14 @@ const PageContainer = styled.div`
   display: grid;
   grid-template-rows: repeat(4, auto);
   grid-template-columns: 1fr auto 1fr;
-  justify-content: center;
-  align-items: center;
 `;
 const GridContainer = styled.div`
   position: relative;
   grid-column: 2 / 3;
   background-color: var(--darkgray);
   border: 2px solid var(--darkgray);
-  padding: 5px;
-  margin-top: 30px;
-  margin-bottom: auto;
+  padding: 10px;
+  margin-top: 25px;
   border-radius: 10px;
   box-shadow: inset 0 0 15px 2px var(--black);
   &::before,
@@ -161,8 +158,6 @@ const GridContainer = styled.div`
     bottom: 0;
     left: 0;
     right: 0;
-    margin: auto;
-    place-content: center;
     border-radius: 10px;
     position: absolute;
     z-index: -1;

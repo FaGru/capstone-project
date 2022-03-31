@@ -31,19 +31,10 @@ const GlobalStyle = createGlobalStyle`
     --box-shadow-keyboard: inset -3px -2px 5px  #e2e2e5;
   }
   body {
-    background-color: black;
-    margin: 0;
-    height: 100vh;
-  
+    background-color: black;   
     color: #ccd;
-    font-family: "Poppins", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-      sans-serif;
-    font-size: 1rem;
-  }
-  code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-      monospace;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
   }
 `;
 export default GlobalStyle;

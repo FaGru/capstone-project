@@ -5,11 +5,11 @@ import RecordingsPage from './pages/RecordingsPage';
 import SequencerPage from './pages/SequencerPage';
 import LandingPage from './pages/LandingPage';
 
+import { defaultPadSettings } from './data';
 
 import useLocalStorage from './hooks/useLocalSorage';
 import { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import { defaultPadSettings } from './data';
 import styled from 'styled-components';
 import useStore from './hooks/useStore';
 import { AnimatePresence } from 'framer-motion';

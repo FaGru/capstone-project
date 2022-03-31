@@ -9,6 +9,7 @@ import NavAnimation from '../components/FramerMotion';
 export default function RecordingsPage() {
   let playerCounter = 0;
   const myRecordings = useStore(state => state.recordings);
+
   return (
     <NavAnimation start="initalBottom" end="outBottom">
       <PageContainer>
@@ -25,7 +26,9 @@ export default function RecordingsPage() {
         </HeadingContainer>
         <RecordingsContainer>
           {myRecordings.length === 0 ? (
-            <p>It's still quiet here! You have to record something...</p>
+            <p>
+              It's still quiet here! <br /> You have to record something...
+            </p>
           ) : (
             myRecordings.map(recording => (
               <div key={nanoid()}>
@@ -66,8 +69,6 @@ const PageContainer = styled.div`
     bottom: 0;
     left: 0;
     right: 0;
-    margin: auto;
-    place-content: center;
     border-radius: 10px;
     position: absolute;
     z-index: -1;
@@ -95,10 +96,7 @@ const PageContainer = styled.div`
 
 const RecordingsContainer = styled.section`
   display: flex;
-  flex-wrap: wrap;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   text-align: center;
 `;
 
@@ -107,7 +105,7 @@ const HeadingContainer = styled.header`
   grid-template-columns: 15% 1fr 15%;
 `;
 const Heading = styled.h2`
-  margin-top: 32px;
+  margin-top: 25px;
   text-align: center;
   grid-column: 2 / 3;
 `;

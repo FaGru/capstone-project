@@ -20,7 +20,6 @@ import volumeLogo from '../images/EQ.svg';
 import sequencerLogo from '../images/sequencer.svg';
 
 export default function DrumMachinePage() {
-  const [devicesState, setDevicesState] = useState('');
   const [isControlsVisible, setIsControlsVisible] = useState(false);
 
   const recorder = useStore(state => state.recorder);
@@ -112,8 +111,6 @@ export default function DrumMachinePage() {
           <RecordButton
             recordStartClick={recordStartClick}
             recordStopClick={recordStopClick}
-            devicesState={devicesState}
-            setDevicesState={setDevicesState}
           />
 
           <DrumLoopPlayer
@@ -180,6 +177,7 @@ const spin = keyframes`
 0% {background-position: top center;}
 100% {background-position: bottom center;}
 `;
+
 const DrumMachineContainer = styled.section`
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -188,7 +186,8 @@ const DrumMachineContainer = styled.section`
   border-radius: 10px;
   background-color: var(--darkgray);
   position: relative;
-  margin-top: 30px;
+  margin-top: 25px;
+  padding: 10px;
   box-shadow: inset 0 0 15px 5px var(--black);
 
   @media (max-width: 1000px) {
@@ -203,8 +202,7 @@ const DrumMachineContainer = styled.section`
     bottom: 0;
     left: 0;
     right: 0;
-    margin: auto;
-    place-content: center;
+
     border-radius: 10px;
     position: absolute;
     z-index: -1;
@@ -222,7 +220,6 @@ const DrumMachineContainer = styled.section`
     );
     background-size: 100% 200%;
     background-position: center center;
-
     animation: ${spin} 10s infinite alternate;
   }
   &::after {
@@ -241,13 +238,10 @@ const PadList = styled.div`
   grid-column: 2 / 3;
   grid-row: 2 / 3;
   display: grid;
-  max-width: 450px;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr 1fr;
   grid-gap: 5px;
-  margin-left: 5px;
-  margin-right: 7px;
-  margin-bottom: 5px;
+  margin: 5px;
 `;
 
 const RecLoopContainer = styled(motion.div)`
