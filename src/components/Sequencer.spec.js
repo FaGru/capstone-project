@@ -13,8 +13,6 @@ describe('Sequence', () => {
 
     const sequencerButton = screen.getAllByTestId('sequencer-button');
 
-
-
     expect(sequencerButton.length).toBe(32);
   });
 });

@@ -1,13 +1,16 @@
 import PadSettings from '../components/PadSettings';
 import InstructionPadSettings from '../components/InstructionsPadSettings';
+import NavAnimation from '../components/FramerMotion';
+import { BackgroundAnimation } from '../components/BackgroundAnimation';
+import { StyledButtonImg, InvisibleButton } from '../components/Buttons';
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import backLogo from '../images/back.svg';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import * as Tone from 'tone';
 import useStore from '../hooks/useStore';
-import { StyledButtonImg, InvisibleButton } from '../components/Buttons';
-import NavAnimation from '../components/FramerMotion';
+
+import backLogo from '../images/back.svg';
 
 export default function SettingsPage({ setStoragedPadSettings }) {
   const [selectedPad, setSelectedPad] = useState('0');
@@ -41,7 +44,6 @@ export default function SettingsPage({ setStoragedPadSettings }) {
             padChange={padChange}
             sampleChange={sampleChange}
             allPads={allPads}
-            selectedSample={selectedSample}
             samplePreview={samplePreview}
           />
         </SettingsContainer>
@@ -80,11 +82,8 @@ export default function SettingsPage({ setStoragedPadSettings }) {
     });
   }
 }
-const animation = keyframes`
-0% {background-position: top center;}
-100% {background-position: bottom center;}
-`;
-const PageContainer = styled.div`
+
+const PageContainer = styled(BackgroundAnimation)`
   position: relative;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -94,35 +93,6 @@ const PageContainer = styled.div`
   background-color: var(--darkgray);
   border-radius: 10px;
   box-shadow: inset 0 0 20px 1px var(--black);
-  &::before,
-  ::after {
-    content: '';
-    border-radius: 10px;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: -1;
-    background-image: linear-gradient(
-      15deg,
-      #44d62c,
-      #099fff,
-      #6c90f6,
-      #5a05a9,
-      #6b0643,
-      #6b0643,
-      #970533,
-      #df1d5d,
-      #f631a7
-    );
-    background-size: 100% 200%;
-    background-position: center center;
-    animation: ${animation} 10s infinite alternate;
-  }
-  &::after {
-    filter: blur(60px);
-  }
 `;
 
 const HeadingContainer = styled.header`

@@ -1,20 +1,20 @@
 import NavAnimation from '../components/FramerMotion';
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+
 import useStore from '../hooks/useStore';
+import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
+
 import backround from '../images/background.jpg';
 
 export default function LandingPage() {
-
-  let navigate = useNavigate();
   const setInstructionOneVisible = useStore(
     state => state.setInstructionOneVisible
   );
   const setIsInstructionNavVisible = useStore(
     state => state.setIsInstructionNavVisible
   );
-  
+
   return (
     <NavAnimation end="outTop">
       <LandingPageContainer>
@@ -25,34 +25,34 @@ export default function LandingPage() {
         <LandingPageButton
           animate={{ x: [-1000, 50, 0] }}
           transition={{ duration: 0.4 }}
-          type="button"
-          onClick={() => navigate('/drum-machine', { replace: true })}
         >
-          DrumMachine
+          <Link type="button" to="/drum-machine">
+            DrumMachine
+          </Link>
         </LandingPageButton>
         <LandingPageButton
           animate={{ x: [1000, -50, 0] }}
           transition={{ duration: 0.4, delay: 0.15 }}
-          type="button"
-          onClick={() => navigate('/sequencer', { replace: true })}
         >
-          Sequencer
+          <Link type="button" to="/sequencer">
+            Sequencer
+          </Link>
         </LandingPageButton>
         <LandingPageButton
           animate={{ x: [-1000, 50, 0] }}
           transition={{ duration: 0.4, delay: 0.3 }}
-          type="button"
-          onClick={() => navigate('/settings', { replace: true })}
         >
-          Settings
+          <Link type="button" to="/settings">
+            Settings
+          </Link>
         </LandingPageButton>
         <LandingPageButton
           animate={{ x: [1000, -50, 0] }}
           transition={{ duration: 0.4, delay: 0.45 }}
-          type="button"
-          onClick={instructionClick}
         >
-          Instructions
+          <Link onClick={instructionClick} to="/drum-machine">
+            Instructions
+          </Link>
         </LandingPageButton>
       </LandingPageContainer>
     </NavAnimation>
@@ -61,7 +61,6 @@ export default function LandingPage() {
   function instructionClick() {
     setInstructionOneVisible(true);
     setIsInstructionNavVisible(true);
-    navigate('/drum-machine', { replace: true });
   }
 }
 
@@ -75,6 +74,12 @@ const LandingPageContainer = styled.div`
   background-repeat: no-repeat;
   background-position: center center;
   overflow: hidden;
+`;
+
+const Link = styled(NavLink)`
+  text-decoration: none;
+  color: #c40820;
+  font-weight: bold;
 `;
 
 const H1 = styled.h1`
@@ -111,16 +116,16 @@ const H1 = styled.h1`
     -webkit-background-clip: text;
   }
 `;
-const LandingPageButton = styled(motion.button)`
+const LandingPageButton = styled(motion.div)`
   min-width: 260px;
   height: 40px;
   border-radius: 15px;
   border: 2px solid var(--darkgray);
   background-color: #080405;
-  color: #c40820;
-  font-weight: bold;
-  box-shadow: 1.5px 1.5px 3px;
+  box-shadow: 1.5px 1.5px 3px #c40820;
   cursor: pointer;
+  text-align: center;
+  padding: 8px;
 
   &:hover {
     background: linear-gradient(

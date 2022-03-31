@@ -3,14 +3,14 @@ import Sequencer from '../components/Sequencer';
 import SequencerSettings from '../components/SequencerSettings';
 import InstructionsSequencer from '../components/InstructionsSequencer';
 import NavAnimation from '../components/FramerMotion';
-
+import { BackgroundAnimation } from '../components/BackgroundAnimation';
 import {
   StyledButtonImg,
   InvisibleButton,
   StartSequenceButton,
 } from '../components/Buttons';
 
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import * as Tone from 'tone';
 import { useState, useCallback } from 'react';
@@ -99,7 +99,6 @@ export default function SequencerPage() {
                 key={pad.id}
                 id={pad.id}
                 color={pad.color}
-                sample={pad.sample}
                 sequencerPadClick={sequencerPadClick}
               />
             ))}
@@ -133,16 +132,14 @@ export default function SequencerPage() {
     });
   }
 }
-const animation = keyframes`
-0% {background-position: top center;}
-100% {background-position: bottom center;}
-`;
+
 const PageContainer = styled.div`
   display: grid;
   grid-template-rows: repeat(4, auto);
   grid-template-columns: 1fr auto 1fr;
 `;
-const GridContainer = styled.div`
+
+const GridContainer = styled(BackgroundAnimation)`
   position: relative;
   grid-column: 2 / 3;
   background-color: var(--darkgray);
@@ -151,36 +148,6 @@ const GridContainer = styled.div`
   margin-top: 25px;
   border-radius: 10px;
   box-shadow: inset 0 0 15px 2px var(--black);
-  &::before,
-  ::after {
-    content: '';
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    border-radius: 10px;
-    position: absolute;
-    z-index: -1;
-    background-image: linear-gradient(
-      15deg,
-      #44d62c,
-      #099fff,
-      #6c90f6,
-      #5a05a9,
-      #6b0643,
-      #6b0643,
-      #970533,
-      #df1d5d,
-      #f631a7
-    );
-    background-size: 100% 200%;
-    background-position: center center;
-
-    animation: ${animation} 10s infinite alternate;
-  }
-  &::after {
-    filter: blur(60px);
-  }
 `;
 
 const HeadingContainer = styled(motion.header)`

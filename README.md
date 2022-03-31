@@ -7,7 +7,7 @@ In the settings you can change the colors and the sample of your Drum Rack.
 
 ## Current version
 
-Visit the latest version of [NanoBeats](capstone-project-fagru.vercel.app) on Vercel!
+Visit the latest version of [NanoBeats](https://www.nano-beats.de/) on Vercel!
 
 ## Tech Stack
 

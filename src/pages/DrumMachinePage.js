@@ -4,11 +4,12 @@ import RecordButton from '../components/RecordButton';
 import VolumeControl from '../components/VolumeControl';
 import InstructionsDrumMachine from '../components/InstructionsDrumMachine';
 import NavAnimation from '../components/FramerMotion';
+import { BackgroundAnimation } from '../components/BackgroundAnimation';
 
 import { StyledButtonImg, InvisibleButton } from '../components/Buttons';
 
 import { NavLink } from 'react-router-dom';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import * as Tone from 'tone';
 import { useState } from 'react';
 import useStore from '../hooks/useStore';
@@ -173,12 +174,9 @@ export default function DrumMachinePage() {
     setLoopPlayerVolume(e.target.value / 10);
   }
 }
-const spin = keyframes`
-0% {background-position: top center;}
-100% {background-position: bottom center;}
-`;
 
-const DrumMachineContainer = styled.section`
+
+const DrumMachineContainer = styled(BackgroundAnimation)`
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   grid-template-rows: auto 1fr auto auto;
@@ -194,36 +192,6 @@ const DrumMachineContainer = styled.section`
     @media (orientation: landscape) {
       display: none;
     }
-  }
-  &::before,
-  ::after {
-    content: '';
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-
-    border-radius: 10px;
-    position: absolute;
-    z-index: -1;
-    background-image: linear-gradient(
-      15deg,
-      #44d62c,
-      #099fff,
-      #6c90f6,
-      #5a05a9,
-      #6b0643,
-      #6b0643,
-      #970533,
-      #df1d5d,
-      #f631a7
-    );
-    background-size: 100% 200%;
-    background-position: center center;
-    animation: ${spin} 10s infinite alternate;
-  }
-  &::after {
-    filter: blur(60px);
   }
 `;
 const LinkContainer = styled(motion.div)`

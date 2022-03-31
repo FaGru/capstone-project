@@ -1,6 +1,8 @@
 import KeyboardButtons from '../components/KeyboardButtons';
-import styled, { keyframes } from 'styled-components';
+import { BackgroundAnimation } from '../components/BackgroundAnimation';
+
 import useStore from '../hooks/useStore';
+import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
 export default function KeyboardboardPage() {
@@ -39,12 +41,8 @@ export default function KeyboardboardPage() {
     setKeyboardVolume(e.target.value / 10);
   }
 }
-const spin = keyframes`
-0% {background-position: top center;}
-100% {background-position: bottom center;}
-`;
 
-const KeyboardContainer = styled.section`
+const KeyboardContainer = styled(BackgroundAnimation)`
   display: flex;
   position: relative;
   flex-direction: column;
@@ -61,36 +59,6 @@ const KeyboardContainer = styled.section`
   }
   @media (orientation: portrait) {
     display: none;
-  }
-  &::before,
-  ::after {
-    content: '';
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    border-radius: 10px;
-    position: absolute;
-    z-index: -1;
-    background-image: linear-gradient(
-      15deg,
-      #44d62c,
-      #099fff,
-      #6c90f6,
-      #5a05a9,
-      #6b0643,
-      #6b0643,
-      #970533,
-      #df1d5d,
-      #f631a7
-    );
-    background-size: 100% 200%;
-    background-position: center center;
-
-    animation: ${spin} 10s infinite alternate;
-  }
-  &::after {
-    filter: blur(60px);
   }
 `;
 const VolumeRange = styled.input`

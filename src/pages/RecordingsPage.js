@@ -1,10 +1,12 @@
+import NavAnimation from '../components/FramerMotion';
+import { BackgroundAnimation } from '../components/BackgroundAnimation';
+import { StyledButtonImg } from '../components/Buttons';
+
 import { NavLink } from 'react-router-dom';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import backButton from '../images/back.svg';
 import { nanoid } from 'nanoid';
 import useStore from '../hooks/useStore';
-import { StyledButtonImg } from '../components/Buttons';
-import NavAnimation from '../components/FramerMotion';
 
 export default function RecordingsPage() {
   let playerCounter = 0;
@@ -27,7 +29,9 @@ export default function RecordingsPage() {
         <RecordingsContainer>
           {myRecordings.length === 0 ? (
             <p>
-              It's still quiet here! <br /> You have to record something...
+              It's still quiet here!
+              <br />
+              You have to record something...
             </p>
           ) : (
             myRecordings.map(recording => (
@@ -48,12 +52,8 @@ export default function RecordingsPage() {
     </NavAnimation>
   );
 }
-const spin = keyframes`
-0% {background-position: top center;}
-100% {background-position: bottom center;}
-`;
 
-const PageContainer = styled.div`
+const PageContainer = styled(BackgroundAnimation)`
   position: relative;
   height: 90vh;
   width: 95vw;
@@ -62,36 +62,6 @@ const PageContainer = styled.div`
   margin: auto;
   margin-top: 30px;
   box-shadow: inset 0 0 20px 1px var(--black);
-  &::before,
-  ::after {
-    content: '';
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    border-radius: 10px;
-    position: absolute;
-    z-index: -1;
-    background-image: linear-gradient(
-      15deg,
-      #44d62c,
-      #099fff,
-      #6c90f6,
-      #5a05a9,
-      #6b0643,
-      #6b0643,
-      #970533,
-      #df1d5d,
-      #f631a7
-    );
-    background-size: 100% 200%;
-    background-position: center center;
-
-    animation: ${spin} 10s infinite alternate;
-  }
-  &::after {
-    filter: blur(60px);
-  }
 `;
 
 const RecordingsContainer = styled.section`
