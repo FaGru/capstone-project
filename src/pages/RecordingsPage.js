@@ -55,8 +55,8 @@ export default function RecordingsPage() {
 
 const PageContainer = styled(BackgroundAnimation)`
   position: relative;
-  height: 90vh;
-  width: 95vw;
+  min-height: 600px;
+  max-width: 400px;
   background-color: var(--darkgray);
   border-radius: 10px;
   margin: auto;

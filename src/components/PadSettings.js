@@ -144,7 +144,8 @@ const SaveButton = styled.button`
   width: 150px;
   color: var(--green);
   background-color: var(--black);
-  margin: 15px;
+  margin: 25px;
+  margin-bottom: 50px;
   border-radius: 5px;
   border: 1px solid var(--green);
   border-top: 1px solid var(--lightgray);
