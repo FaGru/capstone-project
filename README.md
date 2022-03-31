@@ -9,7 +9,7 @@ In the settings you can change the colors and the sample of your Drum Rack.
 
 Visit the latest version of [NanoBeats](https://www.nano-beats.de/) on Vercel!
 
-https://user-images.githubusercontent.com/95469432/161123066-c063b8aa-914e-4b7a-a5df-28e66fd6375d.mov
+<div style="width: 300px" >https://user-images.githubusercontent.com/95469432/161123066-c063b8aa-914e-4b7a-a5df-28e66fd6375d.mov</div>
 
 ## `Tech Stack`
 
