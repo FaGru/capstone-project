@@ -87,7 +87,7 @@ const PageContainer = styled(BackgroundAnimation)`
   position: relative;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
-  max-width: 400px;
+  max-width: 350px;
   margin: 5vh auto 5vh auto;
   background-color: var(--darkgray);
   border-radius: 10px;
