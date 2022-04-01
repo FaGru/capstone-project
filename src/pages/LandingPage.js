@@ -1,18 +1,20 @@
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import useStore from '../hooks/useStore';
-import backround from '../images/background.jpg';
-import { motion } from 'framer-motion';
 import NavAnimation from '../components/FramerMotion';
 
+import useStore from '../hooks/useStore';
+import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
+import { motion } from 'framer-motion';
+
+import backround from '../images/background.jpg';
+
 export default function LandingPage() {
-  let navigate = useNavigate();
   const setInstructionOneVisible = useStore(
     state => state.setInstructionOneVisible
   );
   const setIsInstructionNavVisible = useStore(
     state => state.setIsInstructionNavVisible
   );
+
   return (
     <NavAnimation end="outTop">
       <LandingPageContainer>
@@ -20,39 +22,38 @@ export default function LandingPage() {
           Welcome to <br />
           <span>NanoBeats</span>
         </H1>
-        <LandingPageButton
-          animate={{ x: [-1000, 50, 0] }}
-          transition={{ duration: 0.4 }}
-          type="button"
-          onClick={() => navigate('/drum-machine', { replace: true })}
-        >
-          {' '}
-          DrumMachine
-        </LandingPageButton>
-        <LandingPageButton
-          animate={{ x: [1000, -50, 0] }}
-          transition={{ duration: 0.4, delay: 0.15 }}
-          type="button"
-          onClick={() => navigate('/sequencer', { replace: true })}
-        >
-          Sequencer
-        </LandingPageButton>
-        <LandingPageButton
-          animate={{ x: [-1000, 50, 0] }}
-          transition={{ duration: 0.4, delay: 0.3 }}
-          type="button"
-          onClick={() => navigate('/settings', { replace: true })}
-        >
-          Settings
-        </LandingPageButton>
-        <LandingPageButton
-          animate={{ x: [1000, -50, 0] }}
-          transition={{ duration: 0.4, delay: 0.45 }}
-          type="button"
-          onClick={instructionClick}
-        >
-          Instructions
-        </LandingPageButton>
+        <Link type="button" to="/drum-machine">
+          <LandingPageButton
+            animate={{ x: [-1000, 50, 0] }}
+            transition={{ duration: 0.4 }}
+          >
+            DrumMachine
+          </LandingPageButton>
+        </Link>
+        <Link type="button" to="/sequencer">
+          <LandingPageButton
+            animate={{ x: [1000, -50, 0] }}
+            transition={{ duration: 0.4, delay: 0.15 }}
+          >
+            Sequencer
+          </LandingPageButton>
+        </Link>
+        <Link type="button" to="/settings">
+          <LandingPageButton
+            animate={{ x: [-1000, 50, 0] }}
+            transition={{ duration: 0.4, delay: 0.3 }}
+          >
+            Settings
+          </LandingPageButton>
+        </Link>
+        <Link onClick={instructionClick} to="/drum-machine">
+          <LandingPageButton
+            animate={{ x: [1000, -50, 0] }}
+            transition={{ duration: 0.4, delay: 0.45 }}
+          >
+            Instructions
+          </LandingPageButton>
+        </Link>
       </LandingPageContainer>
     </NavAnimation>
   );
@@ -60,7 +61,6 @@ export default function LandingPage() {
   function instructionClick() {
     setInstructionOneVisible(true);
     setIsInstructionNavVisible(true);
-    navigate('/drum-machine', { replace: true });
   }
 }
 
@@ -82,7 +82,7 @@ const H1 = styled.h1`
   margin-bottom: 40px;
   font-size: 2rem;
   border-radius: 20px;
-  box-shadow: inset 2px 2px 100px 10px #080405;
+  box-shadow: inset 2px 2px 100px 10px var(--black);
   padding: 10px;
 
   span {
@@ -110,18 +110,25 @@ const H1 = styled.h1`
     -webkit-background-clip: text;
   }
 `;
-const LandingPageButton = styled(motion.button)`
+const Link = styled(NavLink)`
+  text-decoration: none;
+`;
+
+const LandingPageButton = styled(motion.div)`
   min-width: 260px;
   height: 40px;
   border-radius: 15px;
   border: 2px solid var(--darkgray);
   background-color: #080405;
+  box-shadow: 1.5px 1.5px 3px #c40820;
+  cursor: pointer;
+  text-align: center;
+  padding: 8px;
   color: #c40820;
   font-weight: bold;
-  box-shadow: 1.5px 1.5px 3px;
-  cursor: pointer;
 
   &:hover {
+    color: #080405;
     background: linear-gradient(
       220deg,
       #970533 10%,
@@ -130,6 +137,5 @@ const LandingPageButton = styled(motion.button)`
       #a206a3 70%,
       #970533 90%
     );
-    color: #080405;
   }
 `;

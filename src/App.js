@@ -5,14 +5,14 @@ import RecordingsPage from './pages/RecordingsPage';
 import SequencerPage from './pages/SequencerPage';
 import LandingPage from './pages/LandingPage';
 
-
-import useLocalStorage from './hooks/useLocalSorage';
+import useLocalStorage from './hooks/useLocalStorage';
 import { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import { defaultPadSettings } from './data';
 import styled from 'styled-components';
 import useStore from './hooks/useStore';
 import { AnimatePresence } from 'framer-motion';
+
+import { defaultPadSettings } from './data';
 
 export default function App() {
   const location = useLocation();
@@ -31,7 +31,6 @@ export default function App() {
   myPadSettings.sort(function (a, b) {
     return a.id - b.id;
   });
-
 
   useEffect(() => {
     setAllPads(
@@ -71,5 +70,4 @@ const InstrumentContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
 `;

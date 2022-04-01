@@ -3,16 +3,14 @@ import styled from 'styled-components';
 export const StyledButtonImg = styled.img`
   transition: ease 0.4s;
   border: 1px solid var(--gray);
-  border-bottom: 4px solid var(--gray);
-  border-right: 4px solid var(--gray);
+  border-bottom: 3px solid var(--gray);
+  border-right: 3px solid var(--gray);
   border-radius: 100%;
   padding: 3px;
-  background-color: var(--darkgray);
 
   &:active {
     transition: ease 0.2s;
-    border-top: 4px solid var(--gray);
-    border-left: 4px solid var(--gray);
+    border: 3px solid var(--gray);
   }
 `;
 export const InvisibleButton = styled.button`

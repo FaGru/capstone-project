@@ -4,7 +4,7 @@ import { nanoid } from 'nanoid';
 import { defaultPadSettings } from '../data';
 import { defaultSequencerSettings } from '../data';
 
-const useStore = create(set => ({
+const useStore = create((set, get) => ({
   tone: null,
   dest: null,
   recorder: null,
@@ -32,12 +32,12 @@ const useStore = create(set => ({
 
   handleUserInteraction: () => {
     const handleUserInteraction = () => {
-      const tone = useStore.getState().tone;
+      const tone = get().tone;
       if (!tone) {
-        useStore.getState().initTone();
-        useStore.getState().initKeyboard();
-        useStore.getState().initLoopPlayer();
-        useStore.getState().initDrumPadPlayers();
+        get().initTone();
+        get().initKeyboard();
+        get().initLoopPlayer();
+        get().initDrumPadPlayers();
       }
     };
     window.addEventListener('click', handleUserInteraction);
@@ -55,8 +55,8 @@ const useStore = create(set => ({
 
   ///////     init DrumPadPlayers, set PadSettings and Volume    /////////
   initDrumPadPlayers: () => {
-    const allPads = useStore.getState().allPads;
-    const drumPadPlayersVolume = useStore.getState().drumPadPlayersVolume;
+    const allPads = get().allPads;
+    const drumPadPlayersVolume = get().drumPadPlayersVolume;
     const drumPadPlayers = new Tone.Players(
       {
         Player0: allPads[0].sample,
@@ -76,7 +76,7 @@ const useStore = create(set => ({
         volume: drumPadPlayersVolume - 5,
       }
     ).toDestination();
-    const dest = useStore.getState().dest;
+    const dest = get().dest;
     drumPadPlayers.connect(dest);
     set({ drumPadPlayers });
   },
@@ -84,14 +84,14 @@ const useStore = create(set => ({
     set({ allPads: allPads });
   },
   setDrumPadPlayersVolume: drumPadPlayersVolume => {
-    const loopPlayer = useStore.getState().drumPadPlayers;
+    const loopPlayer = get().drumPadPlayers;
     loopPlayer.volume.value = drumPadPlayersVolume - 5;
     set({ drumPadPlayersVolume: drumPadPlayersVolume });
   },
   ////////////////    Keyboard    //////////////////////
   initKeyboard: () => {
-    const dest = useStore.getState().dest;
-    const keyboardVolume = useStore.getState().keyboardVolume;
+    const dest = get().dest;
+    const keyboardVolume = get().keyboardVolume;
     const monoSynth = new Tone.MonoSynth({
       volume: keyboardVolume - 8,
       detune: 0,
@@ -165,8 +165,8 @@ const useStore = create(set => ({
     set({ monoSynth, synth });
   },
   setKeyboardVolume: keyboardVolume => {
-    const monoSynth = useStore.getState().monoSynth;
-    const synth = useStore.getState().synth;
+    const monoSynth = get().monoSynth;
+    const synth = get().synth;
     synth.volume.value = keyboardVolume - 5;
     monoSynth.volume.value = keyboardVolume - 5;
     set({ keyboardVolume: keyboardVolume });
@@ -174,9 +174,9 @@ const useStore = create(set => ({
   ////////    init LoopPlayer, set DrumLoop and Volume    //////////
   initLoopPlayer: () => {
     const loopPlayer = new Tone.Player(
-      `./audio/DrumLoops/${useStore.getState().currentDrumLoop}.wav`
+      `./audio/DrumLoops/${get().currentDrumLoop}.wav`
     ).toDestination();
-    const dest = useStore.getState().dest;
+    const dest = get().dest;
     loopPlayer.connect(dest);
     loopPlayer.loop = true;
     set({ loopPlayer });
@@ -185,7 +185,7 @@ const useStore = create(set => ({
     set({ currentDrumLoop: currentDrumLoop });
   },
   setLoopPlayerVolume: loopPlayerVolume => {
-    const loopPlayer = useStore.getState().loopPlayer;
+    const loopPlayer = get().loopPlayer;
     loopPlayer.volume.value = loopPlayerVolume - 5;
     set({ loopPlayerVolume: loopPlayerVolume });
   },
@@ -208,14 +208,14 @@ const useStore = create(set => ({
   },
   //////////////////    save and add recordings    //////////////////////
   saveRecording: () => {
-    const recorder = useStore.getState().recorder;
+    const recorder = get().recorder;
     const chunks = [];
     if (recorder) {
       recorder.ondataavailable = event => chunks.push(event.data);
       recorder.onstop = () => {
         const blob = new Blob(chunks, { type: 'audio/mp3; codecs=opus' });
         const audio = URL.createObjectURL(blob);
-        useStore.getState().addRecording({
+        get().addRecording({
           id: nanoid(),
           audio: audio,
         });

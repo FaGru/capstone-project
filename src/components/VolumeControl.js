@@ -1,7 +1,7 @@
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 import useStore from '../hooks/useStore';
 import close from '../images/close.svg';
-import { motion } from 'framer-motion';
 
 export default function VolumeControl({
   isControlsVisible,
@@ -9,6 +9,7 @@ export default function VolumeControl({
   handlePadVolume,
   handleLoopPlayerVolume,
 }) {
+
   const loopPlayerVolume = useStore(state => state.loopPlayerVolume);
   const drumPadPlayersVolume = useStore(state => state.drumPadPlayersVolume);
 
@@ -68,14 +69,13 @@ export default function VolumeControl({
 const ControlsContainer = styled(motion.section)`
   position: absolute;
   display: flex;
-  flex-wrap: wrap;
   flex-direction: column;
   border: 2px solid var(--lightgray);
   border-radius: 10px;
   width: 300px;
   background-color: var(--darkgray);
   place-self: center;
-  padding: 10px;
+  padding: 15px;
   box-shadow: inset 0 0 20px 1px var(--black);
 `;
 const Heading = styled.header`
@@ -84,7 +84,7 @@ const Heading = styled.header`
 `;
 
 const H2 = styled.h2`
-  margin: 0px;
+  margin: 0;
   margin-bottom: 20px;
   text-align: center;
   grid-column: 2 / 3;
