@@ -60,6 +60,7 @@ export default function SettingsPage({ setStoragedPadSettings }) {
   function sampleChange(e) {
     setSelectedSample(e.target.value);
   }
+
   function savePadClick() {
     const newPad = {
       id: selectedPad,
@@ -71,6 +72,7 @@ export default function SettingsPage({ setStoragedPadSettings }) {
     sortedPads.sort(function (a, b) {
       return a.id - b.id;
     });
+    
     setStoragedPadSettings(sortedPads);
     setAllPads(sortedPads);
     useStore.getState().initDrumPadPlayers();
@@ -101,6 +103,7 @@ const HeadingContainer = styled.header`
   margin-left: 10px;
   margin-right: 10px;
 `;
+
 const Heading = styled.h2`
   text-align: center;
   grid-column: 2 / 3;
