@@ -28,7 +28,7 @@ export default function DrumPad({ id, color, drumPadClick }) {
       {isDesktop ? (
         <Pad
           animate={{ scale: [0.2, 1] }}
-          transition={{ delay: 0.5, duration: 1 }}
+          transition={{ duration: 1 }}
           type="button"
           aria-label={`drum pad`}
           onMouseDown={drumPadClick}
@@ -39,7 +39,7 @@ export default function DrumPad({ id, color, drumPadClick }) {
       ) : (
         <Pad
           animate={{ scale: [0.2, 1] }}
-          transition={{ delay: 0.5, duration: 1 }}
+          transition={{ duration: 1 }}
           type="button"
           aria-label={`drum pad`}
           onTouchStart={drumPadClick}
