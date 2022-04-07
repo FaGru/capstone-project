@@ -39,6 +39,7 @@ export default function DrumMachinePage() {
 
   const setNavDirection = useStore(state => state.setNavDirection);
   const navDirection = useStore(state => state.navDirection);
+  console.log(drumPadPlayers)
 
   return (
     <NavAnimation start={navDirection.start} end={navDirection.end}>
