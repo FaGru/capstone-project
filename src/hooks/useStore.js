@@ -21,6 +21,7 @@ const useStore = create((set, get) => ({
   currentTimeStamp: 0,
   currentBpm: 100,
   selectedPadSequence: defaultSequencerSettings[0].settings,
+  currentSequencerVolume: 0,
   keyboardVolume: 5,
   isInstructionPopUpVisible: true,
   isInstructionOneVisible: false,
@@ -84,8 +85,8 @@ const useStore = create((set, get) => ({
     set({ allPads: allPads });
   },
   setDrumPadPlayersVolume: drumPadPlayersVolume => {
-    const loopPlayer = get().drumPadPlayers;
-    loopPlayer.volume.value = drumPadPlayersVolume - 5;
+    const DrumPadPlayers = get().drumPadPlayers;
+    DrumPadPlayers.volume.value = drumPadPlayersVolume - 5;
     set({ drumPadPlayersVolume: drumPadPlayersVolume });
   },
   ////////////////    Keyboard    //////////////////////

@@ -9,10 +9,14 @@ export default function SequencerSettings({
 }) {
   const setCurrentBpm = useStore(state => state.setCurrentBpm);
   const currentBpm = useStore(state => state.currentBpm);
+  const setDrumPadPlayersVolume = useStore(
+    state => state.setDrumPadPlayersVolume
+  );
+  const drumPadPlayersVolume = useStore(state => state.drumPadPlayersVolume);
 
   return (
     <>
-      {isSettingsVisible ? (
+      {isSettingsVisible && (
         <SettingsContainer
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
@@ -36,9 +40,20 @@ export default function SequencerSettings({
             defaultValue={currentBpm}
             onChange={event => setCurrentBpm(event.target.value)}
           ></Input>
+          <label htmlFor="Sequencer-Volume">
+            Volume {(Number(drumPadPlayersVolume) + 30) / 5}
+          </label>
+          <Input
+            data-testid="Sequencer-Volume"
+            name="Sequencer-Volume"
+            id="Sequencer-Volume"
+            type="range"
+            min="-60"
+            max="20"
+            defaultValue={drumPadPlayersVolume}
+            onChange={event => setDrumPadPlayersVolume(event.target.value / 2)}
+          ></Input>
         </SettingsContainer>
-      ) : (
-        ''
       )}
     </>
   );
@@ -64,4 +79,4 @@ const CloseButton = styled.button`
 `;
 const Input = styled.input`
   cursor: pointer;
-`
+`;

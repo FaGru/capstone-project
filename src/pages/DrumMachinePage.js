@@ -167,11 +167,11 @@ export default function DrumMachinePage() {
     }
   }
   function handlePadVolume(e) {
-    setDrumPadPlayersVolume(e.target.value / 10);
+    setDrumPadPlayersVolume(e.target.value / 2);
   }
 
   function handleLoopPlayerVolume(e) {
-    setLoopPlayerVolume(e.target.value / 10);
+    setLoopPlayerVolume(e.target.value / 2);
   }
 }
 
