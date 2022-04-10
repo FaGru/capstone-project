@@ -35,6 +35,9 @@ const GlobalStyle = createGlobalStyle`
     color: #ccd;
     margin: 0;
     font-family: 'Roboto', sans-serif;
+    @media (max-width: 1000px){
+      background-color: var(--darkgray);
+    }
   }
 `;
 export default GlobalStyle;

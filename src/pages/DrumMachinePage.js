@@ -39,6 +39,7 @@ export default function DrumMachinePage() {
 
   const setNavDirection = useStore(state => state.setNavDirection);
   const navDirection = useStore(state => state.navDirection);
+  console.log(drumPadPlayers)
 
   return (
     <NavAnimation start={navDirection.start} end={navDirection.end}>
@@ -46,7 +47,7 @@ export default function DrumMachinePage() {
         <InstructionsDrumMachine />
         <LinkContainer
           animate={{ scale: [0.2, 1] }}
-          transition={{ delay: 0.5, duration: 1 }}
+          transition={{ duration: 1 }}
         >
           <NavLink onClick={handleNavigate} to="/sequencer">
             <StyledButtonImg
@@ -107,7 +108,7 @@ export default function DrumMachinePage() {
         </PadList>
         <RecLoopContainer
           animate={{ scale: [0.2, 1] }}
-          transition={{ delay: 0.5, duration: 1 }}
+          transition={{  duration: 1 }}
         >
           <RecordButton
             recordStartClick={recordStartClick}
@@ -167,11 +168,11 @@ export default function DrumMachinePage() {
     }
   }
   function handlePadVolume(e) {
-    setDrumPadPlayersVolume(e.target.value / 10);
+    setDrumPadPlayersVolume(e.target.value / 2);
   }
 
   function handleLoopPlayerVolume(e) {
-    setLoopPlayerVolume(e.target.value / 10);
+    setLoopPlayerVolume(e.target.value / 2);
   }
 }
 

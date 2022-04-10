@@ -9,7 +9,6 @@ export default function VolumeControl({
   handlePadVolume,
   handleLoopPlayerVolume,
 }) {
-
   const loopPlayerVolume = useStore(state => state.loopPlayerVolume);
   const drumPadPlayersVolume = useStore(state => state.drumPadPlayersVolume);
 
@@ -20,7 +19,6 @@ export default function VolumeControl({
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           exit={{ scale: 0 }}
-
         >
           <Heading>
             <H2>Volume</H2>
@@ -33,29 +31,29 @@ export default function VolumeControl({
             </CloseButton>
           </Heading>
           <label htmlFor="drum-pad-volume">
-            Drumpads {drumPadPlayersVolume}
+            Drumpads {(Number(drumPadPlayersVolume) + 30) / 5}
           </label>
           <Input
             data-testid="pad-volume"
             name="drum-pad-volume"
             id="drum-pad-volume"
             type="range"
-            min="0"
-            max="100"
-            defaultValue={drumPadPlayersVolume * 10}
+            min="-60"
+            max="20"
+            defaultValue={drumPadPlayersVolume}
             onChange={handlePadVolume}
           ></Input>
           <label htmlFor="drum-pad-volume">
-            Drumloop Player {loopPlayerVolume}
+            Drumloop Player {(Number(loopPlayerVolume) + 30) / 5}
           </label>
           <Input
             data-testid="drumloop-volume"
             name="drum-pad-volume"
             id="drum-pad-volume"
             type="range"
-            min="0"
-            max="100"
-            defaultValue={loopPlayerVolume * 10}
+            min="-60"
+            max="20"
+            defaultValue={loopPlayerVolume}
             onChange={handleLoopPlayerVolume}
           ></Input>
         </ControlsContainer>
