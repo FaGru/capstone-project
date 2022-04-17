@@ -1,11 +1,8 @@
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
 
 export default function SequencerPad({ id, color, sequencerPadClick }) {
   return (
     <Pad
-      animate={{ scale: [0.2,  1] }}
-      transition={{ duration: 1 }}
       type="button"
       aria-label="sequencer-pad"
       data-testid="sequencer-pad"
@@ -17,7 +14,7 @@ export default function SequencerPad({ id, color, sequencerPadClick }) {
   );
 }
 
-const Pad = styled(motion.button)`
+const Pad = styled.button`
   background: var(--${props => props.color});
   border: none;
   border-radius: 5px;

@@ -13,7 +13,6 @@ import styled from 'styled-components';
 import * as Tone from 'tone';
 import { useState } from 'react';
 import useStore from '../hooks/useStore';
-import { motion } from 'framer-motion';
 
 import settingsLogo from '../images/settings.svg';
 import recordingsLogo from '../images/recording-page.svg';
@@ -39,89 +38,87 @@ export default function DrumMachinePage() {
 
   const setNavDirection = useStore(state => state.setNavDirection);
   const navDirection = useStore(state => state.navDirection);
-  console.log(drumPadPlayers)
 
   return (
-    <NavAnimation start={navDirection.start} end={navDirection.end}>
-      <DrumMachineContainer>
-        <InstructionsDrumMachine />
-        <LinkContainer
-          animate={{ scale: [0.2, 1] }}
-          transition={{ duration: 1 }}
-        >
-          <NavLink onClick={handleNavigate} to="/sequencer">
-            <StyledButtonImg
-              src={sequencerLogo}
-              height="55px"
-              width="55px"
-              alt="sequencer"
-            />
-          </NavLink>
-          <NavLink onClick={handleNavigate} to="/recordings">
-            <StyledButtonImg
-              src={recordingsLogo}
-              height="55px"
-              width="55px"
-              alt="recordings"
-            />
-          </NavLink>
-          <InvisibleButton
-            type="button"
-            onClick={() => setIsControlsVisible(!isControlsVisible)}
-          >
-            <StyledButtonImg
-              src={volumeLogo}
-              height="55px"
-              width="55px"
-              alt="volume-settings"
-            />
-          </InvisibleButton>
-          <NavLink
-            value={['outLeft', 'initialLeft']}
-            onClick={handleNavigate}
-            to="/settings"
-          >
-            <StyledButtonImg
-              src={settingsLogo}
-              height="55px"
-              width="55px"
-              alt="settings"
-            />
-          </NavLink>
-        </LinkContainer>
-        <VolumeControl
-          isControlsVisible={isControlsVisible}
-          setIsControlsVisible={setIsControlsVisible}
-          handlePadVolume={handlePadVolume}
-          handleLoopPlayerVolume={handleLoopPlayerVolume}
-        />
-        <PadList>
-          {allPads.map(pad => (
-            <DrumPad
-              key={pad.id}
-              id={pad.id}
-              color={pad.color}
-              sample={pad.sample}
-              drumPadClick={drumPadClick}
-            />
-          ))}
-        </PadList>
-        <RecLoopContainer
-          animate={{ scale: [0.2, 1] }}
-          transition={{  duration: 1 }}
-        >
-          <RecordButton
-            recordStartClick={recordStartClick}
-            recordStopClick={recordStopClick}
+    <>
+      <NavAnimation start={navDirection.start} end={navDirection.end}>
+        <DrumMachineContainer>
+          <BackButton onClick={handleNavigate} to="/">
+            NanoBeats
+          </BackButton>
+          <InstructionsDrumMachine />
+          <LinkContainer>
+            <NavLink onClick={handleNavigate} to="/sequencer">
+              <StyledButtonImg
+                src={sequencerLogo}
+                height="55px"
+                width="55px"
+                alt="sequencer"
+              />
+            </NavLink>
+            <NavLink onClick={handleNavigate} to="/recordings">
+              <StyledButtonImg
+                src={recordingsLogo}
+                height="55px"
+                width="55px"
+                alt="recordings"
+              />
+            </NavLink>
+            <InvisibleButton
+              type="button"
+              onClick={() => setIsControlsVisible(!isControlsVisible)}
+            >
+              <StyledButtonImg
+                src={volumeLogo}
+                height="55px"
+                width="55px"
+                alt="volume-settings"
+              />
+            </InvisibleButton>
+            <NavLink
+              value={['outLeft', 'initialLeft']}
+              onClick={handleNavigate}
+              to="/settings"
+            >
+              <StyledButtonImg
+                src={settingsLogo}
+                height="55px"
+                width="55px"
+                alt="settings"
+              />
+            </NavLink>
+          </LinkContainer>
+          <VolumeControl
+            isControlsVisible={isControlsVisible}
+            setIsControlsVisible={setIsControlsVisible}
+            handlePadVolume={handlePadVolume}
+            handleLoopPlayerVolume={handleLoopPlayerVolume}
           />
+          <PadList>
+            {allPads.map(pad => (
+              <DrumPad
+                key={pad.id}
+                id={pad.id}
+                color={pad.color}
+                sample={pad.sample}
+                drumPadClick={drumPadClick}
+              />
+            ))}
+          </PadList>
+          <RecLoopContainer>
+            <RecordButton
+              recordStartClick={recordStartClick}
+              recordStopClick={recordStopClick}
+            />
 
-          <DrumLoopPlayer
-            startDrumLoop={startDrumLoop}
-            getDrumLoop={getDrumLoop}
-          />
-        </RecLoopContainer>
-      </DrumMachineContainer>
-    </NavAnimation>
+            <DrumLoopPlayer
+              startDrumLoop={startDrumLoop}
+              getDrumLoop={getDrumLoop}
+            />
+          </RecLoopContainer>
+        </DrumMachineContainer>
+      </NavAnimation>
+    </>
   );
 
   ////////////////////drumPad////////////////////
@@ -184,7 +181,8 @@ const DrumMachineContainer = styled(BackgroundAnimation)`
   border-radius: 10px;
   background-color: var(--darkgray);
   position: relative;
-  margin-top: 25px;
+  margin-top: 70px;
+  margin-bottom: 20px;
   padding: 10px;
   box-shadow: inset 0 0 15px 5px var(--black);
 
@@ -194,7 +192,28 @@ const DrumMachineContainer = styled(BackgroundAnimation)`
     }
   }
 `;
-const LinkContainer = styled(motion.div)`
+const BackButton = styled(NavLink)`
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translate(-50%);
+  text-decoration: none;
+  color: var(--black);
+  font-size: 2rem;
+  border-right: 3px solid var(--black);
+  border-bottom: 4px solid var(--black);
+  border-radius: 10px;
+  padding: 2px;
+  background: linear-gradient(
+    200deg,
+    #970533 10%,
+    #a206a3 30%,
+    #df1d5d 50%,
+    #a206a3 70%,
+    #970533 90%
+  );
+`;
+const LinkContainer = styled.div`
   grid-column: 2 / 3;
   grid-row: 1 / 2;
   display: flex;
@@ -212,7 +231,7 @@ const PadList = styled.div`
   margin: 5px;
 `;
 
-const RecLoopContainer = styled(motion.div)`
+const RecLoopContainer = styled.div`
   grid-row: 3 / 4;
   grid-column: 2 /3;
   display: flex;

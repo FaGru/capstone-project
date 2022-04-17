@@ -14,7 +14,6 @@ import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import * as Tone from 'tone';
 import { useState, useCallback } from 'react';
-import { motion } from 'framer-motion';
 import useStore from '../hooks/useStore';
 
 import backLogo from '../images/back-right.svg';
@@ -49,10 +48,7 @@ export default function SequencerPage() {
     <NavAnimation start="initialLeft" end="outLeft">
       <PageContainer>
         <GridContainer>
-          <HeadingContainer
-            animate={{ scale: [0.2, 1] }}
-            transition={{ duration: 1 }}
-          >
+          <HeadingContainer>
             <InvisibleButton
               aria-label="show settings"
               type="button"
@@ -82,10 +78,7 @@ export default function SequencerPage() {
               />
             </NavLink>
           </HeadingContainer>
-          <SequencerContainer
-            animate={{ scale: [0.2, 1] }}
-            transition={{ duration: 1 }}
-          >
+          <SequencerContainer>
             <SequencerSettings
               isSettingsVisible={isSettingsVisible}
               setIsSettingsVisible={setIsSettingsVisible}
@@ -104,9 +97,6 @@ export default function SequencerPage() {
             ))}
           </PadList>
           <StartSequenceButton
-            as={motion.button}
-            animate={{ scale: [0.2, 1] }}
-            transition={{ duration: 1 }}
             aria-label="start-stop sequencer"
             onClick={toggle}
             type="button"
@@ -150,14 +140,14 @@ const GridContainer = styled(BackgroundAnimation)`
   box-shadow: inset 0 0 15px 2px var(--black);
 `;
 
-const HeadingContainer = styled(motion.header)`
+const HeadingContainer = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 10px;
 `;
 
-const SequencerContainer = styled(motion.section)`
+const SequencerContainer = styled.section`
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(4, 1fr);
