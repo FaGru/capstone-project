@@ -102,8 +102,9 @@ const TrackInput = styled.input`
 const Vinyl = styled.img`
   @keyframes dance {
     100% {
-      transform: rotate(1440deg);
+      transform: rotate(360deg);
     }
   }
-  ${props => (props.rotate === 1 ? `animation: dance 20s infinite` : '')};
+  ${props =>
+    props.rotate === 1 ? `animation: dance linear 2s infinite` : ''};
 `;
