@@ -11,6 +11,10 @@ const useStore = create((set, get) => ({
   loopPlayer: null,
   monoSynth: null,
   synth: null,
+  djPlayerOne: null,
+  djPlayerTwo: null,
+  djTrackOne: 'https://tonejs.github.io/audio/berklee/gong_1.mp3',
+  djTrackTwo: 'https://tonejs.github.io/audio/berklee/gong_1.mp3',
   currentDrumLoop: 'DrumLoop90BPM',
   loopPlayerVolume: 5,
   recordings: [],
@@ -39,6 +43,8 @@ const useStore = create((set, get) => ({
         get().initKeyboard();
         get().initLoopPlayer();
         get().initDrumPadPlayers();
+        get().initDJPlayerOne();
+        get().initDJPlayerTwo();
       }
     };
     window.addEventListener('click', handleUserInteraction);
@@ -249,6 +255,25 @@ const useStore = create((set, get) => ({
   ///////////////     NavDirection DrumMachine      ///////////////
   setNavDirection: navDirection => {
     set({ navDirection: navDirection });
+  },
+  ///////////////     DJ Player      ///////////////
+  initDJPlayerOne: () => {
+    const djPlayerOne = new Tone.Player(get().djTrackOne).toDestination();
+    const dest = get().dest;
+    djPlayerOne.connect(dest);
+    set({ djPlayerOne });
+  },
+  initDJPlayerTwo: () => {
+    const djPlayerTwo = new Tone.Player(get().djTrackTwo).toDestination();
+    const dest = get().dest;
+    djPlayerTwo.connect(dest);
+    set({ djPlayerTwo });
+  },
+  setDjTrackOne: djTrackOne => {
+    set({ djTrackOne: djTrackOne });
+  },
+  setDjTrackTwo: djTrackTwo => {
+    set({ djTrackTwo: djTrackTwo });
   },
 }));
 
