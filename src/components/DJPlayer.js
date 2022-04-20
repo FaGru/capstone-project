@@ -1,6 +1,5 @@
 import useStore from '../hooks/useStore';
 import styled from 'styled-components';
-import uploadIcon from '../images/upload.svg';
 import vinylIcon from '../images/vinyl.svg';
 import { useState } from 'react';
 import { InvisibleButton, StyledButtonImg } from './Buttons';
@@ -9,7 +8,6 @@ import pauseIcon from '../images/pause.svg';
 
 export default function DJPlayer() {
   const { djPlayerOne, djPlayerTwo } = useStore(state => state);
-
   const setTrackOne = useStore(state => state.setDjTrackOne);
   const setTrackTwo = useStore(state => state.setDjTrackTwo);
   const [oneIsPlaying, setOneIsPlaying] = useState(0);
@@ -23,6 +21,7 @@ export default function DJPlayer() {
           onChange={handleTrackOne}
           type="file"
           id="file upload one"
+          data-testid="file upload one"
         />
         <PlayButton onClick={handlePlayOne}>
           <StyledButtonImg
@@ -46,6 +45,7 @@ export default function DJPlayer() {
           onChange={handleTrackTwo}
           type="file"
           id="file upload two"
+          data-testid="file upload two"
         />
         <PlayButton onClick={handlePlayTwo}>
           <StyledButtonImg
