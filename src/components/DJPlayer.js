@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import uploadIcon from '../images/upload.svg';
 import vinylIcon from '../images/vinyl.svg';
 import { useState } from 'react';
+import { InvisibleButton, StyledButtonImg } from './Buttons';
+import playIcon from '../images/play.svg';
+import pauseIcon from '../images/pause.svg';
 
 export default function DJPlayer() {
   const djPlayerOne = useStore(state => state.djPlayerOne);
@@ -24,7 +27,14 @@ export default function DJPlayer() {
           type="file"
           id="file upload one"
         />
-        <button onClick={handlePlayOne}>Play</button>
+        <PlayButton onMouseDown={handlePlayOne}>
+          <StyledButtonImg
+            src={oneIsPlaying === 0 ? playIcon : pauseIcon}
+            alt="play/pause"
+            height="40px"
+            width="40px"
+          />
+        </PlayButton>
         <Vinyl
           rotate={oneIsPlaying}
           src={vinylIcon}
@@ -40,7 +50,14 @@ export default function DJPlayer() {
           type="file"
           id="file upload two"
         />
-        <button onClick={handlePlayTwo}>Play</button>
+        <PlayButton onMouseDown={handlePlayTwo}>
+          <StyledButtonImg
+            src={twoIsPlaying === 0 ? playIcon : pauseIcon}
+            alt="play/pause"
+            height="40px"
+            width="40px"
+          />
+        </PlayButton>
         <Vinyl
           rotate={twoIsPlaying}
           src={vinylIcon}
@@ -52,12 +69,22 @@ export default function DJPlayer() {
     </ComponentContainer>
   );
   function handlePlayOne() {
-    djPlayerOne.state === 'stopped' ? djPlayerOne.start() : djPlayerOne.stop();
-    oneIsPlaying === 0 ? setOneIsPlaying(1) : setOneIsPlaying(0);
+    if (djPlayerOne.state === 'stopped') {
+      djPlayerOne.start();
+      setOneIsPlaying(1);
+    } else {
+      djPlayerOne.stop();
+      setOneIsPlaying(0);
+    }
   }
   function handlePlayTwo() {
-    djPlayerTwo.state === 'stopped' ? djPlayerTwo.start() : djPlayerTwo.stop();
-    twoIsPlaying === 0 ? setTwoIsPlaying(1) : setTwoIsPlaying(0);
+    if (djPlayerTwo.state === 'stopped') {
+      djPlayerTwo.start();
+      setTwoIsPlaying(1);
+    } else {
+      djPlayerTwo.stop();
+      setTwoIsPlaying(0);
+    }
   }
   function handleTrackOne(e) {
     djPlayerOne.stop();
@@ -77,34 +104,40 @@ export default function DJPlayer() {
 
 const ComponentContainer = styled.div`
   display: flex;
+  place-content: center;
+  gap: 5px;
   @media (orientation: portrait) {
     flex-direction: column;
   }
 `;
 
 const PlayerContainer = styled.div`
-  display: flex;
+  display: grid;
   border: 2px solid var(--white);
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+`;
+const PlayButton = styled(InvisibleButton)`
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
 `;
 
 const TrackInput = styled.input`
-  margin: 10px;
-  padding: 10px;
-  ::-webkit-file-upload-button {
-    display: none;
-  }
-  ::before {
-    content: url(${uploadIcon});
-    cursor: pointer;
-    padding: 10px;
-  }
+  grid-column: 1 / 3;
+  grid-row: 1 / 2;
+  align-self: center;
+  justify-self: center;
 `;
 const Vinyl = styled.img`
+  padding: 1px;
+  border-radius: 100%;
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
   @keyframes dance {
     100% {
       transform: rotate(360deg);
     }
   }
-  ${props =>
-    props.rotate === 1 ? `animation: dance linear 2s infinite` : ''};
+  ${props => (props.rotate === 1 ? `animation: dance linear 2s infinite` : '')};
+  ${props => (props.rotate === 1 ? `border-top: 2px solid red; filter: blur(1px)` : '')};
 `;
