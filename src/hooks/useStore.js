@@ -15,6 +15,7 @@ const useStore = create((set, get) => ({
   djPlayerTwo: null,
   djTrackOne: 'https://tonejs.github.io/audio/berklee/gong_1.mp3',
   djTrackTwo: 'https://tonejs.github.io/audio/berklee/gong_1.mp3',
+  faderPosition: 0,
   currentDrumLoop: 'DrumLoop90BPM',
   loopPlayerVolume: 5,
   recordings: [],
@@ -258,22 +259,47 @@ const useStore = create((set, get) => ({
   },
   ///////////////     DJ Player      ///////////////
   initDJPlayerOne: () => {
-    const djPlayerOne = new Tone.Player(get().djTrackOne).toDestination();
+    const faderPosition = get().faderPosition;
     const dest = get().dest;
+    const djPlayerOne = new Tone.Player(get().djTrackOne).toDestination();
     djPlayerOne.connect(dest);
+    if (faderPosition >= 0) {
+      djPlayerOne.volume.value = -faderPosition;
+    }
     set({ djPlayerOne });
   },
   initDJPlayerTwo: () => {
-    const djPlayerTwo = new Tone.Player(get().djTrackTwo).toDestination();
+    const faderPosition = get().faderPosition;
     const dest = get().dest;
+    const djPlayerTwo = new Tone.Player(get().djTrackTwo).toDestination();
     djPlayerTwo.connect(dest);
+    if (faderPosition <= 0) {
+      djPlayerTwo.volume.value = faderPosition;
+    }
     set({ djPlayerTwo });
   },
-  setDjTrackOne: djTrackOne => {
-    set({ djTrackOne: djTrackOne });
+  setDjTrackOne: newTrack => {
+    set({ djTrackOne: newTrack });
+    get().initDJPlayerOne();
   },
-  setDjTrackTwo: djTrackTwo => {
-    set({ djTrackTwo: djTrackTwo });
+  setDjTrackTwo: newTrack => {
+    set({ djTrackTwo: newTrack });
+    get().initDJPlayerTwo();
+  },
+  setFaderPosition: newPosition => {
+    const djPlayerOne = get().djPlayerOne;
+    const djPlayerTwo = get().djPlayerTwo;
+    if (newPosition === '50') {
+      djPlayerOne.mute = true;
+    } else if (newPosition >= 0) {
+      djPlayerOne.volume.value = -newPosition / 2;
+    }
+    if (newPosition === '-50') {
+      djPlayerTwo.mute = true;
+    } else if (newPosition <= 0) {
+      djPlayerTwo.volume.value = newPosition / 2;
+    }
+    set({ faderPosition: newPosition });
   },
 }));
 

@@ -8,15 +8,12 @@ import playIcon from '../images/play.svg';
 import pauseIcon from '../images/pause.svg';
 
 export default function DJPlayer() {
-  const djPlayerOne = useStore(state => state.djPlayerOne);
-  const djPlayerTwo = useStore(state => state.djPlayerTwo);
+  const { djPlayerOne, djPlayerTwo } = useStore(state => state);
+
   const setTrackOne = useStore(state => state.setDjTrackOne);
   const setTrackTwo = useStore(state => state.setDjTrackTwo);
-  const initDJPlayerOne = useStore(state => state.initDJPlayerOne);
-  const initDJPlayerTwo = useStore(state => state.initDJPlayerTwo);
   const [oneIsPlaying, setOneIsPlaying] = useState(0);
   const [twoIsPlaying, setTwoIsPlaying] = useState(0);
-  console.log(djPlayerOne);
 
   return (
     <ComponentContainer>
@@ -52,7 +49,7 @@ export default function DJPlayer() {
         />
         <PlayButton onMouseDown={handlePlayTwo}>
           <StyledButtonImg
-            src={twoIsPlaying === 0 ? playIcon : pauseIcon}
+            src={djPlayerTwo?.state === 'started' ? pauseIcon : playIcon}
             alt="play/pause"
             height="40px"
             width="40px"
@@ -91,14 +88,12 @@ export default function DJPlayer() {
     oneIsPlaying === 1 && setOneIsPlaying(0);
     const files = e.target.files;
     setTrackOne(URL.createObjectURL(files[0]));
-    initDJPlayerOne();
   }
   function handleTrackTwo(e) {
     djPlayerTwo.stop();
     twoIsPlaying === 1 && setTwoIsPlaying(0);
     const files = e.target.files;
     setTrackTwo(URL.createObjectURL(files[0]));
-    initDJPlayerTwo();
   }
 }
 
@@ -139,5 +134,4 @@ const Vinyl = styled.img`
     }
   }
   ${props => (props.rotate === 1 ? `animation: dance linear 2s infinite` : '')};
-  ${props => (props.rotate === 1 ? `border-top: 2px solid red; filter: blur(1px)` : '')};
 `;
