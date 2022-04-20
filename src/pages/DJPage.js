@@ -1,25 +1,37 @@
 import DJPlayer from '../components/DJPlayer';
 import useStore from '../hooks/useStore';
+import styled from 'styled-components';
 
 export default function DJPage() {
   const faderPosition = useStore(state => state.faderPosition);
   const setFaderPosition = useStore(state => state.setFaderPosition);
   return (
-    <>
+    <PageContainer>
       <DJPlayer faderPosition={faderPosition} />
-      <input
+      <label htmlFor="dj-player-fader"></label>
+      <LineFader
         id='"dj-player-fader"'
         type="range"
-        min="-50"
-        max="50"
+        min="-40"
+        max="40"
         defaultValue={faderPosition}
         onChange={handlePlayerFader}
-      ></input>
-      <label htmlFor="dj-player-fader">{faderPosition}</label>
-    </>
+      ></LineFader>
+    </PageContainer>
   );
 
   function handlePlayerFader(e) {
     setFaderPosition(e.target.value);
   }
 }
+const PageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  margin: 20px;
+`;
+const LineFader = styled.input`
+  width: 300px;
+  align-self: center;
+`;

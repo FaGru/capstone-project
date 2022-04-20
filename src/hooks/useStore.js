@@ -289,12 +289,12 @@ const useStore = create((set, get) => ({
   setFaderPosition: newPosition => {
     const djPlayerOne = get().djPlayerOne;
     const djPlayerTwo = get().djPlayerTwo;
-    if (newPosition === '50') {
+    if (newPosition === '40') {
       djPlayerOne.mute = true;
     } else if (newPosition >= 0) {
       djPlayerOne.volume.value = -newPosition / 2;
     }
-    if (newPosition === '-50') {
+    if (newPosition === '-40') {
       djPlayerTwo.mute = true;
     } else if (newPosition <= 0) {
       djPlayerTwo.volume.value = newPosition / 2;

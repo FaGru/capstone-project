@@ -18,13 +18,13 @@ export default function DJPlayer() {
   return (
     <ComponentContainer>
       <PlayerContainer>
-        <label htmlFor="file upload one" />
+        <label htmlFor="file upload one"></label>
         <TrackInput
           onChange={handleTrackOne}
           type="file"
           id="file upload one"
         />
-        <PlayButton onMouseDown={handlePlayOne}>
+        <PlayButton onClick={handlePlayOne}>
           <StyledButtonImg
             src={oneIsPlaying === 0 ? playIcon : pauseIcon}
             alt="play/pause"
@@ -36,18 +36,18 @@ export default function DJPlayer() {
           rotate={oneIsPlaying}
           src={vinylIcon}
           alt="vinyl"
-          height="50px"
-          width="50px"
+          height="100px"
+          width="100px"
         />
       </PlayerContainer>
       <PlayerContainer>
-        <label htmlFor="file upload two" />
+        <label htmlFor="file upload two"></label>
         <TrackInput
           onChange={handleTrackTwo}
           type="file"
           id="file upload two"
         />
-        <PlayButton onMouseDown={handlePlayTwo}>
+        <PlayButton onClick={handlePlayTwo}>
           <StyledButtonImg
             src={djPlayerTwo?.state === 'started' ? pauseIcon : playIcon}
             alt="play/pause"
@@ -59,8 +59,8 @@ export default function DJPlayer() {
           rotate={twoIsPlaying}
           src={vinylIcon}
           alt="vinyl"
-          height="50px"
-          width="50px"
+          height="100px"
+          width="100px"
         />
       </PlayerContainer>
     </ComponentContainer>
@@ -110,11 +110,11 @@ const PlayerContainer = styled.div`
   display: grid;
   border: 2px solid var(--white);
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr auto 1fr;
 `;
 const PlayButton = styled(InvisibleButton)`
   grid-column: 1 / 2;
-  grid-row: 2 / 3;
+  grid-row: 3 / 4;
 `;
 
 const TrackInput = styled.input`
@@ -124,14 +124,16 @@ const TrackInput = styled.input`
   justify-self: center;
 `;
 const Vinyl = styled.img`
-  padding: 1px;
+  margin: 10px;
   border-radius: 100%;
-  grid-column: 2 / 3;
+  grid-column: 1 / 3;
   grid-row: 2 / 3;
+  justify-self: center;
   @keyframes dance {
     100% {
       transform: rotate(360deg);
     }
   }
-  ${props => (props.rotate === 1 ? `animation: dance linear 2s infinite` : '')};
+  ${props =>
+    props.rotate === 1 ? `animation: dance linear 2s infinite; ` : ''}
 `;
