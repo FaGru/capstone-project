@@ -4,6 +4,7 @@ import SettingsPage from './pages/SettingsPage';
 import RecordingsPage from './pages/RecordingsPage';
 import SequencerPage from './pages/SequencerPage';
 import LandingPage from './pages/LandingPage';
+import DJPage from './pages/DJPage';
 
 import useLocalStorage from './hooks/useLocalStorage';
 import { useEffect } from 'react';
@@ -60,6 +61,7 @@ export default function App() {
           />
           <Route path="/recordings" element={<RecordingsPage />} />
           <Route path="/sequencer" element={<SequencerPage />} />
+          <Route path="/dj" element={<DJPage />} />
         </Routes>
       </AnimatePresence>
     </div>

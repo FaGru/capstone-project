@@ -11,6 +11,11 @@ const useStore = create((set, get) => ({
   loopPlayer: null,
   monoSynth: null,
   synth: null,
+  djPlayerOne: null,
+  djPlayerTwo: null,
+  djTrackOne: 'https://tonejs.github.io/audio/berklee/gong_1.mp3',
+  djTrackTwo: 'https://tonejs.github.io/audio/berklee/gong_1.mp3',
+  faderPosition: 0,
   currentDrumLoop: 'DrumLoop90BPM',
   loopPlayerVolume: 5,
   recordings: [],
@@ -39,6 +44,8 @@ const useStore = create((set, get) => ({
         get().initKeyboard();
         get().initLoopPlayer();
         get().initDrumPadPlayers();
+        get().initDJPlayerOne();
+        get().initDJPlayerTwo();
       }
     };
     window.addEventListener('click', handleUserInteraction);
@@ -249,6 +256,50 @@ const useStore = create((set, get) => ({
   ///////////////     NavDirection DrumMachine      ///////////////
   setNavDirection: navDirection => {
     set({ navDirection: navDirection });
+  },
+  ///////////////     DJ Player      ///////////////
+  initDJPlayerOne: () => {
+    const faderPosition = get().faderPosition;
+    const dest = get().dest;
+    const djPlayerOne = new Tone.Player(get().djTrackOne).toDestination();
+    djPlayerOne.connect(dest);
+    if (faderPosition >= 0) {
+      djPlayerOne.volume.value = -faderPosition;
+    }
+    set({ djPlayerOne });
+  },
+  initDJPlayerTwo: () => {
+    const faderPosition = get().faderPosition;
+    const dest = get().dest;
+    const djPlayerTwo = new Tone.Player(get().djTrackTwo).toDestination();
+    djPlayerTwo.connect(dest);
+    if (faderPosition <= 0) {
+      djPlayerTwo.volume.value = faderPosition;
+    }
+    set({ djPlayerTwo });
+  },
+  setDjTrackOne: newTrack => {
+    set({ djTrackOne: newTrack });
+    get().initDJPlayerOne();
+  },
+  setDjTrackTwo: newTrack => {
+    set({ djTrackTwo: newTrack });
+    get().initDJPlayerTwo();
+  },
+  setFaderPosition: newPosition => {
+    const djPlayerOne = get().djPlayerOne;
+    const djPlayerTwo = get().djPlayerTwo;
+    if (newPosition === '40') {
+      djPlayerOne.mute = true;
+    } else if (newPosition >= 0) {
+      djPlayerOne.volume.value = -newPosition / 2;
+    }
+    if (newPosition === '-40') {
+      djPlayerTwo.mute = true;
+    } else if (newPosition <= 0) {
+      djPlayerTwo.volume.value = newPosition / 2;
+    }
+    set({ faderPosition: newPosition });
   },
 }));
 

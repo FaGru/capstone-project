@@ -46,10 +46,18 @@ export default function LandingPage() {
             Settings
           </LandingPageButton>
         </Link>
+        <Link type="button" to="/dj">
+          <LandingPageButton
+            animate={{ x: [1000, 50, 0] }}
+            transition={{ duration: 0.4, delay: 0.45 }}
+          >
+            DJ-Deck
+          </LandingPageButton>
+        </Link>
         <Link onClick={instructionClick} to="/drum-machine">
           <LandingPageButton
-            animate={{ x: [1000, -50, 0] }}
-            transition={{ duration: 0.4, delay: 0.45 }}
+            animate={{ x: [-1000, -50, 0] }}
+            transition={{ duration: 0.4, delay: 0.6 }}
           >
             Instructions
           </LandingPageButton>
