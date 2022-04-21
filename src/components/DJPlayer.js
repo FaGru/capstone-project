@@ -16,14 +16,16 @@ export default function DJPlayer() {
   return (
     <ComponentContainer>
       <PlayerContainer>
-        <label htmlFor="file upload one"></label>
-        <TrackInput
-          onChange={handleTrackOne}
-          type="file"
-          id="file upload one"
-          data-testid="file upload one"
-        />
-        <PlayButton onClick={handlePlayOne}>
+        <label htmlFor="file upload one">
+          <TrackInput
+            onChange={handleTrackOne}
+            type="file"
+            id="file upload one"
+            name="file upload one"
+            data-testid="file upload one"
+          />
+        </label>
+        <PlayButton aria-label="play-button" onClick={handlePlayOne}>
           <StyledButtonImg
             src={oneIsPlaying === 0 ? playIcon : pauseIcon}
             alt="play/pause"
@@ -40,14 +42,16 @@ export default function DJPlayer() {
         />
       </PlayerContainer>
       <PlayerContainer>
-        <label htmlFor="file upload two"></label>
-        <TrackInput
-          onChange={handleTrackTwo}
-          type="file"
-          id="file upload two"
-          data-testid="file upload two"
-        />
-        <PlayButton onClick={handlePlayTwo}>
+        <label htmlFor="file upload two">
+          <TrackInput
+            onChange={handleTrackTwo}
+            type="file"
+            id="file upload two"
+            name="file upload two"
+            data-testid="file upload two"
+          />
+        </label>
+        <PlayButton aria-label="play-button" onClick={handlePlayTwo}>
           <StyledButtonImg
             src={djPlayerTwo?.state === 'started' ? pauseIcon : playIcon}
             alt="play/pause"

@@ -8,15 +8,17 @@ export default function DJPage() {
   return (
     <PageContainer>
       <DJPlayer faderPosition={faderPosition} />
-      <label htmlFor="dj-player-fader"></label>
-      <LineFader
-        id='"dj-player-fader"'
-        type="range"
-        min="-40"
-        max="40"
-        defaultValue={faderPosition}
-        onChange={handlePlayerFader}
-      ></LineFader>
+      <label htmlFor="dj-player-fader">
+        <LineFader
+          id="dj-player-fader"
+          name="dj-player-fader"
+          type="range"
+          min="-40"
+          max="40"
+          defaultValue={faderPosition}
+          onChange={handlePlayerFader}
+        ></LineFader>
+      </label>
     </PageContainer>
   );
 
