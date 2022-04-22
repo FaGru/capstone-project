@@ -13,9 +13,12 @@ const useStore = create((set, get) => ({
   synth: null,
   djPlayerOne: null,
   djPlayerTwo: null,
+  eq3One: null,
   djTrackOne: 'https://tonejs.github.io/audio/berklee/gong_1.mp3',
   djTrackTwo: 'https://tonejs.github.io/audio/berklee/gong_1.mp3',
   faderPosition: 0,
+  eqOneSettings: { high: 0, mid: 0, low: 0 },
+  eqTwoSettings: { high: 0, mid: 0, low: 0 },
   currentDrumLoop: 'DrumLoop90BPM',
   loopPlayerVolume: 5,
   recordings: [],
@@ -260,24 +263,25 @@ const useStore = create((set, get) => ({
   ///////////////     DJ Player      ///////////////
   initDJPlayerOne: () => {
     const faderPosition = get().faderPosition;
-    const dest = get().dest;
-    const djPlayerOne = new Tone.Player(get().djTrackOne).toDestination();
-    djPlayerOne.connect(dest);
+    const eqOneSettings = get().eqOneSettings;
+    const eq3One = new Tone.EQ3(eqOneSettings).toDestination();
+    const djPlayerOne = new Tone.Player(get().djTrackOne).connect(eq3One);
     if (faderPosition >= 0) {
       djPlayerOne.volume.value = -faderPosition;
     }
-    set({ djPlayerOne });
+    set({ djPlayerOne, eq3One });
   },
   initDJPlayerTwo: () => {
     const faderPosition = get().faderPosition;
-    const dest = get().dest;
-    const djPlayerTwo = new Tone.Player(get().djTrackTwo).toDestination();
-    djPlayerTwo.connect(dest);
+    const eqTwoSettings = get().eqOneSettings;
+    const eq3Two = new Tone.EQ3(eqTwoSettings).toDestination();
+    const djPlayerTwo = new Tone.Player(get().djTrackTwo).connect(eq3Two);
     if (faderPosition <= 0) {
       djPlayerTwo.volume.value = faderPosition;
     }
-    set({ djPlayerTwo });
+    set({ djPlayerTwo, eq3Two });
   },
+
   setDjTrackOne: newTrack => {
     set({ djTrackOne: newTrack });
     get().initDJPlayerOne();
