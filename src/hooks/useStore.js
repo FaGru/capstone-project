@@ -266,7 +266,6 @@ const useStore = create((set, get) => ({
   },
   ///////////////     DJ Player      ///////////////
   initDJPlayerOne: () => {
-    const faderPosition = get().faderPosition;
     const eqOneSettings = get().eqOneSettings;
     const highpassFilterPlayerOne = new Tone.Filter({
       frequency: 0,
@@ -278,9 +277,6 @@ const useStore = create((set, get) => ({
     }).connect(highpassFilterPlayerOne);
     const eq3One = new Tone.EQ3(eqOneSettings).connect(lowpassFilterPlayerOne);
     const djPlayerOne = new Tone.Player(get().djTrackOne).connect(eq3One);
-    if (faderPosition >= 0) {
-      djPlayerOne.volume.value = -faderPosition;
-    }
     set({
       djPlayerOne,
       eq3One,
@@ -289,7 +285,6 @@ const useStore = create((set, get) => ({
     });
   },
   initDJPlayerTwo: () => {
-    const faderPosition = get().faderPosition;
     const eqTwoSettings = get().eqOneSettings;
     const highpassFilterPlayerTwo = new Tone.Filter({
       frequency: 0,
@@ -301,19 +296,12 @@ const useStore = create((set, get) => ({
     }).connect(highpassFilterPlayerTwo);
     const eq3Two = new Tone.EQ3(eqTwoSettings).connect(lowpassFilterPlayerTwo);
     const djPlayerTwo = new Tone.Player(get().djTrackTwo).connect(eq3Two);
-    if (faderPosition <= 0) {
-      djPlayerTwo.volume.value = faderPosition;
-    }
     set({
       djPlayerTwo,
       eq3Two,
       lowpassFilterPlayerTwo,
       highpassFilterPlayerTwo,
     });
-  },
-  setEQOneSettings: (property, value) => {
-    const eqOne = get().eq3One;
-
   },
 
   setDjTrackOne: newTrack => {
@@ -323,21 +311,6 @@ const useStore = create((set, get) => ({
   setDjTrackTwo: newTrack => {
     set({ djTrackTwo: newTrack });
     get().initDJPlayerTwo();
-  },
-  setFaderPosition: newPosition => {
-    const djPlayerOne = get().djPlayerOne;
-    const djPlayerTwo = get().djPlayerTwo;
-    if (newPosition === '40') {
-      djPlayerOne.mute = true;
-    } else if (newPosition >= 0) {
-      djPlayerOne.volume.value = -newPosition / 2;
-    }
-    if (newPosition === '-40') {
-      djPlayerTwo.mute = true;
-    } else if (newPosition <= 0) {
-      djPlayerTwo.volume.value = newPosition / 2;
-    }
-    set({ faderPosition: newPosition });
   },
 }));
 

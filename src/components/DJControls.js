@@ -12,9 +12,9 @@ export default function DJControls() {
     highpassFilterPlayerOne,
     lowpassFilterPlayerTwo,
     highpassFilterPlayerTwo,
-    eqOneSettings,
+    djPlayerOne,
+    djPlayerTwo
   } = useStore(state => state);
-  const setFaderPosition = useStore(state => state.setFaderPosition);
   const setEQOneSettings = useStore(state => state.setEQOneSettings);
   const [filterPositionOne, setFilterPositionOne] = useState(0);
   const [filterPositionTwo, setFilterPositionTwo] = useState(0);
@@ -211,7 +211,16 @@ export default function DJControls() {
     setRender(!render);
   }
   function handlePlayerFader(e) {
-    setFaderPosition(e.target.value);
+    if (e.target.value === '40') {
+      djPlayerOne.mute = true;
+    } else if (e.target.value >= 0) {
+      djPlayerOne.volume.value = -e.target.value / 2;
+    }
+    if (e.target.value === '-40') {
+      djPlayerTwo.mute = true;
+    } else if (e.target.value <= 0) {
+      djPlayerTwo.volume.value = e.target.value / 2;
+    }
   }
   function handleFilterPlayerOne(e) {
     setFilterPositionOne(e.target.value);
