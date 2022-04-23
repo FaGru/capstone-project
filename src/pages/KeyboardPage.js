@@ -1,4 +1,4 @@
-import KeyboardButtons from '../components/KeyboardButtons';
+import KeyboardButtons from '../components/KeyboardButtons/KeyboardButtons';
 import { BackgroundAnimation } from '../components/BackgroundAnimation';
 
 import useStore from '../hooks/useStore';

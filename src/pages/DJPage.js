@@ -1,6 +1,6 @@
-import DJPlayerOne from '../components/DJPlayerOne';
-import DJPlayerTwo from '../components/DJPlayerTwo';
-import DJControls from '../components/DJControls';
+import DJPlayerOne from '../components/DJPlayerOne/DJPlayerOne';
+import DJPlayerTwo from '../components/DJPlayerTwo/DJPlayerTwo';
+import DJControls from '../components/DJControls/DJControls';
 
 import styled from 'styled-components';
 

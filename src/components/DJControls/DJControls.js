@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import useStore from '../hooks/useStore';
-import knobIcon from '../images/control-knob.svg';
+import useStore from '../../hooks/useStore';
+import knobIcon from '../../images/control-knob.svg';
 
 export default function DJControls() {
   const {

@@ -1,65 +1,67 @@
-import useStore from '../hooks/useStore';
+import useStore from '../../hooks/useStore';
 import styled from 'styled-components';
-import vinylIcon from '../images/vinyl.svg';
+import vinylIcon from '../../images/vinyl.svg';
 import { useState } from 'react';
-import { InvisibleButton, StyledButtonImg } from './Buttons';
-import playIcon from '../images/play.svg';
-import pauseIcon from '../images/pause.svg';
-import uplodIcon from '../images/upload.svg';
+import { InvisibleButton, StyledButtonImg } from '../Buttons';
+import playIcon from '../../images/play.svg';
+import pauseIcon from '../../images/pause.svg';
+import uplodIcon from '../../images/upload.svg';
 
 export default function DJPlayer() {
 
-  const djPlayerTwo = useStore(state => state.djPlayerTwo);
-  const setTrackTwo = useStore(state => state.setDjTrackTwo);
-  const [twoIsPlaying, setTwoIsPlaying] = useState(0);
+  const djPlayerOne = useStore(state => state.djPlayerOne);
+  const setTrackOne = useStore(state => state.setDjTrackOne);
+  const [oneIsPlaying, setOneIsPlaying] = useState(0);
 
   return (
-
       <PlayerContainer>
-        <TrackUploadLabel htmlFor="file upload two">
-          <img src={uplodIcon} alt="upload" />
+        <TrackUploadLabel htmlFor="file upload one">
+          <img src={uplodIcon} alt="uplod" />
           <input
-            onChange={handleTrackTwo}
+            onChange={handleTrackOne}
             type="file"
-            id="file upload two"
-            name="file upload two"
-            data-testid="file upload two"
+            id="file upload one"
+            name="file upload one"
+            data-testid="file upload one"
           />
         </TrackUploadLabel>
-        <PlayButton aria-label="play-button" onClick={handlePlayTwo}>
+        <PlayButton aria-label="play-button" onClick={handlePlayOne}>
           <StyledButtonImg
-            src={djPlayerTwo?.state === 'started' ? pauseIcon : playIcon}
+            src={oneIsPlaying === 0 ? playIcon : pauseIcon}
             alt="play/pause"
             height="40px"
             width="40px"
           />
         </PlayButton>
         <Vinyl
-          rotate={twoIsPlaying}
+          rotate={oneIsPlaying}
           src={vinylIcon}
           alt="vinyl"
           height="100px"
           width="100px"
         />
       </PlayerContainer>
-
   );
-  function handlePlayTwo() {
-    if (djPlayerTwo.state === 'stopped') {
-      djPlayerTwo.start();
-      setTwoIsPlaying(1);
+
+  function handlePlayOne() {
+    if (djPlayerOne.state === 'stopped') {
+      djPlayerOne.start();
+      setOneIsPlaying(1);
     } else {
-      djPlayerTwo.stop();
-      setTwoIsPlaying(0);
+      djPlayerOne.stop();
+      setOneIsPlaying(0);
     }
   }
-  function handleTrackTwo(e) {
-    djPlayerTwo.stop();
-    twoIsPlaying === 1 && setTwoIsPlaying(0);
+
+  function handleTrackOne(e) {
+    djPlayerOne.stop();
+    oneIsPlaying === 1 && setOneIsPlaying(0);
     const files = e.target.files;
-    setTrackTwo(URL.createObjectURL(files[0]));
+    setTrackOne(URL.createObjectURL(files[0]));
   }
 }
+
+
 const PlayerContainer = styled.div`
   display: grid;
   border: 2px solid var(--white);

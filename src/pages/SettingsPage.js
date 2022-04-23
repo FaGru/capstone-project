@@ -1,5 +1,5 @@
-import PadSettings from '../components/PadSettings';
-import InstructionPadSettings from '../components/InstructionsPadSettings';
+import PadSettings from '../components/PadSettings/PadSettings';
+import InstructionPadSettings from '../components/Instructions/InstructionsPadSettings';
 import NavAnimation from '../components/FramerMotion';
 import { BackgroundAnimation } from '../components/BackgroundAnimation';
 import { StyledButtonImg, InvisibleButton } from '../components/Buttons';

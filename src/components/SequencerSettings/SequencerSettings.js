@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import useStore from '../hooks/useStore';
-import close from '../images/close.svg';
+import useStore from '../../hooks/useStore';
+import close from '../../images/close.svg';
 import { motion } from 'framer-motion';
 
 export default function SequencerSettings({
