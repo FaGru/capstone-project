@@ -14,6 +14,10 @@ const useStore = create((set, get) => ({
   djPlayerOne: null,
   djPlayerTwo: null,
   eq3One: null,
+  eq3Two: null,
+  lowpassFilterPlayerOne: null,
+  highpassFilterPlayerOne: null,
+  lowpassFilterPlayerTwo: null,
   djTrackOne: 'https://tonejs.github.io/audio/berklee/gong_1.mp3',
   djTrackTwo: 'https://tonejs.github.io/audio/berklee/gong_1.mp3',
   faderPosition: 0,
@@ -264,22 +268,44 @@ const useStore = create((set, get) => ({
   initDJPlayerOne: () => {
     const faderPosition = get().faderPosition;
     const eqOneSettings = get().eqOneSettings;
-    const eq3One = new Tone.EQ3(eqOneSettings).toDestination();
+    const highpassFilterPlayerOne = new Tone.Filter({
+      frequency: 0,
+      type: 'highpass',
+    }).toDestination();
+    const lowpassFilterPlayerOne = new Tone.Filter({
+      frequency: 22000,
+      type: 'lowpass',
+    }).connect(highpassFilterPlayerOne);
+    const eq3One = new Tone.EQ3(eqOneSettings).connect(lowpassFilterPlayerOne);
     const djPlayerOne = new Tone.Player(get().djTrackOne).connect(eq3One);
+    console.log(lowpassFilterPlayerOne);
     if (faderPosition >= 0) {
       djPlayerOne.volume.value = -faderPosition;
     }
-    set({ djPlayerOne, eq3One });
+    set({
+      djPlayerOne,
+      eq3One,
+      lowpassFilterPlayerOne,
+      highpassFilterPlayerOne,
+    });
   },
   initDJPlayerTwo: () => {
     const faderPosition = get().faderPosition;
     const eqTwoSettings = get().eqOneSettings;
-    const eq3Two = new Tone.EQ3(eqTwoSettings).toDestination();
+    const highpassFilterPlayerTwo = new Tone.Filter({
+      frequency: 0,
+      type: 'highpass',
+    }).toDestination();
+    const lowpassFilterPlayerTwo = new Tone.Filter({
+      frequency: 22000,
+      type: 'lowpass',
+    }).connect(highpassFilterPlayerTwo);
+    const eq3Two = new Tone.EQ3(eqTwoSettings).connect(lowpassFilterPlayerTwo);
     const djPlayerTwo = new Tone.Player(get().djTrackTwo).connect(eq3Two);
     if (faderPosition <= 0) {
       djPlayerTwo.volume.value = faderPosition;
     }
-    set({ djPlayerTwo, eq3Two });
+    set({ djPlayerTwo, eq3Two, lowpassFilterPlayerTwo, highpassFilterPlayerTwo  });
   },
 
   setDjTrackOne: newTrack => {

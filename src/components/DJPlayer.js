@@ -5,26 +5,32 @@ import { useState } from 'react';
 import { InvisibleButton, StyledButtonImg } from './Buttons';
 import playIcon from '../images/play.svg';
 import pauseIcon from '../images/pause.svg';
+import uplodIcon from '../images/upload.svg';
 
 export default function DJPlayer() {
-  const { djPlayerOne, djPlayerTwo } = useStore(state => state);
+  const { djPlayerOne, djPlayerTwo } = useStore(
+    state => state
+  );
   const setTrackOne = useStore(state => state.setDjTrackOne);
   const setTrackTwo = useStore(state => state.setDjTrackTwo);
   const [oneIsPlaying, setOneIsPlaying] = useState(0);
   const [twoIsPlaying, setTwoIsPlaying] = useState(0);
-
+  const [trackNameOne, setTrackNameOne] = useState('');
+  const [trackNameTwo, setTrackNameTwo] = useState('');
   return (
     <ComponentContainer>
       <PlayerContainer>
-        <label htmlFor="file upload one">
-          <TrackInput
+        <TrackUploadLabel htmlFor="file upload one">
+          {/* <img src={uplodIcon} alt="uplod" /> */}
+          <input
             onChange={handleTrackOne}
             type="file"
             id="file upload one"
             name="file upload one"
             data-testid="file upload one"
           />
-        </label>
+          {/* {trackNameOne} */}
+        </TrackUploadLabel>
         <PlayButton aria-label="play-button" onClick={handlePlayOne}>
           <StyledButtonImg
             src={oneIsPlaying === 0 ? playIcon : pauseIcon}
@@ -42,15 +48,17 @@ export default function DJPlayer() {
         />
       </PlayerContainer>
       <PlayerContainer>
-        <label htmlFor="file upload two">
-          <TrackInput
+        <TrackUploadLabel htmlFor="file upload two">
+          <img src={uplodIcon} alt="upload" />
+          {trackNameTwo}
+          <input
             onChange={handleTrackTwo}
             type="file"
             id="file upload two"
             name="file upload two"
             data-testid="file upload two"
           />
-        </label>
+        </TrackUploadLabel>
         <PlayButton aria-label="play-button" onClick={handlePlayTwo}>
           <StyledButtonImg
             src={djPlayerTwo?.state === 'started' ? pauseIcon : playIcon}
@@ -92,12 +100,14 @@ export default function DJPlayer() {
     oneIsPlaying === 1 && setOneIsPlaying(0);
     const files = e.target.files;
     setTrackOne(URL.createObjectURL(files[0]));
+    setTrackNameOne(files[0].name);
   }
   function handleTrackTwo(e) {
     djPlayerTwo.stop();
     twoIsPlaying === 1 && setTwoIsPlaying(0);
     const files = e.target.files;
     setTrackTwo(URL.createObjectURL(files[0]));
+    setTrackNameTwo(files[0].name);
   }
 }
 
@@ -121,11 +131,14 @@ const PlayButton = styled(InvisibleButton)`
   grid-row: 3 / 4;
 `;
 
-const TrackInput = styled.input`
+const TrackUploadLabel = styled.label`
   grid-column: 1 / 3;
   grid-row: 1 / 2;
   align-self: center;
-  justify-self: center;
+  text-align: center;
+  input {
+    /* display: none; */
+  }
 `;
 const Vinyl = styled.img`
   margin: 10px;
