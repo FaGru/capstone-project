@@ -8,51 +8,82 @@ export default function DJControls() {
     faderPosition,
     eq3One,
     eq3Two,
-    djPlayerOne,
     lowpassFilterPlayerOne,
     highpassFilterPlayerOne,
     lowpassFilterPlayerTwo,
     highpassFilterPlayerTwo,
+    eqOneSettings,
   } = useStore(state => state);
   const setFaderPosition = useStore(state => state.setFaderPosition);
+  const setEQOneSettings = useStore(state => state.setEQOneSettings);
   const [filterPositionOne, setFilterPositionOne] = useState(0);
   const [filterPositionTwo, setFilterPositionTwo] = useState(0);
+
+  const [render, setRender] = useState(false);
 
   return (
     <Container>
       <EQContainer>
         <EQ3>
-          <label htmlFor="high-frequency-one">
+          <p>HIGH</p>
+          <EQLabel htmlFor="high-frequency-one">
+            <KnobIcon
+              position={(eq3One?.high.value + 5) / 2}
+              src={knobIcon}
+              alt="control-knob"
+              height="40px"
+              width="40px"
+            />
             <input
               id="high-frequency-one"
+              name="high-one"
               type="range"
               min="-15"
               max="5"
               defaultValue="-5"
-              onChange={e => eq3One.set({ high: e.target.value })}
+              onChange={handleEQSetting}
             />
-          </label>
-          <label htmlFor="mid-frequency-one">
+          </EQLabel>
+          <p>MID</p>
+          <EQLabel htmlFor="mid-frequency-one">
+            <KnobIcon
+              position={(eq3One?.mid.value + 5) / 2}
+              src={knobIcon}
+              alt="control-knob"
+              height="40px"
+              width="40px"
+            />
             <input
               id="mid-frequency-one"
+              name="mid-one"
               type="range"
               min="-15"
               max="5"
               defaultValue="-5"
-              onChange={e => eq3One.set({ mid: e.target.value })}
+              onChange={handleEQSetting}
             />
-          </label>
-          <label htmlFor="low-frequency-one">
+          </EQLabel>
+          <p>LOW</p>
+          <EQLabel htmlFor="low-frequency-one">
+            <KnobIcon
+              position={(eq3One?.low.value + 5) / 2}
+              src={knobIcon}
+              alt="control-knob"
+              height="40px"
+              width="40px"
+            />
             <input
               id="low-frequency-one"
+              name="low-one"
               type="range"
               min="-15"
               max="5"
               defaultValue="-5"
-              onChange={e => eq3One.set({ low: e.target.value })}
+              onChange={handleEQSetting}
             />
-          </label>
-          <FilterLabel htmlFor="filter-one">
+          </EQLabel>
+          <p>FILTER</p>
+          <EQLabel htmlFor="filter-one">
             <KnobIcon
               position={filterPositionOne}
               src={knobIcon}
@@ -68,40 +99,68 @@ export default function DJControls() {
               defaultValue="0"
               onChange={handleFilterPlayerOne}
             />
-          </FilterLabel>
+          </EQLabel>
         </EQ3>
         <EQ3>
-          <label htmlFor="high-frequency-two">
+          <p>HIGH</p>
+          <EQLabel htmlFor="high-frequency-two">
+            <KnobIcon
+              position={(eq3Two?.high.value + 5) / 2}
+              src={knobIcon}
+              alt="control-knob"
+              height="40px"
+              width="40px"
+            />
             <input
               id="high-frequency-two"
+              name="high-two"
               type="range"
               min="-15"
               max="5"
               defaultValue="-5"
-              onChange={e => eq3Two.set({ high: e.target.value })}
+              onChange={handleEQSetting}
             />
-          </label>
-          <label htmlFor="mid-frequency-two">
+          </EQLabel>
+          <p>MID</p>
+          <EQLabel htmlFor="mid-frequency-two">
+            <KnobIcon
+              position={(eq3Two?.mid.value + 5) / 2}
+              src={knobIcon}
+              alt="control-knob"
+              height="40px"
+              width="40px"
+            />
             <input
               id="mid-frequency-two"
+              name="mid-two"
               type="range"
               min="-15"
               max="5"
               defaultValue="-5"
-              onChange={e => eq3Two.set({ mid: e.target.value })}
+              onChange={handleEQSetting}
             />
-          </label>
-          <label htmlFor="low-frequency-two">
+          </EQLabel>
+          <p>LOW</p>
+          <EQLabel htmlFor="low-frequency-two">
+            <KnobIcon
+              position={(eq3Two?.low.value + 5) / 2}
+              src={knobIcon}
+              alt="control-knob"
+              height="40px"
+              width="40px"
+            />
             <input
               id="low-frequency-two"
+              name="low-two"
               type="range"
               min="-15"
               max="5"
               defaultValue="-5"
-              onChange={e => eq3Two.set({ low: e.target.value })}
+              onChange={handleEQSetting}
             />
-          </label>
-          <FilterLabel htmlFor="filter-two">
+          </EQLabel>
+          <p>FILTER</p>
+          <EQLabel htmlFor="filter-two">
             <KnobIcon
               position={filterPositionTwo}
               src={knobIcon}
@@ -117,7 +176,7 @@ export default function DJControls() {
               defaultValue="0"
               onChange={handleFilterPlayerTwo}
             />
-          </FilterLabel>
+          </EQLabel>
         </EQ3>
       </EQContainer>
       <label htmlFor="dj-player-fader">
@@ -134,6 +193,23 @@ export default function DJControls() {
     </Container>
   );
 
+  function handleEQSetting(e) {
+    setEQOneSettings(e.target.name, e.target.value);
+    if (e.target.name === 'high-one') {
+      eq3One.set({ high: e.target.value });
+    } else if (e.target.name === 'mid-one') {
+      eq3One.set({ mid: e.target.value });
+    } else if (e.target.name === 'low-one') {
+      eq3One.set({ low: e.target.value });
+    } else if (e.target.name === 'high-two') {
+      eq3Two.set({ high: e.target.value });
+    } else if (e.target.name === 'mid-two') {
+      eq3Two.set({ mid: e.target.value });
+    } else {
+      eq3Two.set({ low: e.target.value });
+    }
+    setRender(!render);
+  }
   function handlePlayerFader(e) {
     setFaderPosition(e.target.value);
   }
@@ -172,26 +248,33 @@ export default function DJControls() {
         });
   }
 }
+
 const KnobIcon = styled.img`
   transform: rotate(${props => props.position * 26}deg);
 `;
 const Container = styled.div`
   text-align: center;
+  border: 2px solid white;
+  p {
+    margin: 0;
+  }
 `;
 const EQContainer = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
 `;
 const EQ3 = styled.div`
   display: flex;
   flex-direction: column;
+  margin: 10px;
 `;
 const LineFader = styled.input`
   width: 300px;
   margin-top: 20px;
 `;
-const FilterLabel = styled.label`
+const EQLabel = styled.label`
   position: relative;
+  margin: 5px;
   input {
     position: absolute;
     top: 50%;

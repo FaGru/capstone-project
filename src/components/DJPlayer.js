@@ -8,20 +8,16 @@ import pauseIcon from '../images/pause.svg';
 import uplodIcon from '../images/upload.svg';
 
 export default function DJPlayer() {
-  const { djPlayerOne, djPlayerTwo } = useStore(
-    state => state
-  );
+  const { djPlayerOne, djPlayerTwo } = useStore(state => state);
   const setTrackOne = useStore(state => state.setDjTrackOne);
   const setTrackTwo = useStore(state => state.setDjTrackTwo);
   const [oneIsPlaying, setOneIsPlaying] = useState(0);
   const [twoIsPlaying, setTwoIsPlaying] = useState(0);
-  const [trackNameOne, setTrackNameOne] = useState('');
-  const [trackNameTwo, setTrackNameTwo] = useState('');
   return (
     <ComponentContainer>
       <PlayerContainer>
         <TrackUploadLabel htmlFor="file upload one">
-          {/* <img src={uplodIcon} alt="uplod" /> */}
+          <img src={uplodIcon} alt="uplod" />
           <input
             onChange={handleTrackOne}
             type="file"
@@ -29,7 +25,6 @@ export default function DJPlayer() {
             name="file upload one"
             data-testid="file upload one"
           />
-          {/* {trackNameOne} */}
         </TrackUploadLabel>
         <PlayButton aria-label="play-button" onClick={handlePlayOne}>
           <StyledButtonImg
@@ -50,7 +45,6 @@ export default function DJPlayer() {
       <PlayerContainer>
         <TrackUploadLabel htmlFor="file upload two">
           <img src={uplodIcon} alt="upload" />
-          {trackNameTwo}
           <input
             onChange={handleTrackTwo}
             type="file"
@@ -100,14 +94,12 @@ export default function DJPlayer() {
     oneIsPlaying === 1 && setOneIsPlaying(0);
     const files = e.target.files;
     setTrackOne(URL.createObjectURL(files[0]));
-    setTrackNameOne(files[0].name);
   }
   function handleTrackTwo(e) {
     djPlayerTwo.stop();
     twoIsPlaying === 1 && setTwoIsPlaying(0);
     const files = e.target.files;
     setTrackTwo(URL.createObjectURL(files[0]));
-    setTrackNameTwo(files[0].name);
   }
 }
 

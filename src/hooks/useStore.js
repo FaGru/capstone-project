@@ -21,8 +21,8 @@ const useStore = create((set, get) => ({
   djTrackOne: 'https://tonejs.github.io/audio/berklee/gong_1.mp3',
   djTrackTwo: 'https://tonejs.github.io/audio/berklee/gong_1.mp3',
   faderPosition: 0,
-  eqOneSettings: { high: 0, mid: 0, low: 0 },
-  eqTwoSettings: { high: 0, mid: 0, low: 0 },
+  eqOneSettings: { high: -5, mid: -5, low: -5 },
+  eqTwoSettings: { high: -5, mid: -5, low: -5 },
   currentDrumLoop: 'DrumLoop90BPM',
   loopPlayerVolume: 5,
   recordings: [],
@@ -278,7 +278,6 @@ const useStore = create((set, get) => ({
     }).connect(highpassFilterPlayerOne);
     const eq3One = new Tone.EQ3(eqOneSettings).connect(lowpassFilterPlayerOne);
     const djPlayerOne = new Tone.Player(get().djTrackOne).connect(eq3One);
-    console.log(lowpassFilterPlayerOne);
     if (faderPosition >= 0) {
       djPlayerOne.volume.value = -faderPosition;
     }
@@ -305,7 +304,16 @@ const useStore = create((set, get) => ({
     if (faderPosition <= 0) {
       djPlayerTwo.volume.value = faderPosition;
     }
-    set({ djPlayerTwo, eq3Two, lowpassFilterPlayerTwo, highpassFilterPlayerTwo  });
+    set({
+      djPlayerTwo,
+      eq3Two,
+      lowpassFilterPlayerTwo,
+      highpassFilterPlayerTwo,
+    });
+  },
+  setEQOneSettings: (property, value) => {
+    const eqOne = get().eq3One;
+
   },
 
   setDjTrackOne: newTrack => {
