@@ -5,44 +5,47 @@ import { useState } from 'react';
 import { InvisibleButton, StyledButtonImg } from '../Buttons';
 import playIcon from '../../images/play.svg';
 import pauseIcon from '../../images/pause.svg';
-import uplodIcon from '../../images/upload.svg';
+import cueIcon from '../../images/cue.svg';
 
 export default function DJPlayer() {
-
   const djPlayerTwo = useStore(state => state.djPlayerTwo);
   const setTrackTwo = useStore(state => state.setDjTrackTwo);
   const [twoIsPlaying, setTwoIsPlaying] = useState(0);
 
   return (
-
-      <PlayerContainer>
-        <TrackUploadLabel htmlFor="file upload two">
-          <img src={uplodIcon} alt="upload" />
-          <input
-            onChange={handleTrackTwo}
-            type="file"
-            id="file upload two"
-            name="file upload two"
-            data-testid="file upload two"
-          />
-        </TrackUploadLabel>
-        <PlayButton aria-label="play-button" onClick={handlePlayTwo}>
-          <StyledButtonImg
-            src={djPlayerTwo?.state === 'started' ? pauseIcon : playIcon}
-            alt="play/pause"
-            height="40px"
-            width="40px"
-          />
-        </PlayButton>
-        <Vinyl
-          rotate={twoIsPlaying}
-          src={vinylIcon}
-          alt="vinyl"
-          height="100px"
-          width="100px"
+    <PlayerContainer>
+      <TrackUploadLabel htmlFor="file upload two">
+        <input
+          onChange={handleTrackTwo}
+          type="file"
+          id="file upload two"
+          name="file upload two"
+          data-testid="file upload two"
         />
-      </PlayerContainer>
-
+      </TrackUploadLabel>
+      <CueButton
+        aria-label="play-button"
+        onMouseDown={handlePlayTwo}
+        onMouseUp={handlePlayTwo}
+      >
+        <StyledButtonImg src={cueIcon} alt="cue" height="50px" width="50px" />
+      </CueButton>
+      <PlayButton aria-label="play-button" onClick={handlePlayTwo}>
+        <StyledButtonImg
+          src={djPlayerTwo?.state === 'started' ? pauseIcon : playIcon}
+          alt="play/pause"
+          height="50px"
+          width="50px"
+        />
+      </PlayButton>
+      <Vinyl
+        rotate={twoIsPlaying}
+        src={vinylIcon}
+        alt="vinyl"
+        height="150px"
+        width="150px"
+      />
+    </PlayerContainer>
   );
   function handlePlayTwo() {
     if (djPlayerTwo.state === 'stopped') {
@@ -68,6 +71,10 @@ const PlayerContainer = styled.div`
 `;
 const PlayButton = styled(InvisibleButton)`
   grid-column: 1 / 2;
+  grid-row: 3 / 4;
+`;
+const CueButton = styled(InvisibleButton)`
+  grid-column: 2 / 3;
   grid-row: 3 / 4;
 `;
 const TrackUploadLabel = styled.label`
