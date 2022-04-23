@@ -72,15 +72,11 @@ const PlayButton = styled(InvisibleButton)`
   grid-column: 1 / 2;
   grid-row: 3 / 4;
 `;
-
 const TrackUploadLabel = styled.label`
   grid-column: 1 / 3;
   grid-row: 1 / 2;
   align-self: center;
   text-align: center;
-  input {
-    /* display: none; */
-  }
 `;
 const Vinyl = styled.img`
   margin: 10px;

@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
-import DJPlayer from './DJPlayer';
+import DJPlayerOne from './DJPlayerOne';
 
-describe('DJPlayer', () => {
+describe('DJPlayerOne', () => {
   it('renders two file inputs', () => {
-    render(<DJPlayer />);
+    render(<DJPlayerOne />);
     const inputOne = screen.getByTestId('file upload one');
-    
+
     expect(inputOne).toBeInTheDocument();
     expect(inputOne).toHaveAttribute('type', 'file');
   });

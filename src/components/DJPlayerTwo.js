@@ -60,7 +60,6 @@ export default function DJPlayer() {
     setTrackTwo(URL.createObjectURL(files[0]));
   }
 }
-
 const PlayerContainer = styled.div`
   display: grid;
   border: 2px solid var(--white);
@@ -71,7 +70,6 @@ const PlayButton = styled(InvisibleButton)`
   grid-column: 1 / 2;
   grid-row: 3 / 4;
 `;
-
 const TrackUploadLabel = styled.label`
   grid-column: 1 / 3;
   grid-row: 1 / 2;

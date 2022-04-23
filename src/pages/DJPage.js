@@ -1,4 +1,4 @@
-import DJPlayer from '../components/DJPlayer';
+import DJPlayerOne from '../components/DJPlayerOne';
 import DJPlayerTwo from '../components/DJPlayerTwo';
 import DJControls from '../components/DJControls';
 
@@ -7,7 +7,7 @@ import styled from 'styled-components';
 export default function DJPage() {
   return (
     <PageContainer>
-      <DJPlayer />
+      <DJPlayerOne />
       <DJControls />
       <DJPlayerTwo />
     </PageContainer>
