@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import useStore from '../hooks/useStore';
+import useStore from '../../hooks/useStore';
 import * as Tone from 'tone';
 import { useEffect } from 'react';
 

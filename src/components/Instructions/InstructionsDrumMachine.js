@@ -1,12 +1,12 @@
-import EQ from '../images/EQ.svg';
-import recordingLogo from '../images/recording-page.svg';
-import sequencerLogo from '../images/sequencer.svg';
-import settingsLogo from '../images/settings.svg';
-import { InstructionNavButton } from './Buttons';
+import EQ from '../../images/EQ.svg';
+import recordingLogo from '../../images/recording-page.svg';
+import sequencerLogo from '../../images/sequencer.svg';
+import settingsLogo from '../../images/settings.svg';
+import { InstructionNavButton } from '../Buttons';
 
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import useStore from '../hooks/useStore';
+import useStore from '../../hooks/useStore';
 
 export default function InstructionsDrumMachine() {
   let navigate = useNavigate('');

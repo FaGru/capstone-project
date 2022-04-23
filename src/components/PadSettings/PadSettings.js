@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { allSamples } from '../data';
-import playbutton from '../images/play.svg';
+import { allSamples } from '../../data';
+import playbutton from '../../images/play.svg';
 
 export default function PadSettings({
   savePadClick,

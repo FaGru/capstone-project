@@ -13,9 +13,16 @@ const useStore = create((set, get) => ({
   synth: null,
   djPlayerOne: null,
   djPlayerTwo: null,
+  eq3One: null,
+  eq3Two: null,
+  lowpassFilterPlayerOne: null,
+  highpassFilterPlayerOne: null,
+  lowpassFilterPlayerTwo: null,
   djTrackOne: 'https://tonejs.github.io/audio/berklee/gong_1.mp3',
   djTrackTwo: 'https://tonejs.github.io/audio/berklee/gong_1.mp3',
   faderPosition: 0,
+  eqOneSettings: { high: -5, mid: -5, low: -5 },
+  eqTwoSettings: { high: -5, mid: -5, low: -5 },
   currentDrumLoop: 'DrumLoop90BPM',
   loopPlayerVolume: 5,
   recordings: [],
@@ -259,25 +266,44 @@ const useStore = create((set, get) => ({
   },
   ///////////////     DJ Player      ///////////////
   initDJPlayerOne: () => {
-    const faderPosition = get().faderPosition;
-    const dest = get().dest;
-    const djPlayerOne = new Tone.Player(get().djTrackOne).toDestination();
-    djPlayerOne.connect(dest);
-    if (faderPosition >= 0) {
-      djPlayerOne.volume.value = -faderPosition;
-    }
-    set({ djPlayerOne });
+    const eqOneSettings = get().eqOneSettings;
+    const highpassFilterPlayerOne = new Tone.Filter({
+      frequency: 0,
+      type: 'highpass',
+    }).toDestination();
+    const lowpassFilterPlayerOne = new Tone.Filter({
+      frequency: 22000,
+      type: 'lowpass',
+    }).connect(highpassFilterPlayerOne);
+    const eq3One = new Tone.EQ3(eqOneSettings).connect(lowpassFilterPlayerOne);
+    const djPlayerOne = new Tone.Player(get().djTrackOne).connect(eq3One);
+    set({
+      djPlayerOne,
+      eq3One,
+      lowpassFilterPlayerOne,
+      highpassFilterPlayerOne,
+    });
   },
   initDJPlayerTwo: () => {
-    const faderPosition = get().faderPosition;
-    const dest = get().dest;
-    const djPlayerTwo = new Tone.Player(get().djTrackTwo).toDestination();
-    djPlayerTwo.connect(dest);
-    if (faderPosition <= 0) {
-      djPlayerTwo.volume.value = faderPosition;
-    }
-    set({ djPlayerTwo });
+    const eqTwoSettings = get().eqOneSettings;
+    const highpassFilterPlayerTwo = new Tone.Filter({
+      frequency: 0,
+      type: 'highpass',
+    }).toDestination();
+    const lowpassFilterPlayerTwo = new Tone.Filter({
+      frequency: 22000,
+      type: 'lowpass',
+    }).connect(highpassFilterPlayerTwo);
+    const eq3Two = new Tone.EQ3(eqTwoSettings).connect(lowpassFilterPlayerTwo);
+    const djPlayerTwo = new Tone.Player(get().djTrackTwo).connect(eq3Two);
+    set({
+      djPlayerTwo,
+      eq3Two,
+      lowpassFilterPlayerTwo,
+      highpassFilterPlayerTwo,
+    });
   },
+
   setDjTrackOne: newTrack => {
     set({ djTrackOne: newTrack });
     get().initDJPlayerOne();
@@ -285,21 +311,6 @@ const useStore = create((set, get) => ({
   setDjTrackTwo: newTrack => {
     set({ djTrackTwo: newTrack });
     get().initDJPlayerTwo();
-  },
-  setFaderPosition: newPosition => {
-    const djPlayerOne = get().djPlayerOne;
-    const djPlayerTwo = get().djPlayerTwo;
-    if (newPosition === '40') {
-      djPlayerOne.mute = true;
-    } else if (newPosition >= 0) {
-      djPlayerOne.volume.value = -newPosition / 2;
-    }
-    if (newPosition === '-40') {
-      djPlayerTwo.mute = true;
-    } else if (newPosition <= 0) {
-      djPlayerTwo.volume.value = newPosition / 2;
-    }
-    set({ faderPosition: newPosition });
   },
 }));
 

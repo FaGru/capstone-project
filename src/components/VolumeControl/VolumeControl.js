@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import useStore from '../hooks/useStore';
-import close from '../images/close.svg';
+import useStore from '../../hooks/useStore';
+import close from '../../images/close.svg';
 
 export default function VolumeControl({
   isControlsVisible,

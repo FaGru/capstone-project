@@ -1,7 +1,7 @@
-import SequencerPad from '../components/SequencerPad';
-import Sequencer from '../components/Sequencer';
-import SequencerSettings from '../components/SequencerSettings';
-import InstructionsSequencer from '../components/InstructionsSequencer';
+import SequencerPad from '../components/SequencerPad/SequencerPad';
+import Sequencer from '../components/Sequencer/Sequencer';
+import SequencerSettings from '../components/SequencerSettings/SequencerSettings';
+import InstructionsSequencer from '../components/Instructions/InstructionsSequencer';
 import NavAnimation from '../components/FramerMotion';
 import { BackgroundAnimation } from '../components/BackgroundAnimation';
 import {

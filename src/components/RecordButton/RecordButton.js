@@ -1,7 +1,7 @@
-import recordButton from '../images/record-single.svg';
+import recordButton from '../../images/record-single.svg';
 import { useState } from 'react';
-import isRecordingButton from '../images/recording-wave.gif';
-import { StyledButtonImg, InvisibleButton } from './Buttons';
+import isRecordingButton from '../../images/recording-wave.gif';
+import { StyledButtonImg, InvisibleButton } from '../Buttons';
 
 export default function Recorder({ recordStopClick, recordStartClick }) {
   const [isRecording, setIsRecording] = useState(false);

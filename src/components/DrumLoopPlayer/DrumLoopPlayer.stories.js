@@ -1,6 +1,6 @@
 import DrumLoopPlayer from './DrumLoopPlayer';
-import playbutton from '../images/play.svg';
-import pausebutton from '../images/pause.svg';
+import playbutton from '../../images/play.svg';
+
 
 export default {
   title: 'Component/DrumLoopPlayer',

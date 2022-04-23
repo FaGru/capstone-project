@@ -1,8 +1,8 @@
-import DrumLoopPlayer from '../components/DrumLoopPlayer';
-import DrumPad from '../components/DrumPad';
-import RecordButton from '../components/RecordButton';
-import VolumeControl from '../components/VolumeControl';
-import InstructionsDrumMachine from '../components/InstructionsDrumMachine';
+import DrumLoopPlayer from '../components/DrumLoopPlayer/DrumLoopPlayer';
+import DrumPad from '../components/DrumPad/DrumPad';
+import RecordButton from '../components/RecordButton/RecordButton';
+import VolumeControl from '../components/VolumeControl/VolumeControl';
+import InstructionsDrumMachine from '../components/Instructions/InstructionsDrumMachine';
 import NavAnimation from '../components/FramerMotion';
 import { BackgroundAnimation } from '../components/BackgroundAnimation';
 

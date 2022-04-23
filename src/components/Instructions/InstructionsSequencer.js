@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import useStore from '../hooks/useStore';
+import useStore from '../../hooks/useStore';
 import { useNavigate } from 'react-router-dom';
-import backLogo from '../images/back-right.svg';
-import controlsLogo from '../images/EQ.svg';
-import { InstructionNavButton } from './Buttons';
+import backLogo from '../../images/back-right.svg';
+import controlsLogo from '../../images/EQ.svg';
+import { InstructionNavButton } from '../Buttons';
 
 export default function InstructionsSequencer() {
   let navigate = useNavigate('');
@@ -61,7 +61,7 @@ export default function InstructionsSequencer() {
   function nextClick() {
     setInstructionFourVisible(false);
     setInstructionFiveVisible(true);
-    setIsInstructionNavVisible(false)
+    setIsInstructionNavVisible(false);
     navigate('/drum-machine', { replace: true });
   }
   function exitClick() {

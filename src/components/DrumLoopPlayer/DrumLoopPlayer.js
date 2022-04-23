@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import { InvisibleButton } from './Buttons';
+import { InvisibleButton } from '../Buttons';
 
-import playbutton from '../images/play.svg';
-import pausebutton from '../images/pause.svg';
+import playbutton from '../../images/play.svg';
+import pausebutton from '../../images/pause.svg';
 
 export default function DrumLoopPlayer({ startDrumLoop, getDrumLoop }) {
   const [isPlaying, setIsPlaying] = useState(false);

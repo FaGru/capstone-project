@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import useStore from '../hooks/useStore';
+import useStore from '../../hooks/useStore';
 import { useNavigate } from 'react-router-dom';
-import backLogo from '../images/back.svg';
-import { InstructionNavButton } from './Buttons';
+import backLogo from '../../images/back.svg';
+import { InstructionNavButton } from '../Buttons';
 
 export default function InstructionsPadSettings() {
   let navigate = useNavigate('');
