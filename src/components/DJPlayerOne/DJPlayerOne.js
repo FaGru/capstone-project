@@ -24,7 +24,7 @@ export default function DJPlayer() {
         />
       </TrackUploadLabel>
       <CueButton
-        aria-label="play-button"
+        aria-label="cue-button"
         onMouseDown={handlePlayOne}
         onMouseUp={handlePlayOne}
       >
