@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import useStore from '../hooks/useStore';
+import knobIcon from '../images/control-knob.svg';
 
 export default function DJControls() {
   const {
@@ -13,6 +15,8 @@ export default function DJControls() {
     highpassFilterPlayerTwo,
   } = useStore(state => state);
   const setFaderPosition = useStore(state => state.setFaderPosition);
+  const [filterPositionOne, setFilterPositionOne] = useState(0);
+  const [filterPositionTwo, setFilterPositionTwo] = useState(0);
 
   return (
     <Container>
@@ -48,7 +52,14 @@ export default function DJControls() {
               onChange={e => eq3One.set({ low: e.target.value })}
             />
           </label>
-          <label htmlFor="filter-one">
+          <FilterLabel htmlFor="filter-one">
+            <KnobIcon
+              position={filterPositionOne}
+              src={knobIcon}
+              alt="control-knob"
+              height="40px"
+              width="40px"
+            />
             <input
               id="filter-one"
               type="range"
@@ -57,7 +68,7 @@ export default function DJControls() {
               defaultValue="0"
               onChange={handleFilterPlayerOne}
             />
-          </label>
+          </FilterLabel>
         </EQ3>
         <EQ3>
           <label htmlFor="high-frequency-two">
@@ -90,7 +101,14 @@ export default function DJControls() {
               onChange={e => eq3Two.set({ low: e.target.value })}
             />
           </label>
-          <label htmlFor="filter-two">
+          <FilterLabel htmlFor="filter-two">
+            <KnobIcon
+              position={filterPositionTwo}
+              src={knobIcon}
+              alt="control-knob"
+              height="40px"
+              width="40px"
+            />
             <input
               id="filter-two"
               type="range"
@@ -99,7 +117,7 @@ export default function DJControls() {
               defaultValue="0"
               onChange={handleFilterPlayerTwo}
             />
-          </label>
+          </FilterLabel>
         </EQ3>
       </EQContainer>
       <label htmlFor="dj-player-fader">
@@ -120,6 +138,7 @@ export default function DJControls() {
     setFaderPosition(e.target.value);
   }
   function handleFilterPlayerOne(e) {
+    setFilterPositionOne(e.target.value);
     e.target.value < 0
       ? lowpassFilterPlayerOne.set({
           frequency: 5000 / Math.pow(2, -e.target.value),
@@ -136,6 +155,7 @@ export default function DJControls() {
         });
   }
   function handleFilterPlayerTwo(e) {
+    setFilterPositionTwo(e.target.value);
     e.target.value < 0
       ? lowpassFilterPlayerTwo.set({
           frequency: 5000 / Math.pow(2, -e.target.value),
@@ -152,7 +172,9 @@ export default function DJControls() {
         });
   }
 }
-
+const KnobIcon = styled.img`
+  transform: rotate(${props => props.position * 26}deg);
+`;
 const Container = styled.div`
   text-align: center;
 `;
@@ -167,4 +189,19 @@ const EQ3 = styled.div`
 const LineFader = styled.input`
   width: 300px;
   margin-top: 20px;
+`;
+const FilterLabel = styled.label`
+  position: relative;
+  input {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-90deg);
+    width: 50px;
+    opacity: 0;
+    cursor: grab;
+    &:active {
+      cursor: grabbing;
+    }
+  }
 `;
