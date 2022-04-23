@@ -13,12 +13,11 @@ export default function DJControls() {
     lowpassFilterPlayerTwo,
     highpassFilterPlayerTwo,
     djPlayerOne,
-    djPlayerTwo
+    djPlayerTwo,
   } = useStore(state => state);
-  const setEQOneSettings = useStore(state => state.setEQOneSettings);
+
   const [filterPositionOne, setFilterPositionOne] = useState(0);
   const [filterPositionTwo, setFilterPositionTwo] = useState(0);
-
   const [render, setRender] = useState(false);
 
   return (
@@ -194,7 +193,6 @@ export default function DJControls() {
   );
 
   function handleEQSetting(e) {
-    setEQOneSettings(e.target.name, e.target.value);
     if (e.target.name === 'high-one') {
       eq3One.set({ high: e.target.value });
     } else if (e.target.name === 'mid-one') {
@@ -278,8 +276,8 @@ const EQ3 = styled.div`
   margin: 10px;
 `;
 const LineFader = styled.input`
-  width: 300px;
-  margin-top: 20px;
+  width: 200px;
+  margin: 20px;
 `;
 const EQLabel = styled.label`
   position: relative;
