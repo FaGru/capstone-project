@@ -16,6 +16,7 @@ export default function DJControls() {
     djPlayerTwo,
   } = useStore(state => state);
 
+  const setFaderPosition = useStore(state => state.setFaderPosition)
   const [filterPositionOne, setFilterPositionOne] = useState(0);
   const [filterPositionTwo, setFilterPositionTwo] = useState(0);
   const [render, setRender] = useState(false);
@@ -219,6 +220,7 @@ export default function DJControls() {
     } else if (e.target.value <= 0) {
       djPlayerTwo.volume.value = e.target.value / 2;
     }
+    setFaderPosition(e.target.value)
   }
   function handleFilterPlayerOne(e) {
     setFilterPositionOne(e.target.value);
@@ -276,7 +278,7 @@ const EQ3 = styled.div`
   margin: 10px;
 `;
 const LineFader = styled.input`
-  width: 200px;
+  width: 150px;
   margin: 20px;
 `;
 const EQLabel = styled.label`

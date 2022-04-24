@@ -1,5 +1,6 @@
 import useStore from '../../hooks/useStore';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 import vinylIcon from '../../images/vinyl.svg';
 import { useState } from 'react';
 import { InvisibleButton, StyledButtonImg } from '../Buttons';
@@ -7,13 +8,24 @@ import playIcon from '../../images/play.svg';
 import pauseIcon from '../../images/pause.svg';
 import cueIcon from '../../images/cue.svg';
 
-export default function DJPlayer() {
+export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
   const djPlayerTwo = useStore(state => state.djPlayerTwo);
   const setTrackTwo = useStore(state => state.setDjTrackTwo);
   const [twoIsPlaying, setTwoIsPlaying] = useState(0);
 
   return (
-    <PlayerContainer>
+    <PlayerContainer
+      initial={{ x: '-500px' }}
+      animate={
+        visiblePlayer === 1 && window.innerWidth < 600 ? { x: -500 } : { x: 0 }
+      }
+      transition={{
+        type: 'tween',
+        ease: 'anticipate',
+        duration: 0.5,
+      }}
+    >
+      2
       <TrackUploadLabel htmlFor="file upload two">
         <input
           onChange={handleTrackTwo}
@@ -23,6 +35,9 @@ export default function DJPlayer() {
           data-testid="file upload two"
         />
       </TrackUploadLabel>
+      <PlayerSwitchButton onClick={() => setVisiblePlayer(1)}>
+        Show Player 1
+      </PlayerSwitchButton>
       <CueButton
         aria-label="cue-button"
         onMouseDown={handlePlayTwo}
@@ -63,37 +78,53 @@ export default function DJPlayer() {
     setTrackTwo(URL.createObjectURL(files[0]));
   }
 }
-const PlayerContainer = styled.div`
+const PlayerContainer = styled(motion.div)`
   display: grid;
   border: 2px solid var(--white);
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr auto 1fr;
+  @media (max-width: 600px) {
+    grid-row: 1/ 2;
+    grid-column: 1 / 2;
+  }
 `;
 const PlayButton = styled(InvisibleButton)`
   grid-column: 1 / 2;
   grid-row: 3 / 4;
+  justify-self: end;
 `;
 const CueButton = styled(InvisibleButton)`
   grid-column: 2 / 3;
   grid-row: 3 / 4;
+  justify-self: start;
+`;
+const PlayerSwitchButton = styled.button`
+  grid-column: 3 / 4;
+  grid-row: 3 / 4;
+  border-radius: 10px;
+  width: 60px;
+  height: 60px;
+  align-self: center;
+  justify-self: end;
+  margin: 5px;
+  @media (min-width: 601px) {
+    display: none;
+  }
 `;
 const TrackUploadLabel = styled.label`
-  grid-column: 1 / 3;
+  grid-column: 1 / 4;
   grid-row: 1 / 2;
   align-self: center;
-  text-align: center;
 `;
 const Vinyl = styled.img`
   margin: 10px;
-  border-radius: 100%;
-  grid-column: 1 / 3;
+  grid-column: 1 / 4;
   grid-row: 2 / 3;
   justify-self: center;
-  @keyframes dance {
+  @keyframes play {
     100% {
       transform: rotate(360deg);
     }
   }
-  ${props =>
-    props.rotate === 1 ? `animation: dance linear 2s infinite; ` : ''}
+  ${props => (props.rotate === 1 ? `animation: play linear 2s infinite; ` : '')}
 `;
