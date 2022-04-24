@@ -264,11 +264,14 @@ const KnobIcon = styled.img`
 const Container = styled.div`
   text-align: center;
   border: 2px solid white;
+  border-radius: 20px;
+  min-width: 250px;
   p {
     margin: 0;
   }
 `;
 const EQContainer = styled.div`
+  margin-top: 20px;
   display: flex;
   justify-content: center;
 `;
@@ -279,7 +282,7 @@ const EQ3 = styled.div`
 `;
 const LineFader = styled.input`
   width: 150px;
-  margin: 20px;
+  margin-bottom: 20px;
 `;
 const EQLabel = styled.label`
   position: relative;

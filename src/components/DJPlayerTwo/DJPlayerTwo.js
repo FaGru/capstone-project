@@ -25,7 +25,7 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
         duration: 0.5,
       }}
     >
-      2
+      
       <TrackUploadLabel htmlFor="file upload two">
         <input
           onChange={handleTrackTwo}
@@ -81,6 +81,7 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
 const PlayerContainer = styled(motion.div)`
   display: grid;
   border: 2px solid var(--white);
+  border-radius: 20px;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr auto 1fr;
   @media (max-width: 600px) {
