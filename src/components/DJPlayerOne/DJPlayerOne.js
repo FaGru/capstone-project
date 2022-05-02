@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { InvisibleButton, StyledButtonImg } from '../Buttons';
-
 import vinylIcon from '../../images/vinyl.svg';
 import playIcon from '../../images/play.svg';
 import pauseIcon from '../../images/pause.svg';
@@ -11,13 +10,21 @@ import cueIcon from '../../images/cue.svg';
 import uploadIcon from '../../images/upload.svg';
 
 export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
-  const { djPlayerOne, djPlayerOnePlaybackRate } = useStore(state => state);
+  const {
+    djPlayerOne,
+    djPlayerOnePlaybackRate,
+    highpassFilterPlayerOne,
+    feedbackDelay,
+  } = useStore(state => state);
   const setTrackOne = useStore(state => state.setDjTrackOne);
   const setDjPlayerOnePlaybackRate = useStore(
     state => state.setDjPlayerOnePlaybackRate
   );
   const [oneIsPlaying, setOneIsPlaying] = useState(0);
   const [trackNameOne, setTrackNameOne] = useState('');
+
+  const [isEchoOutActive, setIsEchoOutActive] = useState(false);
+
   return (
     <PlayerContainer
       initial={{ x: '-500px' }}
@@ -86,6 +93,7 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
           width="50px"
         />
       </PlayButton>
+      <button onClick={handleEchoOut}>echo out</button>
     </PlayerContainer>
   );
 
@@ -108,6 +116,20 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
   function handlePitch(e) {
     setDjPlayerOnePlaybackRate(e.target.value);
     djPlayerOne.playbackRate = e.target.value;
+  }
+  function handleEchoOut() {
+    setIsEchoOutActive(!isEchoOutActive);
+    if (isEchoOutActive === false) {
+      highpassFilterPlayerOne.connect(feedbackDelay);
+      setTimeout(function () {
+        djPlayerOne.mute = true;
+      }, 500);
+    }
+    if (isEchoOutActive === true) {
+      highpassFilterPlayerOne.disconnect(feedbackDelay);
+      highpassFilterPlayerOne.toDestination();
+      djPlayerOne.mute = false;
+    }
   }
 }
 

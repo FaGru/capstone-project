@@ -22,6 +22,7 @@ const useStore = create((set, get) => ({
   djTrackTwo: 'https://tonejs.github.io/audio/berklee/gong_1.mp3',
   djPlayerOnePlaybackRate: 1,
   djPlayerTwoPlaybackRate: 1,
+  feedbackDelay: null,
   faderPosition: 0,
   eqOneSettings: { high: -5, mid: -5, low: -5 },
   eqTwoSettings: { high: -5, mid: -5, low: -5 },
@@ -55,6 +56,7 @@ const useStore = create((set, get) => ({
         get().initDrumPadPlayers();
         get().initDJPlayerOne();
         get().initDJPlayerTwo();
+        get().initFeedbackDelay();
       }
     };
     window.addEventListener('click', handleUserInteraction);
@@ -270,6 +272,7 @@ const useStore = create((set, get) => ({
   initDJPlayerOne: () => {
     const eqOneSettings = get().eqOneSettings;
     const faderPosition = get().faderPosition;
+
     const highpassFilterPlayerOne = new Tone.Filter({
       frequency: 0,
       type: 'highpass',
@@ -280,7 +283,8 @@ const useStore = create((set, get) => ({
     }).connect(highpassFilterPlayerOne);
     const eq3One = new Tone.EQ3(eqOneSettings).connect(lowpassFilterPlayerOne);
     const djPlayerOne = new Tone.Player(get().djTrackOne).connect(eq3One);
-    djPlayerOne.playbackRate = get().djPlayerOnePlaybackRate
+
+    djPlayerOne.playbackRate = get().djPlayerOnePlaybackRate;
     if (faderPosition === '40') {
       djPlayerOne.mute = true;
     } else if (faderPosition >= 0) {
@@ -306,7 +310,7 @@ const useStore = create((set, get) => ({
     }).connect(highpassFilterPlayerTwo);
     const eq3Two = new Tone.EQ3(eqTwoSettings).connect(lowpassFilterPlayerTwo);
     const djPlayerTwo = new Tone.Player(get().djTrackTwo).connect(eq3Two);
-    djPlayerTwo.playbackRate = get().djPlayerTwoPlaybackRate
+    djPlayerTwo.playbackRate = get().djPlayerTwoPlaybackRate;
     if (faderPosition === '-40') {
       djPlayerTwo.mute = true;
     } else if (faderPosition <= 0) {
@@ -319,14 +323,18 @@ const useStore = create((set, get) => ({
       highpassFilterPlayerTwo,
     });
   },
+  initFeedbackDelay: () => {
+    const feedbackDelay = new Tone.FeedbackDelay('4n', 0.5).toDestination();
+    set({ feedbackDelay });
+  },
   setFaderPosition: newFaderPosition => {
     set({ faderPosition: newFaderPosition });
   },
   setDjPlayerOnePlaybackRate: newRate => {
-    set({ djPlayerOnePlaybackRate: newRate})
+    set({ djPlayerOnePlaybackRate: newRate });
   },
   setDjPlayerTwoPlaybackRate: newRate => {
-    set({ djPlayerTwoPlaybackRate: newRate})
+    set({ djPlayerTwoPlaybackRate: newRate });
   },
   setDjTrackOne: newTrack => {
     set({ djTrackOne: newTrack });

@@ -10,13 +10,20 @@ import cueIcon from '../../images/cue.svg';
 import uploadIcon from '../../images/upload.svg';
 
 export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
-  const { djPlayerTwo, djPlayerTwoPlaybackRate } = useStore(state => state);
+  const {
+    djPlayerTwo,
+    djPlayerTwoPlaybackRate,
+    highpassFilterPlayerTwo,
+    feedbackDelay,
+  } = useStore(state => state);
   const setTrackTwo = useStore(state => state.setDjTrackTwo);
   const setDjPlayerTwoPlaybackRate = useStore(
     state => state.setDjPlayerTwoPlaybackRate
   );
   const [twoIsPlaying, setTwoIsPlaying] = useState(0);
   const [trackNameTwo, setTrackNameTwo] = useState('');
+
+  const [isEchoOutActive, setIsEchoOutActive] = useState(false);
 
   return (
     <PlayerContainer
@@ -84,6 +91,7 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
           width="50px"
         />
       </PlayButton>
+      <button onClick={handleEchoOut}>echo out</button>
     </PlayerContainer>
   );
   function handlePlayTwo() {
@@ -105,6 +113,20 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
   function handlePitch(e) {
     setDjPlayerTwoPlaybackRate(e.target.value);
     djPlayerTwo.playbackRate = e.target.value;
+  }
+  function handleEchoOut() {
+    setIsEchoOutActive(!isEchoOutActive);
+    if (isEchoOutActive === false) {
+      highpassFilterPlayerTwo.connect(feedbackDelay);
+      setTimeout(function () {
+        djPlayerTwo.mute = true;
+      }, 500);
+    }
+    if (isEchoOutActive === true) {
+      highpassFilterPlayerTwo.disconnect(feedbackDelay);
+      highpassFilterPlayerTwo.toDestination();
+      djPlayerTwo.mute = false;
+    }
   }
 }
 const PlayerContainer = styled(motion.div)`
