@@ -11,11 +11,13 @@ import cueIcon from '../../images/cue.svg';
 import uploadIcon from '../../images/upload.svg';
 
 export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
-  const djPlayerOne = useStore(state => state.djPlayerOne);
+  const { djPlayerOne, djPlayerOnePlaybackRate } = useStore(state => state);
   const setTrackOne = useStore(state => state.setDjTrackOne);
+  const setDjPlayerOnePlaybackRate = useStore(
+    state => state.setDjPlayerOnePlaybackRate
+  );
   const [oneIsPlaying, setOneIsPlaying] = useState(0);
   const [trackNameOne, setTrackNameOne] = useState('');
-  console.log(trackNameOne.length)
   return (
     <PlayerContainer
       initial={{ x: '-500px' }}
@@ -32,7 +34,11 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
     >
       <TrackUploadLabel htmlFor="file upload one">
         <img src={uploadIcon} alt="upload" />
-        <div>{trackNameOne.length >= 60 ? trackNameOne.slice(0, 60)+'...' : trackNameOne}</div>
+        <div>
+          {trackNameOne.length >= 60
+            ? trackNameOne.slice(0, 60) + '...'
+            : trackNameOne}
+        </div>
         <input
           onChange={handleTrackOne}
           type="file"
@@ -42,7 +48,26 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
           data-testid="file upload one"
         />
       </TrackUploadLabel>
-
+      <Vinyl
+        rotate={oneIsPlaying}
+        src={vinylIcon}
+        alt="vinyl"
+        height="150px"
+        width="150px"
+      />
+      <PitchFaderLabel htmlFor="pitch fader one">
+        <input
+          onChange={handlePitch}
+          type="range"
+          min="0.8"
+          max="1.2"
+          step="0.01"
+          defaultValue={djPlayerOnePlaybackRate}
+          id="pitch fader one"
+          name="pitch fader one"
+          data-testid="pitch fader one"
+        />
+      </PitchFaderLabel>
       <PlayerSwitchButton onClick={() => setVisiblePlayer(2)}>
         Show Player 2
       </PlayerSwitchButton>
@@ -61,13 +86,6 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
           width="50px"
         />
       </PlayButton>
-      <Vinyl
-        rotate={oneIsPlaying}
-        src={vinylIcon}
-        alt="vinyl"
-        height="150px"
-        width="150px"
-      />
     </PlayerContainer>
   );
 
@@ -80,13 +98,16 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
       setOneIsPlaying(0);
     }
   }
-
   function handleTrackOne(e) {
     djPlayerOne.stop();
     oneIsPlaying === 1 && setOneIsPlaying(0);
     const files = e.target.files;
     setTrackOne(URL.createObjectURL(files[0]));
     setTrackNameOne(files[0].name);
+  }
+  function handlePitch(e) {
+    setDjPlayerOnePlaybackRate(e.target.value);
+    djPlayerOne.playbackRate = e.target.value;
   }
 }
 
@@ -96,7 +117,7 @@ const PlayerContainer = styled(motion.div)`
   border-radius: 20px;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr auto 1fr;
-  min-width: 300px;
+  width: 320px;
   @media (max-width: 600px) {
     grid-row: 1/ 2;
     grid-column: 1 / 2;
@@ -137,6 +158,16 @@ const TrackUploadLabel = styled.label`
 
   input {
     display: none;
+  }
+`;
+const PitchFaderLabel = styled.label`
+  grid-column: 3 / 4;
+  grid-row: 2 / 3;
+  justify-self: center;
+  margin: 20px;
+  transform: rotate(90deg);
+  input {
+    color: var(--white);
   }
 `;
 

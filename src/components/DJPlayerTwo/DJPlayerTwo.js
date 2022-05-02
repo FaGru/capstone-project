@@ -10,8 +10,11 @@ import cueIcon from '../../images/cue.svg';
 import uploadIcon from '../../images/upload.svg';
 
 export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
-  const djPlayerTwo = useStore(state => state.djPlayerTwo);
+  const { djPlayerTwo, djPlayerTwoPlaybackRate } = useStore(state => state);
   const setTrackTwo = useStore(state => state.setDjTrackTwo);
+  const setDjPlayerTwoPlaybackRate = useStore(
+    state => state.setDjPlayerTwoPlaybackRate
+  );
   const [twoIsPlaying, setTwoIsPlaying] = useState(0);
   const [trackNameTwo, setTrackNameTwo] = useState('');
 
@@ -29,7 +32,11 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
     >
       <TrackUploadLabel htmlFor="file upload two">
         <img src={uploadIcon} alt="upload" />
-        <div>{trackNameTwo.length >= 60 ? trackNameTwo.slice(0, 60)+'...' : trackNameTwo}</div>
+        <div>
+          {trackNameTwo.length >= 60
+            ? trackNameTwo.slice(0, 60) + '...'
+            : trackNameTwo}
+        </div>
         <input
           onChange={handleTrackTwo}
           type="file"
@@ -39,6 +46,26 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
           data-testid="file upload two"
         />
       </TrackUploadLabel>
+      <Vinyl
+        rotate={twoIsPlaying}
+        src={vinylIcon}
+        alt="vinyl"
+        height="150px"
+        width="150px"
+      />
+      <PitchFaderLabel htmlFor="pitch fader two">
+        <input
+          onChange={handlePitch}
+          type="range"
+          min="0.8"
+          max="1.2"
+          step="0.01"
+          defaultValue={djPlayerTwoPlaybackRate}
+          id="pitch fader two"
+          name="pitch fader two"
+          data-testid="pitch fader two"
+        />
+      </PitchFaderLabel>
       <PlayerSwitchButton onClick={() => setVisiblePlayer(1)}>
         Show Player 1
       </PlayerSwitchButton>
@@ -57,13 +84,6 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
           width="50px"
         />
       </PlayButton>
-      <Vinyl
-        rotate={twoIsPlaying}
-        src={vinylIcon}
-        alt="vinyl"
-        height="150px"
-        width="150px"
-      />
     </PlayerContainer>
   );
   function handlePlayTwo() {
@@ -82,6 +102,10 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
     setTrackTwo(URL.createObjectURL(files[0]));
     setTrackNameTwo(files[0].name);
   }
+  function handlePitch(e) {
+    setDjPlayerTwoPlaybackRate(e.target.value);
+    djPlayerTwo.playbackRate = e.target.value;
+  }
 }
 const PlayerContainer = styled(motion.div)`
   display: grid;
@@ -89,7 +113,7 @@ const PlayerContainer = styled(motion.div)`
   border-radius: 20px;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr auto 1fr;
-  min-width: 300px;
+  width: 320px;
   @media (max-width: 600px) {
     grid-row: 1/ 2;
     grid-column: 1 / 2;
@@ -132,6 +156,17 @@ const TrackUploadLabel = styled.label`
     display: none;
   }
 `;
+const PitchFaderLabel = styled.label`
+  grid-column: 3 / 4;
+  grid-row: 2 / 3;
+  justify-self: center;
+  margin: 20px;
+  transform: rotate(90deg);
+  input {
+    color: var(--white);
+  }
+`;
+
 const Vinyl = styled.img`
   margin: 10px;
   grid-column: 1 / 4;
@@ -142,5 +177,5 @@ const Vinyl = styled.img`
       transform: rotate(360deg);
     }
   }
-  ${props => (props.rotate === 1 ? `animation: play linear 2s infinite; ` : '')}
+  ${props => props.rotate === 1 && `animation: play linear 2s infinite; `}
 `;
