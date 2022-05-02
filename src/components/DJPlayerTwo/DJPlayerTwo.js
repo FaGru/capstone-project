@@ -29,10 +29,11 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
     >
       <TrackUploadLabel htmlFor="file upload two">
         <img src={uploadIcon} alt="upload" />
-        <div>{trackNameTwo}</div>
+        <div>{trackNameTwo.length >= 60 ? trackNameTwo.slice(0, 60)+'...' : trackNameTwo}</div>
         <input
           onChange={handleTrackTwo}
           type="file"
+          accept="audio/*"
           id="file upload two"
           name="file upload two"
           data-testid="file upload two"

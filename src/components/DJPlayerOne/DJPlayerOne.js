@@ -15,7 +15,7 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
   const setTrackOne = useStore(state => state.setDjTrackOne);
   const [oneIsPlaying, setOneIsPlaying] = useState(0);
   const [trackNameOne, setTrackNameOne] = useState('');
-
+  console.log(trackNameOne.length)
   return (
     <PlayerContainer
       initial={{ x: '-500px' }}
@@ -32,10 +32,11 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
     >
       <TrackUploadLabel htmlFor="file upload one">
         <img src={uploadIcon} alt="upload" />
-        <div>{trackNameOne}</div>
+        <div>{trackNameOne.length >= 60 ? trackNameOne.slice(0, 60)+'...' : trackNameOne}</div>
         <input
           onChange={handleTrackOne}
           type="file"
+          accept="audio/*"
           id="file upload one"
           name="file upload one"
           data-testid="file upload one"
