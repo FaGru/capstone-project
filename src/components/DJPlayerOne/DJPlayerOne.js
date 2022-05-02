@@ -56,12 +56,26 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
         <input
           onChange={e => (djPlayerOne.playbackRate = e.target.value / 100)}
           type="range"
+          list="tickmarks"
           min="80"
           max="120"
+          step="0.1"
           defaultValue="100"
           id="pitch fader one"
           name="pitch fader one"
+          data-testid="pitch fader one"
         />
+        <datalist id="tickmarks">
+          <option value="80"></option>
+          <option value="85"></option>
+          <option value="90"></option>
+          <option value="95"></option>
+          <option value="100"></option>
+          <option value="105"></option>
+          <option value="110"></option>
+          <option value="115"></option>
+          <option value="120"></option>
+        </datalist>
       </PitchFaderLabel>
       <PlayerSwitchButton onClick={() => setVisiblePlayer(2)}>
         Show Player 2
@@ -158,6 +172,9 @@ const PitchFaderLabel = styled.label`
   justify-self: center;
   margin: 10px;
   transform: rotate(90deg);
+  input {
+    color: var(--white);
+  }
 `;
 
 const Vinyl = styled.img`
