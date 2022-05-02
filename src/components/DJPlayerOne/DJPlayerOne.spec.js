@@ -1,4 +1,4 @@
-import { userEvent } from '@storybook/testing-library';
+import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 import DJPlayerOne from './DJPlayerOne';
 
@@ -9,17 +9,17 @@ describe('DJPlayerOne', () => {
     expect(inputOne).toBeInTheDocument();
     expect(inputOne).toHaveAttribute('type', 'file');
   });
+
   it('renders a range input', () => {
     render(<DJPlayerOne />);
     const pitchOne = screen.getByTestId('pitch fader one');
     expect(pitchOne).toBeInTheDocument();
     expect(pitchOne).toHaveAttribute('type', 'range');
   });
+
   it('calls the dj-player switch function', () => {
     const setVisiblePlayer = jest.fn();
-    render(
-      <DJPlayerOne visiblePlayer={1} setVisiblePlayer={setVisiblePlayer} />
-    );
+    render(<DJPlayerOne setVisiblePlayer={setVisiblePlayer} />);
     const switchButton = screen.getByText('Show Player 2');
     userEvent.click(switchButton);
     expect(setVisiblePlayer).toHaveBeenCalled();

@@ -3,7 +3,11 @@ import Sequencer from './Sequencer';
 
 jest.mock('tone', () => {
   return {
-    Sequence: jest.fn().mockReturnValue({start: jest.fn()}),
+    Sequence: jest
+      .fn()
+      .mockReturnValue({
+        start: jest.fn().mockReturnValue({ dispose: jest.fn() }),
+      }),
   };
 });
 

@@ -109,7 +109,7 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
   }
 
   function handleTrackOne(e) {
-    djPlayerOne.stop();
+    djPlayerOne && djPlayerOne.stop();
     oneIsPlaying === 1 && setOneIsPlaying(0);
     const files = e.target.files;
     setTrackOne(URL.createObjectURL(files[0]));

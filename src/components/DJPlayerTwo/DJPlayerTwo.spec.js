@@ -1,4 +1,4 @@
-import { userEvent } from '@storybook/testing-library';
+import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 import DJPlayerTwo from './DJPlayerTwo';
 
@@ -18,7 +18,7 @@ describe('DJPlayerTwo', () => {
   it('calls the dj-player switch function', () => {
     const setVisiblePlayer = jest.fn();
     render(
-      <DJPlayerTwo visiblePlayer={2} setVisiblePlayer={setVisiblePlayer} />
+      <DJPlayerTwo setVisiblePlayer={setVisiblePlayer} />
     );
     const switchButton = screen.getByText('Show Player 1');
     userEvent.click(switchButton);
