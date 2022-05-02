@@ -1,28 +1,47 @@
 import useStore from '../../hooks/useStore';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 import vinylIcon from '../../images/vinyl.svg';
 import { useState } from 'react';
 import { InvisibleButton, StyledButtonImg } from '../Buttons';
 import playIcon from '../../images/play.svg';
 import pauseIcon from '../../images/pause.svg';
 import cueIcon from '../../images/cue.svg';
+import uploadIcon from '../../images/upload.svg';
 
-export default function DJPlayer() {
+export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
   const djPlayerTwo = useStore(state => state.djPlayerTwo);
   const setTrackTwo = useStore(state => state.setDjTrackTwo);
   const [twoIsPlaying, setTwoIsPlaying] = useState(0);
+  const [trackNameTwo, setTrackNameTwo] = useState('');
 
   return (
-    <PlayerContainer>
+    <PlayerContainer
+      initial={{ x: '-500px' }}
+      animate={
+        visiblePlayer === 1 && window.innerWidth < 600 ? { x: -500 } : { x: 0 }
+      }
+      transition={{
+        type: 'tween',
+        ease: 'anticipate',
+        duration: 0.5,
+      }}
+    >
       <TrackUploadLabel htmlFor="file upload two">
+        <img src={uploadIcon} alt="upload" />
+        <div>{trackNameTwo.length >= 60 ? trackNameTwo.slice(0, 60)+'...' : trackNameTwo}</div>
         <input
           onChange={handleTrackTwo}
           type="file"
+          accept="audio/*"
           id="file upload two"
           name="file upload two"
           data-testid="file upload two"
         />
       </TrackUploadLabel>
+      <PlayerSwitchButton onClick={() => setVisiblePlayer(1)}>
+        Show Player 1
+      </PlayerSwitchButton>
       <CueButton
         aria-label="cue-button"
         onMouseDown={handlePlayTwo}
@@ -61,39 +80,67 @@ export default function DJPlayer() {
     twoIsPlaying === 1 && setTwoIsPlaying(0);
     const files = e.target.files;
     setTrackTwo(URL.createObjectURL(files[0]));
+    setTrackNameTwo(files[0].name);
   }
 }
-const PlayerContainer = styled.div`
+const PlayerContainer = styled(motion.div)`
   display: grid;
   border: 2px solid var(--white);
-  grid-template-columns: 1fr 1fr;
+  border-radius: 20px;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr auto 1fr;
+  min-width: 300px;
+  @media (max-width: 600px) {
+    grid-row: 1/ 2;
+    grid-column: 1 / 2;
+  }
 `;
 const PlayButton = styled(InvisibleButton)`
   grid-column: 1 / 2;
   grid-row: 3 / 4;
+  justify-self: end;
 `;
 const CueButton = styled(InvisibleButton)`
   grid-column: 2 / 3;
   grid-row: 3 / 4;
+  justify-self: start;
+`;
+const PlayerSwitchButton = styled.button`
+  grid-column: 3 / 4;
+  grid-row: 3 / 4;
+  border-radius: 10px;
+  width: 60px;
+  height: 60px;
+  align-self: center;
+  justify-self: end;
+  margin: 5px;
+  @media (min-width: 601px) {
+    display: none;
+  }
 `;
 const TrackUploadLabel = styled.label`
-  grid-column: 1 / 3;
+  grid-column: 1 / 4;
   grid-row: 1 / 2;
   align-self: center;
-  text-align: center;
+  justify-self: center;
+  max-width: 300px;
+  display: flex;
+  gap: 10px;
+  margin: 5px;
+
+  input {
+    display: none;
+  }
 `;
 const Vinyl = styled.img`
   margin: 10px;
-  border-radius: 100%;
-  grid-column: 1 / 3;
+  grid-column: 1 / 4;
   grid-row: 2 / 3;
   justify-self: center;
-  @keyframes dance {
+  @keyframes play {
     100% {
       transform: rotate(360deg);
     }
   }
-  ${props =>
-    props.rotate === 1 ? `animation: dance linear 2s infinite; ` : ''}
+  ${props => (props.rotate === 1 ? `animation: play linear 2s infinite; ` : '')}
 `;

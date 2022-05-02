@@ -16,6 +16,7 @@ export default function DJControls() {
     djPlayerTwo,
   } = useStore(state => state);
 
+  const setFaderPosition = useStore(state => state.setFaderPosition)
   const [filterPositionOne, setFilterPositionOne] = useState(0);
   const [filterPositionTwo, setFilterPositionTwo] = useState(0);
   const [render, setRender] = useState(false);
@@ -219,6 +220,7 @@ export default function DJControls() {
     } else if (e.target.value <= 0) {
       djPlayerTwo.volume.value = e.target.value / 2;
     }
+    setFaderPosition(e.target.value)
   }
   function handleFilterPlayerOne(e) {
     setFilterPositionOne(e.target.value);
@@ -262,11 +264,14 @@ const KnobIcon = styled.img`
 const Container = styled.div`
   text-align: center;
   border: 2px solid white;
+  border-radius: 20px;
+  min-width: 250px;
   p {
     margin: 0;
   }
 `;
 const EQContainer = styled.div`
+  margin-top: 20px;
   display: flex;
   justify-content: center;
 `;
@@ -276,8 +281,8 @@ const EQ3 = styled.div`
   margin: 10px;
 `;
 const LineFader = styled.input`
-  width: 200px;
-  margin: 20px;
+  width: 150px;
+  margin-bottom: 20px;
 `;
 const EQLabel = styled.label`
   position: relative;

@@ -267,6 +267,7 @@ const useStore = create((set, get) => ({
   ///////////////     DJ Player      ///////////////
   initDJPlayerOne: () => {
     const eqOneSettings = get().eqOneSettings;
+    const faderPosition = get().faderPosition;
     const highpassFilterPlayerOne = new Tone.Filter({
       frequency: 0,
       type: 'highpass',
@@ -277,6 +278,11 @@ const useStore = create((set, get) => ({
     }).connect(highpassFilterPlayerOne);
     const eq3One = new Tone.EQ3(eqOneSettings).connect(lowpassFilterPlayerOne);
     const djPlayerOne = new Tone.Player(get().djTrackOne).connect(eq3One);
+    if (faderPosition === '40') {
+      djPlayerOne.mute = true;
+    } else if (faderPosition >= 0) {
+      djPlayerOne.volume.value = -faderPosition / 2;
+    }
     set({
       djPlayerOne,
       eq3One,
@@ -286,6 +292,7 @@ const useStore = create((set, get) => ({
   },
   initDJPlayerTwo: () => {
     const eqTwoSettings = get().eqOneSettings;
+    const faderPosition = get().faderPosition;
     const highpassFilterPlayerTwo = new Tone.Filter({
       frequency: 0,
       type: 'highpass',
@@ -296,6 +303,11 @@ const useStore = create((set, get) => ({
     }).connect(highpassFilterPlayerTwo);
     const eq3Two = new Tone.EQ3(eqTwoSettings).connect(lowpassFilterPlayerTwo);
     const djPlayerTwo = new Tone.Player(get().djTrackTwo).connect(eq3Two);
+    if (faderPosition === '-40') {
+      djPlayerTwo.mute = true;
+    } else if (faderPosition <= 0) {
+      djPlayerTwo.volume.value = faderPosition / 2;
+    }
     set({
       djPlayerTwo,
       eq3Two,
@@ -303,7 +315,9 @@ const useStore = create((set, get) => ({
       highpassFilterPlayerTwo,
     });
   },
-
+  setFaderPosition: newFaderPosition => {
+    set({ faderPosition: newFaderPosition });
+  },
   setDjTrackOne: newTrack => {
     set({ djTrackOne: newTrack });
     get().initDJPlayerOne();
