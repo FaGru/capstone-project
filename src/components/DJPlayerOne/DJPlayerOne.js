@@ -15,7 +15,6 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
   const setTrackOne = useStore(state => state.setDjTrackOne);
   const [oneIsPlaying, setOneIsPlaying] = useState(0);
   const [trackNameOne, setTrackNameOne] = useState('');
-  console.log(trackNameOne.length)
   return (
     <PlayerContainer
       initial={{ x: '-500px' }}
@@ -32,7 +31,11 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
     >
       <TrackUploadLabel htmlFor="file upload one">
         <img src={uploadIcon} alt="upload" />
-        <div>{trackNameOne.length >= 60 ? trackNameOne.slice(0, 60)+'...' : trackNameOne}</div>
+        <div>
+          {trackNameOne.length >= 60
+            ? trackNameOne.slice(0, 60) + '...'
+            : trackNameOne}
+        </div>
         <input
           onChange={handleTrackOne}
           type="file"
@@ -42,7 +45,24 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
           data-testid="file upload one"
         />
       </TrackUploadLabel>
-
+      <Vinyl
+        rotate={oneIsPlaying}
+        src={vinylIcon}
+        alt="vinyl"
+        height="150px"
+        width="150px"
+      />
+      <PitchFaderLabel htmlFor="pitch fader one">
+        <input
+          onChange={e => (djPlayerOne.playbackRate = e.target.value / 100)}
+          type="range"
+          min="80"
+          max="120"
+          defaultValue="100"
+          id="pitch fader one"
+          name="pitch fader one"
+        />
+      </PitchFaderLabel>
       <PlayerSwitchButton onClick={() => setVisiblePlayer(2)}>
         Show Player 2
       </PlayerSwitchButton>
@@ -61,13 +81,6 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
           width="50px"
         />
       </PlayButton>
-      <Vinyl
-        rotate={oneIsPlaying}
-        src={vinylIcon}
-        alt="vinyl"
-        height="150px"
-        width="150px"
-      />
     </PlayerContainer>
   );
 
@@ -96,7 +109,7 @@ const PlayerContainer = styled(motion.div)`
   border-radius: 20px;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr auto 1fr;
-  min-width: 300px;
+  width: 320px;
   @media (max-width: 600px) {
     grid-row: 1/ 2;
     grid-column: 1 / 2;
@@ -138,6 +151,13 @@ const TrackUploadLabel = styled.label`
   input {
     display: none;
   }
+`;
+const PitchFaderLabel = styled.label`
+  grid-column: 3 / 4;
+  grid-row: 2 / 3;
+  justify-self: center;
+  margin: 10px;
+  transform: rotate(90deg);
 `;
 
 const Vinyl = styled.img`

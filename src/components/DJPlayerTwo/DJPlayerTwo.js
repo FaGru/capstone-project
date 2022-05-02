@@ -29,7 +29,11 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
     >
       <TrackUploadLabel htmlFor="file upload two">
         <img src={uploadIcon} alt="upload" />
-        <div>{trackNameTwo.length >= 60 ? trackNameTwo.slice(0, 60)+'...' : trackNameTwo}</div>
+        <div>
+          {trackNameTwo.length >= 60
+            ? trackNameTwo.slice(0, 60) + '...'
+            : trackNameTwo}
+        </div>
         <input
           onChange={handleTrackTwo}
           type="file"
@@ -39,6 +43,24 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
           data-testid="file upload two"
         />
       </TrackUploadLabel>
+      <Vinyl
+        rotate={twoIsPlaying}
+        src={vinylIcon}
+        alt="vinyl"
+        height="150px"
+        width="150px"
+      />
+      <PitchFaderLabel htmlFor="pitch fader one">
+        <input
+          onChange={e => (djPlayerTwo.playbackRate = e.target.value / 100)}
+          type="range"
+          min="80"
+          max="120"
+          defaultValue="100"
+          id="pitch fader one"
+          name="pitch fader one"
+        />
+      </PitchFaderLabel>
       <PlayerSwitchButton onClick={() => setVisiblePlayer(1)}>
         Show Player 1
       </PlayerSwitchButton>
@@ -57,13 +79,6 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
           width="50px"
         />
       </PlayButton>
-      <Vinyl
-        rotate={twoIsPlaying}
-        src={vinylIcon}
-        alt="vinyl"
-        height="150px"
-        width="150px"
-      />
     </PlayerContainer>
   );
   function handlePlayTwo() {
@@ -89,7 +104,7 @@ const PlayerContainer = styled(motion.div)`
   border-radius: 20px;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr auto 1fr;
-  min-width: 300px;
+  width: 320px;
   @media (max-width: 600px) {
     grid-row: 1/ 2;
     grid-column: 1 / 2;
@@ -132,6 +147,14 @@ const TrackUploadLabel = styled.label`
     display: none;
   }
 `;
+const PitchFaderLabel = styled.label`
+  grid-column: 3 / 4;
+  grid-row: 2 / 3;
+  justify-self: center;
+  margin: 10px;
+  transform: rotate(90deg);
+`;
+
 const Vinyl = styled.img`
   margin: 10px;
   grid-column: 1 / 4;
