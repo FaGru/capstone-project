@@ -11,8 +11,11 @@ import cueIcon from '../../images/cue.svg';
 import uploadIcon from '../../images/upload.svg';
 
 export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
-  const djPlayerOne = useStore(state => state.djPlayerOne);
+  const { djPlayerOne, djPlayerOnePlaybackRate } = useStore(state => state);
   const setTrackOne = useStore(state => state.setDjTrackOne);
+  const setDjPlayerOnePlaybackRate = useStore(
+    state => state.setDjPlayerOnePlaybackRate
+  );
   const [oneIsPlaying, setOneIsPlaying] = useState(0);
   const [trackNameOne, setTrackNameOne] = useState('');
   return (
@@ -54,13 +57,13 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
       />
       <PitchFaderLabel htmlFor="pitch fader one">
         <input
-          onChange={e => (djPlayerOne.playbackRate = e.target.value / 100)}
+          onChange={handlePitch}
           type="range"
           list="tickmarks"
-          min="80"
-          max="120"
-          step="0.1"
-          defaultValue="100"
+          min="0.8"
+          max="1.2"
+          step="0.01"
+          defaultValue={djPlayerOnePlaybackRate}
           id="pitch fader one"
           name="pitch fader one"
           data-testid="pitch fader one"
@@ -107,13 +110,16 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
       setOneIsPlaying(0);
     }
   }
-
   function handleTrackOne(e) {
-    djPlayerOne && djPlayerOne.stop();
+    djPlayerOne.stop();
     oneIsPlaying === 1 && setOneIsPlaying(0);
     const files = e.target.files;
     setTrackOne(URL.createObjectURL(files[0]));
     setTrackNameOne(files[0].name);
+  }
+  function handlePitch(e) {
+    setDjPlayerOnePlaybackRate(e.target.value);
+    djPlayerOne.playbackRate = e.target.value;
   }
 }
 

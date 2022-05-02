@@ -10,8 +10,11 @@ import cueIcon from '../../images/cue.svg';
 import uploadIcon from '../../images/upload.svg';
 
 export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
-  const djPlayerTwo = useStore(state => state.djPlayerTwo);
+  const { djPlayerTwo, djPlayerTwoPlaybackRate } = useStore(state => state);
   const setTrackTwo = useStore(state => state.setDjTrackTwo);
+  const setDjPlayerTwoPlaybackRate = useStore(
+    state => state.setDjPlayerTwoPlaybackRate
+  );
   const [twoIsPlaying, setTwoIsPlaying] = useState(0);
   const [trackNameTwo, setTrackNameTwo] = useState('');
 
@@ -52,13 +55,13 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
       />
       <PitchFaderLabel htmlFor="pitch fader two">
         <input
-          onChange={e => (djPlayerTwo.playbackRate = e.target.value / 100)}
+          onChange={handlePitch}
           type="range"
           list="tickmarks"
-          min="80"
-          max="120"
-          step="0.1"
-          defaultValue="100"
+          min="0.8"
+          max="1.2"
+          step="0.01"
+          defaultValue={djPlayerTwoPlaybackRate}
           id="pitch fader two"
           name="pitch fader two"
           data-testid="pitch fader two"
@@ -110,6 +113,10 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
     const files = e.target.files;
     setTrackTwo(URL.createObjectURL(files[0]));
     setTrackNameTwo(files[0].name);
+  }
+  function handlePitch(e) {
+    setDjPlayerTwoPlaybackRate(e.target.value);
+    djPlayerTwo.playbackRate = e.target.value;
   }
 }
 const PlayerContainer = styled(motion.div)`
@@ -182,5 +189,5 @@ const Vinyl = styled.img`
       transform: rotate(360deg);
     }
   }
-  ${props => (props.rotate === 1 && `animation: play linear 2s infinite; `)}
+  ${props => props.rotate === 1 && `animation: play linear 2s infinite; `}
 `;
