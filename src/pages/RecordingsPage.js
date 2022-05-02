@@ -83,7 +83,6 @@ const BackButton = styled(NavLink)`
   margin: 15px;
   justify-self: start;
   grid-column: 1 / 2;
-  transform: rotate(90deg);
 `;
 
 const RecordingNumber = styled.p`
