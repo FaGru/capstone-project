@@ -57,7 +57,6 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
         <input
           onChange={handlePitch}
           type="range"
-          list="tickmarks"
           min="0.8"
           max="1.2"
           step="0.01"
@@ -66,17 +65,6 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
           name="pitch fader two"
           data-testid="pitch fader two"
         />
-        <datalist id="tickmarks">
-          <option value="80"></option>
-          <option value="85"></option>
-          <option value="90"></option>
-          <option value="95"></option>
-          <option value="100"></option>
-          <option value="105"></option>
-          <option value="110"></option>
-          <option value="115"></option>
-          <option value="120"></option>
-        </datalist>
       </PitchFaderLabel>
       <PlayerSwitchButton onClick={() => setVisiblePlayer(1)}>
         Show Player 1
@@ -172,7 +160,7 @@ const PitchFaderLabel = styled.label`
   grid-column: 3 / 4;
   grid-row: 2 / 3;
   justify-self: center;
-  margin: 10px;
+  margin: 20px;
   transform: rotate(90deg);
   input {
     color: var(--white);
