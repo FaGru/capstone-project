@@ -7,11 +7,13 @@ import { InvisibleButton, StyledButtonImg } from '../Buttons';
 import playIcon from '../../images/play.svg';
 import pauseIcon from '../../images/pause.svg';
 import cueIcon from '../../images/cue.svg';
+import uploadIcon from '../../images/upload.svg';
 
 export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
   const djPlayerTwo = useStore(state => state.djPlayerTwo);
   const setTrackTwo = useStore(state => state.setDjTrackTwo);
   const [twoIsPlaying, setTwoIsPlaying] = useState(0);
+  const [trackNameTwo, setTrackNameTwo] = useState('');
 
   return (
     <PlayerContainer
@@ -25,8 +27,9 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
         duration: 0.5,
       }}
     >
-      
       <TrackUploadLabel htmlFor="file upload two">
+        <img src={uploadIcon} alt="upload" />
+        <div>{trackNameTwo}</div>
         <input
           onChange={handleTrackTwo}
           type="file"
@@ -76,6 +79,7 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
     twoIsPlaying === 1 && setTwoIsPlaying(0);
     const files = e.target.files;
     setTrackTwo(URL.createObjectURL(files[0]));
+    setTrackNameTwo(files[0].name);
   }
 }
 const PlayerContainer = styled(motion.div)`
@@ -84,6 +88,7 @@ const PlayerContainer = styled(motion.div)`
   border-radius: 20px;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr auto 1fr;
+  min-width: 300px;
   @media (max-width: 600px) {
     grid-row: 1/ 2;
     grid-column: 1 / 2;
@@ -116,6 +121,15 @@ const TrackUploadLabel = styled.label`
   grid-column: 1 / 4;
   grid-row: 1 / 2;
   align-self: center;
+  justify-self: center;
+  max-width: 300px;
+  display: flex;
+  gap: 10px;
+  margin: 5px;
+
+  input {
+    display: none;
+  }
 `;
 const Vinyl = styled.img`
   margin: 10px;

@@ -1,17 +1,20 @@
 import useStore from '../../hooks/useStore';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import vinylIcon from '../../images/vinyl.svg';
 import { useState } from 'react';
 import { InvisibleButton, StyledButtonImg } from '../Buttons';
+
+import vinylIcon from '../../images/vinyl.svg';
 import playIcon from '../../images/play.svg';
 import pauseIcon from '../../images/pause.svg';
 import cueIcon from '../../images/cue.svg';
+import uploadIcon from '../../images/upload.svg';
 
 export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
   const djPlayerOne = useStore(state => state.djPlayerOne);
   const setTrackOne = useStore(state => state.setDjTrackOne);
   const [oneIsPlaying, setOneIsPlaying] = useState(0);
+  const [trackNameOne, setTrackNameOne] = useState('');
 
   return (
     <PlayerContainer
@@ -28,6 +31,8 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
       }}
     >
       <TrackUploadLabel htmlFor="file upload one">
+        <img src={uploadIcon} alt="upload" />
+        <div>{trackNameOne}</div>
         <input
           onChange={handleTrackOne}
           type="file"
@@ -36,6 +41,7 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
           data-testid="file upload one"
         />
       </TrackUploadLabel>
+
       <PlayerSwitchButton onClick={() => setVisiblePlayer(2)}>
         Show Player 2
       </PlayerSwitchButton>
@@ -79,6 +85,7 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
     oneIsPlaying === 1 && setOneIsPlaying(0);
     const files = e.target.files;
     setTrackOne(URL.createObjectURL(files[0]));
+    setTrackNameOne(files[0].name);
   }
 }
 
@@ -88,6 +95,7 @@ const PlayerContainer = styled(motion.div)`
   border-radius: 20px;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr auto 1fr;
+  min-width: 300px;
   @media (max-width: 600px) {
     grid-row: 1/ 2;
     grid-column: 1 / 2;
@@ -120,7 +128,17 @@ const TrackUploadLabel = styled.label`
   grid-column: 1 / 4;
   grid-row: 1 / 2;
   align-self: center;
+  justify-self: center;
+  max-width: 300px;
+  display: flex;
+  gap: 10px;
+  margin: 5px;
+
+  input {
+    display: none;
+  }
 `;
+
 const Vinyl = styled.img`
   margin: 10px;
   grid-column: 1 / 4;
@@ -131,5 +149,5 @@ const Vinyl = styled.img`
       transform: rotate(360deg);
     }
   }
-  ${props => (props.rotate === 1 ? `animation: play linear 2s infinite; ` : '')}
+  ${props => props.rotate === 1 && `animation: play linear 2s infinite; `}
 `;
