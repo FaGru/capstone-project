@@ -286,7 +286,7 @@ const useStore = create((set, get) => ({
 
     djPlayerOne.playbackRate = get().djPlayerOnePlaybackRate;
     if (faderPosition === '40') {
-      djPlayerOne.mute = true;
+      djPlayerOne.volume.value = -500;
     } else if (faderPosition >= 0) {
       djPlayerOne.volume.value = -faderPosition / 2;
     }
@@ -312,7 +312,7 @@ const useStore = create((set, get) => ({
     const djPlayerTwo = new Tone.Player(get().djTrackTwo).connect(eq3Two);
     djPlayerTwo.playbackRate = get().djPlayerTwoPlaybackRate;
     if (faderPosition === '-40') {
-      djPlayerTwo.mute = true;
+      djPlayerTwo.volume.value = -500;
     } else if (faderPosition <= 0) {
       djPlayerTwo.volume.value = faderPosition / 2;
     }
