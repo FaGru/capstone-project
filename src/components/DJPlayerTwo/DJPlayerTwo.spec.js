@@ -17,11 +17,16 @@ describe('DJPlayerTwo', () => {
   });
   it('calls the dj-player switch function', () => {
     const setVisiblePlayer = jest.fn();
-    render(
-      <DJPlayerTwo setVisiblePlayer={setVisiblePlayer} />
-    );
+    render(<DJPlayerTwo setVisiblePlayer={setVisiblePlayer} />);
+
     const switchButton = screen.getByText('Show Player 1');
     userEvent.click(switchButton);
     expect(setVisiblePlayer).toHaveBeenCalled();
+  });
+  it('renders the echo out button', () => {
+    render(<DJPlayerTwo />);
+    const echoOutButton = screen.getByRole('button', { name: 'echo out' });
+    expect(echoOutButton).toBeInTheDocument();
+    expect(echoOutButton).toHaveTextContent('echo out')
   });
 });

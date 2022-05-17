@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { InvisibleButton, StyledButtonImg } from '../Buttons';
-
 import vinylIcon from '../../images/vinyl.svg';
 import playIcon from '../../images/play.svg';
 import pauseIcon from '../../images/pause.svg';
@@ -11,13 +10,20 @@ import cueIcon from '../../images/cue.svg';
 import uploadIcon from '../../images/upload.svg';
 
 export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
-  const { djPlayerOne, djPlayerOnePlaybackRate } = useStore(state => state);
+  const {
+    djPlayerOne,
+    djPlayerOnePlaybackRate,
+    highpassFilterPlayerOne,
+    feedbackDelay,
+  } = useStore(state => state);
   const setTrackOne = useStore(state => state.setDjTrackOne);
   const setDjPlayerOnePlaybackRate = useStore(
     state => state.setDjPlayerOnePlaybackRate
   );
   const [oneIsPlaying, setOneIsPlaying] = useState(0);
-  const [trackNameOne, setTrackNameOne] = useState('');
+  const [trackNameOne, setTrackNameOne] = useState('load up a track...');
+  const [isEchoOutActive, setIsEchoOutActive] = useState(false);
+ 
   return (
     <PlayerContainer
       initial={{ x: '-500px' }}
@@ -35,8 +41,8 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
       <TrackUploadLabel htmlFor="file upload one">
         <img src={uploadIcon} alt="upload" />
         <div>
-          {trackNameOne.length >= 60
-            ? trackNameOne.slice(0, 60) + '...'
+          {trackNameOne.length >= 50
+            ? trackNameOne.slice(0, 50) + '...'
             : trackNameOne}
         </div>
         <input
@@ -86,6 +92,9 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
           width="50px"
         />
       </PlayButton>
+      <FXButton isActive={isEchoOutActive} onClick={handleEchoOut}>
+        echo out
+      </FXButton>
     </PlayerContainer>
   );
 
@@ -109,6 +118,20 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
     setDjPlayerOnePlaybackRate(e.target.value);
     djPlayerOne.playbackRate = e.target.value;
   }
+  function handleEchoOut() {
+    setIsEchoOutActive(!isEchoOutActive);
+    if (isEchoOutActive === false) {
+      highpassFilterPlayerOne.connect(feedbackDelay);
+      setTimeout(function () {
+        djPlayerOne.mute = true;
+      }, 500);
+    }
+    if (isEchoOutActive === true) {
+      highpassFilterPlayerOne.disconnect(feedbackDelay);
+      highpassFilterPlayerOne.toDestination();
+      djPlayerOne.mute = false;
+    }
+  }
 }
 
 const PlayerContainer = styled(motion.div)`
@@ -116,7 +139,7 @@ const PlayerContainer = styled(motion.div)`
   border: 2px solid var(--white);
   border-radius: 20px;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr auto 1fr;
+  grid-template-rows: auto auto auto auto;
   width: 320px;
   @media (max-width: 600px) {
     grid-row: 1/ 2;
@@ -125,17 +148,17 @@ const PlayerContainer = styled(motion.div)`
 `;
 const PlayButton = styled(InvisibleButton)`
   grid-column: 1 / 2;
-  grid-row: 3 / 4;
+  grid-row: 4 / 5;
   justify-self: end;
 `;
 const CueButton = styled(InvisibleButton)`
   grid-column: 2 / 3;
-  grid-row: 3 / 4;
+  grid-row: 4 / 5;
   justify-self: start;
 `;
 const PlayerSwitchButton = styled.button`
   grid-column: 3 / 4;
-  grid-row: 3 / 4;
+  grid-row: 4 / 5;
   border-radius: 10px;
   width: 60px;
   height: 60px;
@@ -162,19 +185,23 @@ const TrackUploadLabel = styled.label`
 `;
 const PitchFaderLabel = styled.label`
   grid-column: 3 / 4;
-  grid-row: 2 / 3;
+  grid-row: 3 / 4;
   justify-self: center;
-  margin: 20px;
-  transform: rotate(90deg);
+  width: 120px;
+
+  display: flex;
   input {
     color: var(--white);
+    transform: rotate(90deg);
+    margin: auto;
+    height: 20px;
   }
 `;
 
 const Vinyl = styled.img`
   margin: 10px;
   grid-column: 1 / 4;
-  grid-row: 2 / 3;
+  grid-row: 3 / 4;
   justify-self: center;
   @keyframes play {
     100% {
@@ -182,4 +209,16 @@ const Vinyl = styled.img`
     }
   }
   ${props => props.rotate === 1 && `animation: play linear 2s infinite; `}
+`;
+const FXButton = styled.button`
+  grid-column: 1 / 2;
+  background-color: ${props =>
+    props.isActive === true ? 'var(--blue-active)' : 'var(--blue)'};
+  box-shadow: ${props =>
+    props.isActive === true
+      ? '0 0 20px 2px var(--blue)'
+      : 'inset 0 0 20px 2px var(--blue-active)'};
+  border: none;
+  border-radius: 5px;
+  margin: 10px;
 `;

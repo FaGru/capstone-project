@@ -40,7 +40,7 @@ export default function DrumMachinePage() {
   const navDirection = useStore(state => state.navDirection);
 
   return (
-    <>
+    <div>
       <NavAnimation start={navDirection.start} end={navDirection.end}>
         <DrumMachineContainer>
           <BackButton onClick={handleNavigate} to="/">
@@ -118,7 +118,7 @@ export default function DrumMachinePage() {
           </RecLoopContainer>
         </DrumMachineContainer>
       </NavAnimation>
-    </>
+    </div>
   );
 
   ////////////////////drumPad////////////////////
@@ -186,7 +186,7 @@ const DrumMachineContainer = styled(BackgroundAnimation)`
   padding: 10px;
   box-shadow: inset 0 0 15px 5px var(--black);
 
-  @media (max-width: 1000px) {
+  @media (max-width: 1100px) {
     @media (orientation: landscape) {
       display: none;
     }

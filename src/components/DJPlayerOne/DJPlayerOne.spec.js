@@ -24,4 +24,10 @@ describe('DJPlayerOne', () => {
     userEvent.click(switchButton);
     expect(setVisiblePlayer).toHaveBeenCalled();
   });
+  it('renders the echo out button', () => {
+    render(<DJPlayerOne />);
+    const echoOutButton = screen.getByRole('button', { name: 'echo out' });
+    expect(echoOutButton).toBeInTheDocument();
+    expect(echoOutButton).toHaveTextContent('echo out');
+  });
 });

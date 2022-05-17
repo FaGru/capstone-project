@@ -10,13 +10,20 @@ import cueIcon from '../../images/cue.svg';
 import uploadIcon from '../../images/upload.svg';
 
 export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
-  const { djPlayerTwo, djPlayerTwoPlaybackRate } = useStore(state => state);
+  const {
+    djPlayerTwo,
+    djPlayerTwoPlaybackRate,
+    highpassFilterPlayerTwo,
+    feedbackDelay,
+  } = useStore(state => state);
   const setTrackTwo = useStore(state => state.setDjTrackTwo);
   const setDjPlayerTwoPlaybackRate = useStore(
     state => state.setDjPlayerTwoPlaybackRate
   );
   const [twoIsPlaying, setTwoIsPlaying] = useState(0);
-  const [trackNameTwo, setTrackNameTwo] = useState('');
+  const [trackNameTwo, setTrackNameTwo] = useState('load up a track...');
+
+  const [isEchoOutActive, setIsEchoOutActive] = useState(false);
 
   return (
     <PlayerContainer
@@ -33,8 +40,8 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
       <TrackUploadLabel htmlFor="file upload two">
         <img src={uploadIcon} alt="upload" />
         <div>
-          {trackNameTwo.length >= 60
-            ? trackNameTwo.slice(0, 60) + '...'
+          {trackNameTwo.length >= 50
+            ? trackNameTwo.slice(0, 50) + '...'
             : trackNameTwo}
         </div>
         <input
@@ -84,6 +91,7 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
           width="50px"
         />
       </PlayButton>
+      <FXButton isActive={isEchoOutActive} onClick={handleEchoOut}>echo out</FXButton>
     </PlayerContainer>
   );
   function handlePlayTwo() {
@@ -106,13 +114,27 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
     setDjPlayerTwoPlaybackRate(e.target.value);
     djPlayerTwo.playbackRate = e.target.value;
   }
+  function handleEchoOut() {
+    setIsEchoOutActive(!isEchoOutActive);
+    if (isEchoOutActive === false) {
+      highpassFilterPlayerTwo.connect(feedbackDelay);
+      setTimeout(function () {
+        djPlayerTwo.mute = true;
+      }, 500);
+    }
+    if (isEchoOutActive === true) {
+      highpassFilterPlayerTwo.disconnect(feedbackDelay);
+      highpassFilterPlayerTwo.toDestination();
+      djPlayerTwo.mute = false;
+    }
+  }
 }
 const PlayerContainer = styled(motion.div)`
   display: grid;
   border: 2px solid var(--white);
   border-radius: 20px;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr auto 1fr;
+  grid-template-rows: auto auto auto auto;
   width: 320px;
   @media (max-width: 600px) {
     grid-row: 1/ 2;
@@ -121,17 +143,17 @@ const PlayerContainer = styled(motion.div)`
 `;
 const PlayButton = styled(InvisibleButton)`
   grid-column: 1 / 2;
-  grid-row: 3 / 4;
+  grid-row: 4 / 5;
   justify-self: end;
 `;
 const CueButton = styled(InvisibleButton)`
   grid-column: 2 / 3;
-  grid-row: 3 / 4;
+  grid-row: 4 / 5;
   justify-self: start;
 `;
 const PlayerSwitchButton = styled.button`
   grid-column: 3 / 4;
-  grid-row: 3 / 4;
+  grid-row: 4 / 5;
   border-radius: 10px;
   width: 60px;
   height: 60px;
@@ -158,19 +180,23 @@ const TrackUploadLabel = styled.label`
 `;
 const PitchFaderLabel = styled.label`
   grid-column: 3 / 4;
-  grid-row: 2 / 3;
+  grid-row: 3 / 4;
   justify-self: center;
-  margin: 20px;
-  transform: rotate(90deg);
+  width: 120px;
+
+  display: flex;
   input {
     color: var(--white);
+    transform: rotate(90deg);
+    margin: auto;
+    height: 20px;
   }
 `;
 
 const Vinyl = styled.img`
   margin: 10px;
   grid-column: 1 / 4;
-  grid-row: 2 / 3;
+  grid-row: 3 / 4;
   justify-self: center;
   @keyframes play {
     100% {
@@ -178,4 +204,16 @@ const Vinyl = styled.img`
     }
   }
   ${props => props.rotate === 1 && `animation: play linear 2s infinite; `}
+`;
+const FXButton = styled.button`
+  grid-column: 1 / 2;
+  background-color: ${props =>
+    props.isActive === true ? 'var(--blue-active)' : 'var(--blue)'};
+  box-shadow: ${props =>
+    props.isActive === true
+      ? '0 0 20px 2px var(--blue)'
+      : 'inset 0 0 20px 2px var(--blue-active)'};
+  border: none;
+  border-radius: 5px;
+  margin: 10px;
 `;
