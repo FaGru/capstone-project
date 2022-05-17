@@ -22,7 +22,6 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
   );
   const [oneIsPlaying, setOneIsPlaying] = useState(0);
   const [trackNameOne, setTrackNameOne] = useState('load up a track...');
-
   const [isEchoOutActive, setIsEchoOutActive] = useState(false);
  
   return (
