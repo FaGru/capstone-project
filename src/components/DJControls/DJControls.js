@@ -21,6 +21,9 @@ export default function DJControls() {
   const [filterPositionTwo, setFilterPositionTwo] = useState(0);
   const [render, setRender] = useState(false);
 
+
+
+
   return (
     <Container>
       <EQContainer>

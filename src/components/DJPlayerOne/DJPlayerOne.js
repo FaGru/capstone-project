@@ -23,7 +23,33 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
   const [oneIsPlaying, setOneIsPlaying] = useState(0);
   const [trackNameOne, setTrackNameOne] = useState('load up a track...');
   const [isEchoOutActive, setIsEchoOutActive] = useState(false);
- 
+
+  navigator
+    .requestMIDIAccess()
+    .then(access => {
+      const devices = access.inputs.values();
+      for (let device of devices) {
+        device.onmidimessage = onMidiMessage;
+      }
+    })
+    .catch(console.errer);
+
+  function onMidiMessage(message) {
+    console.log(message);
+    setIsEchoOutActive(!isEchoOutActive);
+    if (isEchoOutActive === false) {
+      highpassFilterPlayerOne.connect(feedbackDelay);
+      setTimeout(function () {
+        djPlayerOne.mute = true;
+      }, 500);
+    }
+    if (isEchoOutActive === true) {
+      highpassFilterPlayerOne.disconnect(feedbackDelay);
+      highpassFilterPlayerOne.toDestination();
+      djPlayerOne.mute = false;
+    }
+  }
+
   return (
     <PlayerContainer
       initial={{ x: '-500px' }}
