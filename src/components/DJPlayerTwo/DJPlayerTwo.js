@@ -91,7 +91,9 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
           width="50px"
         />
       </PlayButton>
-      <FXButton isActive={isEchoOutActive} onClick={handleEchoOut}>echo out</FXButton>
+      <FXButton isActive={isEchoOutActive} onClick={handleEchoOut}>
+        echo out
+      </FXButton>
     </PlayerContainer>
   );
   function handlePlayTwo() {

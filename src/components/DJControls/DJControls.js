@@ -21,9 +21,6 @@ export default function DJControls() {
   const [filterPositionTwo, setFilterPositionTwo] = useState(0);
   const [render, setRender] = useState(false);
 
-
-
-
   return (
     <Container>
       <EQContainer>
@@ -189,7 +186,7 @@ export default function DJControls() {
           type="range"
           min="-40"
           max="40"
-          defaultValue={faderPosition}
+          value={faderPosition}
           onChange={handlePlayerFader}
         ></LineFader>
       </label>

@@ -1,7 +1,7 @@
 import useStore from '../../hooks/useStore';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { InvisibleButton, StyledButtonImg } from '../Buttons';
 import vinylIcon from '../../images/vinyl.svg';
 import playIcon from '../../images/play.svg';
@@ -24,31 +24,40 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
   const [trackNameOne, setTrackNameOne] = useState('load up a track...');
   const [isEchoOutActive, setIsEchoOutActive] = useState(false);
 
-  navigator
-    .requestMIDIAccess()
-    .then(access => {
-      const devices = access.inputs.values();
-      for (let device of devices) {
-        device.onmidimessage = onMidiMessage;
-      }
-    })
-    .catch(console.errer);
+  // useEffect(() => {
+  //   navigator
+  //     .requestMIDIAccess()
+  //     .then(access => {
+  //       const devices = access.inputs.values();
+  //       for (let device of devices) {
+  //         device.onmidimessage = onMidiMessage;
+  //       }
+  //     })
+  //     .catch(console.error);
+  // }, []);
 
-  function onMidiMessage(message) {
-    console.log(message);
-    setIsEchoOutActive(!isEchoOutActive);
-    if (isEchoOutActive === false) {
-      highpassFilterPlayerOne.connect(feedbackDelay);
-      setTimeout(function () {
-        djPlayerOne.mute = true;
-      }, 500);
-    }
-    if (isEchoOutActive === true) {
-      highpassFilterPlayerOne.disconnect(feedbackDelay);
-      highpassFilterPlayerOne.toDestination();
-      djPlayerOne.mute = false;
-    }
-  }
+  // function onMidiMessage(message) {
+  //   let [_, input, value] = message.data;
+
+  //   console.log(input, value);
+  //   if (input === 49 && isEchoOutActive === false) {
+  //     setIsEchoOutActive(true);
+
+  //     highpassFilterPlayerOne.connect(feedbackDelay);
+  //     setTimeout(function () {
+  //       djPlayerOne.mute = true;
+  //     }, 500);
+  //   } else {
+  //     setIsEchoOutActive(false);
+  //   }
+  //   console.log(isEchoOutActive);
+  // }
+
+  // // if (isEchoOutActive === true) {
+  // //   highpassFilterPlayerOne.disconnect(feedbackDelay);
+  // //   highpassFilterPlayerOne.toDestination();
+  // //   djPlayerOne.mute = false;
+  // // }
 
   return (
     <PlayerContainer

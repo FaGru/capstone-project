@@ -45,6 +45,8 @@ const useStore = create((set, get) => ({
   isInstructionFourVisible: false,
   isInstructionFiveVisible: false,
   navDirection: { start: 'initialBottom', end: 'outBottom' },
+  isDevicePopUpVisible: false,
+  connectedMIDIDevices: null,
 
   handleUserInteraction: () => {
     const handleUserInteraction = () => {
@@ -57,6 +59,7 @@ const useStore = create((set, get) => ({
         get().initDJPlayerOne();
         get().initDJPlayerTwo();
         get().initFeedbackDelay();
+        get().initMIDIDevices();
       }
     };
     window.addEventListener('click', handleUserInteraction);
@@ -343,6 +346,59 @@ const useStore = create((set, get) => ({
   setDjTrackTwo: newTrack => {
     set({ djTrackTwo: newTrack });
     get().initDJPlayerTwo();
+  },
+  initMIDIDevices: () => {
+    /////////////////////////////////////////////////////////////
+
+    if (navigator.requestMIDIAccess) {
+      navigator.requestMIDIAccess().then(success, failure);
+    }
+
+    function success(midiAccess) {
+      midiAccess.addEventListener('statechange', updateDevices);
+      const inputs = midiAccess.inputs;
+      inputs.forEach(input => {
+        input.addEventListener('midimessage', handleInput);
+      });
+      console.log(inputs);
+    }
+
+    function handleInput(event) {
+      console.log('handle', event);
+      const command = event.data[0];
+      const activeMidiButton = event.data[1];
+      const value = event.data[2] - 64;
+      console.log(command, activeMidiButton, value);
+
+      const djPlayerOne = get().djPlayerOne;
+      const djPlayerTwo = get().djPlayerTwo;
+      set({ faderPosition: value });
+      if (value === '40') {
+        djPlayerOne.volume.value = -500;
+      } else if (value >= 0) {
+        djPlayerOne.volume.value = -value / 2;
+      }
+      if (value === '-40') {
+        djPlayerTwo.volume.value = -500;
+      } else if (value <= 0) {
+        djPlayerTwo.volume.value = value / 2;
+      }
+    }
+
+    function updateDevices(event) {
+      console.log(event, 'devices');
+      set({
+        connectedMIDIDevices: `Name: ${event.port.name} Brand: ${event.port.manufacturer} State: ${event.port.state}`,
+      });
+      set({ isDevicePopUpVisible: true });
+      setTimeout(function () {
+        set({ isDevicePopUpVisible: false });
+      }, 5000);
+    }
+    function failure() {
+      console.log('could not connect devices');
+    }
+    ///////////////////////////////////////////////////////////////////////////////////////
   },
 }));
 
