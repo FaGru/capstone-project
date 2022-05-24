@@ -51,6 +51,7 @@ const useStore = create((set, get) => ({
   isMIDIAsignButtonActive: false,
   newMIDIControlName: null,
   newMIDIControlFunction: null,
+  isEchoOutOneActive: false,
 
   handleUserInteraction: () => {
     const handleUserInteraction = () => {
@@ -351,6 +352,10 @@ const useStore = create((set, get) => ({
     set({ djTrackTwo: newTrack });
     get().initDJPlayerTwo();
   },
+  setIsEchoOutOneActive: () => {
+    const isEchoOutOneActive = get().isEchoOutOneActive
+    set({ isEchoOutOneActive: !isEchoOutOneActive });
+  },
   /////////////////////////////////////////////////////////////
   initMIDIDevices: () => {
     if (navigator.requestMIDIAccess) {
@@ -367,6 +372,10 @@ const useStore = create((set, get) => ({
     function handleInput(event) {
       const asignedMIDIControls = get().asignedMIDIControls;
       const isMIDIAsignButtonActive = get().isMIDIAsignButtonActive;
+      const command = event.data[0];
+      const midiButton = event.data[1];
+      const value = event.data[2];
+
       if (isMIDIAsignButtonActive) {
         const newMIDIControlFunction = get().newMIDIControlFunction;
         if (newMIDIControlFunction) {
@@ -374,14 +383,9 @@ const useStore = create((set, get) => ({
           get().addMIDIControl();
         }
       } else {
-        // console.log('handle', event);
-        const command = event.data[0];
-        const midiButton = event.data[1];
-        const value = event.data[2];
         console.log(command, midiButton, value);
         asignedMIDIControls.forEach(control => {
           if (control.name === midiButton && value > 0) {
-            console.log(control.function)
             control.function();
           }
         });

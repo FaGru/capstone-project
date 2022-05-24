@@ -16,20 +16,21 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
     highpassFilterPlayerOne,
     feedbackDelay,
     isMIDIAsignButtonActive,
-    asignedMIDIControls
+    isEchoOutOneActive,
   } = useStore(state => state);
-  // console.log(asignedMIDIControls)
+
   const setTrackOne = useStore(state => state.setDjTrackOne);
   const setDjPlayerOnePlaybackRate = useStore(
     state => state.setDjPlayerOnePlaybackRate
   );
-  const setNewMIDIControlFunction = useStore(state => state.setNewMIDIControlFunction);
+  const setNewMIDIControlFunction = useStore(
+    state => state.setNewMIDIControlFunction
+  );
   const setIsMIDIAsignButtonActive = useStore(
     state => state.setIsMIDIAsignButtonActive
   );
   const [oneIsPlaying, setOneIsPlaying] = useState(0);
   const [trackNameOne, setTrackNameOne] = useState('load up a track...');
-  const [isEchoOutActive, setIsEchoOutActive] = useState(false);
 
   return (
     <PlayerContainer
@@ -106,11 +107,11 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
         />
       </PlayButton>
       <FXButton
-        isActive={isEchoOutActive}
-        onClick={
+        isActive={isEchoOutOneActive}
+        onClick={() =>
           isMIDIAsignButtonActive
-            ? () => setNewMIDIControlFunction(handleEchoOut)
-            : handleEchoOut
+            ? setNewMIDIControlFunction(handleEchoOut)
+            : handleEchoOut()
         }
       >
         echo out
@@ -127,6 +128,7 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
       setOneIsPlaying(0);
     }
   }
+
   function handleTrackOne(e) {
     djPlayerOne.stop();
     oneIsPlaying === 1 && setOneIsPlaying(0);
@@ -134,19 +136,24 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
     setTrackOne(URL.createObjectURL(files[0]));
     setTrackNameOne(files[0].name);
   }
+
   function handlePitch(e) {
     setDjPlayerOnePlaybackRate(e.target.value);
     djPlayerOne.playbackRate = e.target.value;
   }
+
   function handleEchoOut() {
-    setIsEchoOutActive(!isEchoOutActive);
-    if (isEchoOutActive === false) {
+    const setIsEchoOutOneActive = useStore.getState().setIsEchoOutOneActive;
+    const { djPlayerOne, highpassFilterPlayerOne, feedbackDelay, isEchoOutOneActive } =
+      useStore.getState();
+    setIsEchoOutOneActive();
+    if (isEchoOutOneActive === false) {
       highpassFilterPlayerOne.connect(feedbackDelay);
       setTimeout(function () {
         djPlayerOne.mute = true;
       }, 500);
     }
-    if (isEchoOutActive === true) {
+    if (isEchoOutOneActive === true) {
       highpassFilterPlayerOne.disconnect(feedbackDelay);
       highpassFilterPlayerOne.toDestination();
       djPlayerOne.mute = false;
