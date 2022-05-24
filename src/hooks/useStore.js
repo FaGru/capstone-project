@@ -47,6 +47,10 @@ const useStore = create((set, get) => ({
   navDirection: { start: 'initialBottom', end: 'outBottom' },
   isDevicePopUpVisible: false,
   connectedMIDIDevices: null,
+  asignedMIDIControls: [],
+  isMIDIAsignButtonActive: false,
+  newMIDIControlName: null,
+  newMIDIControlFunction: null,
 
   handleUserInteraction: () => {
     const handleUserInteraction = () => {
@@ -347,42 +351,55 @@ const useStore = create((set, get) => ({
     set({ djTrackTwo: newTrack });
     get().initDJPlayerTwo();
   },
+  /////////////////////////////////////////////////////////////
   initMIDIDevices: () => {
-    /////////////////////////////////////////////////////////////
-
     if (navigator.requestMIDIAccess) {
       navigator.requestMIDIAccess().then(success, failure);
     }
 
     function success(midiAccess) {
-      midiAccess.addEventListener('statechange', updateDevices);
       const inputs = midiAccess.inputs;
+      midiAccess.addEventListener('statechange', updateDevices);
       inputs.forEach(input => {
         input.addEventListener('midimessage', handleInput);
       });
-      console.log(inputs);
     }
-
     function handleInput(event) {
-      console.log('handle', event);
-      const command = event.data[0];
-      const activeMidiButton = event.data[1];
-      const value = event.data[2] - 64;
-      console.log(command, activeMidiButton, value);
+      const asignedMIDIControls = get().asignedMIDIControls;
+      const isMIDIAsignButtonActive = get().isMIDIAsignButtonActive;
+      if (isMIDIAsignButtonActive) {
+        const newMIDIControlFunction = get().newMIDIControlFunction;
+        if (newMIDIControlFunction) {
+          set({ newMIDIControlName: event.data[1] });
+          get().addMIDIControl();
+        }
+      } else {
+        // console.log('handle', event);
+        const command = event.data[0];
+        const midiButton = event.data[1];
+        const value = event.data[2];
+        console.log(command, midiButton, value);
+        asignedMIDIControls.forEach(control => {
+          if (control.name === midiButton && value > 0) {
+            console.log(control.function)
+            control.function();
+          }
+        });
+      }
 
-      const djPlayerOne = get().djPlayerOne;
-      const djPlayerTwo = get().djPlayerTwo;
-      set({ faderPosition: value });
-      if (value === '40') {
-        djPlayerOne.volume.value = -500;
-      } else if (value >= 0) {
-        djPlayerOne.volume.value = -value / 2;
-      }
-      if (value === '-40') {
-        djPlayerTwo.volume.value = -500;
-      } else if (value <= 0) {
-        djPlayerTwo.volume.value = value / 2;
-      }
+      // const djPlayerOne = get().djPlayerOne;
+      // const djPlayerTwo = get().djPlayerTwo;
+      // set({ faderPosition: value });
+      // if (value === '40') {
+      //   djPlayerOne.volume.value = -500;
+      // } else if (value >= 0) {
+      //   djPlayerOne.volume.value = -value / 2;
+      // }
+      // if (value === '-40') {
+      //   djPlayerTwo.volume.value = -500;
+      // } else if (value <= 0) {
+      //   djPlayerTwo.volume.value = value / 2;
+      // }
     }
 
     function updateDevices(event) {
@@ -399,6 +416,25 @@ const useStore = create((set, get) => ({
       console.log('could not connect devices');
     }
     ///////////////////////////////////////////////////////////////////////////////////////
+  },
+  setNewMIDIControlFunction: functionName => {
+    set({ newMIDIControlFunction: functionName });
+  },
+  addMIDIControl: () => {
+    const asignedMIDIControls = get().asignedMIDIControls;
+    const newMIDIControlFunction = get().newMIDIControlFunction;
+    const newMIDIControlName = get().newMIDIControlName;
+    console.log(asignedMIDIControls);
+    set({
+      asignedMIDIControls: [
+        ...asignedMIDIControls,
+        { name: newMIDIControlName, function: newMIDIControlFunction },
+      ],
+    });
+    set({ newMIDIControlFunction: null, newMIDIControlName: null });
+  },
+  setIsMIDIAsignButtonActive: currentValue => {
+    set({ isMIDIAsignButtonActive: !currentValue });
   },
 }));
 

@@ -15,49 +15,21 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
     djPlayerOnePlaybackRate,
     highpassFilterPlayerOne,
     feedbackDelay,
+    isMIDIAsignButtonActive,
+    asignedMIDIControls
   } = useStore(state => state);
+  // console.log(asignedMIDIControls)
   const setTrackOne = useStore(state => state.setDjTrackOne);
   const setDjPlayerOnePlaybackRate = useStore(
     state => state.setDjPlayerOnePlaybackRate
   );
+  const setNewMIDIControlFunction = useStore(state => state.setNewMIDIControlFunction);
+  const setIsMIDIAsignButtonActive = useStore(
+    state => state.setIsMIDIAsignButtonActive
+  );
   const [oneIsPlaying, setOneIsPlaying] = useState(0);
   const [trackNameOne, setTrackNameOne] = useState('load up a track...');
   const [isEchoOutActive, setIsEchoOutActive] = useState(false);
-
-  // useEffect(() => {
-  //   navigator
-  //     .requestMIDIAccess()
-  //     .then(access => {
-  //       const devices = access.inputs.values();
-  //       for (let device of devices) {
-  //         device.onmidimessage = onMidiMessage;
-  //       }
-  //     })
-  //     .catch(console.error);
-  // }, []);
-
-  // function onMidiMessage(message) {
-  //   let [_, input, value] = message.data;
-
-  //   console.log(input, value);
-  //   if (input === 49 && isEchoOutActive === false) {
-  //     setIsEchoOutActive(true);
-
-  //     highpassFilterPlayerOne.connect(feedbackDelay);
-  //     setTimeout(function () {
-  //       djPlayerOne.mute = true;
-  //     }, 500);
-  //   } else {
-  //     setIsEchoOutActive(false);
-  //   }
-  //   console.log(isEchoOutActive);
-  // }
-
-  // // if (isEchoOutActive === true) {
-  // //   highpassFilterPlayerOne.disconnect(feedbackDelay);
-  // //   highpassFilterPlayerOne.toDestination();
-  // //   djPlayerOne.mute = false;
-  // // }
 
   return (
     <PlayerContainer
@@ -80,6 +52,12 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
             ? trackNameOne.slice(0, 50) + '...'
             : trackNameOne}
         </div>
+        <MIDIButton
+          isActive={isMIDIAsignButtonActive}
+          onClick={() => setIsMIDIAsignButtonActive(isMIDIAsignButtonActive)}
+        >
+          Asign MIDI controls
+        </MIDIButton>
         <input
           onChange={handleTrackOne}
           type="file"
@@ -127,7 +105,14 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
           width="50px"
         />
       </PlayButton>
-      <FXButton isActive={isEchoOutActive} onClick={handleEchoOut}>
+      <FXButton
+        isActive={isEchoOutActive}
+        onClick={
+          isMIDIAsignButtonActive
+            ? () => setNewMIDIControlFunction(handleEchoOut)
+            : handleEchoOut
+        }
+      >
         echo out
       </FXButton>
     </PlayerContainer>
@@ -256,4 +241,7 @@ const FXButton = styled.button`
   border: none;
   border-radius: 5px;
   margin: 10px;
+`;
+const MIDIButton = styled.button`
+  background-color: ${props => (props.isActive ? 'red' : 'white')};
 `;
