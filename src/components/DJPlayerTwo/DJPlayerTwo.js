@@ -13,17 +13,15 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
   const {
     djPlayerTwo,
     djPlayerTwoPlaybackRate,
-    highpassFilterPlayerTwo,
-    feedbackDelay,
+    isMIDIAssignButtonActive,
+    isEchoOutTwoActive,
+    setNewMIDIControlFunction,
+    setDjTrackTwo,
+    setDjPlayerTwoPlaybackRate,
   } = useStore(state => state);
-  const setTrackTwo = useStore(state => state.setDjTrackTwo);
-  const setDjPlayerTwoPlaybackRate = useStore(
-    state => state.setDjPlayerTwoPlaybackRate
-  );
+
   const [twoIsPlaying, setTwoIsPlaying] = useState(0);
   const [trackNameTwo, setTrackNameTwo] = useState('load up a track...');
-
-  const [isEchoOutActive, setIsEchoOutActive] = useState(false);
 
   return (
     <PlayerContainer
@@ -83,7 +81,14 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
       >
         <StyledButtonImg src={cueIcon} alt="cue" height="50px" width="50px" />
       </CueButton>
-      <PlayButton aria-label="play-button" onClick={handlePlayTwo}>
+      <PlayButton
+        aria-label="play-button"
+        onClick={() =>
+          isMIDIAssignButtonActive
+            ? setNewMIDIControlFunction(handlePlayTwo)
+            : handlePlayTwo()
+        }
+      >
         <StyledButtonImg
           src={djPlayerTwo?.state === 'started' ? pauseIcon : playIcon}
           alt="play/pause"
@@ -91,12 +96,20 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
           width="50px"
         />
       </PlayButton>
-      <FXButton isActive={isEchoOutActive} onClick={handleEchoOut}>
+      <FXButton
+        isActive={isEchoOutTwoActive}
+        onClick={() =>
+          isMIDIAssignButtonActive
+            ? setNewMIDIControlFunction(handleEchoOut)
+            : handleEchoOut()
+        }
+      >
         echo out
       </FXButton>
     </PlayerContainer>
   );
   function handlePlayTwo() {
+    const { djPlayerTwo } = useStore.getState();
     if (djPlayerTwo.state === 'stopped') {
       djPlayerTwo.start();
       setTwoIsPlaying(1);
@@ -109,7 +122,7 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
     djPlayerTwo.stop();
     twoIsPlaying === 1 && setTwoIsPlaying(0);
     const files = e.target.files;
-    setTrackTwo(URL.createObjectURL(files[0]));
+    setDjTrackTwo(URL.createObjectURL(files[0]));
     setTrackNameTwo(files[0].name);
   }
   function handlePitch(e) {
@@ -117,14 +130,21 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
     djPlayerTwo.playbackRate = e.target.value;
   }
   function handleEchoOut() {
-    setIsEchoOutActive(!isEchoOutActive);
-    if (isEchoOutActive === false) {
+    const setIsEchoOutTwoActive = useStore.getState().setIsEchoOutTwoActive;
+    const {
+      djPlayerTwo,
+      highpassFilterPlayerTwo,
+      feedbackDelay,
+      isEchoOutTwoActive,
+    } = useStore.getState();
+    setIsEchoOutTwoActive();
+    if (isEchoOutTwoActive === false) {
       highpassFilterPlayerTwo.connect(feedbackDelay);
       setTimeout(function () {
         djPlayerTwo.mute = true;
       }, 500);
     }
-    if (isEchoOutActive === true) {
+    if (isEchoOutTwoActive === true) {
       highpassFilterPlayerTwo.disconnect(feedbackDelay);
       highpassFilterPlayerTwo.toDestination();
       djPlayerTwo.mute = false;

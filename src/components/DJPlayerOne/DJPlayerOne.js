@@ -1,7 +1,7 @@
 import useStore from '../../hooks/useStore';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { InvisibleButton, StyledButtonImg } from '../Buttons';
 import vinylIcon from '../../images/vinyl.svg';
 import playIcon from '../../images/play.svg';
@@ -13,22 +13,14 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
   const {
     djPlayerOne,
     djPlayerOnePlaybackRate,
-    highpassFilterPlayerOne,
-    feedbackDelay,
-    isMIDIAsignButtonActive,
+    isMIDIAssignButtonActive,
     isEchoOutOneActive,
+    setNewMIDIControlFunction,
+    setDjTrackOne,
+    setDjPlayerOnePlaybackRate
   } = useStore(state => state);
 
-  const setTrackOne = useStore(state => state.setDjTrackOne);
-  const setDjPlayerOnePlaybackRate = useStore(
-    state => state.setDjPlayerOnePlaybackRate
-  );
-  const setNewMIDIControlFunction = useStore(
-    state => state.setNewMIDIControlFunction
-  );
-  const setIsMIDIAsignButtonActive = useStore(
-    state => state.setIsMIDIAsignButtonActive
-  );
+
   const [oneIsPlaying, setOneIsPlaying] = useState(0);
   const [trackNameOne, setTrackNameOne] = useState('load up a track...');
 
@@ -53,12 +45,7 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
             ? trackNameOne.slice(0, 50) + '...'
             : trackNameOne}
         </div>
-        <MIDIButton
-          isActive={isMIDIAsignButtonActive}
-          onClick={() => setIsMIDIAsignButtonActive(isMIDIAsignButtonActive)}
-        >
-          Asign MIDI controls
-        </MIDIButton>
+
         <input
           onChange={handleTrackOne}
           type="file"
@@ -98,7 +85,14 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
       >
         <StyledButtonImg src={cueIcon} alt="cue" height="50px" width="50px" />
       </CueButton>
-      <PlayButton aria-label="play-button" onClick={handlePlayOne}>
+      <PlayButton
+        aria-label="play-button"
+        onClick={() =>
+          isMIDIAssignButtonActive
+            ? setNewMIDIControlFunction(handlePlayOne)
+            : handlePlayOne()
+        }
+      >
         <StyledButtonImg
           src={djPlayerOne?.state === 'started' ? pauseIcon : playIcon}
           alt="play/pause"
@@ -109,7 +103,7 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
       <FXButton
         isActive={isEchoOutOneActive}
         onClick={() =>
-          isMIDIAsignButtonActive
+          isMIDIAssignButtonActive
             ? setNewMIDIControlFunction(handleEchoOut)
             : handleEchoOut()
         }
@@ -120,6 +114,7 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
   );
 
   function handlePlayOne() {
+    const { djPlayerOne } = useStore.getState();
     if (djPlayerOne.state === 'stopped') {
       djPlayerOne.start();
       setOneIsPlaying(1);
@@ -133,7 +128,7 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
     djPlayerOne.stop();
     oneIsPlaying === 1 && setOneIsPlaying(0);
     const files = e.target.files;
-    setTrackOne(URL.createObjectURL(files[0]));
+    setDjTrackOne(URL.createObjectURL(files[0]));
     setTrackNameOne(files[0].name);
   }
 
@@ -144,8 +139,12 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
 
   function handleEchoOut() {
     const setIsEchoOutOneActive = useStore.getState().setIsEchoOutOneActive;
-    const { djPlayerOne, highpassFilterPlayerOne, feedbackDelay, isEchoOutOneActive } =
-      useStore.getState();
+    const {
+      djPlayerOne,
+      highpassFilterPlayerOne,
+      feedbackDelay,
+      isEchoOutOneActive,
+    } = useStore.getState();
     setIsEchoOutOneActive();
     if (isEchoOutOneActive === false) {
       highpassFilterPlayerOne.connect(feedbackDelay);
@@ -248,7 +247,4 @@ const FXButton = styled.button`
   border: none;
   border-radius: 5px;
   margin: 10px;
-`;
-const MIDIButton = styled.button`
-  background-color: ${props => (props.isActive ? 'red' : 'white')};
 `;

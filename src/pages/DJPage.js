@@ -11,7 +11,12 @@ import useStore from '../hooks/useStore';
 
 export default function DJPage() {
   const [visiblePlayer, setVisiblePlayer] = useState(1);
-  const { djPlayerOne, djPlayerTwo } = useStore(state => state);
+  const { djPlayerOne, djPlayerTwo, isMIDIAssignButtonActive } = useStore(
+    state => state
+  );
+  const setIsMIDIAssignButtonActive = useStore(
+    state => state.setIsMIDIAssignButtonActive
+  );
 
   return (
     <>
@@ -23,6 +28,12 @@ export default function DJPage() {
           height="50px"
         />
       </NavLink>
+      <MIDIButton
+        isActive={isMIDIAssignButtonActive}
+        onClick={() => setIsMIDIAssignButtonActive(isMIDIAssignButtonActive)}
+      >
+        Assign MIDI controls
+      </MIDIButton>
       <PageContainer visible={visiblePlayer}>
         <DJPlayerOne
           visiblePlayer={visiblePlayer}
@@ -55,4 +66,7 @@ const PageContainer = styled.div`
 `;
 const BackButtonImg = styled(StyledButtonImg)`
   margin: 20px;
+`;
+const MIDIButton = styled.button`
+  background-color: ${props => (props.isActive ? 'red' : 'white')};
 `;
