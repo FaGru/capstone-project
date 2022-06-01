@@ -56,7 +56,7 @@ const useStore = create((set, get) => ({
   eq3One: null,
   eq3Two: null,
   feedbackDelay: null,
-  faderPosition: 0,
+  faderPosition: 63,
   isEchoOutOneActive: false,
   isEchoOutTwoActive: false,
 
@@ -401,9 +401,12 @@ const useStore = create((set, get) => ({
         assignedMIDIControls.forEach(control => {
           if (control.name === midiButton && control.type === 'normal') {
             value > 0 && control.function();
-          } else if(control.name === midiButton && control.type === 'tap'){
+          } else if (control.name === midiButton && control.type === 'tap') {
             control.function();
-          } 
+          }
+          else if (control.name === midiButton && control.type === 'range') {
+            control.function(value);
+          }
         });
       }
     }

@@ -12,11 +12,11 @@ export default function DJControls() {
     highpassFilterPlayerOne,
     lowpassFilterPlayerTwo,
     highpassFilterPlayerTwo,
-    djPlayerOne,
-    djPlayerTwo,
+    isMIDIAssignButtonActive,
+    setFaderPosition,
+    setNewMIDIControlFunction,
   } = useStore(state => state);
 
-  const setFaderPosition = useStore(state => state.setFaderPosition);
   const [filterPositionOne, setFilterPositionOne] = useState(0);
   const [filterPositionTwo, setFilterPositionTwo] = useState(0);
   const [render, setRender] = useState(false);
@@ -180,15 +180,21 @@ export default function DJControls() {
         </EQ3>
       </EQContainer>
       <label htmlFor="dj-player-fader">
-        <LineFader
+        <CrossFader
+          isMIDIAssignActive={isMIDIAssignButtonActive}
           id="dj-player-fader"
           name="dj-player-fader"
           type="range"
-          min="-40"
-          max="40"
+          min="0"
+          max="127"
           value={faderPosition}
-          onChange={handlePlayerFader}
-        ></LineFader>
+          onChange={event => handleCrossFader(event.target.value)}
+          onClick={() =>
+            isMIDIAssignButtonActive
+              ? setNewMIDIControlFunction(handleCrossFader, 'range')
+              : null
+          }
+        ></CrossFader>
       </label>
     </Container>
   );
@@ -209,19 +215,23 @@ export default function DJControls() {
     }
     setRender(!render);
   }
-  function handlePlayerFader(e) {
-    if (e.target.value === '40') {
+  function handleCrossFader(faderValue) {
+    const { djPlayerOne, djPlayerTwo } = useStore.getState();
+    if (faderValue === 127) {
       djPlayerOne.volume.value = -500;
-    } else if (e.target.value >= 0) {
-      djPlayerOne.volume.value = -e.target.value / 2;
+    } else if (faderValue >= 63) {
+      const newValue = 117 - faderValue;
+      djPlayerOne.volume.value = newValue / 6.5;
     }
-    if (e.target.value === '-40') {
+    if (faderValue === '0') {
       djPlayerTwo.volume.value = -500;
-    } else if (e.target.value <= 0) {
-      djPlayerTwo.volume.value = e.target.value / 2;
+    } else if (faderValue <= 63) {
+      const newValue = faderValue - 10;
+      djPlayerTwo.volume.value = newValue / 6.5;
     }
-    setFaderPosition(e.target.value);
+    setFaderPosition(faderValue);
   }
+
   function handleFilterPlayerOne(e) {
     setFilterPositionOne(e.target.value);
     e.target.value < 0
@@ -280,9 +290,12 @@ const EQ3 = styled.div`
   flex-direction: column;
   margin: 10px;
 `;
-const LineFader = styled.input`
+const CrossFader = styled.input`
   width: 150px;
   margin-bottom: 20px;
+  ${props =>
+    props.isMIDIAssignActive && 'box-shadow: inset 20px 20px var(--purple)'};
+  border-radius: 10px;
 `;
 const EQLabel = styled.label`
   position: relative;
