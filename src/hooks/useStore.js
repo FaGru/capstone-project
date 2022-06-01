@@ -39,6 +39,7 @@ const useStore = create((set, get) => ({
   isMIDIAssignButtonActive: false,
   newMIDIControlName: null,
   newMIDIControlFunction: null,
+  newMIDIControlType: null,
   ///////// DJ Deck States ////////////
   djPlayerOne: null,
   djPlayerTwo: null,
@@ -386,18 +387,23 @@ const useStore = create((set, get) => ({
       const midiButton = event.data[1];
       const value = event.data[2];
 
+      //////// Assigning midi function /////////////////
       if (isMIDIAssignButtonActive) {
         const newMIDIControlFunction = get().newMIDIControlFunction;
         if (newMIDIControlFunction) {
           set({ newMIDIControlName: event.data[1] });
           get().addMIDIControl();
         }
-      } else {
+      }
+      //////////// function call ////////////
+      else {
         console.log(command, midiButton, value);
         assignedMIDIControls.forEach(control => {
-          if (control.name === midiButton && value > 0) {
+          if (control.name === midiButton && control.type === 'normal') {
+            value > 0 && control.function();
+          } else if(control.name === midiButton && control.type === 'tap'){
             control.function();
-          }
+          } 
         });
       }
     }
@@ -417,21 +423,38 @@ const useStore = create((set, get) => ({
     }
     ///////////////////////////////////////////////////////////////////////////////////////
   },
-  setNewMIDIControlFunction: functionName => {
-    set({ newMIDIControlFunction: functionName });
+  setNewMIDIControlFunction: (functionName, functionTyp) => {
+    set({
+      newMIDIControlFunction: functionName,
+      newMIDIControlType: functionTyp,
+    });
   },
   addMIDIControl: () => {
     const assignedMIDIControls = get().assignedMIDIControls;
     const newMIDIControlFunction = get().newMIDIControlFunction;
     const newMIDIControlName = get().newMIDIControlName;
+    const newMIDIControlType = get().newMIDIControlType;
+    const newMIDIControls = assignedMIDIControls.filter(
+      control =>
+        control.name !== newMIDIControlName &&
+        control.function !== newMIDIControlFunction
+    );
     console.log(assignedMIDIControls);
     set({
       assignedMIDIControls: [
-        ...assignedMIDIControls,
-        { name: newMIDIControlName, function: newMIDIControlFunction },
+        ...newMIDIControls,
+        {
+          name: newMIDIControlName,
+          function: newMIDIControlFunction,
+          type: newMIDIControlType,
+        },
       ],
     });
-    set({ newMIDIControlFunction: null, newMIDIControlName: null });
+    set({
+      newMIDIControlFunction: null,
+      newMIDIControlName: null,
+      newMIDIControlType: null,
+    });
   },
   setIsMIDIAssignButtonActive: currentValue => {
     set({ isMIDIAssignButtonActive: !currentValue });

@@ -17,9 +17,8 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
     isEchoOutOneActive,
     setNewMIDIControlFunction,
     setDjTrackOne,
-    setDjPlayerOnePlaybackRate
+    setDjPlayerOnePlaybackRate,
   } = useStore(state => state);
-
 
   const [oneIsPlaying, setOneIsPlaying] = useState(0);
   const [trackNameOne, setTrackNameOne] = useState('load up a track...');
@@ -80,16 +79,22 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
       </PlayerSwitchButton>
       <CueButton
         aria-label="cue-button"
-        onMouseDown={handlePlayOne}
+        isMIDIAssignActive={isMIDIAssignButtonActive}
+        onMouseDown={() =>
+          isMIDIAssignButtonActive
+            ? setNewMIDIControlFunction(handlePlayOne, 'tap')
+            : handlePlayOne()
+        }
         onMouseUp={handlePlayOne}
       >
         <StyledButtonImg src={cueIcon} alt="cue" height="50px" width="50px" />
       </CueButton>
       <PlayButton
         aria-label="play-button"
+        isMIDIAssignActive={isMIDIAssignButtonActive}
         onClick={() =>
           isMIDIAssignButtonActive
-            ? setNewMIDIControlFunction(handlePlayOne)
+            ? setNewMIDIControlFunction(handlePlayOne, 'normal')
             : handlePlayOne()
         }
       >
@@ -102,9 +107,10 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
       </PlayButton>
       <FXButton
         isActive={isEchoOutOneActive}
+        isMIDIAssignActive={isMIDIAssignButtonActive}
         onClick={() =>
           isMIDIAssignButtonActive
-            ? setNewMIDIControlFunction(handleEchoOut)
+            ? setNewMIDIControlFunction(handleEchoOut, 'normal')
             : handleEchoOut()
         }
       >
@@ -176,11 +182,15 @@ const PlayButton = styled(InvisibleButton)`
   grid-column: 1 / 2;
   grid-row: 4 / 5;
   justify-self: end;
+  ${props => props.isMIDIAssignActive && 'background-color: var(--purple)'};
+  border-radius: 10px;
 `;
 const CueButton = styled(InvisibleButton)`
   grid-column: 2 / 3;
   grid-row: 4 / 5;
   justify-self: start;
+  ${props => props.isMIDIAssignActive && 'background-color: var(--purple)'};
+  border-radius: 10px;
 `;
 const PlayerSwitchButton = styled.button`
   grid-column: 3 / 4;
@@ -247,4 +257,5 @@ const FXButton = styled.button`
   border: none;
   border-radius: 5px;
   margin: 10px;
+  ${props => props.isMIDIAssignActive && 'background-color: var(--purple)'};
 `;

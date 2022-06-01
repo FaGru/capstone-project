@@ -76,13 +76,19 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
       </PlayerSwitchButton>
       <CueButton
         aria-label="cue-button"
-        onMouseDown={handlePlayTwo}
+        isMIDIAssignActive={isMIDIAssignButtonActive}
+        onMouseDown={() =>
+          isMIDIAssignButtonActive
+            ? setNewMIDIControlFunction(handlePlayTwo, 'tap')
+            : handlePlayTwo()
+        }
         onMouseUp={handlePlayTwo}
       >
         <StyledButtonImg src={cueIcon} alt="cue" height="50px" width="50px" />
       </CueButton>
       <PlayButton
         aria-label="play-button"
+        isMIDIAssignActive={isMIDIAssignButtonActive}
         onClick={() =>
           isMIDIAssignButtonActive
             ? setNewMIDIControlFunction(handlePlayTwo)
@@ -98,6 +104,7 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
       </PlayButton>
       <FXButton
         isActive={isEchoOutTwoActive}
+        isMIDIAssignActive={isMIDIAssignButtonActive}
         onClick={() =>
           isMIDIAssignButtonActive
             ? setNewMIDIControlFunction(handleEchoOut)
@@ -167,11 +174,15 @@ const PlayButton = styled(InvisibleButton)`
   grid-column: 1 / 2;
   grid-row: 4 / 5;
   justify-self: end;
+  ${props => props.isMIDIAssignActive && 'background-color: var(--purple)'};
+  border-radius: 10px;
 `;
 const CueButton = styled(InvisibleButton)`
   grid-column: 2 / 3;
   grid-row: 4 / 5;
   justify-self: start;
+  ${props => props.isMIDIAssignActive && 'background-color: var(--purple)'};
+  border-radius: 10px;
 `;
 const PlayerSwitchButton = styled.button`
   grid-column: 3 / 4;
@@ -238,4 +249,5 @@ const FXButton = styled.button`
   border: none;
   border-radius: 5px;
   margin: 10px;
+  ${props => props.isMIDIAssignActive && 'background-color: var(--purple)'};
 `;
