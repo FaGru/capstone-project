@@ -91,7 +91,7 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
         isMIDIAssignActive={isMIDIAssignButtonActive}
         onClick={() =>
           isMIDIAssignButtonActive
-            ? setNewMIDIControlFunction(handlePlayTwo)
+            ? setNewMIDIControlFunction(handlePlayTwo, 'normal')
             : handlePlayTwo()
         }
       >
@@ -107,7 +107,7 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
         isMIDIAssignActive={isMIDIAssignButtonActive}
         onClick={() =>
           isMIDIAssignButtonActive
-            ? setNewMIDIControlFunction(handleEchoOut)
+            ? setNewMIDIControlFunction(handleEchoOut, 'normal')
             : handleEchoOut()
         }
       >
