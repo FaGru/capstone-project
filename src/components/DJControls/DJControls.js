@@ -179,9 +179,8 @@ export default function DJControls() {
               value={filterPositionTwo}
               onChange={event => handleFilterPlayerTwo(event.target.value)}
               onClick={() =>
-                isMIDIAssignButtonActive
-                  && setNewMIDIControlFunction(handleFilterPlayerTwo, 'range')
-                  
+                isMIDIAssignButtonActive &&
+                setNewMIDIControlFunction(handleFilterPlayerTwo, 'range')
               }
             />
           </EQLabel>
@@ -198,9 +197,8 @@ export default function DJControls() {
           value={faderPosition}
           onChange={event => handleCrossFader(event.target.value)}
           onClick={() =>
-            isMIDIAssignButtonActive
-              && setNewMIDIControlFunction(handleCrossFader, 'range')
-              
+            isMIDIAssignButtonActive &&
+            setNewMIDIControlFunction(handleCrossFader, 'range')
           }
         ></CrossFader>
       </label>
@@ -230,13 +228,13 @@ export default function DJControls() {
       djPlayerOne.volume.value = -500;
     } else if (faderValue >= 63) {
       const newValue = 117 - faderValue;
-      djPlayerOne.volume.value = newValue / 6.5;
+      djPlayerOne.volume.value = newValue / 6.5 - 5;
     }
     if (faderValue === 0) {
       djPlayerTwo.volume.value = -500;
     } else if (faderValue <= 63) {
       const newValue = faderValue - 10;
-      djPlayerTwo.volume.value = newValue / 6.5;
+      djPlayerTwo.volume.value = newValue / 6.5 - 5;
     }
     setFaderPosition(faderValue);
   }

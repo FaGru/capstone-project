@@ -17,7 +17,6 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
     isEchoOutOneActive,
     setNewMIDIControlFunction,
     setDjTrackOne,
-    setDjPlayerOnePlaybackRate,
   } = useStore(state => state);
 
   const [oneIsPlaying, setOneIsPlaying] = useState(0);

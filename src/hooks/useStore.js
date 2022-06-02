@@ -307,7 +307,7 @@ const useStore = create((set, get) => ({
       djPlayerOne.volume.value = -500;
     } else if (faderPosition >= 63) {
       const newValue = 117 - faderPosition;
-      djPlayerOne.volume.value = newValue / 6.5;
+      djPlayerOne.volume.value = newValue / 6.5 - 5;
     }
     set({
       djPlayerOne,
@@ -334,7 +334,7 @@ const useStore = create((set, get) => ({
       djPlayerTwo.volume.value = -500;
     } else if (faderPosition <= 63) {
       const newValue = faderPosition - 10;
-      djPlayerTwo.volume.value = newValue / 6.5;
+      djPlayerTwo.volume.value = newValue / 6.5 - 5;
     }
     set({
       djPlayerTwo,
