@@ -10,15 +10,14 @@ export default function DJControls() {
     eq3Two,
     lowpassFilterPlayerOne,
     highpassFilterPlayerOne,
-    lowpassFilterPlayerTwo,
-    highpassFilterPlayerTwo,
     isMIDIAssignButtonActive,
+    filterPositionOne,
+    filterPositionTwo,
     setFaderPosition,
     setNewMIDIControlFunction,
+    setFilterPositionOne,
   } = useStore(state => state);
 
-  const [filterPositionOne, setFilterPositionOne] = useState(0);
-  const [filterPositionTwo, setFilterPositionTwo] = useState(0);
   const [render, setRender] = useState(false);
 
   return (
@@ -85,7 +84,8 @@ export default function DJControls() {
           <p>FILTER</p>
           <EQLabel htmlFor="filter-one">
             <KnobIcon
-              position={filterPositionOne}
+              position={filterPositionOne / 12.7 - 5}
+              isMIDIAssignActive={isMIDIAssignButtonActive}
               src={knobIcon}
               alt="control-knob"
               height="40px"
@@ -94,10 +94,15 @@ export default function DJControls() {
             <input
               id="filter-one"
               type="range"
-              min="-5"
-              max="5"
-              defaultValue="0"
-              onChange={handleFilterPlayerOne}
+              min="0"
+              max="127"
+              value={filterPositionOne}
+              onChange={event => handleFilterPlayerOne(event.target.value)}
+              onClick={() =>
+                isMIDIAssignButtonActive
+                  ? setNewMIDIControlFunction(handleFilterPlayerOne, 'range')
+                  : null
+              }
             />
           </EQLabel>
         </EQ3>
@@ -162,7 +167,8 @@ export default function DJControls() {
           <p>FILTER</p>
           <EQLabel htmlFor="filter-two">
             <KnobIcon
-              position={filterPositionTwo}
+              position={filterPositionTwo / 12.7 - 5}
+              isMIDIAssignActive={isMIDIAssignButtonActive}
               src={knobIcon}
               alt="control-knob"
               height="40px"
@@ -171,10 +177,15 @@ export default function DJControls() {
             <input
               id="filter-two"
               type="range"
-              min="-5"
-              max="5"
-              defaultValue="0"
-              onChange={handleFilterPlayerTwo}
+              min="0"
+              max="127"
+              value={filterPositionTwo}
+              onChange={event => handleFilterPlayerTwo(event.target.value)}
+              onClick={() =>
+                isMIDIAssignButtonActive
+                  ? setNewMIDIControlFunction(handleFilterPlayerTwo, 'range')
+                  : null
+              }
             />
           </EQLabel>
         </EQ3>
@@ -215,15 +226,16 @@ export default function DJControls() {
     }
     setRender(!render);
   }
-  function handleCrossFader(faderValue) {
+  function handleCrossFader(value) {
     const { djPlayerOne, djPlayerTwo } = useStore.getState();
+    const faderValue = Number(value);
     if (faderValue === 127) {
       djPlayerOne.volume.value = -500;
     } else if (faderValue >= 63) {
       const newValue = 117 - faderValue;
       djPlayerOne.volume.value = newValue / 6.5;
     }
-    if (faderValue === '0') {
+    if (faderValue === 0) {
       djPlayerTwo.volume.value = -500;
     } else if (faderValue <= 63) {
       const newValue = faderValue - 10;
@@ -232,35 +244,47 @@ export default function DJControls() {
     setFaderPosition(faderValue);
   }
 
-  function handleFilterPlayerOne(e) {
-    setFilterPositionOne(e.target.value);
-    e.target.value < 0
+  function handleFilterPlayerOne(value) {
+    const {
+      lowpassFilterPlayerOne,
+      highpassFilterPlayerOne,
+      setFilterPositionOne,
+    } = useStore.getState();
+    const newValue = value / 12.7 - 5;
+    setFilterPositionOne(value);
+    newValue < 0
       ? lowpassFilterPlayerOne.set({
-          frequency: 5000 / Math.pow(2, -e.target.value),
+          frequency: 5000 / Math.pow(2, -newValue),
         })
       : lowpassFilterPlayerOne.set({
           frequency: 22000,
         });
-    e.target.value > 0
+    newValue > 0
       ? highpassFilterPlayerOne.set({
-          frequency: 100 * Math.pow(2, e.target.value),
+          frequency: 100 * Math.pow(2, newValue),
         })
       : highpassFilterPlayerOne.set({
           frequency: 0,
         });
   }
-  function handleFilterPlayerTwo(e) {
-    setFilterPositionTwo(e.target.value);
-    e.target.value < 0
+  function handleFilterPlayerTwo(value) {
+    const {
+      lowpassFilterPlayerTwo,
+      highpassFilterPlayerTwo,
+      setFilterPositionTwo,
+    } = useStore.getState();
+    const newValue = value / 12.7 - 5;
+    setFilterPositionTwo(value);
+    newValue < 0
       ? lowpassFilterPlayerTwo.set({
-          frequency: 5000 / Math.pow(2, -e.target.value),
+          frequency: 5000 / Math.pow(2, -newValue),
         })
       : lowpassFilterPlayerTwo.set({
           frequency: 22000,
         });
-    e.target.value > 0
+    newValue > 0
       ? highpassFilterPlayerTwo.set({
-          frequency: 100 * Math.pow(2, e.target.value),
+          frequency: 100 * Math.pow(2, newValue),
         })
       : highpassFilterPlayerTwo.set({
           frequency: 0,
@@ -270,6 +294,8 @@ export default function DJControls() {
 
 const KnobIcon = styled.img`
   transform: rotate(${props => props.position * 26}deg);
+  ${props => props.isMIDIAssignActive && 'background-color: var(--purple)'};
+  border-radius: 10px;
 `;
 const Container = styled.div`
   text-align: center;

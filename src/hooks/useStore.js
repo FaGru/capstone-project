@@ -59,6 +59,8 @@ const useStore = create((set, get) => ({
   faderPosition: 63,
   isEchoOutOneActive: false,
   isEchoOutTwoActive: false,
+  filterPositionOne: 63,
+  filterPositionTwo: 63,
 
   handleUserInteraction: () => {
     const handleUserInteraction = () => {
@@ -300,10 +302,11 @@ const useStore = create((set, get) => ({
     const djPlayerOne = new Tone.Player(get().djTrackOne).connect(eq3One);
 
     djPlayerOne.playbackRate = get().djPlayerOnePlaybackRate;
-    if (faderPosition === '40') {
+    if (faderPosition === 127) {
       djPlayerOne.volume.value = -500;
-    } else if (faderPosition >= 0) {
-      djPlayerOne.volume.value = -faderPosition / 2;
+    } else if (faderPosition >= 63) {
+      const newValue = 117 - faderPosition;
+      djPlayerOne.volume.value = newValue / 6.5;
     }
     set({
       djPlayerOne,
@@ -326,10 +329,11 @@ const useStore = create((set, get) => ({
     const eq3Two = new Tone.EQ3(eqTwoSettings).connect(lowpassFilterPlayerTwo);
     const djPlayerTwo = new Tone.Player(get().djTrackTwo).connect(eq3Two);
     djPlayerTwo.playbackRate = get().djPlayerTwoPlaybackRate;
-    if (faderPosition === '-40') {
+    if (faderPosition === 0) {
       djPlayerTwo.volume.value = -500;
-    } else if (faderPosition <= 0) {
-      djPlayerTwo.volume.value = faderPosition / 2;
+    } else if (faderPosition <= 63) {
+      const newValue = faderPosition - 10;
+      djPlayerTwo.volume.value = newValue / 6.5;
     }
     set({
       djPlayerTwo,
@@ -367,6 +371,12 @@ const useStore = create((set, get) => ({
     const isEchoOutTwoActive = get().isEchoOutTwoActive;
     set({ isEchoOutTwoActive: !isEchoOutTwoActive });
   },
+  setFilterPositionOne: (value) => {
+    set({filterPositionOne: value})
+  },
+  setFilterPositionTwo: (value) => {
+    set({filterPositionTwo: value})
+  },
   /////////////////////////////////////////////////////////////
   initMIDIDevices: () => {
     if (navigator.requestMIDIAccess) {
@@ -397,14 +407,13 @@ const useStore = create((set, get) => ({
       }
       //////////// function call ////////////
       else {
-        console.log(command, midiButton, value);
+        // console.log(command, midiButton, value);
         assignedMIDIControls.forEach(control => {
           if (control.name === midiButton && control.type === 'normal') {
             value > 0 && control.function();
           } else if (control.name === midiButton && control.type === 'tap') {
             control.function();
-          }
-          else if (control.name === midiButton && control.type === 'range') {
+          } else if (control.name === midiButton && control.type === 'range') {
             control.function(value);
           }
         });
