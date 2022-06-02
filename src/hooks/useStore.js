@@ -36,11 +36,13 @@ const useStore = create((set, get) => ({
   isDevicePopUpVisible: false,
   connectedMIDIDevices: null,
   assignedMIDIControls: [],
+  assignedMIDIControlMessage: null,
   isMIDIAssignButtonActive: false,
   newMIDIControlName: null,
   newMIDIControlCommand: null,
   newMIDIControlFunction: null,
   newMIDIControlType: null,
+  newMIDIControlAdditionalProp: null,
   ///////// DJ Deck States ////////////
   djPlayerOne: null,
   djPlayerTwo: null,
@@ -62,6 +64,7 @@ const useStore = create((set, get) => ({
   isEchoOutTwoActive: false,
   filterPositionOne: 63,
   filterPositionTwo: 63,
+  render: false,
 
   handleUserInteraction: () => {
     const handleUserInteraction = () => {
@@ -430,7 +433,7 @@ const useStore = create((set, get) => ({
             control.command === command &&
             control.type === 'range'
           ) {
-            control.function(value);
+            control.function(value, control.additionalProp);
           }
         });
       }
@@ -451,22 +454,26 @@ const useStore = create((set, get) => ({
     }
     ///////////////////////////////////////////////////////////////////////////////////////
   },
-  setNewMIDIControlFunction: (functionName, functionTyp) => {
+  setNewMIDIControlFunction: (functionName, functionTyp, additionalProp) => {
     set({
       newMIDIControlFunction: functionName,
       newMIDIControlType: functionTyp,
+      newMIDIControlAdditionalProp: additionalProp,
+      assignedMIDIControlMessage: 'Now choose a control on your MIDI-Controler',
     });
   },
   addMIDIControl: () => {
     const assignedMIDIControls = get().assignedMIDIControls;
     const newMIDIControlFunction = get().newMIDIControlFunction;
     const newMIDIControlName = get().newMIDIControlName;
+    const newMIDIControlAdditionalProp = get().newMIDIControlAdditionalProp;
     const newMIDIControlType = get().newMIDIControlType;
     const newMIDIControlCommand = get().newMIDIControlCommand;
     const newMIDIControls = assignedMIDIControls.filter(
       control =>
-        control.name !== newMIDIControlName &&
-        control.function !== newMIDIControlFunction
+        control.function !== newMIDIControlFunction &&
+        (control.name !== newMIDIControlName ||
+          control.command !== newMIDIControlCommand)
     );
     console.log(assignedMIDIControls);
     set({
@@ -477,6 +484,7 @@ const useStore = create((set, get) => ({
           command: newMIDIControlCommand,
           function: newMIDIControlFunction,
           type: newMIDIControlType,
+          additionalProp: newMIDIControlAdditionalProp,
         },
       ],
     });
@@ -485,10 +493,25 @@ const useStore = create((set, get) => ({
       newMIDIControlName: null,
       newMIDIControlType: null,
       newMIDIControlCommand: null,
+      assignedMIDIControlMessage:
+        'Your MIDI-Control is linked now. Click on a purple Element to assign more controls or leave the assigning mode!',
     });
   },
-  setIsMIDIAssignButtonActive: currentValue => {
-    set({ isMIDIAssignButtonActive: !currentValue });
+  setIsMIDIAssignButtonActive: () => {
+    const isMIDIAssignButtonActive = get().isMIDIAssignButtonActive;
+    if (!isMIDIAssignButtonActive) {
+      set({
+        assignedMIDIControlMessage:
+          'Please click on a purple marked Element to assign control',
+      });
+    } else {
+      set({ assignedMIDIControlMessage: null });
+    }
+    set({ isMIDIAssignButtonActive: !isMIDIAssignButtonActive });
+  },
+  setRender: () => {
+    const render = get().render;
+    set({ render: !render });
   },
 }));
 

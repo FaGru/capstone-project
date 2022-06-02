@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 import useStore from '../../hooks/useStore';
 import knobIcon from '../../images/control-knob.svg';
@@ -15,7 +14,7 @@ export default function DJControls() {
     setNewMIDIControlFunction,
   } = useStore(state => state);
 
-  const [render, setRender] = useState(false);
+  // const [render, setRender] = useState(false);
 
   return (
     <Container>
@@ -24,6 +23,7 @@ export default function DJControls() {
           <p>HIGH</p>
           <EQLabel htmlFor="high-frequency-one">
             <KnobIcon
+              isMIDIAssignActive={isMIDIAssignButtonActive}
               position={(eq3One?.high.value + 5) / 2}
               src={knobIcon}
               alt="control-knob"
@@ -34,15 +34,26 @@ export default function DJControls() {
               id="high-frequency-one"
               name="high-one"
               type="range"
-              min="-15"
-              max="5"
-              defaultValue="-5"
-              onChange={handleEQSetting}
+              min="0"
+              max="127"
+              value={eq3One ? eq3One.high.get() : '63.5'}
+              onChange={event =>
+                handleEQSetting(event.target.value, event.target.name)
+              }
+              onClick={event =>
+                isMIDIAssignButtonActive &&
+                setNewMIDIControlFunction(
+                  handleEQSetting,
+                  'range',
+                  event.target.name
+                )
+              }
             />
           </EQLabel>
           <p>MID</p>
           <EQLabel htmlFor="mid-frequency-one">
             <KnobIcon
+              isMIDIAssignActive={isMIDIAssignButtonActive}
               position={(eq3One?.mid.value + 5) / 2}
               src={knobIcon}
               alt="control-knob"
@@ -53,15 +64,26 @@ export default function DJControls() {
               id="mid-frequency-one"
               name="mid-one"
               type="range"
-              min="-15"
-              max="5"
-              defaultValue="-5"
-              onChange={handleEQSetting}
+              min="0"
+              max="127"
+              value={eq3One ? eq3One.mid.get() : '63.5'}
+              onChange={event =>
+                handleEQSetting(event.target.value, event.target.name)
+              }
+              onClick={event =>
+                isMIDIAssignButtonActive &&
+                setNewMIDIControlFunction(
+                  handleEQSetting,
+                  'range',
+                  event.target.name
+                )
+              }
             />
           </EQLabel>
           <p>LOW</p>
           <EQLabel htmlFor="low-frequency-one">
             <KnobIcon
+              isMIDIAssignActive={isMIDIAssignButtonActive}
               position={(eq3One?.low.value + 5) / 2}
               src={knobIcon}
               alt="control-knob"
@@ -72,10 +94,20 @@ export default function DJControls() {
               id="low-frequency-one"
               name="low-one"
               type="range"
-              min="-15"
-              max="5"
-              defaultValue="-5"
-              onChange={handleEQSetting}
+              min="0"
+              max="127"
+              value={eq3One ? eq3One.low.get() : '63.5'}
+              onChange={event =>
+                handleEQSetting(event.target.value, event.target.name)
+              }
+              onClick={event =>
+                isMIDIAssignButtonActive &&
+                setNewMIDIControlFunction(
+                  handleEQSetting,
+                  'range',
+                  event.target.name
+                )
+              }
             />
           </EQLabel>
           <p>FILTER</p>
@@ -107,6 +139,7 @@ export default function DJControls() {
           <p>HIGH</p>
           <EQLabel htmlFor="high-frequency-two">
             <KnobIcon
+              isMIDIAssignActive={isMIDIAssignButtonActive}
               position={(eq3Two?.high.value + 5) / 2}
               src={knobIcon}
               alt="control-knob"
@@ -117,15 +150,26 @@ export default function DJControls() {
               id="high-frequency-two"
               name="high-two"
               type="range"
-              min="-15"
-              max="5"
-              defaultValue="-5"
-              onChange={handleEQSetting}
+              min="0"
+              max="127"
+              value={eq3Two ? eq3Two.high.get() : '63.5'}
+              onChange={event =>
+                handleEQSetting(event.target.value, event.target.name)
+              }
+              onClick={event =>
+                isMIDIAssignButtonActive &&
+                setNewMIDIControlFunction(
+                  handleEQSetting,
+                  'range',
+                  event.target.name
+                )
+              }
             />
           </EQLabel>
           <p>MID</p>
           <EQLabel htmlFor="mid-frequency-two">
             <KnobIcon
+              isMIDIAssignActive={isMIDIAssignButtonActive}
               position={(eq3Two?.mid.value + 5) / 2}
               src={knobIcon}
               alt="control-knob"
@@ -136,15 +180,26 @@ export default function DJControls() {
               id="mid-frequency-two"
               name="mid-two"
               type="range"
-              min="-15"
-              max="5"
-              defaultValue="-5"
-              onChange={handleEQSetting}
+              min="0"
+              max="127"
+              value={eq3Two ? eq3Two.mid.get() : '63.5'}
+              onChange={event =>
+                handleEQSetting(event.target.value, event.target.name)
+              }
+              onClick={event =>
+                isMIDIAssignButtonActive &&
+                setNewMIDIControlFunction(
+                  handleEQSetting,
+                  'range',
+                  event.target.name
+                )
+              }
             />
           </EQLabel>
           <p>LOW</p>
           <EQLabel htmlFor="low-frequency-two">
             <KnobIcon
+              isMIDIAssignActive={isMIDIAssignButtonActive}
               position={(eq3Two?.low.value + 5) / 2}
               src={knobIcon}
               alt="control-knob"
@@ -155,10 +210,20 @@ export default function DJControls() {
               id="low-frequency-two"
               name="low-two"
               type="range"
-              min="-15"
-              max="5"
-              defaultValue="-5"
-              onChange={handleEQSetting}
+              min="0"
+              max="127"
+              value={eq3Two ? eq3Two.low.get() : '63.5'}
+              onChange={event =>
+                handleEQSetting(event.target.value, event.target.name)
+              }
+              onClick={event =>
+                isMIDIAssignButtonActive &&
+                setNewMIDIControlFunction(
+                  handleEQSetting,
+                  'range',
+                  event.target.name
+                )
+              }
             />
           </EQLabel>
           <p>FILTER</p>
@@ -205,22 +270,25 @@ export default function DJControls() {
     </Container>
   );
 
-  function handleEQSetting(e) {
-    if (e.target.name === 'high-one') {
-      eq3One.set({ high: e.target.value });
-    } else if (e.target.name === 'mid-one') {
-      eq3One.set({ mid: e.target.value });
-    } else if (e.target.name === 'low-one') {
-      eq3One.set({ low: e.target.value });
-    } else if (e.target.name === 'high-two') {
-      eq3Two.set({ high: e.target.value });
-    } else if (e.target.name === 'mid-two') {
-      eq3Two.set({ mid: e.target.value });
-    } else {
-      eq3Two.set({ low: e.target.value });
+  function handleEQSetting(value, name) {
+    const { setRender } = useStore.getState();
+    const newValue = value / 6.35 - 15;
+    if (name === 'high-one') {
+      eq3One.set({ high: newValue });
+    } else if (name === 'mid-one') {
+      eq3One.set({ mid: newValue });
+    } else if (name === 'low-one') {
+      eq3One.set({ low: newValue });
+    } else if (name === 'high-two') {
+      eq3Two.set({ high: newValue });
+    } else if (name === 'mid-two') {
+      eq3Two.set({ mid: newValue });
+    } else if (name === 'low-two') {
+      eq3Two.set({ low: newValue });
     }
-    setRender(!render);
+    setRender();
   }
+
   function handleCrossFader(value) {
     const { djPlayerOne, djPlayerTwo } = useStore.getState();
     const faderValue = Number(value);
@@ -314,6 +382,7 @@ const EQ3 = styled.div`
 const CrossFader = styled.input`
   width: 150px;
   margin-bottom: 20px;
+  box-shadow: inset 20px 20px var(--white);
   ${props =>
     props.isMIDIAssignActive && 'box-shadow: inset 20px 20px var(--purple)'};
   border-radius: 10px;

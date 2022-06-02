@@ -11,29 +11,31 @@ import useStore from '../hooks/useStore';
 
 export default function DJPage() {
   const [visiblePlayer, setVisiblePlayer] = useState(1);
-  const { djPlayerOne, djPlayerTwo, isMIDIAssignButtonActive } = useStore(
-    state => state
-  );
-  const setIsMIDIAssignButtonActive = useStore(
-    state => state.setIsMIDIAssignButtonActive
-  );
+  const {
+    djPlayerOne,
+    djPlayerTwo,
+    isMIDIAssignButtonActive,
+    setIsMIDIAssignButtonActive,
+  } = useStore(state => state);
 
   return (
     <>
-      <NavLink aria-label="back" to="/" onClick={handleNavigate}>
-        <BackButtonImg
-          src={backIcon}
-          alt="back-button"
-          width="50px"
-          height="50px"
-        />
-      </NavLink>
-      <MIDIButton
-        isActive={isMIDIAssignButtonActive}
-        onClick={() => setIsMIDIAssignButtonActive(isMIDIAssignButtonActive)}
-      >
-        Assign MIDI controls
-      </MIDIButton>
+      <HeaderContainer>
+        <NavLink aria-label="back" to="/" onClick={handleNavigate}>
+          <BackButtonImg
+            src={backIcon}
+            alt="back-button"
+            width="50px"
+            height="50px"
+          />
+        </NavLink>
+        <MIDIButton
+          isActive={isMIDIAssignButtonActive}
+          onClick={setIsMIDIAssignButtonActive}
+        >
+          Assign <br/>MIDI-Control
+        </MIDIButton>
+      </HeaderContainer>
       <PageContainer visible={visiblePlayer}>
         <DJPlayerOne
           visiblePlayer={visiblePlayer}
@@ -53,7 +55,7 @@ export default function DJPage() {
     djPlayerTwo.stop();
   }
 }
-const PageContainer = styled.div`
+const PageContainer = styled.main`
   display: flex;
   place-content: center;
   gap: 5px;
@@ -68,5 +70,19 @@ const BackButtonImg = styled(StyledButtonImg)`
   margin: 20px;
 `;
 const MIDIButton = styled.button`
-  background-color: ${props => (props.isActive ? 'red' : 'white')};
+  align-self: center;
+  justify-self: center;
+  background-color: ${props =>
+    props.isActive ? 'var(--blue-active)' : 'var(--blue)'};
+  height: 40px;
+  width: 100px;
+  border-radius: 5px;
+  box-shadow: ${props =>
+    props.isActive === true
+      ? '0 0 20px 2px var(--blue)'
+      : 'inset 0 0 10px 2px var(--blue-active)'};
+`;
+const HeaderContainer = styled.header`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
 `;

@@ -232,7 +232,7 @@ const PitchFaderLabel = styled.label`
   display: flex;
 `;
 const PitchFaderInput = styled.input`
-  color: var(--white);
+  box-shadow: inset 20px 20px var(--white);
   transform: rotate(90deg);
   margin: auto;
   height: 20px;
@@ -261,8 +261,9 @@ const FXButton = styled.button`
     props.isActive === true
       ? '0 0 20px 2px var(--blue)'
       : 'inset 0 0 20px 2px var(--blue-active)'};
-  border: none;
   border-radius: 5px;
   margin: 10px;
-  ${props => props.isMIDIAssignActive && 'background-color: var(--purple)'};
+  ${props =>
+    props.isMIDIAssignActive &&
+    'background-color: var(--purple); box-shadow: inset 0 0 20px 2px var(--purple)'};
 `;
