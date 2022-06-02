@@ -8,14 +8,11 @@ export default function DJControls() {
     faderPosition,
     eq3One,
     eq3Two,
-    lowpassFilterPlayerOne,
-    highpassFilterPlayerOne,
     isMIDIAssignButtonActive,
     filterPositionOne,
     filterPositionTwo,
     setFaderPosition,
     setNewMIDIControlFunction,
-    setFilterPositionOne,
   } = useStore(state => state);
 
   const [render, setRender] = useState(false);
@@ -183,8 +180,8 @@ export default function DJControls() {
               onChange={event => handleFilterPlayerTwo(event.target.value)}
               onClick={() =>
                 isMIDIAssignButtonActive
-                  ? setNewMIDIControlFunction(handleFilterPlayerTwo, 'range')
-                  : null
+                  && setNewMIDIControlFunction(handleFilterPlayerTwo, 'range')
+                  
               }
             />
           </EQLabel>
@@ -202,8 +199,8 @@ export default function DJControls() {
           onChange={event => handleCrossFader(event.target.value)}
           onClick={() =>
             isMIDIAssignButtonActive
-              ? setNewMIDIControlFunction(handleCrossFader, 'range')
-              : null
+              && setNewMIDIControlFunction(handleCrossFader, 'range')
+              
           }
         ></CrossFader>
       </label>

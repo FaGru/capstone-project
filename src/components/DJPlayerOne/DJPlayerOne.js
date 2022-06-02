@@ -62,13 +62,17 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
         width="150px"
       />
       <PitchFaderLabel htmlFor="pitch fader one">
-        <input
-          onChange={handlePitch}
+        <PitchFaderInput
+          isMIDIAssignActive={isMIDIAssignButtonActive}
+          onChange={event => handlePitch(event.target.value)}
+          onClick={() =>
+            isMIDIAssignButtonActive &&
+            setNewMIDIControlFunction(handlePitch, 'range')
+          }
           type="range"
-          min="0.8"
-          max="1.2"
-          step="0.01"
-          defaultValue={djPlayerOnePlaybackRate}
+          min="0"
+          max="127"
+          value={djPlayerOnePlaybackRate}
           id="pitch fader one"
           name="pitch fader one"
           data-testid="pitch fader one"
@@ -138,18 +142,19 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
     setTrackNameOne(files[0].name);
   }
 
-  function handlePitch(e) {
-    setDjPlayerOnePlaybackRate(e.target.value);
-    djPlayerOne.playbackRate = e.target.value;
+  function handlePitch(value) {
+    const { djPlayerOne, setDjPlayerOnePlaybackRate } = useStore.getState();
+    setDjPlayerOnePlaybackRate(value);
+    djPlayerOne.playbackRate = value / 317.5 + 0.8;
   }
 
   function handleEchoOut() {
-    const setIsEchoOutOneActive = useStore.getState().setIsEchoOutOneActive;
     const {
       djPlayerOne,
       highpassFilterPlayerOne,
       feedbackDelay,
       isEchoOutOneActive,
+      setIsEchoOutOneActive,
     } = useStore.getState();
     setIsEchoOutOneActive();
     if (isEchoOutOneActive === false) {
@@ -226,12 +231,15 @@ const PitchFaderLabel = styled.label`
   width: 120px;
 
   display: flex;
-  input {
-    color: var(--white);
-    transform: rotate(90deg);
-    margin: auto;
-    height: 20px;
-  }
+`;
+const PitchFaderInput = styled.input`
+  color: var(--white);
+  transform: rotate(90deg);
+  margin: auto;
+  height: 20px;
+  ${props =>
+    props.isMIDIAssignActive && 'box-shadow: inset 20px 20px var(--purple)'};
+  border-radius: 10px;
 `;
 
 const Vinyl = styled.img`

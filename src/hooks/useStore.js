@@ -38,6 +38,7 @@ const useStore = create((set, get) => ({
   assignedMIDIControls: [],
   isMIDIAssignButtonActive: false,
   newMIDIControlName: null,
+  newMIDIControlCommand: null,
   newMIDIControlFunction: null,
   newMIDIControlType: null,
   ///////// DJ Deck States ////////////
@@ -51,8 +52,8 @@ const useStore = create((set, get) => ({
   highpassFilterPlayerTwo: null,
   djTrackOne: 'https://tonejs.github.io/audio/berklee/gong_1.mp3',
   djTrackTwo: 'https://tonejs.github.io/audio/berklee/gong_1.mp3',
-  djPlayerOnePlaybackRate: 1,
-  djPlayerTwoPlaybackRate: 1,
+  djPlayerOnePlaybackRate: 63,
+  djPlayerTwoPlaybackRate: 63,
   eq3One: null,
   eq3Two: null,
   feedbackDelay: null,
@@ -301,7 +302,7 @@ const useStore = create((set, get) => ({
     const eq3One = new Tone.EQ3(eqOneSettings).connect(lowpassFilterPlayerOne);
     const djPlayerOne = new Tone.Player(get().djTrackOne).connect(eq3One);
 
-    djPlayerOne.playbackRate = get().djPlayerOnePlaybackRate;
+    djPlayerOne.playbackRate = get().djPlayerOnePlaybackRate / 317.5 + 0.8;
     if (faderPosition === 127) {
       djPlayerOne.volume.value = -500;
     } else if (faderPosition >= 63) {
@@ -328,7 +329,7 @@ const useStore = create((set, get) => ({
     }).connect(highpassFilterPlayerTwo);
     const eq3Two = new Tone.EQ3(eqTwoSettings).connect(lowpassFilterPlayerTwo);
     const djPlayerTwo = new Tone.Player(get().djTrackTwo).connect(eq3Two);
-    djPlayerTwo.playbackRate = get().djPlayerTwoPlaybackRate;
+    djPlayerTwo.playbackRate = get().djPlayerTwoPlaybackRate / 317.5 + 0.8;
     if (faderPosition === 0) {
       djPlayerTwo.volume.value = -500;
     } else if (faderPosition <= 63) {
@@ -371,11 +372,11 @@ const useStore = create((set, get) => ({
     const isEchoOutTwoActive = get().isEchoOutTwoActive;
     set({ isEchoOutTwoActive: !isEchoOutTwoActive });
   },
-  setFilterPositionOne: (value) => {
-    set({filterPositionOne: value})
+  setFilterPositionOne: value => {
+    set({ filterPositionOne: value });
   },
-  setFilterPositionTwo: (value) => {
-    set({filterPositionTwo: value})
+  setFilterPositionTwo: value => {
+    set({ filterPositionTwo: value });
   },
   /////////////////////////////////////////////////////////////
   initMIDIDevices: () => {
@@ -401,19 +402,34 @@ const useStore = create((set, get) => ({
       if (isMIDIAssignButtonActive) {
         const newMIDIControlFunction = get().newMIDIControlFunction;
         if (newMIDIControlFunction) {
-          set({ newMIDIControlName: event.data[1] });
+          set({
+            newMIDIControlName: event.data[1],
+            newMIDIControlCommand: event.data[0],
+          });
           get().addMIDIControl();
         }
       }
       //////////// function call ////////////
       else {
-        // console.log(command, midiButton, value);
+        console.log(command, midiButton, value, event);
         assignedMIDIControls.forEach(control => {
-          if (control.name === midiButton && control.type === 'normal') {
+          if (
+            control.name === midiButton &&
+            control.command === command &&
+            control.type === 'normal'
+          ) {
             value > 0 && control.function();
-          } else if (control.name === midiButton && control.type === 'tap') {
+          } else if (
+            control.name === midiButton &&
+            control.command === command &&
+            control.type === 'tap'
+          ) {
             control.function();
-          } else if (control.name === midiButton && control.type === 'range') {
+          } else if (
+            control.name === midiButton &&
+            control.command === command &&
+            control.type === 'range'
+          ) {
             control.function(value);
           }
         });
@@ -446,6 +462,7 @@ const useStore = create((set, get) => ({
     const newMIDIControlFunction = get().newMIDIControlFunction;
     const newMIDIControlName = get().newMIDIControlName;
     const newMIDIControlType = get().newMIDIControlType;
+    const newMIDIControlCommand = get().newMIDIControlCommand;
     const newMIDIControls = assignedMIDIControls.filter(
       control =>
         control.name !== newMIDIControlName &&
@@ -457,6 +474,7 @@ const useStore = create((set, get) => ({
         ...newMIDIControls,
         {
           name: newMIDIControlName,
+          command: newMIDIControlCommand,
           function: newMIDIControlFunction,
           type: newMIDIControlType,
         },
@@ -466,6 +484,7 @@ const useStore = create((set, get) => ({
       newMIDIControlFunction: null,
       newMIDIControlName: null,
       newMIDIControlType: null,
+      newMIDIControlCommand: null,
     });
   },
   setIsMIDIAssignButtonActive: currentValue => {
