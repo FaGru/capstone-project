@@ -6,10 +6,14 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
 export default function KeyboardboardPage() {
-  const synth = useStore(state => state.synth);
-  const monoSynth = useStore(state => state.monoSynth);
-  const setKeyboardVolume = useStore(state => state.setKeyboardVolume);
-  const keyboardVolume = useStore(state => state.keyboardVolume);
+  const {
+    synth,
+    monoSynth,
+    keyboardVolume,
+    isMIDIAssignButtonActive,
+    setKeyboardVolume,
+    setIsMIDIAssignButtonActive,
+  } = useStore(state => state);
 
   return (
     <motion.div
@@ -18,6 +22,13 @@ export default function KeyboardboardPage() {
       exit={{ scale: 0 }}
     >
       <KeyboardContainer>
+        <MIDIButton
+          isActive={isMIDIAssignButtonActive}
+          onClick={setIsMIDIAssignButtonActive}
+        >
+          Assign <br />
+          MIDI-Control
+        </MIDIButton>
         <label htmlFor="keyboard-volume">Volume: {keyboardVolume}</label>
         <VolumeRange
           name="keyboard-volume"
@@ -32,10 +43,9 @@ export default function KeyboardboardPage() {
       </KeyboardContainer>
     </motion.div>
   );
-  function keyboardClick(event) {
-    const currentButton = event.target.value;
-    monoSynth.triggerAttackRelease(currentButton, '8n');
-    synth.triggerAttackRelease(currentButton, '8n');
+  function keyboardClick(value) {
+    monoSynth.triggerAttackRelease(value, '8n');
+    synth.triggerAttackRelease(value, '8n');
   }
   function handleKeyboardVolume(e) {
     setKeyboardVolume(e.target.value / 10);
@@ -64,4 +74,17 @@ const KeyboardContainer = styled(BackgroundAnimation)`
 const VolumeRange = styled.input`
   width: 30%;
   margin-bottom: 20px;
+`;
+const MIDIButton = styled.button`
+  position: absolute;
+  right: 50px;
+  background-color: ${props =>
+    props.isActive ? 'var(--blue-active)' : 'var(--blue)'};
+  height: 40px;
+  width: 100px;
+  border-radius: 5px;
+  box-shadow: ${props =>
+    props.isActive === true
+      ? '0 0 20px 2px var(--blue)'
+      : 'inset 0 0 10px 2px var(--blue-active)'};
 `;

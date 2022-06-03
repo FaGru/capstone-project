@@ -7,8 +7,10 @@ export default function SequencerSettings({
   isSettingsVisible,
   setIsSettingsVisible,
 }) {
-  const setCurrentBpm = useStore(state => state.setCurrentBpm);
-  const currentBpm = useStore(state => state.currentBpm);
+  const setcurrentSequencerBpm = useStore(
+    state => state.setcurrentSequencerBpm
+  );
+  const currentSequencerBpm = useStore(state => state.currentSequencerBpm);
   const setDrumPadPlayersVolume = useStore(
     state => state.setDrumPadPlayersVolume
   );
@@ -29,7 +31,7 @@ export default function SequencerSettings({
           >
             <img src={close} height="20px" width="20px" alt="close" />
           </CloseButton>
-          <label htmlFor="Sequencer-BPM">BPM {currentBpm}</label>
+          <label htmlFor="Sequencer-BPM">BPM {currentSequencerBpm}</label>
           <Input
             data-testid="Sequencer-BPM"
             name="Sequencer-BPM"
@@ -37,8 +39,8 @@ export default function SequencerSettings({
             type="range"
             min="0"
             max="160"
-            defaultValue={currentBpm}
-            onChange={event => setCurrentBpm(event.target.value)}
+            defaultValue={currentSequencerBpm}
+            onChange={event => setcurrentSequencerBpm(event.target.value)}
           ></Input>
           <label htmlFor="Sequencer-Volume">
             Volume {(Number(drumPadPlayersVolume) + 30) / 5}

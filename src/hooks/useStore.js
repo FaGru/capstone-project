@@ -7,44 +7,64 @@ import { defaultSequencerSettings } from '../data';
 const useStore = create((set, get) => ({
   tone: null,
   dest: null,
+  navDirection: { start: 'initialBottom', end: 'outBottom' },
   recorder: null,
-  loopPlayer: null,
   monoSynth: null,
   synth: null,
-  djPlayerOne: null,
-  djPlayerTwo: null,
-  eq3One: null,
-  eq3Two: null,
-  lowpassFilterPlayerOne: null,
-  highpassFilterPlayerOne: null,
-  lowpassFilterPlayerTwo: null,
-  djTrackOne: 'https://tonejs.github.io/audio/berklee/gong_1.mp3',
-  djTrackTwo: 'https://tonejs.github.io/audio/berklee/gong_1.mp3',
-  djPlayerOnePlaybackRate: 1,
-  djPlayerTwoPlaybackRate: 1,
-  feedbackDelay: null,
-  faderPosition: 0,
-  eqOneSettings: { high: -5, mid: -5, low: -5 },
-  eqTwoSettings: { high: -5, mid: -5, low: -5 },
-  currentDrumLoop: 'DrumLoop90BPM',
-  loopPlayerVolume: 5,
   recordings: [],
   allPads: defaultPadSettings,
+  keyboardVolume: 5,
+  ///////// Drumloop-Player States //////
+  loopPlayer: null,
+  loopPlayerVolume: 5,
   drumPadPlayersVolume: 5,
+  currentDrumLoop: 'DrumLoop90BPM',
+  /////////   Sequencer States //////////////
+  currentTimeStamp: 0,
+  currentSequencerVolume: 0,
+  currentSequencerBpm: 100,
   allPadSequences: defaultSequencerSettings,
   selectedSequencerPad: 0,
-  currentTimeStamp: 0,
-  currentBpm: 100,
   selectedPadSequence: defaultSequencerSettings[0].settings,
-  currentSequencerVolume: 0,
-  keyboardVolume: 5,
-  isInstructionPopUpVisible: true,
+  //////// Instructions States /////////////////
   isInstructionOneVisible: false,
   isInstructionTwoVisible: false,
   isInstructionThreeVisible: false,
   isInstructionFourVisible: false,
   isInstructionFiveVisible: false,
-  navDirection: { start: 'initialBottom', end: 'outBottom' },
+  //////// MIDI Device States //////////
+  isDevicePopUpVisible: false,
+  connectedMIDIDevices: null,
+  assignedMIDIControls: [],
+  assignedMIDIControlMessage: null,
+  isMIDIAssignButtonActive: false,
+  newMIDIControlName: null,
+  newMIDIControlCommand: null,
+  newMIDIControlFunction: null,
+  newMIDIControlType: null,
+  newMIDIControlAdditionalProp: null,
+  ///////// DJ Deck States ////////////
+  djPlayerOne: null,
+  djPlayerTwo: null,
+  eqOneSettings: { high: -5, mid: -5, low: -5 },
+  eqTwoSettings: { high: -5, mid: -5, low: -5 },
+  lowpassFilterPlayerOne: null,
+  highpassFilterPlayerOne: null,
+  lowpassFilterPlayerTwo: null,
+  highpassFilterPlayerTwo: null,
+  djTrackOne: 'https://tonejs.github.io/audio/berklee/gong_1.mp3',
+  djTrackTwo: 'https://tonejs.github.io/audio/berklee/gong_1.mp3',
+  djPlayerOnePlaybackRate: 63,
+  djPlayerTwoPlaybackRate: 63,
+  eq3One: null,
+  eq3Two: null,
+  feedbackDelay: null,
+  faderPosition: 63,
+  isEchoOutOneActive: false,
+  isEchoOutTwoActive: false,
+  filterPositionOne: 63,
+  filterPositionTwo: 63,
+  render: false,
 
   handleUserInteraction: () => {
     const handleUserInteraction = () => {
@@ -57,6 +77,7 @@ const useStore = create((set, get) => ({
         get().initDJPlayerOne();
         get().initDJPlayerTwo();
         get().initFeedbackDelay();
+        get().initMIDIDevices();
       }
     };
     window.addEventListener('click', handleUserInteraction);
@@ -221,9 +242,9 @@ const useStore = create((set, get) => ({
   setSelectedPadSequence: selectedPadSequence => {
     set({ selectedPadSequence: selectedPadSequence });
   },
-  setCurrentBpm: currentBpm => {
-    Tone.Transport.bpm.value = currentBpm;
-    set({ currentBpm: currentBpm });
+  setcurrentSequencerBpm: currentSequencerBpm => {
+    Tone.Transport.bpm.value = currentSequencerBpm;
+    set({ currentSequencerBpm: currentSequencerBpm });
   },
   //////////////////    save and add recordings    //////////////////////
   saveRecording: () => {
@@ -284,11 +305,12 @@ const useStore = create((set, get) => ({
     const eq3One = new Tone.EQ3(eqOneSettings).connect(lowpassFilterPlayerOne);
     const djPlayerOne = new Tone.Player(get().djTrackOne).connect(eq3One);
 
-    djPlayerOne.playbackRate = get().djPlayerOnePlaybackRate;
-    if (faderPosition === '40') {
+    djPlayerOne.playbackRate = get().djPlayerOnePlaybackRate / 317.5 + 0.8;
+    if (faderPosition === 127) {
       djPlayerOne.volume.value = -500;
-    } else if (faderPosition >= 0) {
-      djPlayerOne.volume.value = -faderPosition / 2;
+    } else if (faderPosition >= 63) {
+      const newValue = 117 - faderPosition;
+      djPlayerOne.volume.value = newValue / 6.5 - 5;
     }
     set({
       djPlayerOne,
@@ -310,11 +332,12 @@ const useStore = create((set, get) => ({
     }).connect(highpassFilterPlayerTwo);
     const eq3Two = new Tone.EQ3(eqTwoSettings).connect(lowpassFilterPlayerTwo);
     const djPlayerTwo = new Tone.Player(get().djTrackTwo).connect(eq3Two);
-    djPlayerTwo.playbackRate = get().djPlayerTwoPlaybackRate;
-    if (faderPosition === '-40') {
+    djPlayerTwo.playbackRate = get().djPlayerTwoPlaybackRate / 317.5 + 0.8;
+    if (faderPosition === 0) {
       djPlayerTwo.volume.value = -500;
-    } else if (faderPosition <= 0) {
-      djPlayerTwo.volume.value = faderPosition / 2;
+    } else if (faderPosition <= 63) {
+      const newValue = faderPosition - 10;
+      djPlayerTwo.volume.value = newValue / 6.5 - 5;
     }
     set({
       djPlayerTwo,
@@ -343,6 +366,158 @@ const useStore = create((set, get) => ({
   setDjTrackTwo: newTrack => {
     set({ djTrackTwo: newTrack });
     get().initDJPlayerTwo();
+  },
+  setIsEchoOutOneActive: () => {
+    const isEchoOutOneActive = get().isEchoOutOneActive;
+    set({ isEchoOutOneActive: !isEchoOutOneActive });
+  },
+  setIsEchoOutTwoActive: () => {
+    const isEchoOutTwoActive = get().isEchoOutTwoActive;
+    set({ isEchoOutTwoActive: !isEchoOutTwoActive });
+  },
+  setFilterPositionOne: value => {
+    set({ filterPositionOne: value });
+  },
+  setFilterPositionTwo: value => {
+    set({ filterPositionTwo: value });
+  },
+  /////////////////////////////////////////////////////////////
+  initMIDIDevices: () => {
+    if (navigator.requestMIDIAccess) {
+      navigator.requestMIDIAccess().then(success, failure);
+    }
+
+    function success(midiAccess) {
+      const inputs = midiAccess.inputs;
+      midiAccess.addEventListener('statechange', updateDevices);
+      inputs.forEach(input => {
+        input.addEventListener('midimessage', handleInput);
+      });
+    }
+    function handleInput(event) {
+      const assignedMIDIControls = get().assignedMIDIControls;
+      const isMIDIAssignButtonActive = get().isMIDIAssignButtonActive;
+      const command = event.data[0];
+      const midiButton = event.data[1];
+      const value = event.data[2];
+
+      //////// Assigning midi function /////////////////
+      if (isMIDIAssignButtonActive) {
+        const newMIDIControlFunction = get().newMIDIControlFunction;
+        if (newMIDIControlFunction) {
+          set({
+            newMIDIControlName: event.data[1],
+            newMIDIControlCommand: event.data[0],
+          });
+          get().addMIDIControl();
+        }
+      }
+      //////////// function call ////////////
+      else {
+        console.log(command, midiButton, value, event);
+        assignedMIDIControls.forEach(control => {
+          if (
+            control.name === midiButton &&
+            control.command === command &&
+            control.type === 'normal'
+          ) {
+            value > 0 && control.function(control.additionalProp);
+          } else if (
+            control.name === midiButton &&
+            control.command === command &&
+            control.type === 'tap'
+          ) {
+            control.function();
+          } else if (
+            control.name === midiButton &&
+            control.command === command &&
+            control.type === 'range'
+          ) {
+            control.function(value, control.additionalProp);
+          }
+        });
+      }
+    }
+
+    function updateDevices(event) {
+      console.log(event, 'devices');
+      set({
+        connectedMIDIDevices: `Name: ${event.port.name} Brand: ${event.port.manufacturer} State: ${event.port.state}`,
+      });
+      set({ isDevicePopUpVisible: true });
+      setTimeout(function () {
+        set({ isDevicePopUpVisible: false });
+      }, 5000);
+    }
+    function failure() {
+      console.log('could not connect devices');
+    }
+    ///////////////////////////////////////////////////////////////////////////////////////
+  },
+  setNewMIDIControlFunction: (functionName, functionTyp, additionalProp) => {
+    set({
+      newMIDIControlFunction: functionName,
+      newMIDIControlType: functionTyp,
+      newMIDIControlAdditionalProp: additionalProp,
+      assignedMIDIControlMessage: 'Now choose a control on your MIDI-Controler',
+    });
+  },
+  addMIDIControl: () => {
+    const assignedMIDIControls = get().assignedMIDIControls;
+    const newMIDIControlFunction = get().newMIDIControlFunction;
+    const newMIDIControlName = get().newMIDIControlName;
+    const newMIDIControlAdditionalProp = get().newMIDIControlAdditionalProp;
+    const newMIDIControlType = get().newMIDIControlType;
+    const newMIDIControlCommand = get().newMIDIControlCommand;
+    const newMIDIControls = assignedMIDIControls.filter(
+      control =>
+        control.function !== newMIDIControlFunction &&
+        (control.name !== newMIDIControlName ||
+          control.command !== newMIDIControlCommand)
+    );
+    console.log(assignedMIDIControls);
+    set({
+      assignedMIDIControls: [
+        ...newMIDIControls,
+        {
+          name: newMIDIControlName,
+          command: newMIDIControlCommand,
+          function: newMIDIControlFunction,
+          type: newMIDIControlType,
+          additionalProp: newMIDIControlAdditionalProp,
+        },
+      ],
+    });
+    set({
+      newMIDIControlFunction: null,
+      newMIDIControlName: null,
+      newMIDIControlType: null,
+      newMIDIControlCommand: null,
+      assignedMIDIControlMessage:
+        'Your MIDI-Control is linked now. Click on a purple Element to assign more controls or leave the assigning mode!',
+    });
+  },
+  setIsMIDIAssignButtonActive: () => {
+    const isMIDIAssignButtonActive = get().isMIDIAssignButtonActive;
+    if (!isMIDIAssignButtonActive) {
+      set({
+        assignedMIDIControlMessage:
+          'Please click on a purple marked Element to assign control (works only on Chrome)',
+      });
+    } else {
+      set({
+        assignedMIDIControlMessage: null,
+        newMIDIControlFunction: null,
+        newMIDIControlName: null,
+        newMIDIControlType: null,
+        newMIDIControlCommand: null,
+      });
+    }
+    set({ isMIDIAssignButtonActive: !isMIDIAssignButtonActive });
+  },
+  setRender: () => {
+    const render = get().render;
+    set({ render: !render });
   },
 }));
 

@@ -40,8 +40,20 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const {
+    isDevicePopUpVisible,
+    connectedMIDIDevices,
+    assignedMIDIControlMessage,
+  } = useStore(state => state);
+
   return (
     <div>
+      <DevicePopUp isVisible={isDevicePopUpVisible}>
+        {connectedMIDIDevices}
+      </DevicePopUp>
+      {assignedMIDIControlMessage && (
+        <AssignMIDIMessage>{assignedMIDIControlMessage}</AssignMIDIMessage>
+      )}
       <AnimatePresence exitBeforeEnter>
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<LandingPage />} />
@@ -72,4 +84,25 @@ const InstrumentContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+const DevicePopUp = styled.div`
+  position: absolute;
+  left: 15px;
+  top: 15px;
+  display: ${props => (props.isVisible ? 'block' : 'none')};
+  border: 2px solid var(--red);
+  border-radius: 10px;
+  z-index: 2000;
+  background-color: var(--black);
+  padding: 5px;
+`;
+const AssignMIDIMessage = styled.div`
+  position: absolute;
+  left: 15px;
+  top: 70px;
+  border: 2px solid var(--red);
+  z-index: 2000;
+  background-color: var(--black);
+  border-radius: 10px;
+  padding: 5px;
 `;

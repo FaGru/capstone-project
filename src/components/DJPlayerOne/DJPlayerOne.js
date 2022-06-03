@@ -9,28 +9,28 @@ import pauseIcon from '../../images/pause.svg';
 import cueIcon from '../../images/cue.svg';
 import uploadIcon from '../../images/upload.svg';
 
-export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
+export default function DJPlayer({
+  visiblePlayer,
+  setVisiblePlayer,
+  isDesktop,
+}) {
   const {
     djPlayerOne,
     djPlayerOnePlaybackRate,
-    highpassFilterPlayerOne,
-    feedbackDelay,
+    isMIDIAssignButtonActive,
+    isEchoOutOneActive,
+    setNewMIDIControlFunction,
+    setDjTrackOne,
   } = useStore(state => state);
-  const setTrackOne = useStore(state => state.setDjTrackOne);
-  const setDjPlayerOnePlaybackRate = useStore(
-    state => state.setDjPlayerOnePlaybackRate
-  );
+
   const [oneIsPlaying, setOneIsPlaying] = useState(0);
   const [trackNameOne, setTrackNameOne] = useState('load up a track...');
-  const [isEchoOutActive, setIsEchoOutActive] = useState(false);
- 
+
   return (
     <PlayerContainer
       initial={{ x: '-500px' }}
       animate={
-        visiblePlayer === 2 && window.innerWidth < 600
-          ? { x: '-500px' }
-          : { x: 0 }
+        visiblePlayer === 2 && isDesktop === false ? { x: '-500px' } : { x: 0 }
       }
       transition={{
         type: 'tween',
@@ -45,6 +45,7 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
             ? trackNameOne.slice(0, 50) + '...'
             : trackNameOne}
         </div>
+
         <input
           onChange={handleTrackOne}
           type="file"
@@ -62,13 +63,17 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
         width="150px"
       />
       <PitchFaderLabel htmlFor="pitch fader one">
-        <input
-          onChange={handlePitch}
+        <PitchFaderInput
+          isMIDIAssignActive={isMIDIAssignButtonActive}
+          onChange={event => handlePitch(event.target.value)}
+          onClick={() =>
+            isMIDIAssignButtonActive &&
+            setNewMIDIControlFunction(handlePitch, 'range')
+          }
           type="range"
-          min="0.8"
-          max="1.2"
-          step="0.01"
-          defaultValue={djPlayerOnePlaybackRate}
+          min="0"
+          max="127"
+          value={djPlayerOnePlaybackRate}
           id="pitch fader one"
           name="pitch fader one"
           data-testid="pitch fader one"
@@ -79,12 +84,25 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
       </PlayerSwitchButton>
       <CueButton
         aria-label="cue-button"
-        onMouseDown={handlePlayOne}
+        isMIDIAssignActive={isMIDIAssignButtonActive}
+        onMouseDown={() =>
+          isMIDIAssignButtonActive
+            ? setNewMIDIControlFunction(handlePlayOne, 'tap')
+            : handlePlayOne()
+        }
         onMouseUp={handlePlayOne}
       >
         <StyledButtonImg src={cueIcon} alt="cue" height="50px" width="50px" />
       </CueButton>
-      <PlayButton aria-label="play-button" onClick={handlePlayOne}>
+      <PlayButton
+        aria-label="play-button"
+        isMIDIAssignActive={isMIDIAssignButtonActive}
+        onClick={() =>
+          isMIDIAssignButtonActive
+            ? setNewMIDIControlFunction(handlePlayOne, 'normal')
+            : handlePlayOne()
+        }
+      >
         <StyledButtonImg
           src={djPlayerOne?.state === 'started' ? pauseIcon : playIcon}
           alt="play/pause"
@@ -92,13 +110,22 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
           width="50px"
         />
       </PlayButton>
-      <FXButton isActive={isEchoOutActive} onClick={handleEchoOut}>
+      <FXButton
+        isActive={isEchoOutOneActive}
+        isMIDIAssignActive={isMIDIAssignButtonActive}
+        onClick={() =>
+          isMIDIAssignButtonActive
+            ? setNewMIDIControlFunction(handleEchoOut, 'normal')
+            : handleEchoOut()
+        }
+      >
         echo out
       </FXButton>
     </PlayerContainer>
   );
 
   function handlePlayOne() {
+    const { djPlayerOne } = useStore.getState();
     if (djPlayerOne.state === 'stopped') {
       djPlayerOne.start();
       setOneIsPlaying(1);
@@ -107,26 +134,37 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
       setOneIsPlaying(0);
     }
   }
+
   function handleTrackOne(e) {
     djPlayerOne.stop();
     oneIsPlaying === 1 && setOneIsPlaying(0);
     const files = e.target.files;
-    setTrackOne(URL.createObjectURL(files[0]));
+    setDjTrackOne(URL.createObjectURL(files[0]));
     setTrackNameOne(files[0].name);
   }
-  function handlePitch(e) {
-    setDjPlayerOnePlaybackRate(e.target.value);
-    djPlayerOne.playbackRate = e.target.value;
+
+  function handlePitch(value) {
+    const { djPlayerOne, setDjPlayerOnePlaybackRate } = useStore.getState();
+    setDjPlayerOnePlaybackRate(value);
+    djPlayerOne.playbackRate = value / 317.5 + 0.8;
   }
+
   function handleEchoOut() {
-    setIsEchoOutActive(!isEchoOutActive);
-    if (isEchoOutActive === false) {
+    const {
+      djPlayerOne,
+      highpassFilterPlayerOne,
+      feedbackDelay,
+      isEchoOutOneActive,
+      setIsEchoOutOneActive,
+    } = useStore.getState();
+    setIsEchoOutOneActive();
+    if (isEchoOutOneActive === false) {
       highpassFilterPlayerOne.connect(feedbackDelay);
       setTimeout(function () {
         djPlayerOne.mute = true;
       }, 500);
     }
-    if (isEchoOutActive === true) {
+    if (isEchoOutOneActive === true) {
       highpassFilterPlayerOne.disconnect(feedbackDelay);
       highpassFilterPlayerOne.toDestination();
       djPlayerOne.mute = false;
@@ -141,6 +179,7 @@ const PlayerContainer = styled(motion.div)`
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: auto auto auto auto;
   width: 320px;
+  background-color: var(--darkgray);
   @media (max-width: 600px) {
     grid-row: 1/ 2;
     grid-column: 1 / 2;
@@ -150,11 +189,15 @@ const PlayButton = styled(InvisibleButton)`
   grid-column: 1 / 2;
   grid-row: 4 / 5;
   justify-self: end;
+  ${props => props.isMIDIAssignActive && 'background-color: var(--purple)'};
+  border-radius: 10px;
 `;
 const CueButton = styled(InvisibleButton)`
   grid-column: 2 / 3;
   grid-row: 4 / 5;
   justify-self: start;
+  ${props => props.isMIDIAssignActive && 'background-color: var(--purple)'};
+  border-radius: 10px;
 `;
 const PlayerSwitchButton = styled.button`
   grid-column: 3 / 4;
@@ -190,12 +233,15 @@ const PitchFaderLabel = styled.label`
   width: 120px;
 
   display: flex;
-  input {
-    color: var(--white);
-    transform: rotate(90deg);
-    margin: auto;
-    height: 20px;
-  }
+`;
+const PitchFaderInput = styled.input`
+  box-shadow: inset 20px 20px var(--white);
+  transform: rotate(90deg);
+  margin: auto;
+  height: 20px;
+  ${props =>
+    props.isMIDIAssignActive && 'box-shadow: inset 20px 20px var(--purple)'};
+  border-radius: 10px;
 `;
 
 const Vinyl = styled.img`
@@ -218,7 +264,9 @@ const FXButton = styled.button`
     props.isActive === true
       ? '0 0 20px 2px var(--blue)'
       : 'inset 0 0 20px 2px var(--blue-active)'};
-  border: none;
   border-radius: 5px;
   margin: 10px;
+  ${props =>
+    props.isMIDIAssignActive &&
+    'background-color: var(--purple); box-shadow: inset 0 0 20px 2px var(--purple)'};
 `;
