@@ -421,7 +421,7 @@ const useStore = create((set, get) => ({
             control.command === command &&
             control.type === 'normal'
           ) {
-            value > 0 && control.function();
+            value > 0 && control.function(control.additionalProp);
           } else if (
             control.name === midiButton &&
             control.command === command &&
@@ -505,7 +505,13 @@ const useStore = create((set, get) => ({
           'Please click on a purple marked Element to assign control',
       });
     } else {
-      set({ assignedMIDIControlMessage: null });
+      set({
+        assignedMIDIControlMessage: null,
+        newMIDIControlFunction: null,
+        newMIDIControlName: null,
+        newMIDIControlType: null,
+        newMIDIControlCommand: null,
+      });
     }
     set({ isMIDIAssignButtonActive: !isMIDIAssignButtonActive });
   },

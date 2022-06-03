@@ -91,8 +91,10 @@ const DevicePopUp = styled.div`
   top: 15px;
   display: ${props => (props.isVisible ? 'block' : 'none')};
   border: 2px solid var(--red);
+  border-radius: 10px;
   z-index: 2000;
   background-color: var(--black);
+  padding: 5px;
 `;
 const AssignMIDIMessage = styled.div`
   position: absolute;
@@ -101,4 +103,6 @@ const AssignMIDIMessage = styled.div`
   border: 2px solid var(--red);
   z-index: 2000;
   background-color: var(--black);
+  border-radius: 10px;
+  padding: 5px;
 `;

@@ -22,22 +22,21 @@ import sequencerLogo from '../images/sequencer.svg';
 export default function DrumMachinePage() {
   const [isControlsVisible, setIsControlsVisible] = useState(false);
 
-  const recorder = useStore(state => state.recorder);
-  const saveRecording = useStore(state => state.saveRecording);
-
-  const initLoopPlayer = useStore(state => state.initLoopPlayer);
-  const loopPlayer = useStore(state => state.loopPlayer);
-  const setCurrentDrumLoop = useStore(state => state.setCurrentDrumLoop);
-  const setLoopPlayerVolume = useStore(state => state.setLoopPlayerVolume);
-
-  const drumPadPlayers = useStore(state => state.drumPadPlayers);
-  const setDrumPadPlayersVolume = useStore(
-    state => state.setDrumPadPlayersVolume
-  );
-  const allPads = useStore(state => state.allPads);
-
-  const setNavDirection = useStore(state => state.setNavDirection);
-  const navDirection = useStore(state => state.navDirection);
+  const {
+    recorder,
+    loopPlayer,
+    allPads,
+    navDirection,
+    drumPadPlayers,
+    isMIDIAssignButtonActive,
+    initLoopPlayer,
+    saveRecording,
+    setCurrentDrumLoop,
+    setLoopPlayerVolume,
+    setDrumPadPlayersVolume,
+    setNavDirection,
+    setIsMIDIAssignButtonActive,
+  } = useStore(state => state);
 
   return (
     <div>
@@ -46,6 +45,13 @@ export default function DrumMachinePage() {
           <BackButton onClick={handleNavigate} to="/">
             NanoBeats
           </BackButton>
+          <MIDIButton
+            isActive={isMIDIAssignButtonActive}
+            onClick={setIsMIDIAssignButtonActive}
+          >
+            Assign <br />
+            MIDI-Control
+          </MIDIButton>
           <InstructionsDrumMachine />
           <LinkContainer>
             <NavLink onClick={handleNavigate} to="/sequencer">
@@ -122,10 +128,11 @@ export default function DrumMachinePage() {
   );
 
   ////////////////////drumPad////////////////////
-  function drumPadClick(event) {
-    const currentPlayer = event.target.value;
+  function drumPadClick(playerNumber) {
+    const { drumPadPlayers } = useStore.getState();
+    console.log(playerNumber);
     Tone.loaded().then(() => {
-      drumPadPlayers.player(`Player${currentPlayer}`).start();
+      drumPadPlayers.player(`Player${playerNumber}`).start();
     });
   }
   ////////////////////drumPad////////////////////
@@ -195,8 +202,8 @@ const DrumMachineContainer = styled(BackgroundAnimation)`
 const BackButton = styled(NavLink)`
   position: absolute;
   top: -60px;
-  left: 50%;
-  transform: translate(-50%);
+  left: 20px;
+
   text-decoration: none;
   color: var(--black);
   font-size: 2rem;
@@ -236,4 +243,20 @@ const RecLoopContainer = styled.div`
   grid-column: 2 /3;
   display: flex;
   justify-content: space-around;
+`;
+const MIDIButton = styled.button`
+  position: absolute;
+  top: -60px;
+  right: 20px;
+  align-self: center;
+  justify-self: center;
+  background-color: ${props =>
+    props.isActive ? 'var(--blue-active)' : 'var(--blue)'};
+  height: 40px;
+  width: 100px;
+  border-radius: 5px;
+  box-shadow: ${props =>
+    props.isActive === true
+      ? '0 0 20px 2px var(--blue)'
+      : 'inset 0 0 10px 2px var(--blue-active)'};
 `;
