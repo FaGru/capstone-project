@@ -27,7 +27,6 @@ export default function DrumMachinePage() {
     loopPlayer,
     allPads,
     navDirection,
-    drumPadPlayers,
     isMIDIAssignButtonActive,
     initLoopPlayer,
     saveRecording,
