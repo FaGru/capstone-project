@@ -502,7 +502,7 @@ const useStore = create((set, get) => ({
     if (!isMIDIAssignButtonActive) {
       set({
         assignedMIDIControlMessage:
-          'Please click on a purple marked Element to assign control',
+          'Please click on a purple marked Element to assign control (works only on Chrome)',
       });
     } else {
       set({
