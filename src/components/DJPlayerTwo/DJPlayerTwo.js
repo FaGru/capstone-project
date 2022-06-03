@@ -9,7 +9,11 @@ import pauseIcon from '../../images/pause.svg';
 import cueIcon from '../../images/cue.svg';
 import uploadIcon from '../../images/upload.svg';
 
-export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
+export default function DJPlayer({
+  visiblePlayer,
+  setVisiblePlayer,
+  isDesktop,
+}) {
   const {
     djPlayerTwo,
     djPlayerTwoPlaybackRate,
@@ -26,7 +30,7 @@ export default function DJPlayer({ visiblePlayer, setVisiblePlayer }) {
     <PlayerContainer
       initial={{ x: '-500px' }}
       animate={
-        visiblePlayer === 1 && window.innerWidth < 600 ? { x: -500 } : { x: 0 }
+        visiblePlayer === 1 && isDesktop === false ? { x: -500 } : { x: 0 }
       }
       transition={{
         type: 'tween',
@@ -170,6 +174,7 @@ const PlayerContainer = styled(motion.div)`
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: auto auto auto auto;
   width: 320px;
+  background-color: var(--darkgray);
   @media (max-width: 600px) {
     grid-row: 1/ 2;
     grid-column: 1 / 2;

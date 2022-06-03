@@ -2,11 +2,12 @@ import DJPlayerOne from '../components/DJPlayerOne/DJPlayerOne';
 import DJPlayerTwo from '../components/DJPlayerTwo/DJPlayerTwo';
 import DJControls from '../components/DJControls/DJControls';
 import { StyledButtonImg } from '../components/Buttons';
+
 import backIcon from '../images/back.svg';
 
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useStore from '../hooks/useStore';
 
 export default function DJPage() {
@@ -17,6 +18,26 @@ export default function DJPage() {
     isMIDIAssignButtonActive,
     setIsMIDIAssignButtonActive,
   } = useStore(state => state);
+
+  const [isDesktop, setDesktop] = useState(false);
+
+  useEffect(() => {
+    if (window.innerWidth > 600) {
+      setDesktop(true);
+    } else {
+      setDesktop(false);
+    }
+
+    const updateMedia = () => {
+      if (window.innerWidth > 600) {
+        setDesktop(true);
+      } else {
+        setDesktop(false);
+      }
+    };
+    window.addEventListener('resize', updateMedia);
+    return () => window.removeEventListener('resize', updateMedia);
+  }, []);
 
   return (
     <>
@@ -40,11 +61,13 @@ export default function DJPage() {
         <DJPlayerOne
           visiblePlayer={visiblePlayer}
           setVisiblePlayer={setVisiblePlayer}
+          isDesktop={isDesktop}
         />
         <DJControls />
         <DJPlayerTwo
           visiblePlayer={visiblePlayer}
           setVisiblePlayer={setVisiblePlayer}
+          isDesktop={isDesktop}
         />
       </PageContainer>
     </>
