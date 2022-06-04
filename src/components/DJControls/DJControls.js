@@ -16,205 +16,195 @@ export default function DJControls() {
 
   return (
     <Container>
+      <VolumeOneLabel>
+        <input type="range" />
+      </VolumeOneLabel>
+      <VolumeTwoLabel>
+        <input type="range" />
+      </VolumeTwoLabel>
       <EQContainer>
         <EQ3>
           <p>HIGH</p>
-          <EQLabel htmlFor="high-frequency-one">
-            <KnobIcon
-              draggable={false}
-              isMIDIAssignActive={isMIDIAssignButtonActive}
-              position={(eq3One?.high.value + 5) / 2}
-              src={knobIcon}
-              alt="control-knob"
-              height="40px"
-              width="40px"
-              name="high-one"
-              onTouchStart={event => handleMouseDown(event, eq3One.high.value)}
-              onMouseDown={event => handleMouseDown(event, eq3One.high.value)}
-              onClick={event =>
-                isMIDIAssignButtonActive &&
-                setNewMIDIControlFunction(
-                  handleEQSetting,
-                  'range',
-                  event.target.name
-                )
-              }
-              onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
-            />
-          </EQLabel>
+          <KnobIcon
+            draggable={false}
+            isMIDIAssignActive={isMIDIAssignButtonActive}
+            position={(eq3One?.high.value + 5) / 2}
+            src={knobIcon}
+            alt="control-knob"
+            height="40px"
+            width="40px"
+            name="high-one"
+            onTouchStart={event => handleMouseDown(event, eq3One.high.value)}
+            onMouseDown={event => handleMouseDown(event, eq3One.high.value)}
+            onClick={event =>
+              isMIDIAssignButtonActive &&
+              setNewMIDIControlFunction(
+                handleEQSetting,
+                'range',
+                event.target.name
+              )
+            }
+            onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
+          />
           <p>MID</p>
-          <EQLabel htmlFor="mid-frequency-one">
-            <KnobIcon
-              draggable={false}
-              isMIDIAssignActive={isMIDIAssignButtonActive}
-              position={(eq3One?.mid.value + 5) / 2}
-              src={knobIcon}
-              alt="control-knob"
-              height="40px"
-              width="40px"
-              name="mid-one"
-              onTouchStart={event => handleMouseDown(event, eq3One.mid.value)}
-              onMouseDown={event => handleMouseDown(event, eq3One.mid.value)}
-              onClick={event =>
-                isMIDIAssignButtonActive &&
-                setNewMIDIControlFunction(
-                  handleEQSetting,
-                  'range',
-                  event.target.name
-                )
-              }
-              onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
-            />
-          </EQLabel>
+          <KnobIcon
+            draggable={false}
+            isMIDIAssignActive={isMIDIAssignButtonActive}
+            position={(eq3One?.mid.value + 5) / 2}
+            src={knobIcon}
+            alt="control-knob"
+            height="40px"
+            width="40px"
+            name="mid-one"
+            onTouchStart={event => handleMouseDown(event, eq3One.mid.value)}
+            onMouseDown={event => handleMouseDown(event, eq3One.mid.value)}
+            onClick={event =>
+              isMIDIAssignButtonActive &&
+              setNewMIDIControlFunction(
+                handleEQSetting,
+                'range',
+                event.target.name
+              )
+            }
+            onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
+          />
           <p>LOW</p>
-          <EQLabel htmlFor="low-frequency-one">
-            <KnobIcon
-              draggable={false}
-              isMIDIAssignActive={isMIDIAssignButtonActive}
-              position={(eq3One?.low.value + 5) / 2}
-              src={knobIcon}
-              alt="control-knob"
-              height="40px"
-              width="40px"
-              name="low-one"
-              onTouchStart={event => handleMouseDown(event, eq3One.low.value)}
-              onMouseDown={event => handleMouseDown(event, eq3One.low.value)}
-              onClick={event =>
-                isMIDIAssignButtonActive &&
-                setNewMIDIControlFunction(
-                  handleEQSetting,
-                  'range',
-                  event.target.name
-                )
-              }
-              onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
-            />
-          </EQLabel>
+          <KnobIcon
+            draggable={false}
+            isMIDIAssignActive={isMIDIAssignButtonActive}
+            position={(eq3One?.low.value + 5) / 2}
+            src={knobIcon}
+            alt="control-knob"
+            height="40px"
+            width="40px"
+            name="low-one"
+            onTouchStart={event => handleMouseDown(event, eq3One.low.value)}
+            onMouseDown={event => handleMouseDown(event, eq3One.low.value)}
+            onClick={event =>
+              isMIDIAssignButtonActive &&
+              setNewMIDIControlFunction(
+                handleEQSetting,
+                'range',
+                event.target.name
+              )
+            }
+            onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
+          />
           <p>FILTER</p>
-          <EQLabel htmlFor="filter-one">
-            <KnobIcon
-              draggable={false}
-              isMIDIAssignActive={isMIDIAssignButtonActive}
-              position={filterPositionOne / 12.7 - 5}
-              src={knobIcon}
-              alt="control-knob"
-              height="40px"
-              width="40px"
-              name="filter-one"
-              onTouchStart={event => handleMouseDown(event, filterPositionOne)}
-              onMouseDown={event => handleMouseDown(event, filterPositionOne)}
-              onClick={event =>
-                isMIDIAssignButtonActive &&
-                setNewMIDIControlFunction(
-                  handleFilterPlayerOne,
-                  'range',
-                  event.target.name
-                )
-              }
-              onDoubleClick={() => handleFilterPlayerOne(63.5)}
-            />
-          </EQLabel>
+          <KnobIcon
+            draggable={false}
+            isMIDIAssignActive={isMIDIAssignButtonActive}
+            position={filterPositionOne / 12.7 - 5}
+            src={knobIcon}
+            alt="control-knob"
+            height="40px"
+            width="40px"
+            name="filter-one"
+            onTouchStart={event => handleMouseDown(event, filterPositionOne)}
+            onMouseDown={event => handleMouseDown(event, filterPositionOne)}
+            onClick={event =>
+              isMIDIAssignButtonActive &&
+              setNewMIDIControlFunction(
+                handleFilterPlayerOne,
+                'range',
+                event.target.name
+              )
+            }
+            onDoubleClick={() => handleFilterPlayerOne(63.5)}
+          />
         </EQ3>
         <EQ3>
           <p>HIGH</p>
-          <EQLabel htmlFor="high-frequency-two">
-            <KnobIcon
-              draggable={false}
-              isMIDIAssignActive={isMIDIAssignButtonActive}
-              position={(eq3Two?.high.value + 5) / 2}
-              src={knobIcon}
-              alt="control-knob"
-              height="40px"
-              width="40px"
-              name="high-two"
-              onTouchStart={event => handleMouseDown(event, eq3Two.high.value)}
-              onMouseDown={event => handleMouseDown(event, eq3Two.high.value)}
-              onClick={event =>
-                isMIDIAssignButtonActive &&
-                setNewMIDIControlFunction(
-                  handleEQSetting,
-                  'range',
-                  event.target.name
-                )
-              }
-              onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
-            />
-          </EQLabel>
+          <KnobIcon
+            draggable={false}
+            isMIDIAssignActive={isMIDIAssignButtonActive}
+            position={(eq3Two?.high.value + 5) / 2}
+            src={knobIcon}
+            alt="control-knob"
+            height="40px"
+            width="40px"
+            name="high-two"
+            onTouchStart={event => handleMouseDown(event, eq3Two.high.value)}
+            onMouseDown={event => handleMouseDown(event, eq3Two.high.value)}
+            onClick={event =>
+              isMIDIAssignButtonActive &&
+              setNewMIDIControlFunction(
+                handleEQSetting,
+                'range',
+                event.target.name
+              )
+            }
+            onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
+          />
           <p>MID</p>
-          <EQLabel htmlFor="mid-frequency-two">
-            <KnobIcon
-              draggable={false}
-              isMIDIAssignActive={isMIDIAssignButtonActive}
-              position={(eq3Two?.mid.value + 5) / 2}
-              src={knobIcon}
-              alt="control-knob"
-              height="40px"
-              width="40px"
-              name="mid-two"
-              onTouchStart={event => handleMouseDown(event, eq3Two.mid.value)}
-              onMouseDown={event => handleMouseDown(event, eq3Two.mid.value)}
-              onClick={event =>
-                isMIDIAssignButtonActive &&
-                setNewMIDIControlFunction(
-                  handleEQSetting,
-                  'range',
-                  event.target.name
-                )
-              }
-              onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
-            />
-          </EQLabel>
+          <KnobIcon
+            draggable={false}
+            isMIDIAssignActive={isMIDIAssignButtonActive}
+            position={(eq3Two?.mid.value + 5) / 2}
+            src={knobIcon}
+            alt="control-knob"
+            height="40px"
+            width="40px"
+            name="mid-two"
+            onTouchStart={event => handleMouseDown(event, eq3Two.mid.value)}
+            onMouseDown={event => handleMouseDown(event, eq3Two.mid.value)}
+            onClick={event =>
+              isMIDIAssignButtonActive &&
+              setNewMIDIControlFunction(
+                handleEQSetting,
+                'range',
+                event.target.name
+              )
+            }
+            onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
+          />
           <p>LOW</p>
-          <EQLabel htmlFor="low-frequency-two">
-            <KnobIcon
-              draggable={false}
-              isMIDIAssignActive={isMIDIAssignButtonActive}
-              position={(eq3Two?.low.value + 5) / 2}
-              src={knobIcon}
-              alt="control-knob"
-              height="40px"
-              width="40px"
-              name="low-two"
-              onTouchStart={event => handleMouseDown(event, eq3Two.low.value)}
-              onMouseDown={event => handleMouseDown(event, eq3Two.low.value)}
-              onClick={event =>
-                isMIDIAssignButtonActive &&
-                setNewMIDIControlFunction(
-                  handleEQSetting,
-                  'range',
-                  event.target.name
-                )
-              }
-              onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
-            />
-          </EQLabel>
+          <KnobIcon
+            draggable={false}
+            isMIDIAssignActive={isMIDIAssignButtonActive}
+            position={(eq3Two?.low.value + 5) / 2}
+            src={knobIcon}
+            alt="control-knob"
+            height="40px"
+            width="40px"
+            name="low-two"
+            onTouchStart={event => handleMouseDown(event, eq3Two.low.value)}
+            onMouseDown={event => handleMouseDown(event, eq3Two.low.value)}
+            onClick={event =>
+              isMIDIAssignButtonActive &&
+              setNewMIDIControlFunction(
+                handleEQSetting,
+                'range',
+                event.target.name
+              )
+            }
+            onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
+          />
           <p>FILTER</p>
-          <EQLabel htmlFor="filter-two">
-            <KnobIcon
-              draggable={false}
-              isMIDIAssignActive={isMIDIAssignButtonActive}
-              position={filterPositionTwo / 12.7 - 5}
-              src={knobIcon}
-              alt="control-knob"
-              height="40px"
-              width="40px"
-              name="filter-two"
-              onTouchStart={event => handleMouseDown(event, filterPositionTwo)}
-              onMouseDown={event => handleMouseDown(event, filterPositionTwo)}
-              onClick={event =>
-                isMIDIAssignButtonActive &&
-                setNewMIDIControlFunction(
-                  handleFilterPlayerTwo,
-                  'range',
-                  event.target.name
-                )
-              }
-              onDoubleClick={() => handleFilterPlayerTwo(63.5)}
-            />
-          </EQLabel>
+          <KnobIcon
+            draggable={false}
+            isMIDIAssignActive={isMIDIAssignButtonActive}
+            position={filterPositionTwo / 12.7 - 5}
+            src={knobIcon}
+            alt="control-knob"
+            height="40px"
+            width="40px"
+            name="filter-two"
+            onTouchStart={event => handleMouseDown(event, filterPositionTwo)}
+            onMouseDown={event => handleMouseDown(event, filterPositionTwo)}
+            onClick={event =>
+              isMIDIAssignButtonActive &&
+              setNewMIDIControlFunction(
+                handleFilterPlayerTwo,
+                'range',
+                event.target.name
+              )
+            }
+            onDoubleClick={() => handleFilterPlayerTwo(63.5)}
+          />
         </EQ3>
       </EQContainer>
-      <label htmlFor="dj-player-fader">
+      <CrossFaderLabel htmlFor="dj-player-fader">
         <CrossFader
           isMIDIAssignActive={isMIDIAssignButtonActive}
           id="dj-player-fader"
@@ -229,7 +219,7 @@ export default function DJControls() {
             setNewMIDIControlFunction(handleCrossFader, 'range')
           }
         ></CrossFader>
-      </label>
+      </CrossFaderLabel>
     </Container>
   );
   function handleMouseDown(event, eqValue) {
@@ -400,12 +390,10 @@ export default function DJControls() {
   }
 }
 
-const KnobIcon = styled.img`
-  transform: rotate(${props => props.position * 26}deg);
-  ${props => props.isMIDIAssignActive && 'background-color: var(--purple)'};
-  border-radius: 10px;
-`;
-const Container = styled.div`
+const Container = styled.main`
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: 1fr auto;
   text-align: center;
   border: 2px solid white;
   border-radius: 20px;
@@ -416,14 +404,30 @@ const Container = styled.div`
   }
 `;
 const EQContainer = styled.div`
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
   margin-top: 20px;
   display: flex;
   justify-content: center;
 `;
-const EQ3 = styled.div`
+const EQ3 = styled.section`
   display: flex;
   flex-direction: column;
   margin: 10px;
+`;
+const KnobIcon = styled.img`
+  transform: rotate(${props => props.position * 26}deg);
+  ${props => props.isMIDIAssignActive && 'background-color: var(--purple)'};
+  border-radius: 10px;
+  margin: 5px;
+  cursor: grab;
+  &:active {
+    cursor: grabbing;
+  }
+`;
+const CrossFaderLabel = styled.label`
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
 `;
 const CrossFader = styled.input`
   width: 150px;
@@ -433,19 +437,33 @@ const CrossFader = styled.input`
     props.isMIDIAssignActive && 'box-shadow: inset 20px 20px var(--purple)'};
   border-radius: 10px;
 `;
-const EQLabel = styled.label`
+const VolumeOneLabel = styled.label`
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
   position: relative;
-  margin: 5px;
+  width: 20px;
+  justify-self: center;
   input {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(-90deg);
-    width: 50px;
-    opacity: 0;
-    cursor: grab;
-    &:active {
-      cursor: grabbing;
-    }
+    left: -40px;
+    top: 220px;
+    transform: rotate(-90deg);
+    height: 25px;
+    box-shadow: inset 50px 50px var(--white);
+  }
+`;
+const VolumeTwoLabel = styled.label`
+  grid-column: 3 / 4;
+  grid-row: 1 / 2;
+  position: relative;
+  width: 20px;
+  justify-self: center;
+  input {
+    position: absolute;
+    left: -70px;
+    top: 220px;
+    transform: rotate(-90deg);
+    height: 25px;
+    box-shadow: inset 50px 50px var(--white);
   }
 `;

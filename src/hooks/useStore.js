@@ -71,7 +71,7 @@ const useStore = create((set, get) => ({
   render: false,
 
   setMousePosition: (positionX, positionY) => {
-    set({mousePosition: {x:positionX ,y:positionY }})
+    set({ mousePosition: { x: positionX, y: positionY } });
   },
 
   handleUserInteraction: () => {
@@ -354,14 +354,14 @@ const useStore = create((set, get) => ({
       highpassFilterPlayerTwo,
     });
   },
-  setCurrentEQName: (newName) => {
-    set({currentEQName: newName})
+  setCurrentEQName: newName => {
+    set({ currentEQName: newName });
   },
-  setCurrentEQValue: (newValue) => {
-    set({currentEQValue: newValue})
+  setCurrentEQValue: newValue => {
+    set({ currentEQValue: newValue });
   },
-  setCurrentDJControl: (newDJControl) => {
-    set({currentDJControl: newDJControl})
+  setCurrentDJControl: newDJControl => {
+    set({ currentDJControl: newDJControl });
   },
   initFeedbackDelay: () => {
     const feedbackDelay = new Tone.FeedbackDelay('4n', 0.5).toDestination();
@@ -492,7 +492,7 @@ const useStore = create((set, get) => ({
         (control.name !== newMIDIControlName ||
           control.command !== newMIDIControlCommand)
     );
-    console.log(assignedMIDIControls);
+
     set({
       assignedMIDIControls: [
         ...newMIDIControls,

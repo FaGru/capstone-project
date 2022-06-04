@@ -82,7 +82,9 @@ export default function DJPlayer({
       <PlayerSwitchButton onClick={() => setVisiblePlayer(2)}>
         Show Player 2
       </PlayerSwitchButton>
+
       <CueButton
+        draggable={false}
         aria-label="cue-button"
         isMIDIAssignActive={isMIDIAssignButtonActive}
         onMouseDown={() =>
@@ -95,6 +97,7 @@ export default function DJPlayer({
         <StyledButtonImg src={cueIcon} alt="cue" height="50px" width="50px" />
       </CueButton>
       <PlayButton
+        draggable={false}
         aria-label="play-button"
         isMIDIAssignActive={isMIDIAssignButtonActive}
         onClick={() =>
