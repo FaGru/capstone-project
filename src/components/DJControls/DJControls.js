@@ -39,6 +39,7 @@ export default function DJControls() {
                   event.target.name
                 )
               }
+              onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
             />
           </EQLabel>
           <p>MID</p>
@@ -62,6 +63,7 @@ export default function DJControls() {
                   event.target.name
                 )
               }
+              onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
             />
           </EQLabel>
           <p>LOW</p>
@@ -85,6 +87,7 @@ export default function DJControls() {
                   event.target.name
                 )
               }
+              onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
             />
           </EQLabel>
           <p>FILTER</p>
@@ -103,11 +106,12 @@ export default function DJControls() {
               onClick={event =>
                 isMIDIAssignButtonActive &&
                 setNewMIDIControlFunction(
-                  handleEQSetting,
+                  handleFilterPlayerOne,
                   'range',
                   event.target.name
                 )
               }
+              onDoubleClick={() => handleFilterPlayerOne(63.5)}
             />
           </EQLabel>
         </EQ3>
@@ -133,6 +137,7 @@ export default function DJControls() {
                   event.target.name
                 )
               }
+              onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
             />
           </EQLabel>
           <p>MID</p>
@@ -156,6 +161,7 @@ export default function DJControls() {
                   event.target.name
                 )
               }
+              onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
             />
           </EQLabel>
           <p>LOW</p>
@@ -179,6 +185,7 @@ export default function DJControls() {
                   event.target.name
                 )
               }
+              onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
             />
           </EQLabel>
           <p>FILTER</p>
@@ -197,11 +204,12 @@ export default function DJControls() {
               onClick={event =>
                 isMIDIAssignButtonActive &&
                 setNewMIDIControlFunction(
-                  handleEQSetting,
+                  handleFilterPlayerTwo,
                   'range',
                   event.target.name
                 )
               }
+              onDoubleClick={() => handleFilterPlayerTwo(63.5)}
             />
           </EQLabel>
         </EQ3>
@@ -239,7 +247,7 @@ export default function DJControls() {
     window.addEventListener('mouseup', handleMouseUp);
     window.addEventListener('touchend', handleMouseUp);
   }
-  
+
   function handleTouchMove(e) {
     const {
       mousePosition,
