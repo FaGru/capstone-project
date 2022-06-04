@@ -14,8 +14,6 @@ export default function DJControls() {
     setNewMIDIControlFunction,
   } = useStore(state => state);
 
-  // const [render, setRender] = useState(false);
-
   return (
     <Container>
       <EQContainer>
@@ -23,23 +21,16 @@ export default function DJControls() {
           <p>HIGH</p>
           <EQLabel htmlFor="high-frequency-one">
             <KnobIcon
+              draggable={false}
               isMIDIAssignActive={isMIDIAssignButtonActive}
               position={(eq3One?.high.value + 5) / 2}
               src={knobIcon}
               alt="control-knob"
               height="40px"
               width="40px"
-            />
-            <input
-              id="high-frequency-one"
               name="high-one"
-              type="range"
-              min="0"
-              max="127"
-              value={eq3One ? eq3One.high.get() : '63.5'}
-              onChange={event =>
-                handleEQSetting(event.target.value, event.target.name)
-              }
+              onTouchStart={event => handleMouseDown(event, eq3One.high.value)}
+              onMouseDown={event => handleMouseDown(event, eq3One.high.value)}
               onClick={event =>
                 isMIDIAssignButtonActive &&
                 setNewMIDIControlFunction(
@@ -53,23 +44,16 @@ export default function DJControls() {
           <p>MID</p>
           <EQLabel htmlFor="mid-frequency-one">
             <KnobIcon
+              draggable={false}
               isMIDIAssignActive={isMIDIAssignButtonActive}
               position={(eq3One?.mid.value + 5) / 2}
               src={knobIcon}
               alt="control-knob"
               height="40px"
               width="40px"
-            />
-            <input
-              id="mid-frequency-one"
               name="mid-one"
-              type="range"
-              min="0"
-              max="127"
-              value={eq3One ? eq3One.mid.get() : '63.5'}
-              onChange={event =>
-                handleEQSetting(event.target.value, event.target.name)
-              }
+              onTouchStart={event => handleMouseDown(event, eq3One.mid.value)}
+              onMouseDown={event => handleMouseDown(event, eq3One.mid.value)}
               onClick={event =>
                 isMIDIAssignButtonActive &&
                 setNewMIDIControlFunction(
@@ -83,23 +67,16 @@ export default function DJControls() {
           <p>LOW</p>
           <EQLabel htmlFor="low-frequency-one">
             <KnobIcon
+              draggable={false}
               isMIDIAssignActive={isMIDIAssignButtonActive}
               position={(eq3One?.low.value + 5) / 2}
               src={knobIcon}
               alt="control-knob"
               height="40px"
               width="40px"
-            />
-            <input
-              id="low-frequency-one"
               name="low-one"
-              type="range"
-              min="0"
-              max="127"
-              value={eq3One ? eq3One.low.get() : '63.5'}
-              onChange={event =>
-                handleEQSetting(event.target.value, event.target.name)
-              }
+              onTouchStart={event => handleMouseDown(event, eq3One.low.value)}
+              onMouseDown={event => handleMouseDown(event, eq3One.low.value)}
               onClick={event =>
                 isMIDIAssignButtonActive &&
                 setNewMIDIControlFunction(
@@ -113,24 +90,23 @@ export default function DJControls() {
           <p>FILTER</p>
           <EQLabel htmlFor="filter-one">
             <KnobIcon
-              position={filterPositionOne / 12.7 - 5}
+              draggable={false}
               isMIDIAssignActive={isMIDIAssignButtonActive}
+              position={filterPositionOne / 12.7 - 5}
               src={knobIcon}
               alt="control-knob"
               height="40px"
               width="40px"
-            />
-            <input
-              id="filter-one"
-              type="range"
-              min="0"
-              max="127"
-              value={filterPositionOne}
-              onChange={event => handleFilterPlayerOne(event.target.value)}
-              onClick={() =>
-                isMIDIAssignButtonActive
-                  ? setNewMIDIControlFunction(handleFilterPlayerOne, 'range')
-                  : null
+              name="filter-one"
+              onTouchStart={event => handleMouseDown(event, filterPositionOne)}
+              onMouseDown={event => handleMouseDown(event, filterPositionOne)}
+              onClick={event =>
+                isMIDIAssignButtonActive &&
+                setNewMIDIControlFunction(
+                  handleEQSetting,
+                  'range',
+                  event.target.name
+                )
               }
             />
           </EQLabel>
@@ -139,23 +115,16 @@ export default function DJControls() {
           <p>HIGH</p>
           <EQLabel htmlFor="high-frequency-two">
             <KnobIcon
+              draggable={false}
               isMIDIAssignActive={isMIDIAssignButtonActive}
               position={(eq3Two?.high.value + 5) / 2}
               src={knobIcon}
               alt="control-knob"
               height="40px"
               width="40px"
-            />
-            <input
-              id="high-frequency-two"
               name="high-two"
-              type="range"
-              min="0"
-              max="127"
-              value={eq3Two ? eq3Two.high.get() : '63.5'}
-              onChange={event =>
-                handleEQSetting(event.target.value, event.target.name)
-              }
+              onTouchStart={event => handleMouseDown(event, eq3Two.high.value)}
+              onMouseDown={event => handleMouseDown(event, eq3Two.high.value)}
               onClick={event =>
                 isMIDIAssignButtonActive &&
                 setNewMIDIControlFunction(
@@ -169,23 +138,16 @@ export default function DJControls() {
           <p>MID</p>
           <EQLabel htmlFor="mid-frequency-two">
             <KnobIcon
+              draggable={false}
               isMIDIAssignActive={isMIDIAssignButtonActive}
               position={(eq3Two?.mid.value + 5) / 2}
               src={knobIcon}
               alt="control-knob"
               height="40px"
               width="40px"
-            />
-            <input
-              id="mid-frequency-two"
               name="mid-two"
-              type="range"
-              min="0"
-              max="127"
-              value={eq3Two ? eq3Two.mid.get() : '63.5'}
-              onChange={event =>
-                handleEQSetting(event.target.value, event.target.name)
-              }
+              onTouchStart={event => handleMouseDown(event, eq3Two.mid.value)}
+              onMouseDown={event => handleMouseDown(event, eq3Two.mid.value)}
               onClick={event =>
                 isMIDIAssignButtonActive &&
                 setNewMIDIControlFunction(
@@ -199,23 +161,16 @@ export default function DJControls() {
           <p>LOW</p>
           <EQLabel htmlFor="low-frequency-two">
             <KnobIcon
+              draggable={false}
               isMIDIAssignActive={isMIDIAssignButtonActive}
               position={(eq3Two?.low.value + 5) / 2}
               src={knobIcon}
               alt="control-knob"
               height="40px"
               width="40px"
-            />
-            <input
-              id="low-frequency-two"
               name="low-two"
-              type="range"
-              min="0"
-              max="127"
-              value={eq3Two ? eq3Two.low.get() : '63.5'}
-              onChange={event =>
-                handleEQSetting(event.target.value, event.target.name)
-              }
+              onTouchStart={event => handleMouseDown(event, eq3Two.low.value)}
+              onMouseDown={event => handleMouseDown(event, eq3Two.low.value)}
               onClick={event =>
                 isMIDIAssignButtonActive &&
                 setNewMIDIControlFunction(
@@ -229,23 +184,23 @@ export default function DJControls() {
           <p>FILTER</p>
           <EQLabel htmlFor="filter-two">
             <KnobIcon
-              position={filterPositionTwo / 12.7 - 5}
+              draggable={false}
               isMIDIAssignActive={isMIDIAssignButtonActive}
+              position={filterPositionTwo / 12.7 - 5}
               src={knobIcon}
               alt="control-knob"
               height="40px"
               width="40px"
-            />
-            <input
-              id="filter-two"
-              type="range"
-              min="0"
-              max="127"
-              value={filterPositionTwo}
-              onChange={event => handleFilterPlayerTwo(event.target.value)}
-              onClick={() =>
+              name="filter-two"
+              onTouchStart={event => handleMouseDown(event, filterPositionTwo)}
+              onMouseDown={event => handleMouseDown(event, filterPositionTwo)}
+              onClick={event =>
                 isMIDIAssignButtonActive &&
-                setNewMIDIControlFunction(handleFilterPlayerTwo, 'range')
+                setNewMIDIControlFunction(
+                  handleEQSetting,
+                  'range',
+                  event.target.name
+                )
               }
             />
           </EQLabel>
@@ -269,6 +224,88 @@ export default function DJControls() {
       </label>
     </Container>
   );
+  function handleMouseDown(event, eqValue) {
+    const { setMousePosition, setCurrentEQName, setCurrentEQValue } =
+      useStore.getState();
+    setMousePosition({ x: event.pageX, y: event.pageY });
+    setCurrentEQName(event.target.name);
+    if (event.target.name.includes('filter')) {
+      setCurrentEQValue(eqValue);
+    } else {
+      setCurrentEQValue((eqValue + 15) * 6.35);
+    }
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('touchmove', handleTouchMove);
+    window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('touchend', handleMouseUp);
+  }
+  
+  function handleTouchMove(e) {
+    const {
+      mousePosition,
+      currentEQName,
+      currentEQValue,
+      setMousePosition,
+      setCurrentEQValue,
+    } = useStore.getState();
+    if (mousePosition.x < e.touches[0].pageX && currentEQValue < 127) {
+      setCurrentEQValue(currentEQValue + 3);
+      if (currentEQName === 'filter-one') {
+        handleFilterPlayerOne(currentEQValue + 3);
+      } else if (currentEQName === 'filter-two') {
+        handleFilterPlayerTwo(currentEQValue + 3);
+      } else {
+        handleEQSetting(currentEQValue + 3, currentEQName);
+      }
+    } else if (mousePosition.x > e.touches[0].pageX && currentEQValue > 0) {
+      setCurrentEQValue(currentEQValue - 3);
+      if (currentEQName === 'filter-one') {
+        handleFilterPlayerOne(currentEQValue - 3);
+      } else if (currentEQName === 'filter-two') {
+        handleFilterPlayerTwo(currentEQValue - 3);
+      } else {
+        handleEQSetting(currentEQValue - 3, currentEQName);
+      }
+    }
+    setMousePosition(e.touches[0].pageX, e.touches[0].pageY);
+  }
+
+  function handleMouseUp() {
+    window.removeEventListener('mousemove', handleMouseMove);
+    window.removeEventListener('touchmove', handleTouchMove);
+    window.removeEventListener('mouseup', handleMouseUp);
+    window.removeEventListener('touchend', handleMouseUp);
+  }
+
+  function handleMouseMove(e) {
+    const {
+      mousePosition,
+      currentEQName,
+      currentEQValue,
+      setMousePosition,
+      setCurrentEQValue,
+    } = useStore.getState();
+    if (mousePosition.x < e.pageX && currentEQValue < 127) {
+      setCurrentEQValue(currentEQValue + 3);
+      if (currentEQName === 'filter-one') {
+        handleFilterPlayerOne(currentEQValue + 3);
+      } else if (currentEQName === 'filter-two') {
+        handleFilterPlayerTwo(currentEQValue + 3);
+      } else {
+        handleEQSetting(currentEQValue + 3, currentEQName);
+      }
+    } else if (mousePosition.x > e.pageX && currentEQValue > 0) {
+      setCurrentEQValue(currentEQValue - 3);
+      if (currentEQName === 'filter-one') {
+        handleFilterPlayerOne(currentEQValue - 3);
+      } else if (currentEQName === 'filter-two') {
+        handleFilterPlayerTwo(currentEQValue - 3);
+      } else {
+        handleEQSetting(currentEQValue - 3, currentEQName);
+      }
+    }
+    setMousePosition(e.pageX, e.pageY);
+  }
 
   function handleEQSetting(value, name) {
     const { setRender } = useStore.getState();

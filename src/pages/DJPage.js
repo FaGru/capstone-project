@@ -9,6 +9,7 @@ import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import useStore from '../hooks/useStore';
+import { Listener } from 'tone';
 
 export default function DJPage() {
   const [visiblePlayer, setVisiblePlayer] = useState(1);
@@ -54,7 +55,8 @@ export default function DJPage() {
           isActive={isMIDIAssignButtonActive}
           onClick={setIsMIDIAssignButtonActive}
         >
-          Assign <br/>MIDI-Control
+          Assign <br />
+          MIDI-Control
         </MIDIButton>
       </HeaderContainer>
       <PageContainer visible={visiblePlayer}>
@@ -70,14 +72,19 @@ export default function DJPage() {
           isDesktop={isDesktop}
         />
       </PageContainer>
+
     </>
   );
+
+ 
 
   function handleNavigate() {
     djPlayerOne.stop();
     djPlayerTwo.stop();
   }
 }
+
+
 const PageContainer = styled.main`
   display: flex;
   place-content: center;

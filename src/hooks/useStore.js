@@ -14,6 +14,7 @@ const useStore = create((set, get) => ({
   recordings: [],
   allPads: defaultPadSettings,
   keyboardVolume: 5,
+  mousePosition: { x: 0, y: 0 },
   ///////// Drumloop-Player States //////
   loopPlayer: null,
   loopPlayerVolume: 5,
@@ -46,6 +47,9 @@ const useStore = create((set, get) => ({
   ///////// DJ Deck States ////////////
   djPlayerOne: null,
   djPlayerTwo: null,
+  currentEQName: null,
+  currentEQValue: null,
+  currentDJControl: null,
   eqOneSettings: { high: -5, mid: -5, low: -5 },
   eqTwoSettings: { high: -5, mid: -5, low: -5 },
   lowpassFilterPlayerOne: null,
@@ -65,6 +69,10 @@ const useStore = create((set, get) => ({
   filterPositionOne: 63,
   filterPositionTwo: 63,
   render: false,
+
+  setMousePosition: (positionX, positionY) => {
+    set({mousePosition: {x:positionX ,y:positionY }})
+  },
 
   handleUserInteraction: () => {
     const handleUserInteraction = () => {
@@ -345,6 +353,15 @@ const useStore = create((set, get) => ({
       lowpassFilterPlayerTwo,
       highpassFilterPlayerTwo,
     });
+  },
+  setCurrentEQName: (newName) => {
+    set({currentEQName: newName})
+  },
+  setCurrentEQValue: (newValue) => {
+    set({currentEQValue: newValue})
+  },
+  setCurrentDJControl: (newDJControl) => {
+    set({currentDJControl: newDJControl})
   },
   initFeedbackDelay: () => {
     const feedbackDelay = new Tone.FeedbackDelay('4n', 0.5).toDestination();
