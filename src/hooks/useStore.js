@@ -58,16 +58,18 @@ const useStore = create((set, get) => ({
   highpassFilterPlayerTwo: null,
   djTrackOne: 'https://tonejs.github.io/audio/berklee/gong_1.mp3',
   djTrackTwo: 'https://tonejs.github.io/audio/berklee/gong_1.mp3',
-  djPlayerOnePlaybackRate: 63,
-  djPlayerTwoPlaybackRate: 63,
+  djPlayerOnePlaybackRate: 63.5,
+  djPlayerTwoPlaybackRate: 63.5,
   eq3One: null,
   eq3Two: null,
   feedbackDelay: null,
-  faderPosition: 63,
+  faderPosition: 63.5,
   isEchoOutOneActive: false,
   isEchoOutTwoActive: false,
-  filterPositionOne: 63,
-  filterPositionTwo: 63,
+  filterPositionOne: 63.5,
+  filterPositionTwo: 63.5,
+  volumeFaderOnePosition: 63.5,
+  volumeFaderTwoPosition: 63.5,
   render: false,
 
   setMousePosition: (positionX, positionY) => {
@@ -369,6 +371,12 @@ const useStore = create((set, get) => ({
   },
   setFaderPosition: newFaderPosition => {
     set({ faderPosition: newFaderPosition });
+  },
+  setVolumeFaderOnePosition: newPosition => {
+    set({volumeFaderOnePosition: newPosition})
+  },
+  setVolumeFaderTwoPosition: newPosition => {
+    set({volumeFaderTwoPosition: newPosition})
   },
   setDjPlayerOnePlaybackRate: newRate => {
     set({ djPlayerOnePlaybackRate: newRate });

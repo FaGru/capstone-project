@@ -4,14 +4,14 @@ import knobIcon from '../../images/control-knob.svg';
 
 export default function DJControls() {
   const {
-    djPlayerOne,
-    djPlayerTwo,
     faderPosition,
     eq3One,
     eq3Two,
     isMIDIAssignButtonActive,
     filterPositionOne,
     filterPositionTwo,
+    volumeFaderOnePosition,
+    volumeFaderTwoPosition,
     setFaderPosition,
     setNewMIDIControlFunction,
   } = useStore(state => state);
@@ -23,7 +23,7 @@ export default function DJControls() {
           type="range"
           min="0"
           max="127"
-          value={63.5}
+          value={volumeFaderOnePosition}
           id="volume fader one"
           name="volume fader one"
           onChange={event =>
@@ -36,7 +36,7 @@ export default function DJControls() {
           type="range"
           min="0"
           max="127"
-          value={63.5}
+          value={volumeFaderTwoPosition}
           id="volume fader two"
           name="volume fader two"
           onChange={event =>
@@ -244,7 +244,27 @@ export default function DJControls() {
       </CrossFaderLabel>
     </Container>
   );
-  function handleVolume(e) {}
+  function handleVolume(value, name) {
+    const {
+      djPlayerOne,
+      djPlayerTwo,
+      volumeFaderOnePosition,
+      volumeFaderTwoPosition,
+      setVolumeFaderOnePosition,
+      setVolumeFaderTwoPosition,
+    } = useStore.getState();
+    const faderValue = Number(value);
+    if(name === 'volume fader one'){
+      const newValue = (faderValue - volumeFaderOnePosition) / 4;
+      djPlayerOne.volume.value = djPlayerOne.volume.value - newValue;
+      setVolumeFaderOnePosition(faderValue)
+    }
+    if(name === 'volume fader two'){
+      const newValue = (faderValue - volumeFaderTwoPosition) / 4;
+      djPlayerTwo.volume.value = djPlayerTwo.volume.value - newValue;
+      setVolumeFaderTwoPosition(faderValue)
+    }
+  }
 
   function handleMouseDown(event, eqValue) {
     const { setMousePosition, setCurrentEQName, setCurrentEQValue } =
