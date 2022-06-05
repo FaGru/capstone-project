@@ -4,6 +4,8 @@ import knobIcon from '../../images/control-knob.svg';
 
 export default function DJControls() {
   const {
+    djPlayerOne,
+    djPlayerTwo,
     faderPosition,
     eq3One,
     eq3Two,
@@ -16,11 +18,31 @@ export default function DJControls() {
 
   return (
     <Container>
-      <VolumeOneLabel>
-        <input type="range" />
+      <VolumeOneLabel htmlFor="volume fader one">
+        <input
+          type="range"
+          min="0"
+          max="127"
+          value={63.5}
+          id="volume fader one"
+          name="volume fader one"
+          onChange={event =>
+            handleVolume(event.target.value, event.target.name)
+          }
+        />
       </VolumeOneLabel>
-      <VolumeTwoLabel>
-        <input type="range" />
+      <VolumeTwoLabel htmlFor="volume fader two">
+        <input
+          type="range"
+          min="0"
+          max="127"
+          value={63.5}
+          id="volume fader two"
+          name="volume fader two"
+          onChange={event =>
+            handleVolume(event.target.value, event.target.name)
+          }
+        />
       </VolumeTwoLabel>
       <EQContainer>
         <EQ3>
@@ -222,6 +244,8 @@ export default function DJControls() {
       </CrossFaderLabel>
     </Container>
   );
+  function handleVolume(e) {}
+
   function handleMouseDown(event, eqValue) {
     const { setMousePosition, setCurrentEQName, setCurrentEQValue } =
       useStore.getState();
@@ -325,19 +349,27 @@ export default function DJControls() {
   }
 
   function handleCrossFader(value) {
-    const { djPlayerOne, djPlayerTwo } = useStore.getState();
+    const { djPlayerOne, djPlayerTwo, faderPosition } = useStore.getState();
     const faderValue = Number(value);
+
+    if (faderValue !== 127) {
+      djPlayerOne.mute = false;
+    }
+    if (faderValue !== 0) {
+      djPlayerTwo.mute = false;
+    }
     if (faderValue === 127) {
-      djPlayerOne.volume.value = -500;
+      djPlayerOne.mute = true;
     } else if (faderValue >= 63) {
-      const newValue = 117 - faderValue;
-      djPlayerOne.volume.value = newValue / 6.5 - 5;
+      const newValue = (faderValue - faderPosition) / 4;
+      djPlayerOne.volume.value = djPlayerOne.volume.value - newValue;
+      console.log(djPlayerOne.volume.value);
     }
     if (faderValue === 0) {
       djPlayerTwo.volume.value = -500;
     } else if (faderValue <= 63) {
-      const newValue = faderValue - 10;
-      djPlayerTwo.volume.value = newValue / 6.5 - 5;
+      const newValue = (faderPosition - faderValue) / 4;
+      djPlayerTwo.volume.value = djPlayerTwo.volume.value - newValue;
     }
     setFaderPosition(faderValue);
   }
