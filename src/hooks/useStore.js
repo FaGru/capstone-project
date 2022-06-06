@@ -68,8 +68,8 @@ const useStore = create((set, get) => ({
   isEchoOutTwoActive: false,
   filterPositionOne: 63.5,
   filterPositionTwo: 63.5,
-  volumeFaderOnePosition: 63.5,
-  volumeFaderTwoPosition: 63.5,
+  volumeFaderOnePosition: 127,
+  volumeFaderTwoPosition: 127,
   render: false,
 
   setMousePosition: (positionX, positionY) => {
@@ -373,10 +373,10 @@ const useStore = create((set, get) => ({
     set({ faderPosition: newFaderPosition });
   },
   setVolumeFaderOnePosition: newPosition => {
-    set({volumeFaderOnePosition: newPosition})
+    set({ volumeFaderOnePosition: newPosition });
   },
   setVolumeFaderTwoPosition: newPosition => {
-    set({volumeFaderTwoPosition: newPosition})
+    set({ volumeFaderTwoPosition: newPosition });
   },
   setDjPlayerOnePlaybackRate: newRate => {
     set({ djPlayerOnePlaybackRate: newRate });

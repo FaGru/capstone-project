@@ -19,7 +19,8 @@ export default function DJControls() {
   return (
     <Container>
       <VolumeOneLabel htmlFor="volume fader one">
-        <input
+        <VolumeInputOne
+          isMIDIAssignActive={isMIDIAssignButtonActive}
           type="range"
           min="0"
           max="127"
@@ -29,10 +30,15 @@ export default function DJControls() {
           onChange={event =>
             handleVolume(event.target.value, event.target.name)
           }
+          onClick={event =>
+            isMIDIAssignButtonActive &&
+            setNewMIDIControlFunction(handleVolume, 'range', event.target.name)
+          }
         />
       </VolumeOneLabel>
       <VolumeTwoLabel htmlFor="volume fader two">
-        <input
+        <VolumeInputTwo
+          isMIDIAssignActive={isMIDIAssignButtonActive}
           type="range"
           min="0"
           max="127"
@@ -41,6 +47,10 @@ export default function DJControls() {
           name="volume fader two"
           onChange={event =>
             handleVolume(event.target.value, event.target.name)
+          }
+          onClick={event =>
+            isMIDIAssignButtonActive &&
+            setNewMIDIControlFunction(handleVolume, 'range', event.target.name)
           }
         />
       </VolumeTwoLabel>
@@ -254,15 +264,26 @@ export default function DJControls() {
       setVolumeFaderTwoPosition,
     } = useStore.getState();
     const faderValue = Number(value);
-    if(name === 'volume fader one'){
-      const newValue = (faderValue - volumeFaderOnePosition) / 4;
-      djPlayerOne.volume.value = djPlayerOne.volume.value - newValue;
-      setVolumeFaderOnePosition(faderValue)
+    if (name === 'volume fader one') {
+      if (faderValue === 0) {
+        djPlayerOne.mute = true;
+      } else {
+        djPlayerOne.mute = false;
+        const newValue = (volumeFaderOnePosition - faderValue) / 8;
+        djPlayerOne.volume.value = djPlayerOne.volume.value - newValue;
+        console.log(djPlayerOne.volume.value);
+        setVolumeFaderOnePosition(faderValue);
+      }
     }
-    if(name === 'volume fader two'){
-      const newValue = (faderValue - volumeFaderTwoPosition) / 4;
-      djPlayerTwo.volume.value = djPlayerTwo.volume.value - newValue;
-      setVolumeFaderTwoPosition(faderValue)
+    if (name === 'volume fader two') {
+      if (faderValue === 0) {
+        djPlayerTwo.mute = true;
+      } else {
+        djPlayerTwo.mute = false;
+        const newValue = (volumeFaderTwoPosition - faderValue) / 8;
+        djPlayerTwo.volume.value = djPlayerTwo.volume.value - newValue;
+        setVolumeFaderTwoPosition(faderValue);
+      }
     }
   }
 
@@ -381,14 +402,13 @@ export default function DJControls() {
     if (faderValue === 127) {
       djPlayerOne.mute = true;
     } else if (faderValue >= 63) {
-      const newValue = (faderValue - faderPosition) / 4;
+      const newValue = (faderValue - faderPosition) / 3;
       djPlayerOne.volume.value = djPlayerOne.volume.value - newValue;
-      console.log(djPlayerOne.volume.value);
     }
     if (faderValue === 0) {
       djPlayerTwo.volume.value = -500;
     } else if (faderValue <= 63) {
-      const newValue = (faderPosition - faderValue) / 4;
+      const newValue = (faderPosition - faderValue) / 3;
       djPlayerTwo.volume.value = djPlayerTwo.volume.value - newValue;
     }
     setFaderPosition(faderValue);
@@ -495,14 +515,6 @@ const VolumeOneLabel = styled.label`
   position: relative;
   width: 20px;
   justify-self: center;
-  input {
-    position: absolute;
-    left: -40px;
-    top: 220px;
-    transform: rotate(-90deg);
-    height: 25px;
-    box-shadow: inset 50px 50px var(--white);
-  }
 `;
 const VolumeTwoLabel = styled.label`
   grid-column: 3 / 4;
@@ -510,12 +522,24 @@ const VolumeTwoLabel = styled.label`
   position: relative;
   width: 20px;
   justify-self: center;
-  input {
-    position: absolute;
-    left: -70px;
-    top: 220px;
-    transform: rotate(-90deg);
-    height: 25px;
-    box-shadow: inset 50px 50px var(--white);
-  }
+`;
+const VolumeInputOne = styled.input`
+  position: absolute;
+  left: -40px;
+  top: 210px;
+  transform: rotate(-90deg);
+  height: 25px;
+  box-shadow: inset 50px 50px var(--white);
+  ${props =>
+    props.isMIDIAssignActive && 'box-shadow: inset 50px 50px var(--purple)'};
+`;
+const VolumeInputTwo = styled.input`
+  position: absolute;
+  left: -70px;
+  top: 210px;
+  transform: rotate(-90deg);
+  height: 25px;
+  box-shadow: inset 50px 50px var(--white);
+  ${props =>
+    props.isMIDIAssignActive && 'box-shadow: inset 50px 50px var(--purple)'};
 `;
