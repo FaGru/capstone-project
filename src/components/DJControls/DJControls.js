@@ -258,32 +258,43 @@ export default function DJControls() {
     const {
       djPlayerOne,
       djPlayerTwo,
-      volumeFaderOnePosition,
-      volumeFaderTwoPosition,
+      faderPosition,
       setVolumeFaderOnePosition,
       setVolumeFaderTwoPosition,
     } = useStore.getState();
-    const faderValue = Number(value);
+    const volumeFaderValue = Number(value);
+    const crossFaderValue = faderPosition - 63.5;
     if (name === 'volume fader one') {
-      if (faderValue === 0) {
+      if (volumeFaderValue === 0) {
         djPlayerOne.mute = true;
-      } else {
+        console.log('asdf');
+      } else if (faderPosition !== 127) {
         djPlayerOne.mute = false;
-        const newValue = (volumeFaderOnePosition - faderValue) / 8;
-        djPlayerOne.volume.value = djPlayerOne.volume.value - newValue;
-        console.log(djPlayerOne.volume.value);
-        setVolumeFaderOnePosition(faderValue);
+        if (crossFaderValue >= 0) {
+          const conversionNumber = (1 / 63.5) * -crossFaderValue + 1;
+          djPlayerOne.volume.value =
+            (20 / 127) * volumeFaderValue * conversionNumber - 20;
+        } else {
+          djPlayerOne.volume.value = (20 / 127) * volumeFaderValue - 20;
+        }
       }
+      setVolumeFaderOnePosition(Number(volumeFaderValue));
     }
+
     if (name === 'volume fader two') {
-      if (faderValue === 0) {
+      if (volumeFaderValue === 0) {
         djPlayerTwo.mute = true;
-      } else {
+      } else if (faderPosition !== 0) {
         djPlayerTwo.mute = false;
-        const newValue = (volumeFaderTwoPosition - faderValue) / 8;
-        djPlayerTwo.volume.value = djPlayerTwo.volume.value - newValue;
-        setVolumeFaderTwoPosition(faderValue);
+        if (crossFaderValue <= 0) {
+          const conversionNumber = (1 / 63.5) * crossFaderValue + 1;
+          djPlayerTwo.volume.value =
+            (20 / 127) * volumeFaderValue * conversionNumber - 20;
+        } else {
+          djPlayerTwo.volume.value = (20 / 127) * volumeFaderValue - 20;
+        }
       }
+      setVolumeFaderTwoPosition(Number(volumeFaderValue));
     }
   }
 
@@ -390,28 +401,34 @@ export default function DJControls() {
   }
 
   function handleCrossFader(value) {
-    const { djPlayerOne, djPlayerTwo, faderPosition } = useStore.getState();
-    const faderValue = Number(value);
+    const {
+      djPlayerOne,
+      djPlayerTwo,
+      volumeFaderOnePosition,
+      volumeFaderTwoPosition,
+    } = useStore.getState();
+    const faderValue = Number(value) - 63.5;
 
-    if (faderValue !== 127) {
-      djPlayerOne.mute = false;
-    }
-    if (faderValue !== 0) {
-      djPlayerTwo.mute = false;
-    }
-    if (faderValue === 127) {
+    if (faderValue === 63.5) {
       djPlayerOne.mute = true;
-    } else if (faderValue >= 63) {
-      const newValue = (faderValue - faderPosition) / 3;
-      djPlayerOne.volume.value = djPlayerOne.volume.value - newValue;
+    } else if (volumeFaderOnePosition !== 0) {
+      djPlayerOne.mute = false;
+      if (faderValue >= 0) {
+        const conversionNumber = (1 / 63.5) * -faderValue + 1;
+        djPlayerOne.volume.value =
+          (20 / 127) * volumeFaderOnePosition * conversionNumber - 20;
+      }
     }
-    if (faderValue === 0) {
-      djPlayerTwo.volume.value = -500;
-    } else if (faderValue <= 63) {
-      const newValue = (faderPosition - faderValue) / 3;
-      djPlayerTwo.volume.value = djPlayerTwo.volume.value - newValue;
+    if (faderValue === -63.5) {
+      djPlayerTwo.mute = true;
+    } else if (volumeFaderTwoPosition !== 0) {
+      if (faderValue <= 0) {
+        const conversionNumber = (1 / 63.5) * faderValue + 1;
+        djPlayerTwo.volume.value =
+          (20 / 127) * volumeFaderTwoPosition * conversionNumber - 20;
+      }
     }
-    setFaderPosition(faderValue);
+    setFaderPosition(Number(value));
   }
 
   function handleFilterPlayerOne(value) {
@@ -533,13 +550,6 @@ const VolumeInputOne = styled.input`
   ${props =>
     props.isMIDIAssignActive && 'box-shadow: inset 50px 50px var(--purple)'};
 `;
-const VolumeInputTwo = styled.input`
-  position: absolute;
+const VolumeInputTwo = styled(VolumeInputOne)`
   left: -70px;
-  top: 210px;
-  transform: rotate(-90deg);
-  height: 25px;
-  box-shadow: inset 50px 50px var(--white);
-  ${props =>
-    props.isMIDIAssignActive && 'box-shadow: inset 50px 50px var(--purple)'};
 `;

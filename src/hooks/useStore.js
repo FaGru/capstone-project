@@ -439,7 +439,7 @@ const useStore = create((set, get) => ({
       }
       //////////// function call ////////////
       else {
-        console.log(command, midiButton, value);
+        // console.log(command, midiButton, value);
         assignedMIDIControls.forEach(control => {
           if (
             control.name === midiButton &&
