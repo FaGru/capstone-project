@@ -1,9 +1,8 @@
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 import DJPlayerOne from './DJPlayerOne';
-import useStore from '../../hooks/useStore';
 
-useStore.getState().oneIsPlaying = '1';
+
 
 describe('DJPlayerOne', () => {
   it('renders a file input', () => {
