@@ -545,6 +545,7 @@ const VolumeInputOne = styled.input`
   left: -40px;
   top: 210px;
   transform: rotate(-90deg);
+  border-radius: 5px;
   height: 25px;
   box-shadow: inset 50px 50px var(--white);
   ${props =>
