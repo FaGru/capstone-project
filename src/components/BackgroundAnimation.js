@@ -18,13 +18,13 @@ export const BackgroundAnimation = styled.div`
       position: absolute;
       z-index: -1;
       background-image: linear-gradient(
-        10deg,
-        #44d62c 25%,
-        #099fff 45%,
+        0deg,
+        #df1d5d 10%,
+        #970533 25%,
+        #6b0643 40%,
         #5a05a9 60%,
-        #6b0643 65%,
-        #970533 70%,
-        #df1d5d 90%
+        #099fff 70%,
+        #44d62c 80%
       );
       background-size: 100% 200%;
       background-position: center center;
