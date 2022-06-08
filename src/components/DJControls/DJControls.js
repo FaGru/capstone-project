@@ -267,7 +267,6 @@ export default function DJControls() {
     if (name === 'volume fader one') {
       if (volumeFaderValue === 0) {
         djPlayerOne.mute = true;
-        console.log('asdf');
       } else if (faderPosition !== 127) {
         djPlayerOne.mute = false;
         if (crossFaderValue >= 0) {
