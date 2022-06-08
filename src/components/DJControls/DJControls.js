@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import useStore from '../../hooks/useStore';
 import knobIcon from '../../images/control-knob.svg';
+import { BackgroundAnimation } from '../BackgroundAnimation';
 
 export default function DJControls() {
   const {
@@ -478,15 +479,16 @@ export default function DJControls() {
   }
 }
 
-const Container = styled.main`
+const Container = styled.section`
   display: grid;
   grid-template-columns: auto 1fr auto;
   grid-template-rows: 1fr auto;
   text-align: center;
-  border: 2px solid white;
+  border: 1px solid var(--darkgray);
   border-radius: 20px;
-  min-width: 250px;
+  width: 320px;
   background-color: var(--darkgray);
+  box-shadow: inset 0 0 15px 5px var(--black);
   p {
     margin: 0;
   }
@@ -541,7 +543,7 @@ const VolumeTwoLabel = styled.label`
 `;
 const VolumeInputOne = styled.input`
   position: absolute;
-  left: -40px;
+  left: -20px;
   top: 210px;
   transform: rotate(-90deg);
   border-radius: 5px;
@@ -551,5 +553,5 @@ const VolumeInputOne = styled.input`
     props.isMIDIAssignActive && 'box-shadow: inset 50px 50px var(--purple)'};
 `;
 const VolumeInputTwo = styled(VolumeInputOne)`
-  left: -70px;
+  left: -100px;
 `;

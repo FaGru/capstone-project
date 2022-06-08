@@ -2,6 +2,7 @@ import DJPlayerOne from '../components/DJPlayerOne/DJPlayerOne';
 import DJPlayerTwo from '../components/DJPlayerTwo/DJPlayerTwo';
 import DJControls from '../components/DJControls/DJControls';
 import { StyledButtonImg } from '../components/Buttons';
+import { BackgroundAnimation } from '../components/BackgroundAnimation';
 
 import backIcon from '../images/back.svg';
 
@@ -22,14 +23,14 @@ export default function DJPage() {
   const [isDesktop, setDesktop] = useState(false);
 
   useEffect(() => {
-    if (window.innerWidth > 600) {
+    if (window.innerWidth > 800) {
       setDesktop(true);
     } else {
       setDesktop(false);
     }
 
     const updateMedia = () => {
-      if (window.innerWidth > 600) {
+      if (window.innerWidth > 800) {
         setDesktop(true);
       } else {
         setDesktop(false);
@@ -58,6 +59,7 @@ export default function DJPage() {
           MIDI-Control
         </MIDIButton>
       </HeaderContainer>
+
       <PageContainer visible={visiblePlayer}>
         <DJPlayerOne
           visiblePlayer={visiblePlayer}
@@ -80,12 +82,13 @@ export default function DJPage() {
   }
 }
 
-const PageContainer = styled.main`
+const PageContainer = styled(BackgroundAnimation)`
+  position: relative;
   display: flex;
   place-content: center;
   gap: 5px;
   padding: 5px;
-  @media (max-width: 600px) {
+  @media (max-width: 800px) {
     display: grid;
     grid-template-rows: 1fr 1fr;
     grid-template-columns: 1fr;

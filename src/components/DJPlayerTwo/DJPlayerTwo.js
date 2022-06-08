@@ -176,6 +176,8 @@ const PlayerContainer = styled(motion.div)`
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: auto auto auto auto;
   width: 320px;
+  box-shadow: inset 0 0 15px 5px var(--black);
+  border: 1px solid var(--darkgray);
   background-color: var(--darkgray);
   @media (max-width: 600px) {
     grid-row: 1/ 2;
