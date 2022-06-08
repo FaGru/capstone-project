@@ -8,16 +8,13 @@ import { BackgroundAnimation } from '../components/BackgroundAnimation';
 
 import { StyledButtonImg, InvisibleButton } from '../components/Buttons';
 
-import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import * as Tone from 'tone';
 import { useState } from 'react';
 import useStore from '../hooks/useStore';
 
-import settingsLogo from '../images/settings.svg';
-import recordingsLogo from '../images/recording-page.svg';
 import volumeLogo from '../images/EQ.svg';
-import sequencerLogo from '../images/sequencer.svg';
+
 
 export default function DrumMachinePage() {
   const [isControlsVisible, setIsControlsVisible] = useState(false);
@@ -26,49 +23,29 @@ export default function DrumMachinePage() {
     recorder,
     loopPlayer,
     allPads,
-    navDirection,
     isMIDIAssignButtonActive,
     initLoopPlayer,
     saveRecording,
     setCurrentDrumLoop,
     setLoopPlayerVolume,
     setDrumPadPlayersVolume,
-    setNavDirection,
     setIsMIDIAssignButtonActive,
   } = useStore(state => state);
 
   return (
     <div>
-      <NavAnimation start={navDirection.start} end={navDirection.end}>
+      <NavAnimation start={'initialTop'} end={'initialTop'}>
         <DrumMachineContainer>
-          <BackButton onClick={handleNavigate} to="/">
-            NanoBeats
-          </BackButton>
-          <MIDIButton
-            isActive={isMIDIAssignButtonActive}
-            onClick={setIsMIDIAssignButtonActive}
-          >
-            Assign <br />
-            MIDI-Control
-          </MIDIButton>
           <InstructionsDrumMachine />
           <LinkContainer>
-            <NavLink onClick={handleNavigate} to="/sequencer">
-              <StyledButtonImg
-                src={sequencerLogo}
-                height="55px"
-                width="55px"
-                alt="sequencer"
-              />
-            </NavLink>
-            <NavLink onClick={handleNavigate} to="/recordings">
-              <StyledButtonImg
-                src={recordingsLogo}
-                height="55px"
-                width="55px"
-                alt="recordings"
-              />
-            </NavLink>
+            <MIDIButton
+              isActive={isMIDIAssignButtonActive}
+              onClick={setIsMIDIAssignButtonActive}
+            >
+              Assign <br />
+              MIDI-Control
+            </MIDIButton>
+
             <InvisibleButton
               type="button"
               onClick={() => setIsControlsVisible(!isControlsVisible)}
@@ -80,18 +57,6 @@ export default function DrumMachinePage() {
                 alt="volume-settings"
               />
             </InvisibleButton>
-            <NavLink
-              value={['outLeft', 'initialLeft']}
-              onClick={handleNavigate}
-              to="/settings"
-            >
-              <StyledButtonImg
-                src={settingsLogo}
-                height="55px"
-                width="55px"
-                alt="settings"
-              />
-            </NavLink>
           </LinkContainer>
           <VolumeControl
             isControlsVisible={isControlsVisible}
@@ -160,16 +125,6 @@ export default function DrumMachinePage() {
     setCurrentDrumLoop(currentLoop);
     initLoopPlayer();
   }
-  function handleNavigate(event) {
-    loopPlayer.stop();
-    if (event.target.alt === 'sequencer') {
-      setNavDirection({ start: 'initialRight', end: 'outRight' });
-    } else if (event.target.alt === 'settings') {
-      setNavDirection({ start: 'initialLeft', end: 'outLeft' });
-    } else {
-      setNavDirection({ start: 'initialTop', end: 'outTop' });
-    }
-  }
   function handlePadVolume(e) {
     setDrumPadPlayersVolume(e.target.value / 2);
   }
@@ -198,27 +153,7 @@ const DrumMachineContainer = styled(BackgroundAnimation)`
     }
   }
 `;
-const BackButton = styled(NavLink)`
-  position: absolute;
-  top: -60px;
-  left: 20px;
 
-  text-decoration: none;
-  color: var(--black);
-  font-size: 2rem;
-  border-right: 3px solid var(--black);
-  border-bottom: 4px solid var(--black);
-  border-radius: 10px;
-  padding: 2px;
-  background: linear-gradient(
-    200deg,
-    #970533 10%,
-    #a206a3 30%,
-    #df1d5d 50%,
-    #a206a3 70%,
-    #970533 90%
-  );
-`;
 const LinkContainer = styled.div`
   grid-column: 2 / 3;
   grid-row: 1 / 2;
@@ -244,9 +179,6 @@ const RecLoopContainer = styled.div`
   justify-content: space-around;
 `;
 const MIDIButton = styled.button`
-  position: absolute;
-  top: -60px;
-  right: 20px;
   align-self: center;
   justify-self: center;
   background-color: ${props =>

@@ -2,15 +2,12 @@ import PadSettings from '../components/PadSettings/PadSettings';
 import InstructionPadSettings from '../components/Instructions/InstructionsPadSettings';
 import NavAnimation from '../components/FramerMotion';
 import { BackgroundAnimation } from '../components/BackgroundAnimation';
-import { StyledButtonImg, InvisibleButton } from '../components/Buttons';
 
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import * as Tone from 'tone';
 import useStore from '../hooks/useStore';
 
-import backLogo from '../images/back.svg';
 
 export default function SettingsPage({ setStoragedPadSettings }) {
   const [selectedPad, setSelectedPad] = useState('0');
@@ -20,20 +17,12 @@ export default function SettingsPage({ setStoragedPadSettings }) {
   );
   const allPads = useStore(state => state.allPads);
   const setAllPads = useStore(state => state.setAllPads);
-  const navigate = useNavigate();
+
 
   return (
-    <NavAnimation start="initialRight" end="outRight">
+    <NavAnimation start="initialBottom" end="outBottom">
       <PageContainer>
         <HeadingContainer>
-          <InvisibleButton type="button" onClick={() => navigate(-1)}>
-            <StyledButtonImg
-              src={backLogo}
-              alt="back-button"
-              width="45px"
-              height="45px"
-            />
-          </InvisibleButton>
           <Heading>Settings</Heading>
         </HeadingContainer>
         <SettingsContainer>
@@ -72,7 +61,7 @@ export default function SettingsPage({ setStoragedPadSettings }) {
     sortedPads.sort(function (a, b) {
       return a.id - b.id;
     });
-    
+
     setStoragedPadSettings(sortedPads);
     setAllPads(sortedPads);
     useStore.getState().initDrumPadPlayers();

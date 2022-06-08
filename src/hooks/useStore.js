@@ -7,7 +7,6 @@ import { defaultSequencerSettings } from '../data';
 const useStore = create((set, get) => ({
   tone: null,
   dest: null,
-  navDirection: { start: 'initialBottom', end: 'outBottom' },
   recorder: null,
   monoSynth: null,
   synth: null,
@@ -295,15 +294,10 @@ const useStore = create((set, get) => ({
   setInstructionFiveVisible: isInstructionFiveVisible => {
     set({ isInstructionFiveVisible: isInstructionFiveVisible });
   },
-  ///////////////     NavDirection DrumMachine      ///////////////
-  setNavDirection: navDirection => {
-    set({ navDirection: navDirection });
-  },
   ///////////////     DJ Player      ///////////////
   initDJPlayerOne: () => {
     const { eqOneSettings, volumeFaderOnePosition } = get();
     const faderPosition = get().faderPosition - 63.5;
-    console.log(volumeFaderOnePosition);
     const highpassFilterPlayerOne = new Tone.Filter({
       frequency: 0,
       type: 'highpass',
@@ -320,7 +314,6 @@ const useStore = create((set, get) => ({
     if (faderPosition === 63.5 || volumeFaderOnePosition === 0) {
       djPlayerOne.mute = true;
     } else if (volumeFaderOnePosition !== 0) {
-      console.log('hallo');
       djPlayerOne.mute = false;
       if (faderPosition >= 0) {
         const conversionNumber = (1 / 63.5) * -faderPosition + 1;

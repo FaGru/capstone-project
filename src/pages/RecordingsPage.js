@@ -13,7 +13,7 @@ export default function RecordingsPage() {
   const myRecordings = useStore(state => state.recordings);
 
   return (
-    <NavAnimation start="initalBottom" end="outBottom">
+    <NavAnimation start="initialBottom" end="outBottom">
       <PageContainer>
         <HeadingContainer>
           <BackButton to="/drum-machine">

@@ -11,33 +11,27 @@ import {
 } from '../components/Buttons';
 
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
 import * as Tone from 'tone';
 import { useState, useCallback } from 'react';
 import useStore from '../hooks/useStore';
 
-import backLogo from '../images/back-right.svg';
 import playbutton from '../images/play.svg';
 import pausebutton from '../images/pause.svg';
 import EQLogo from '../images/EQ.svg';
-import settingsLogo from '../images/settings.svg';
 
 export default function SequencerPage() {
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
   const [isSequencePlaying, setIsSequencePlaying] = useState('stopped');
 
-  const selectedSequencerPad = useStore(state => state.selectedSequencerPad);
-  const setSelectedSequencerPad = useStore(
-    state => state.setSelectedSequencerPad
-  );
-  const allPadSequences = useStore(state => state.allPadSequences);
+  const {
+    selectedSequencerPad,
+    allPadSequences,
+    allPads,
+    sequencerPlayers,
+    setSelectedSequencerPad,
+    setSelectedPadSequence,
+  } = useStore(state => state);
 
-  const allPads = useStore(state => state.allPads);
-  const sequencerPlayers = useStore(state => state.drumPadPlayers);
-
-  const setSelectedPadSequence = useStore(
-    state => state.setSelectedPadSequence
-  );
 
   const toggle = useCallback(() => {
     Tone.Transport.toggle();
@@ -48,36 +42,6 @@ export default function SequencerPage() {
     <NavAnimation start="initialLeft" end="outLeft">
       <PageContainer>
         <GridContainer>
-          <HeadingContainer>
-            <InvisibleButton
-              aria-label="show settings"
-              type="button"
-              onClick={() => setIsSettingsVisible(!isSettingsVisible)}
-            >
-              <StyledButtonImg
-                src={EQLogo}
-                height="50px"
-                width="50px"
-                alt="volume-settings"
-              />
-            </InvisibleButton>
-            <NavLink aria-label="settings" to="/settings">
-              <StyledButtonImg
-                src={settingsLogo}
-                height="50px"
-                width="50px"
-                alt="settings"
-              />
-            </NavLink>
-            <NavLink aria-label="back" to="/drum-machine">
-              <StyledButtonImg
-                src={backLogo}
-                alt="back-button"
-                width="50px"
-                height="50px"
-              />
-            </NavLink>
-          </HeadingContainer>
           <SequencerContainer>
             <SequencerSettings
               isSettingsVisible={isSettingsVisible}
@@ -108,6 +72,18 @@ export default function SequencerPage() {
               height="50px"
             />
           </StartSequenceButton>
+          <InvisibleButton
+            aria-label="show settings"
+            type="button"
+            onClick={() => setIsSettingsVisible(!isSettingsVisible)}
+          >
+            <StyledButtonImg
+              src={EQLogo}
+              height="50px"
+              width="50px"
+              alt="volume-settings"
+            />
+          </InvisibleButton>
         </GridContainer>
       </PageContainer>
     </NavAnimation>
@@ -127,24 +103,18 @@ const PageContainer = styled.div`
   display: grid;
   grid-template-rows: repeat(4, auto);
   grid-template-columns: 1fr auto 1fr;
+  margin: 20px;
 `;
 
 const GridContainer = styled(BackgroundAnimation)`
   position: relative;
   grid-column: 2 / 3;
   background-color: var(--darkgray);
-  border: 2px solid var(--darkgray);
+  border: 1px solid var(--darkgray);
   padding: 10px;
   margin-top: 25px;
   border-radius: 10px;
   box-shadow: inset 0 0 15px 2px var(--black);
-`;
-
-const HeadingContainer = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 10px;
 `;
 
 const SequencerContainer = styled.section`
@@ -153,6 +123,7 @@ const SequencerContainer = styled.section`
   grid-template-rows: repeat(4, 1fr);
   grid-gap: 2px;
   margin-bottom: 10px;
+  margin-top: 10px;
 `;
 
 const PadList = styled.section`

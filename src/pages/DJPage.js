@@ -3,6 +3,7 @@ import DJPlayerTwo from '../components/DJPlayerTwo/DJPlayerTwo';
 import DJControls from '../components/DJControls/DJControls';
 import { StyledButtonImg } from '../components/Buttons';
 import { BackgroundAnimation } from '../components/BackgroundAnimation';
+import NavAnimation from '../components/FramerMotion';
 
 import backIcon from '../images/back.svg';
 
@@ -41,7 +42,7 @@ export default function DJPage() {
   }, []);
 
   return (
-    <>
+    <NavAnimation start="initialRight" end="outRight">
       <HeaderContainer>
         <NavLink aria-label="back" to="/" onClick={handleNavigate}>
           <BackButtonImg
@@ -73,7 +74,7 @@ export default function DJPage() {
           isDesktop={isDesktop}
         />
       </PageContainer>
-    </>
+    </NavAnimation>
   );
 
   function handleNavigate() {

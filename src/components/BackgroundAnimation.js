@@ -28,7 +28,7 @@ export const BackgroundAnimation = styled.div`
       );
       background-size: 100% 200%;
       background-position: center center;
-      filter: blur(60px);
+      filter: blur(30px);
     }
   }
   @media (min-width: 1000px) {
@@ -55,7 +55,7 @@ export const BackgroundAnimation = styled.div`
       background-size: 100% 200%;
       background-position: center center;
       animation: ${animation} 10s infinite alternate;
-      filter: blur(60px);
+      filter: blur(30px);
     }
   }
 `;
