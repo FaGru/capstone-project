@@ -1,55 +1,50 @@
 import NavAnimation from '../components/FramerMotion';
 import { BackgroundAnimation } from '../components/BackgroundAnimation';
-import { StyledButtonImg } from '../components/Buttons';
 
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import backButton from '../images/back.svg';
+
 import { nanoid } from 'nanoid';
 import useStore from '../hooks/useStore';
+import Navbar from '../components/Navbar';
 
 export default function RecordingsPage() {
   let playerCounter = 0;
   const myRecordings = useStore(state => state.recordings);
 
   return (
-    <NavAnimation start="initialBottom" end="outBottom">
-      <PageContainer>
-        <HeadingContainer>
-          <BackButton to="/drum-machine">
-            <StyledButtonImg
-              src={backButton}
-              alt="back-button"
-              width="45px"
-              height="45px"
-            />
-          </BackButton>
-          <Heading>My Recordings</Heading>
-        </HeadingContainer>
-        <RecordingsContainer>
-          {myRecordings.length === 0 ? (
-            <p>
-              It's still quiet here!
-              <br />
-              You have to record something...
-            </p>
-          ) : (
-            myRecordings.map(recording => (
-              <div key={nanoid()}>
-                <RecordingNumber key={nanoid()}>
-                  Recording {myRecordings.length - playerCounter++}
-                </RecordingNumber>
-                <RecordingPlayer
-                  key={recording.id}
-                  src={recording.audio}
-                  controls
-                ></RecordingPlayer>
-              </div>
-            ))
-          )}
-        </RecordingsContainer>
-      </PageContainer>
-    </NavAnimation>
+    <>
+      <Navbar />
+      <NavAnimation start="initialBottom" end="outBottom">
+        <PageContainer>
+          <HeadingContainer>
+            <Heading>My Recordings</Heading>
+          </HeadingContainer>
+          <RecordingsContainer>
+            {myRecordings.length === 0 ? (
+              <p>
+                It's still quiet here!
+                <br />
+                You have to record something...
+              </p>
+            ) : (
+              myRecordings.map(recording => (
+                <div key={nanoid()}>
+                  <RecordingNumber key={nanoid()}>
+                    Recording {myRecordings.length - playerCounter++}
+                  </RecordingNumber>
+                  <RecordingPlayer
+                    key={recording.id}
+                    src={recording.audio}
+                    controls
+                  ></RecordingPlayer>
+                </div>
+              ))
+            )}
+          </RecordingsContainer>
+        </PageContainer>
+      </NavAnimation>
+    </>
   );
 }
 
@@ -78,11 +73,6 @@ const Heading = styled.h2`
   margin-top: 25px;
   text-align: center;
   grid-column: 2 / 3;
-`;
-const BackButton = styled(NavLink)`
-  margin: 15px;
-  justify-self: start;
-  grid-column: 1 / 2;
 `;
 
 const RecordingNumber = styled.p`

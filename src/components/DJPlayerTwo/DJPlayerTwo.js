@@ -170,6 +170,7 @@ export default function DJPlayer({
   }
 }
 const PlayerContainer = styled(motion.div)`
+  position: relative;
   display: grid;
   border: 2px solid var(--white);
   border-radius: 20px;

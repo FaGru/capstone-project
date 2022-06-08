@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import { StyledButtonImg, InvisibleButton } from '../components/Buttons';
+import { StyledButtonImg } from '../components/Buttons';
 
 import settingsLogo from '../images/settings.svg';
 import recordingsLogo from '../images/recording-page.svg';
@@ -8,8 +8,11 @@ import sequencerLogo from '../images/sequencer.svg';
 import djLogo from '../images/dj-page.svg';
 import drumMachineLogo from '../images/drum-machine.svg';
 import nanoBeatsLogo from '../images/nano-beats-logo.svg';
+import useStore from '../hooks/useStore';
 
 export default function Navbar() {
+  const { currentPage, setCurrentPage } = useStore(state => state);
+
   return (
     <div>
       <LinkContainer>
@@ -19,46 +22,58 @@ export default function Navbar() {
             height="70px"
             width="70px"
             alt="Nano-Beats"
+            currentPage={currentPage}
+            onClick={event => setCurrentPage(event.target.alt)}
           />
         </NavLink>
         <NavLink to="/sequencer">
-          <StyledButtonImg
+          <NavbarImage
             src={sequencerLogo}
             height="55px"
             width="55px"
             alt="sequencer"
+            currentPage={currentPage}
+            onClick={event => setCurrentPage(event.target.alt)}
           />
         </NavLink>
         <NavLink to="/drum-machine">
-          <StyledButtonImg
+          <NavbarImage
             src={drumMachineLogo}
             height="55px"
             width="55px"
             alt="drum-machine"
+            currentPage={currentPage}
+            onClick={event => setCurrentPage(event.target.alt)}
           />
         </NavLink>
         <NavLink to="/dj">
-          <StyledButtonImg
+          <NavbarImage
             src={djLogo}
             height="55px"
             width="55px"
-            alt="dj-logo"
+            alt="dj"
+            currentPage={currentPage}
+            onClick={event => setCurrentPage(event.target.alt)}
           />
         </NavLink>
         <NavLink to="/recordings">
-          <StyledButtonImg
+          <NavbarImage
             src={recordingsLogo}
             height="55px"
             width="55px"
             alt="recordings"
+            currentPage={currentPage}
+            onClick={event => setCurrentPage(event.target.alt)}
           />
         </NavLink>
         <NavLink to="/settings">
-          <StyledButtonImg
+          <NavbarImage
             src={settingsLogo}
             height="55px"
             width="55px"
             alt="settings"
+            currentPage={currentPage}
+            onClick={event => setCurrentPage(event.target.alt)}
           />
         </NavLink>
       </LinkContainer>
@@ -78,5 +93,9 @@ const NanoBeatsLogo = styled.img`
   font-size: 2rem;
   border: 2px solid var(--white);
   border-radius: 15px;
-  margin: 5px;
+  margin: 3px;
+`;
+const NavbarImage = styled(StyledButtonImg)`
+  background-color: ${props =>
+    props.alt === props.currentPage && 'var(--blue)'};
 `;

@@ -8,7 +8,7 @@ import playIcon from '../../images/play.svg';
 import pauseIcon from '../../images/pause.svg';
 import cueIcon from '../../images/cue.svg';
 import uploadIcon from '../../images/upload.svg';
-import { BackgroundAnimation } from '../BackgroundAnimation';
+
 
 export default function DJPlayer({
   visiblePlayer,
@@ -177,6 +177,7 @@ export default function DJPlayer({
 }
 
 const PlayerContainer = styled(motion.div)`
+  position: relative;
   display: grid;
   border: 2px solid var(--white);
   border-radius: 20px;

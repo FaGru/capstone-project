@@ -7,7 +7,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import * as Tone from 'tone';
 import useStore from '../hooks/useStore';
-
+import Navbar from '../components/Navbar';
 
 export default function SettingsPage({ setStoragedPadSettings }) {
   const [selectedPad, setSelectedPad] = useState('0');
@@ -18,26 +18,28 @@ export default function SettingsPage({ setStoragedPadSettings }) {
   const allPads = useStore(state => state.allPads);
   const setAllPads = useStore(state => state.setAllPads);
 
-
   return (
-    <NavAnimation start="initialBottom" end="outBottom">
-      <PageContainer>
-        <HeadingContainer>
-          <Heading>Settings</Heading>
-        </HeadingContainer>
-        <SettingsContainer>
-          <InstructionPadSettings />
-          <PadSettings
-            savePadClick={savePadClick}
-            colorChange={colorChange}
-            padChange={padChange}
-            sampleChange={sampleChange}
-            allPads={allPads}
-            samplePreview={samplePreview}
-          />
-        </SettingsContainer>
-      </PageContainer>
-    </NavAnimation>
+    <>
+      <Navbar />
+      <NavAnimation start="initialBottom" end="outBottom">
+        <PageContainer>
+          <HeadingContainer>
+            <Heading>Settings</Heading>
+          </HeadingContainer>
+          <SettingsContainer>
+            <InstructionPadSettings />
+            <PadSettings
+              savePadClick={savePadClick}
+              colorChange={colorChange}
+              padChange={padChange}
+              sampleChange={sampleChange}
+              allPads={allPads}
+              samplePreview={samplePreview}
+            />
+          </SettingsContainer>
+        </PageContainer>
+      </NavAnimation>
+    </>
   );
 
   function padChange(e) {

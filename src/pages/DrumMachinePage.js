@@ -34,6 +34,7 @@ export default function DrumMachinePage() {
 
   return (
     <div>
+      
       <NavAnimation start={'initialTop'} end={'initialTop'}>
         <DrumMachineContainer>
           <InstructionsDrumMachine />

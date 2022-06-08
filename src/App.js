@@ -46,13 +46,9 @@ export default function App() {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  if(location.pathname !== '/'){
-
-  }
 
   return (
     <div>
-      {location.pathname !== '/' && <Navbar />}
       <DevicePopUp isVisible={isDevicePopUpVisible}>
         {connectedMIDIDevices}
       </DevicePopUp>
@@ -65,9 +61,12 @@ export default function App() {
           <Route
             path="/drum-machine"
             element={
-              <InstrumentContainer>
-                <DrumMachinePage /> <KeyboardPage />
-              </InstrumentContainer>
+              <>
+                <Navbar />
+                <InstrumentContainer>
+                  <DrumMachinePage /> <KeyboardPage />
+                </InstrumentContainer>
+              </>
             }
           />
           <Route

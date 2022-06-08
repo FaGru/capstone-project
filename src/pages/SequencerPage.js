@@ -18,6 +18,7 @@ import useStore from '../hooks/useStore';
 import playbutton from '../images/play.svg';
 import pausebutton from '../images/pause.svg';
 import EQLogo from '../images/EQ.svg';
+import Navbar from '../components/Navbar';
 
 export default function SequencerPage() {
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
@@ -32,61 +33,63 @@ export default function SequencerPage() {
     setSelectedPadSequence,
   } = useStore(state => state);
 
-
   const toggle = useCallback(() => {
     Tone.Transport.toggle();
     setIsSequencePlaying(Tone.Transport.state);
   }, []);
 
   return (
-    <NavAnimation start="initialLeft" end="outLeft">
-      <PageContainer>
-        <GridContainer>
-          <SequencerContainer>
-            <SequencerSettings
-              isSettingsVisible={isSettingsVisible}
-              setIsSettingsVisible={setIsSettingsVisible}
-            />
-            <Sequencer color={allPads[selectedSequencerPad].color} />
-          </SequencerContainer>
-          <PadList>
-            <InstructionsSequencer />
-            {allPads.map(pad => (
-              <SequencerPad
-                key={pad.id}
-                id={pad.id}
-                color={pad.color}
-                sequencerPadClick={sequencerPadClick}
+    <>
+      <Navbar />
+      <NavAnimation start="initialLeft" end="outLeft">
+        <PageContainer>
+          <GridContainer>
+            <SequencerContainer>
+              <SequencerSettings
+                isSettingsVisible={isSettingsVisible}
+                setIsSettingsVisible={setIsSettingsVisible}
               />
-            ))}
-          </PadList>
-          <StartSequenceButton
-            aria-label="start-stop sequencer"
-            onClick={toggle}
-            type="button"
-          >
-            <StyledButtonImg
-              src={isSequencePlaying === 'stopped' ? playbutton : pausebutton}
-              alt="play-pause"
-              width="50px"
-              height="50px"
-            />
-          </StartSequenceButton>
-          <InvisibleButton
-            aria-label="show settings"
-            type="button"
-            onClick={() => setIsSettingsVisible(!isSettingsVisible)}
-          >
-            <StyledButtonImg
-              src={EQLogo}
-              height="50px"
-              width="50px"
-              alt="volume-settings"
-            />
-          </InvisibleButton>
-        </GridContainer>
-      </PageContainer>
-    </NavAnimation>
+              <Sequencer color={allPads[selectedSequencerPad].color} />
+            </SequencerContainer>
+            <PadList>
+              <InstructionsSequencer />
+              {allPads.map(pad => (
+                <SequencerPad
+                  key={pad.id}
+                  id={pad.id}
+                  color={pad.color}
+                  sequencerPadClick={sequencerPadClick}
+                />
+              ))}
+            </PadList>
+            <StartSequenceButton
+              aria-label="start-stop sequencer"
+              onClick={toggle}
+              type="button"
+            >
+              <StyledButtonImg
+                src={isSequencePlaying === 'stopped' ? playbutton : pausebutton}
+                alt="play-pause"
+                width="50px"
+                height="50px"
+              />
+            </StartSequenceButton>
+            <InvisibleButton
+              aria-label="show settings"
+              type="button"
+              onClick={() => setIsSettingsVisible(!isSettingsVisible)}
+            >
+              <StyledButtonImg
+                src={EQLogo}
+                height="50px"
+                width="50px"
+                alt="volume-settings"
+              />
+            </InvisibleButton>
+          </GridContainer>
+        </PageContainer>
+      </NavAnimation>
+    </>
   );
 
   function sequencerPadClick(event) {
