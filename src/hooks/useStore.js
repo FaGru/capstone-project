@@ -301,9 +301,9 @@ const useStore = create((set, get) => ({
   },
   ///////////////     DJ Player      ///////////////
   initDJPlayerOne: () => {
-    const eqOneSettings = get().eqOneSettings;
-    const faderPosition = get().faderPosition;
-
+    const { eqOneSettings, volumeFaderOnePosition } = get();
+    const faderPosition = get().faderPosition - 63.5;
+    console.log(volumeFaderOnePosition);
     const highpassFilterPlayerOne = new Tone.Filter({
       frequency: 0,
       type: 'highpass',
@@ -316,11 +316,17 @@ const useStore = create((set, get) => ({
     const djPlayerOne = new Tone.Player(get().djTrackOne).connect(eq3One);
 
     djPlayerOne.playbackRate = get().djPlayerOnePlaybackRate / 317.5 + 0.8;
-    if (faderPosition === 127) {
-      djPlayerOne.volume.value = -500;
-    } else if (faderPosition >= 63) {
-      const newValue = 117 - faderPosition;
-      djPlayerOne.volume.value = newValue / 6.5 - 5;
+
+    if (faderPosition === 63.5 || volumeFaderOnePosition === 0) {
+      djPlayerOne.mute = true;
+    } else if (volumeFaderOnePosition !== 0) {
+      console.log('hallo');
+      djPlayerOne.mute = false;
+      if (faderPosition >= 0) {
+        const conversionNumber = (1 / 63.5) * -faderPosition + 1;
+        djPlayerOne.volume.value =
+          (20 / 127) * volumeFaderOnePosition * conversionNumber - 20;
+      }
     }
     set({
       djPlayerOne,
@@ -330,8 +336,8 @@ const useStore = create((set, get) => ({
     });
   },
   initDJPlayerTwo: () => {
-    const eqTwoSettings = get().eqOneSettings;
-    const faderPosition = get().faderPosition;
+    const { eqTwoSettings, volumeFaderTwoPosition } = get();
+    const faderPosition = get().faderPosition - 63.5;
     const highpassFilterPlayerTwo = new Tone.Filter({
       frequency: 0,
       type: 'highpass',
@@ -343,11 +349,15 @@ const useStore = create((set, get) => ({
     const eq3Two = new Tone.EQ3(eqTwoSettings).connect(lowpassFilterPlayerTwo);
     const djPlayerTwo = new Tone.Player(get().djTrackTwo).connect(eq3Two);
     djPlayerTwo.playbackRate = get().djPlayerTwoPlaybackRate / 317.5 + 0.8;
-    if (faderPosition === 0) {
-      djPlayerTwo.volume.value = -500;
-    } else if (faderPosition <= 63) {
-      const newValue = faderPosition - 10;
-      djPlayerTwo.volume.value = newValue / 6.5 - 5;
+
+    if (faderPosition === -63.5) {
+      djPlayerTwo.mute = true;
+    } else if (volumeFaderTwoPosition !== 0 || volumeFaderTwoPosition === 0) {
+      if (faderPosition <= 0) {
+        const conversionNumber = (1 / 63.5) * faderPosition + 1;
+        djPlayerTwo.volume.value =
+          (20 / 127) * volumeFaderTwoPosition * conversionNumber - 20;
+      }
     }
     set({
       djPlayerTwo,
