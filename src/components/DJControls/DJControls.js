@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import useStore from '../../hooks/useStore';
 import knobIcon from '../../images/control-knob.svg';
+import { BackgroundAnimation } from '../BackgroundAnimation';
 
 export default function DJControls() {
   const {
@@ -10,248 +11,233 @@ export default function DJControls() {
     isMIDIAssignButtonActive,
     filterPositionOne,
     filterPositionTwo,
+    volumeFaderOnePosition,
+    volumeFaderTwoPosition,
     setFaderPosition,
     setNewMIDIControlFunction,
   } = useStore(state => state);
 
-  // const [render, setRender] = useState(false);
-
   return (
     <Container>
+      <VolumeOneLabel htmlFor="volume fader one">
+        <VolumeInputOne
+          isMIDIAssignActive={isMIDIAssignButtonActive}
+          type="range"
+          min="0"
+          max="127"
+          value={volumeFaderOnePosition}
+          id="volume fader one"
+          name="volume fader one"
+          onChange={event =>
+            handleVolume(event.target.value, event.target.name)
+          }
+          onClick={event =>
+            isMIDIAssignButtonActive &&
+            setNewMIDIControlFunction(handleVolume, 'range', event.target.name)
+          }
+        />
+      </VolumeOneLabel>
+      <VolumeTwoLabel htmlFor="volume fader two">
+        <VolumeInputTwo
+          isMIDIAssignActive={isMIDIAssignButtonActive}
+          type="range"
+          min="0"
+          max="127"
+          value={volumeFaderTwoPosition}
+          id="volume fader two"
+          name="volume fader two"
+          onChange={event =>
+            handleVolume(event.target.value, event.target.name)
+          }
+          onClick={event =>
+            isMIDIAssignButtonActive &&
+            setNewMIDIControlFunction(handleVolume, 'range', event.target.name)
+          }
+        />
+      </VolumeTwoLabel>
       <EQContainer>
         <EQ3>
           <p>HIGH</p>
-          <EQLabel htmlFor="high-frequency-one">
-            <KnobIcon
-              isMIDIAssignActive={isMIDIAssignButtonActive}
-              position={(eq3One?.high.value + 5) / 2}
-              src={knobIcon}
-              alt="control-knob"
-              height="40px"
-              width="40px"
-            />
-            <input
-              id="high-frequency-one"
-              name="high-one"
-              type="range"
-              min="0"
-              max="127"
-              value={eq3One ? eq3One.high.get() : '63.5'}
-              onChange={event =>
-                handleEQSetting(event.target.value, event.target.name)
-              }
-              onClick={event =>
-                isMIDIAssignButtonActive &&
-                setNewMIDIControlFunction(
-                  handleEQSetting,
-                  'range',
-                  event.target.name
-                )
-              }
-            />
-          </EQLabel>
+          <KnobIcon
+            draggable={false}
+            isMIDIAssignActive={isMIDIAssignButtonActive}
+            position={(eq3One?.high.value + 5) / 2}
+            src={knobIcon}
+            alt="control-knob"
+            height="40px"
+            width="40px"
+            name="high-one"
+            onTouchStart={event => handleMouseDown(event, eq3One.high.value)}
+            onMouseDown={event => handleMouseDown(event, eq3One.high.value)}
+            onClick={event =>
+              isMIDIAssignButtonActive &&
+              setNewMIDIControlFunction(
+                handleEQSetting,
+                'range',
+                event.target.name
+              )
+            }
+            onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
+          />
           <p>MID</p>
-          <EQLabel htmlFor="mid-frequency-one">
-            <KnobIcon
-              isMIDIAssignActive={isMIDIAssignButtonActive}
-              position={(eq3One?.mid.value + 5) / 2}
-              src={knobIcon}
-              alt="control-knob"
-              height="40px"
-              width="40px"
-            />
-            <input
-              id="mid-frequency-one"
-              name="mid-one"
-              type="range"
-              min="0"
-              max="127"
-              value={eq3One ? eq3One.mid.get() : '63.5'}
-              onChange={event =>
-                handleEQSetting(event.target.value, event.target.name)
-              }
-              onClick={event =>
-                isMIDIAssignButtonActive &&
-                setNewMIDIControlFunction(
-                  handleEQSetting,
-                  'range',
-                  event.target.name
-                )
-              }
-            />
-          </EQLabel>
+          <KnobIcon
+            draggable={false}
+            isMIDIAssignActive={isMIDIAssignButtonActive}
+            position={(eq3One?.mid.value + 5) / 2}
+            src={knobIcon}
+            alt="control-knob"
+            height="40px"
+            width="40px"
+            name="mid-one"
+            onTouchStart={event => handleMouseDown(event, eq3One.mid.value)}
+            onMouseDown={event => handleMouseDown(event, eq3One.mid.value)}
+            onClick={event =>
+              isMIDIAssignButtonActive &&
+              setNewMIDIControlFunction(
+                handleEQSetting,
+                'range',
+                event.target.name
+              )
+            }
+            onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
+          />
           <p>LOW</p>
-          <EQLabel htmlFor="low-frequency-one">
-            <KnobIcon
-              isMIDIAssignActive={isMIDIAssignButtonActive}
-              position={(eq3One?.low.value + 5) / 2}
-              src={knobIcon}
-              alt="control-knob"
-              height="40px"
-              width="40px"
-            />
-            <input
-              id="low-frequency-one"
-              name="low-one"
-              type="range"
-              min="0"
-              max="127"
-              value={eq3One ? eq3One.low.get() : '63.5'}
-              onChange={event =>
-                handleEQSetting(event.target.value, event.target.name)
-              }
-              onClick={event =>
-                isMIDIAssignButtonActive &&
-                setNewMIDIControlFunction(
-                  handleEQSetting,
-                  'range',
-                  event.target.name
-                )
-              }
-            />
-          </EQLabel>
+          <KnobIcon
+            draggable={false}
+            isMIDIAssignActive={isMIDIAssignButtonActive}
+            position={(eq3One?.low.value + 5) / 2}
+            src={knobIcon}
+            alt="control-knob"
+            height="40px"
+            width="40px"
+            name="low-one"
+            onTouchStart={event => handleMouseDown(event, eq3One.low.value)}
+            onMouseDown={event => handleMouseDown(event, eq3One.low.value)}
+            onClick={event =>
+              isMIDIAssignButtonActive &&
+              setNewMIDIControlFunction(
+                handleEQSetting,
+                'range',
+                event.target.name
+              )
+            }
+            onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
+          />
           <p>FILTER</p>
-          <EQLabel htmlFor="filter-one">
-            <KnobIcon
-              position={filterPositionOne / 12.7 - 5}
-              isMIDIAssignActive={isMIDIAssignButtonActive}
-              src={knobIcon}
-              alt="control-knob"
-              height="40px"
-              width="40px"
-            />
-            <input
-              id="filter-one"
-              type="range"
-              min="0"
-              max="127"
-              value={filterPositionOne}
-              onChange={event => handleFilterPlayerOne(event.target.value)}
-              onClick={() =>
-                isMIDIAssignButtonActive
-                  ? setNewMIDIControlFunction(handleFilterPlayerOne, 'range')
-                  : null
-              }
-            />
-          </EQLabel>
+          <KnobIcon
+            draggable={false}
+            isMIDIAssignActive={isMIDIAssignButtonActive}
+            position={filterPositionOne / 12.7 - 5}
+            src={knobIcon}
+            alt="control-knob"
+            height="40px"
+            width="40px"
+            name="filter-one"
+            onTouchStart={event => handleMouseDown(event, filterPositionOne)}
+            onMouseDown={event => handleMouseDown(event, filterPositionOne)}
+            onClick={event =>
+              isMIDIAssignButtonActive &&
+              setNewMIDIControlFunction(
+                handleFilterPlayerOne,
+                'range',
+                event.target.name
+              )
+            }
+            onDoubleClick={() => handleFilterPlayerOne(63.5)}
+          />
         </EQ3>
         <EQ3>
           <p>HIGH</p>
-          <EQLabel htmlFor="high-frequency-two">
-            <KnobIcon
-              isMIDIAssignActive={isMIDIAssignButtonActive}
-              position={(eq3Two?.high.value + 5) / 2}
-              src={knobIcon}
-              alt="control-knob"
-              height="40px"
-              width="40px"
-            />
-            <input
-              id="high-frequency-two"
-              name="high-two"
-              type="range"
-              min="0"
-              max="127"
-              value={eq3Two ? eq3Two.high.get() : '63.5'}
-              onChange={event =>
-                handleEQSetting(event.target.value, event.target.name)
-              }
-              onClick={event =>
-                isMIDIAssignButtonActive &&
-                setNewMIDIControlFunction(
-                  handleEQSetting,
-                  'range',
-                  event.target.name
-                )
-              }
-            />
-          </EQLabel>
+          <KnobIcon
+            draggable={false}
+            isMIDIAssignActive={isMIDIAssignButtonActive}
+            position={(eq3Two?.high.value + 5) / 2}
+            src={knobIcon}
+            alt="control-knob"
+            height="40px"
+            width="40px"
+            name="high-two"
+            onTouchStart={event => handleMouseDown(event, eq3Two.high.value)}
+            onMouseDown={event => handleMouseDown(event, eq3Two.high.value)}
+            onClick={event =>
+              isMIDIAssignButtonActive &&
+              setNewMIDIControlFunction(
+                handleEQSetting,
+                'range',
+                event.target.name
+              )
+            }
+            onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
+          />
           <p>MID</p>
-          <EQLabel htmlFor="mid-frequency-two">
-            <KnobIcon
-              isMIDIAssignActive={isMIDIAssignButtonActive}
-              position={(eq3Two?.mid.value + 5) / 2}
-              src={knobIcon}
-              alt="control-knob"
-              height="40px"
-              width="40px"
-            />
-            <input
-              id="mid-frequency-two"
-              name="mid-two"
-              type="range"
-              min="0"
-              max="127"
-              value={eq3Two ? eq3Two.mid.get() : '63.5'}
-              onChange={event =>
-                handleEQSetting(event.target.value, event.target.name)
-              }
-              onClick={event =>
-                isMIDIAssignButtonActive &&
-                setNewMIDIControlFunction(
-                  handleEQSetting,
-                  'range',
-                  event.target.name
-                )
-              }
-            />
-          </EQLabel>
+          <KnobIcon
+            draggable={false}
+            isMIDIAssignActive={isMIDIAssignButtonActive}
+            position={(eq3Two?.mid.value + 5) / 2}
+            src={knobIcon}
+            alt="control-knob"
+            height="40px"
+            width="40px"
+            name="mid-two"
+            onTouchStart={event => handleMouseDown(event, eq3Two.mid.value)}
+            onMouseDown={event => handleMouseDown(event, eq3Two.mid.value)}
+            onClick={event =>
+              isMIDIAssignButtonActive &&
+              setNewMIDIControlFunction(
+                handleEQSetting,
+                'range',
+                event.target.name
+              )
+            }
+            onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
+          />
           <p>LOW</p>
-          <EQLabel htmlFor="low-frequency-two">
-            <KnobIcon
-              isMIDIAssignActive={isMIDIAssignButtonActive}
-              position={(eq3Two?.low.value + 5) / 2}
-              src={knobIcon}
-              alt="control-knob"
-              height="40px"
-              width="40px"
-            />
-            <input
-              id="low-frequency-two"
-              name="low-two"
-              type="range"
-              min="0"
-              max="127"
-              value={eq3Two ? eq3Two.low.get() : '63.5'}
-              onChange={event =>
-                handleEQSetting(event.target.value, event.target.name)
-              }
-              onClick={event =>
-                isMIDIAssignButtonActive &&
-                setNewMIDIControlFunction(
-                  handleEQSetting,
-                  'range',
-                  event.target.name
-                )
-              }
-            />
-          </EQLabel>
+          <KnobIcon
+            draggable={false}
+            isMIDIAssignActive={isMIDIAssignButtonActive}
+            position={(eq3Two?.low.value + 5) / 2}
+            src={knobIcon}
+            alt="control-knob"
+            height="40px"
+            width="40px"
+            name="low-two"
+            onTouchStart={event => handleMouseDown(event, eq3Two.low.value)}
+            onMouseDown={event => handleMouseDown(event, eq3Two.low.value)}
+            onClick={event =>
+              isMIDIAssignButtonActive &&
+              setNewMIDIControlFunction(
+                handleEQSetting,
+                'range',
+                event.target.name
+              )
+            }
+            onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
+          />
           <p>FILTER</p>
-          <EQLabel htmlFor="filter-two">
-            <KnobIcon
-              position={filterPositionTwo / 12.7 - 5}
-              isMIDIAssignActive={isMIDIAssignButtonActive}
-              src={knobIcon}
-              alt="control-knob"
-              height="40px"
-              width="40px"
-            />
-            <input
-              id="filter-two"
-              type="range"
-              min="0"
-              max="127"
-              value={filterPositionTwo}
-              onChange={event => handleFilterPlayerTwo(event.target.value)}
-              onClick={() =>
-                isMIDIAssignButtonActive &&
-                setNewMIDIControlFunction(handleFilterPlayerTwo, 'range')
-              }
-            />
-          </EQLabel>
+          <KnobIcon
+            draggable={false}
+            isMIDIAssignActive={isMIDIAssignButtonActive}
+            position={filterPositionTwo / 12.7 - 5}
+            src={knobIcon}
+            alt="control-knob"
+            height="40px"
+            width="40px"
+            name="filter-two"
+            onTouchStart={event => handleMouseDown(event, filterPositionTwo)}
+            onMouseDown={event => handleMouseDown(event, filterPositionTwo)}
+            onClick={event =>
+              isMIDIAssignButtonActive &&
+              setNewMIDIControlFunction(
+                handleFilterPlayerTwo,
+                'range',
+                event.target.name
+              )
+            }
+            onDoubleClick={() => handleFilterPlayerTwo(63.5)}
+          />
         </EQ3>
       </EQContainer>
-      <label htmlFor="dj-player-fader">
+      <CrossFaderLabel htmlFor="dj-player-fader">
         <CrossFader
           isMIDIAssignActive={isMIDIAssignButtonActive}
           id="dj-player-fader"
@@ -266,9 +252,134 @@ export default function DJControls() {
             setNewMIDIControlFunction(handleCrossFader, 'range')
           }
         ></CrossFader>
-      </label>
+      </CrossFaderLabel>
     </Container>
   );
+  function handleVolume(value, name) {
+    const {
+      djPlayerOne,
+      djPlayerTwo,
+      faderPosition,
+      setVolumeFaderOnePosition,
+      setVolumeFaderTwoPosition,
+    } = useStore.getState();
+    const volumeFaderValue = Number(value);
+    const crossFaderValue = faderPosition - 63.5;
+    if (name === 'volume fader one') {
+      if (volumeFaderValue === 0) {
+        djPlayerOne.mute = true;
+      } else if (faderPosition !== 127) {
+        djPlayerOne.mute = false;
+        if (crossFaderValue >= 0) {
+          const conversionNumber = (1 / 63.5) * -crossFaderValue + 1;
+          djPlayerOne.volume.value =
+            (20 / 127) * volumeFaderValue * conversionNumber - 20;
+        } else {
+          djPlayerOne.volume.value = (20 / 127) * volumeFaderValue - 20;
+        }
+      }
+      setVolumeFaderOnePosition(Number(volumeFaderValue));
+    }
+
+    if (name === 'volume fader two') {
+      if (volumeFaderValue === 0) {
+        djPlayerTwo.mute = true;
+      } else if (faderPosition !== 0) {
+        djPlayerTwo.mute = false;
+        if (crossFaderValue <= 0) {
+          const conversionNumber = (1 / 63.5) * crossFaderValue + 1;
+          djPlayerTwo.volume.value =
+            (20 / 127) * volumeFaderValue * conversionNumber - 20;
+        } else {
+          djPlayerTwo.volume.value = (20 / 127) * volumeFaderValue - 20;
+        }
+      }
+      setVolumeFaderTwoPosition(Number(volumeFaderValue));
+    }
+  }
+
+  function handleMouseDown(event, eqValue) {
+    const { setMousePosition, setCurrentEQName, setCurrentEQValue } =
+      useStore.getState();
+    setMousePosition({ x: event.pageX, y: event.pageY });
+    setCurrentEQName(event.target.name);
+    if (event.target.name.includes('filter')) {
+      setCurrentEQValue(eqValue);
+    } else {
+      setCurrentEQValue((eqValue + 15) * 6.35);
+    }
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('touchmove', handleTouchMove);
+    window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('touchend', handleMouseUp);
+  }
+
+  function handleTouchMove(e) {
+    const {
+      mousePosition,
+      currentEQName,
+      currentEQValue,
+      setMousePosition,
+      setCurrentEQValue,
+    } = useStore.getState();
+    if (mousePosition.x < e.touches[0].pageX && currentEQValue < 127) {
+      setCurrentEQValue(currentEQValue + 3);
+      if (currentEQName === 'filter-one') {
+        handleFilterPlayerOne(currentEQValue + 3);
+      } else if (currentEQName === 'filter-two') {
+        handleFilterPlayerTwo(currentEQValue + 3);
+      } else {
+        handleEQSetting(currentEQValue + 3, currentEQName);
+      }
+    } else if (mousePosition.x > e.touches[0].pageX && currentEQValue > 0) {
+      setCurrentEQValue(currentEQValue - 3);
+      if (currentEQName === 'filter-one') {
+        handleFilterPlayerOne(currentEQValue - 3);
+      } else if (currentEQName === 'filter-two') {
+        handleFilterPlayerTwo(currentEQValue - 3);
+      } else {
+        handleEQSetting(currentEQValue - 3, currentEQName);
+      }
+    }
+    setMousePosition(e.touches[0].pageX, e.touches[0].pageY);
+  }
+
+  function handleMouseUp() {
+    window.removeEventListener('mousemove', handleMouseMove);
+    window.removeEventListener('touchmove', handleTouchMove);
+    window.removeEventListener('mouseup', handleMouseUp);
+    window.removeEventListener('touchend', handleMouseUp);
+  }
+
+  function handleMouseMove(e) {
+    const {
+      mousePosition,
+      currentEQName,
+      currentEQValue,
+      setMousePosition,
+      setCurrentEQValue,
+    } = useStore.getState();
+    if (mousePosition.x < e.pageX && currentEQValue < 127) {
+      setCurrentEQValue(currentEQValue + 3);
+      if (currentEQName === 'filter-one') {
+        handleFilterPlayerOne(currentEQValue + 3);
+      } else if (currentEQName === 'filter-two') {
+        handleFilterPlayerTwo(currentEQValue + 3);
+      } else {
+        handleEQSetting(currentEQValue + 3, currentEQName);
+      }
+    } else if (mousePosition.x > e.pageX && currentEQValue > 0) {
+      setCurrentEQValue(currentEQValue - 3);
+      if (currentEQName === 'filter-one') {
+        handleFilterPlayerOne(currentEQValue - 3);
+      } else if (currentEQName === 'filter-two') {
+        handleFilterPlayerTwo(currentEQValue - 3);
+      } else {
+        handleEQSetting(currentEQValue - 3, currentEQName);
+      }
+    }
+    setMousePosition(e.pageX, e.pageY);
+  }
 
   function handleEQSetting(value, name) {
     const { setRender } = useStore.getState();
@@ -290,21 +401,34 @@ export default function DJControls() {
   }
 
   function handleCrossFader(value) {
-    const { djPlayerOne, djPlayerTwo } = useStore.getState();
-    const faderValue = Number(value);
-    if (faderValue === 127) {
-      djPlayerOne.volume.value = -500;
-    } else if (faderValue >= 63) {
-      const newValue = 117 - faderValue;
-      djPlayerOne.volume.value = newValue / 6.5 - 5;
+    const {
+      djPlayerOne,
+      djPlayerTwo,
+      volumeFaderOnePosition,
+      volumeFaderTwoPosition,
+    } = useStore.getState();
+    const faderValue = Number(value) - 63.5;
+
+    if (faderValue === 63.5) {
+      djPlayerOne.mute = true;
+    } else if (volumeFaderOnePosition !== 0) {
+      djPlayerOne.mute = false;
+      if (faderValue >= 0) {
+        const conversionNumber = (1 / 63.5) * -faderValue + 1;
+        djPlayerOne.volume.value =
+          (20 / 127) * volumeFaderOnePosition * conversionNumber - 20;
+      }
     }
-    if (faderValue === 0) {
-      djPlayerTwo.volume.value = -500;
-    } else if (faderValue <= 63) {
-      const newValue = faderValue - 10;
-      djPlayerTwo.volume.value = newValue / 6.5 - 5;
+    if (faderValue === -63.5) {
+      djPlayerTwo.mute = true;
+    } else if (volumeFaderTwoPosition !== 0) {
+      if (faderValue <= 0) {
+        const conversionNumber = (1 / 63.5) * faderValue + 1;
+        djPlayerTwo.volume.value =
+          (20 / 127) * volumeFaderTwoPosition * conversionNumber - 20;
+      }
     }
-    setFaderPosition(faderValue);
+    setFaderPosition(Number(value));
   }
 
   function handleFilterPlayerOne(value) {
@@ -355,30 +479,45 @@ export default function DJControls() {
   }
 }
 
-const KnobIcon = styled.img`
-  transform: rotate(${props => props.position * 26}deg);
-  ${props => props.isMIDIAssignActive && 'background-color: var(--purple)'};
-  border-radius: 10px;
-`;
-const Container = styled.div`
+const Container = styled.section`
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: 1fr auto;
   text-align: center;
-  border: 2px solid white;
+  border: 1px solid var(--darkgray);
   border-radius: 20px;
-  min-width: 250px;
+  width: 320px;
   background-color: var(--darkgray);
+  box-shadow: inset 0 0 15px 5px var(--black);
   p {
     margin: 0;
   }
 `;
 const EQContainer = styled.div`
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
   margin-top: 20px;
   display: flex;
   justify-content: center;
 `;
-const EQ3 = styled.div`
+const EQ3 = styled.section`
   display: flex;
   flex-direction: column;
   margin: 10px;
+`;
+const KnobIcon = styled.img`
+  transform: rotate(${props => props.position * 26}deg);
+  ${props => props.isMIDIAssignActive && 'background-color: var(--purple)'};
+  border-radius: 10px;
+  margin: 5px;
+  cursor: grab;
+  &:active {
+    cursor: grabbing;
+  }
+`;
+const CrossFaderLabel = styled.label`
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
 `;
 const CrossFader = styled.input`
   width: 150px;
@@ -388,19 +527,31 @@ const CrossFader = styled.input`
     props.isMIDIAssignActive && 'box-shadow: inset 20px 20px var(--purple)'};
   border-radius: 10px;
 `;
-const EQLabel = styled.label`
+const VolumeOneLabel = styled.label`
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
   position: relative;
-  margin: 5px;
-  input {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(-90deg);
-    width: 50px;
-    opacity: 0;
-    cursor: grab;
-    &:active {
-      cursor: grabbing;
-    }
-  }
+  width: 20px;
+  justify-self: center;
+`;
+const VolumeTwoLabel = styled.label`
+  grid-column: 3 / 4;
+  grid-row: 1 / 2;
+  position: relative;
+  width: 20px;
+  justify-self: center;
+`;
+const VolumeInputOne = styled.input`
+  position: absolute;
+  left: -20px;
+  top: 210px;
+  transform: rotate(-90deg);
+  border-radius: 5px;
+  height: 25px;
+  box-shadow: inset 50px 50px var(--white);
+  ${props =>
+    props.isMIDIAssignActive && 'box-shadow: inset 50px 50px var(--purple)'};
+`;
+const VolumeInputTwo = styled(VolumeInputOne)`
+  left: -100px;
 `;

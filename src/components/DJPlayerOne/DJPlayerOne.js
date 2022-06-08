@@ -8,6 +8,7 @@ import playIcon from '../../images/play.svg';
 import pauseIcon from '../../images/pause.svg';
 import cueIcon from '../../images/cue.svg';
 import uploadIcon from '../../images/upload.svg';
+import { BackgroundAnimation } from '../BackgroundAnimation';
 
 export default function DJPlayer({
   visiblePlayer,
@@ -82,7 +83,9 @@ export default function DJPlayer({
       <PlayerSwitchButton onClick={() => setVisiblePlayer(2)}>
         Show Player 2
       </PlayerSwitchButton>
+
       <CueButton
+        draggable={false}
         aria-label="cue-button"
         isMIDIAssignActive={isMIDIAssignButtonActive}
         onMouseDown={() =>
@@ -95,6 +98,7 @@ export default function DJPlayer({
         <StyledButtonImg src={cueIcon} alt="cue" height="50px" width="50px" />
       </CueButton>
       <PlayButton
+        draggable={false}
         aria-label="play-button"
         isMIDIAssignActive={isMIDIAssignButtonActive}
         onClick={() =>
@@ -179,6 +183,8 @@ const PlayerContainer = styled(motion.div)`
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: auto auto auto auto;
   width: 320px;
+  box-shadow: inset 0 0 15px 5px var(--black);
+  border: 1px solid var(--darkgray);
   background-color: var(--darkgray);
   @media (max-width: 600px) {
     grid-row: 1/ 2;

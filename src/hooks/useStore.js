@@ -14,6 +14,7 @@ const useStore = create((set, get) => ({
   recordings: [],
   allPads: defaultPadSettings,
   keyboardVolume: 5,
+  mousePosition: { x: 0, y: 0 },
   ///////// Drumloop-Player States //////
   loopPlayer: null,
   loopPlayerVolume: 5,
@@ -46,6 +47,9 @@ const useStore = create((set, get) => ({
   ///////// DJ Deck States ////////////
   djPlayerOne: null,
   djPlayerTwo: null,
+  currentEQName: null,
+  currentEQValue: null,
+  currentDJControl: null,
   eqOneSettings: { high: -5, mid: -5, low: -5 },
   eqTwoSettings: { high: -5, mid: -5, low: -5 },
   lowpassFilterPlayerOne: null,
@@ -54,17 +58,23 @@ const useStore = create((set, get) => ({
   highpassFilterPlayerTwo: null,
   djTrackOne: 'https://tonejs.github.io/audio/berklee/gong_1.mp3',
   djTrackTwo: 'https://tonejs.github.io/audio/berklee/gong_1.mp3',
-  djPlayerOnePlaybackRate: 63,
-  djPlayerTwoPlaybackRate: 63,
+  djPlayerOnePlaybackRate: 63.5,
+  djPlayerTwoPlaybackRate: 63.5,
   eq3One: null,
   eq3Two: null,
   feedbackDelay: null,
-  faderPosition: 63,
+  faderPosition: 63.5,
   isEchoOutOneActive: false,
   isEchoOutTwoActive: false,
-  filterPositionOne: 63,
-  filterPositionTwo: 63,
+  filterPositionOne: 63.5,
+  filterPositionTwo: 63.5,
+  volumeFaderOnePosition: 127,
+  volumeFaderTwoPosition: 127,
   render: false,
+
+  setMousePosition: (positionX, positionY) => {
+    set({ mousePosition: { x: positionX, y: positionY } });
+  },
 
   handleUserInteraction: () => {
     const handleUserInteraction = () => {
@@ -291,9 +301,9 @@ const useStore = create((set, get) => ({
   },
   ///////////////     DJ Player      ///////////////
   initDJPlayerOne: () => {
-    const eqOneSettings = get().eqOneSettings;
-    const faderPosition = get().faderPosition;
-
+    const { eqOneSettings, volumeFaderOnePosition } = get();
+    const faderPosition = get().faderPosition - 63.5;
+    console.log(volumeFaderOnePosition);
     const highpassFilterPlayerOne = new Tone.Filter({
       frequency: 0,
       type: 'highpass',
@@ -306,11 +316,17 @@ const useStore = create((set, get) => ({
     const djPlayerOne = new Tone.Player(get().djTrackOne).connect(eq3One);
 
     djPlayerOne.playbackRate = get().djPlayerOnePlaybackRate / 317.5 + 0.8;
-    if (faderPosition === 127) {
-      djPlayerOne.volume.value = -500;
-    } else if (faderPosition >= 63) {
-      const newValue = 117 - faderPosition;
-      djPlayerOne.volume.value = newValue / 6.5 - 5;
+
+    if (faderPosition === 63.5 || volumeFaderOnePosition === 0) {
+      djPlayerOne.mute = true;
+    } else if (volumeFaderOnePosition !== 0) {
+      console.log('hallo');
+      djPlayerOne.mute = false;
+      if (faderPosition >= 0) {
+        const conversionNumber = (1 / 63.5) * -faderPosition + 1;
+        djPlayerOne.volume.value =
+          (20 / 127) * volumeFaderOnePosition * conversionNumber - 20;
+      }
     }
     set({
       djPlayerOne,
@@ -320,8 +336,8 @@ const useStore = create((set, get) => ({
     });
   },
   initDJPlayerTwo: () => {
-    const eqTwoSettings = get().eqOneSettings;
-    const faderPosition = get().faderPosition;
+    const { eqTwoSettings, volumeFaderTwoPosition } = get();
+    const faderPosition = get().faderPosition - 63.5;
     const highpassFilterPlayerTwo = new Tone.Filter({
       frequency: 0,
       type: 'highpass',
@@ -333,11 +349,15 @@ const useStore = create((set, get) => ({
     const eq3Two = new Tone.EQ3(eqTwoSettings).connect(lowpassFilterPlayerTwo);
     const djPlayerTwo = new Tone.Player(get().djTrackTwo).connect(eq3Two);
     djPlayerTwo.playbackRate = get().djPlayerTwoPlaybackRate / 317.5 + 0.8;
-    if (faderPosition === 0) {
-      djPlayerTwo.volume.value = -500;
-    } else if (faderPosition <= 63) {
-      const newValue = faderPosition - 10;
-      djPlayerTwo.volume.value = newValue / 6.5 - 5;
+
+    if (faderPosition === -63.5) {
+      djPlayerTwo.mute = true;
+    } else if (volumeFaderTwoPosition !== 0 || volumeFaderTwoPosition === 0) {
+      if (faderPosition <= 0) {
+        const conversionNumber = (1 / 63.5) * faderPosition + 1;
+        djPlayerTwo.volume.value =
+          (20 / 127) * volumeFaderTwoPosition * conversionNumber - 20;
+      }
     }
     set({
       djPlayerTwo,
@@ -346,12 +366,27 @@ const useStore = create((set, get) => ({
       highpassFilterPlayerTwo,
     });
   },
+  setCurrentEQName: newName => {
+    set({ currentEQName: newName });
+  },
+  setCurrentEQValue: newValue => {
+    set({ currentEQValue: newValue });
+  },
+  setCurrentDJControl: newDJControl => {
+    set({ currentDJControl: newDJControl });
+  },
   initFeedbackDelay: () => {
     const feedbackDelay = new Tone.FeedbackDelay('4n', 0.5).toDestination();
     set({ feedbackDelay });
   },
   setFaderPosition: newFaderPosition => {
     set({ faderPosition: newFaderPosition });
+  },
+  setVolumeFaderOnePosition: newPosition => {
+    set({ volumeFaderOnePosition: newPosition });
+  },
+  setVolumeFaderTwoPosition: newPosition => {
+    set({ volumeFaderTwoPosition: newPosition });
   },
   setDjPlayerOnePlaybackRate: newRate => {
     set({ djPlayerOnePlaybackRate: newRate });
@@ -414,7 +449,6 @@ const useStore = create((set, get) => ({
       }
       //////////// function call ////////////
       else {
-        console.log(command, midiButton, value, event);
         assignedMIDIControls.forEach(control => {
           if (
             control.name === midiButton &&
@@ -475,7 +509,7 @@ const useStore = create((set, get) => ({
         (control.name !== newMIDIControlName ||
           control.command !== newMIDIControlCommand)
     );
-    console.log(assignedMIDIControls);
+
     set({
       assignedMIDIControls: [
         ...newMIDIControls,
