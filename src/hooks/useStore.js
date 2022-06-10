@@ -485,9 +485,8 @@ const useStore = create((set, get) => ({
         set({ isDevicePopUpVisible: false });
       }, 5000);
     }
-    function failure(midiAccess) {
+    function failure() {
       console.log('could not connect devices');
-      midiAccess.addEventListener('statechange', updateDevices);
     }
     ///////////////////////////////////////////////////////////////////////////////////////
   },
