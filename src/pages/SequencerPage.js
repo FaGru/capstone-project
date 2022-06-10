@@ -28,7 +28,7 @@ export default function SequencerPage() {
     selectedSequencerPad,
     allPadSequences,
     allPads,
-    sequencerPlayers,
+    drumPadPlayers,
     setSelectedSequencerPad,
     setSelectedPadSequence,
   } = useStore(state => state);
@@ -97,7 +97,7 @@ export default function SequencerPage() {
     setSelectedPadSequence(allPadSequences[currentPad].settings);
     setSelectedSequencerPad(currentPad);
     Tone.loaded().then(() => {
-      sequencerPlayers.player(`Player${currentPad}`).start();
+      drumPadPlayers.player(`Player${currentPad}`).start();
     });
   }
 }
