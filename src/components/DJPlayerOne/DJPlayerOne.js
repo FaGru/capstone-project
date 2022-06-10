@@ -30,7 +30,7 @@ export default function DJPlayer({
     <PlayerContainer
       initial={{ x: '-500px' }}
       animate={
-        visiblePlayer === 2 && isDesktop === false ? { x: '-500px' } : { x: 0 }
+        visiblePlayer === 2 && isDesktop === false ? { x: '-700px' } : { x: 0 }
       }
       transition={{
         type: 'tween',

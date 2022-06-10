@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import { StyledButtonImg } from '../Buttons';
+import { StyledButtonImg, InvisibleButton } from '../Buttons';
+import BurgerMenuNavbar from '../BurgerMenuNavbar/BurgerMenuNavbar';
 
 import settingsLogo from '../../images/settings.svg';
 import recordingsLogo from '../../images/recording-page.svg';
@@ -8,10 +9,13 @@ import sequencerLogo from '../../images/sequencer.svg';
 import djLogo from '../../images/dj-page.svg';
 import drumMachineLogo from '../../images/drum-machine.svg';
 import nanoBeatsLogo from '../../images/nano-beats-logo.svg';
+import burgerMenuLogo from '../../images/burger-menu.svg';
 import useStore from '../../hooks/useStore';
+import { useState } from 'react';
 
 export default function Navbar() {
   const { currentPage, setCurrentPage } = useStore(state => state);
+  const [isBurgerMenuVisible, setIsBurgerMenuVisible] = useState(false);
 
   return (
     <div>
@@ -26,7 +30,7 @@ export default function Navbar() {
             onClick={event => setCurrentPage(event.target.alt)}
           />
         </NavLink>
-        <NavLink to="/sequencer">
+        <NavigationLink to="/sequencer">
           <NavbarImage
             src={sequencerLogo}
             height="55px"
@@ -35,8 +39,8 @@ export default function Navbar() {
             currentPage={currentPage}
             onClick={event => setCurrentPage(event.target.alt)}
           />
-        </NavLink>
-        <NavLink to="/drum-machine">
+        </NavigationLink>
+        <NavigationLink to="/drum-machine">
           <NavbarImage
             src={drumMachineLogo}
             height="55px"
@@ -45,8 +49,8 @@ export default function Navbar() {
             currentPage={currentPage}
             onClick={event => setCurrentPage(event.target.alt)}
           />
-        </NavLink>
-        <NavLink to="/dj">
+        </NavigationLink>
+        <NavigationLink to="/dj">
           <NavbarImage
             src={djLogo}
             height="55px"
@@ -55,8 +59,8 @@ export default function Navbar() {
             currentPage={currentPage}
             onClick={event => setCurrentPage(event.target.alt)}
           />
-        </NavLink>
-        <NavLink to="/recordings">
+        </NavigationLink>
+        <NavigationLink to="/recordings">
           <NavbarImage
             src={recordingsLogo}
             height="55px"
@@ -65,8 +69,8 @@ export default function Navbar() {
             currentPage={currentPage}
             onClick={event => setCurrentPage(event.target.alt)}
           />
-        </NavLink>
-        <NavLink to="/settings">
+        </NavigationLink>
+        <NavigationLink to="/settings">
           <NavbarImage
             src={settingsLogo}
             height="55px"
@@ -75,12 +79,24 @@ export default function Navbar() {
             currentPage={currentPage}
             onClick={event => setCurrentPage(event.target.alt)}
           />
-        </NavLink>
+        </NavigationLink>
+        <BurgerMenuButton
+          onClick={() => setIsBurgerMenuVisible(!isBurgerMenuVisible)}
+        >
+          <StyledButtonImg
+            src={burgerMenuLogo}
+            height="50px"
+            width="50px"
+            alt="burger menu"
+          />
+        </BurgerMenuButton>
+        {isBurgerMenuVisible && <BurgerMenuNavbar />}
       </LinkContainer>
     </div>
   );
 }
 const LinkContainer = styled.div`
+  position: relative;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -98,4 +114,15 @@ const NanoBeatsLogo = styled.img`
 const NavbarImage = styled(StyledButtonImg)`
   background-color: ${props =>
     props.alt === props.currentPage && 'var(--blue)'};
+`;
+const BurgerMenuButton = styled(InvisibleButton)`
+  @media (min-width: 601px) {
+    display: none;
+  }
+`;
+const NavigationLink = styled(NavLink)`
+  margin-left: 50px;
+  @media (max-width: 600px) {
+    display: none;
+  }
 `;
