@@ -170,7 +170,6 @@ export default function DJPlayer({
   }
 }
 const PlayerContainer = styled(motion.div)`
-  position: relative;
   display: grid;
   border: 2px solid var(--white);
   border-radius: 20px;
@@ -180,7 +179,7 @@ const PlayerContainer = styled(motion.div)`
   box-shadow: inset 0 0 15px 5px var(--black);
   border: 1px solid var(--darkgray);
   background-color: var(--darkgray);
-  @media (max-width: 600px) {
+  @media (max-width: 1000px) {
     grid-row: 1/ 2;
     grid-column: 1 / 2;
   }
@@ -208,7 +207,7 @@ const PlayerSwitchButton = styled.button`
   align-self: center;
   justify-self: end;
   margin: 5px;
-  @media (min-width: 601px) {
+  @media (min-width: 1001px) {
     display: none;
   }
 `;

@@ -18,7 +18,7 @@ import useStore from '../hooks/useStore';
 import playbutton from '../images/play.svg';
 import pausebutton from '../images/pause.svg';
 import EQLogo from '../images/EQ.svg';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/Navbar/Navbar';
 
 export default function SequencerPage() {
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);

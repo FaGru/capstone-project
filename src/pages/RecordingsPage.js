@@ -1,12 +1,10 @@
 import NavAnimation from '../components/FramerMotion';
 import { BackgroundAnimation } from '../components/BackgroundAnimation';
-
-import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { nanoid } from 'nanoid';
 import useStore from '../hooks/useStore';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/Navbar/Navbar';
 
 export default function RecordingsPage() {
   let playerCounter = 0;

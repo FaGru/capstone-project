@@ -1,14 +1,14 @@
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import { StyledButtonImg } from '../components/Buttons';
+import { StyledButtonImg } from '../Buttons';
 
-import settingsLogo from '../images/settings.svg';
-import recordingsLogo from '../images/recording-page.svg';
-import sequencerLogo from '../images/sequencer.svg';
-import djLogo from '../images/dj-page.svg';
-import drumMachineLogo from '../images/drum-machine.svg';
-import nanoBeatsLogo from '../images/nano-beats-logo.svg';
-import useStore from '../hooks/useStore';
+import settingsLogo from '../../images/settings.svg';
+import recordingsLogo from '../../images/recording-page.svg';
+import sequencerLogo from '../../images/sequencer.svg';
+import djLogo from '../../images/dj-page.svg';
+import drumMachineLogo from '../../images/drum-machine.svg';
+import nanoBeatsLogo from '../../images/nano-beats-logo.svg';
+import useStore from '../../hooks/useStore';
 
 export default function Navbar() {
   const { currentPage, setCurrentPage } = useStore(state => state);

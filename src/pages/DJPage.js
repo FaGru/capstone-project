@@ -7,7 +7,7 @@ import NavAnimation from '../components/FramerMotion';
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import useStore from '../hooks/useStore';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/Navbar/Navbar';
 
 export default function DJPage() {
   const [visiblePlayer, setVisiblePlayer] = useState(1);
@@ -70,19 +70,20 @@ export default function DJPage() {
 }
 
 const PageContainer = styled.main`
-  display: grid;
-  justify-content: center;
+  display: flex;
+  place-items: center;
+  flex-direction: column;
 `;
 
 const DeviceContainer = styled(BackgroundAnimation)`
   position: relative;
   display: flex;
   place-content: center;
-  gap: 5px;
+
   padding: 5px;
   margin-top: 20px;
   max-width: 1000px;
-  @media (max-width: 800px) {
+  @media (max-width: 1000px) {
     display: grid;
     grid-template-rows: 1fr 1fr;
     grid-template-columns: 1fr;
@@ -107,7 +108,7 @@ const HeaderContainer = styled.header`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   margin-top: 20px;
-  @media (max-width: 800px) {
+  @media (max-width: 1000px) {
     display: none;
   }
 `;

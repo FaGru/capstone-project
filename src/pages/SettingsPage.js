@@ -7,7 +7,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import * as Tone from 'tone';
 import useStore from '../hooks/useStore';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/Navbar/Navbar';
 
 export default function SettingsPage({ setStoragedPadSettings }) {
   const [selectedPad, setSelectedPad] = useState('0');

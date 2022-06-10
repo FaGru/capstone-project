@@ -5,7 +5,7 @@ import RecordingsPage from './pages/RecordingsPage';
 import SequencerPage from './pages/SequencerPage';
 import LandingPage from './pages/LandingPage';
 import DJPage from './pages/DJPage';
-import Navbar from './components/Navbar';
+import Navbar from './components/Navbar/Navbar';
 
 import useLocalStorage from './hooks/useLocalStorage';
 import { useEffect } from 'react';

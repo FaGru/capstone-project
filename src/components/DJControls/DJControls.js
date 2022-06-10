@@ -480,7 +480,6 @@ export default function DJControls() {
 }
 
 const Container = styled.section`
-  position: relative;
   display: grid;
   grid-template-columns: auto 1fr auto;
   grid-template-rows: 1fr auto;
