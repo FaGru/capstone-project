@@ -1,24 +1,19 @@
 import DJPlayerOne from '../components/DJPlayerOne/DJPlayerOne';
 import DJPlayerTwo from '../components/DJPlayerTwo/DJPlayerTwo';
 import DJControls from '../components/DJControls/DJControls';
-import { StyledButtonImg } from '../components/Buttons';
 import { BackgroundAnimation } from '../components/BackgroundAnimation';
+import NavAnimation from '../components/FramerMotion';
 
-import backIcon from '../images/back.svg';
-
-import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import useStore from '../hooks/useStore';
+import Navbar from '../components/Navbar/Navbar';
 
 export default function DJPage() {
   const [visiblePlayer, setVisiblePlayer] = useState(1);
-  const {
-    djPlayerOne,
-    djPlayerTwo,
-    isMIDIAssignButtonActive,
-    setIsMIDIAssignButtonActive,
-  } = useStore(state => state);
+  const { isMIDIAssignButtonActive, setIsMIDIAssignButtonActive } = useStore(
+    state => state
+  );
 
   const [isDesktop, setDesktop] = useState(false);
 
@@ -42,62 +37,61 @@ export default function DJPage() {
 
   return (
     <>
-      <HeaderContainer>
-        <NavLink aria-label="back" to="/" onClick={handleNavigate}>
-          <BackButtonImg
-            src={backIcon}
-            alt="back-button"
-            width="50px"
-            height="50px"
-          />
-        </NavLink>
-        <MIDIButton
-          isActive={isMIDIAssignButtonActive}
-          onClick={setIsMIDIAssignButtonActive}
-        >
-          Assign <br />
-          MIDI-Control
-        </MIDIButton>
-      </HeaderContainer>
+      <Navbar />
+      <NavAnimation start="initialRight" end="outRight">
+        <PageContainer>
+          <HeaderContainer>
+            <MIDIButton
+              isActive={isMIDIAssignButtonActive}
+              onClick={setIsMIDIAssignButtonActive}
+            >
+              Assign <br />
+              MIDI-Control
+            </MIDIButton>
+          </HeaderContainer>
 
-      <PageContainer visible={visiblePlayer}>
-        <DJPlayerOne
-          visiblePlayer={visiblePlayer}
-          setVisiblePlayer={setVisiblePlayer}
-          isDesktop={isDesktop}
-        />
-        <DJControls />
-        <DJPlayerTwo
-          visiblePlayer={visiblePlayer}
-          setVisiblePlayer={setVisiblePlayer}
-          isDesktop={isDesktop}
-        />
-      </PageContainer>
+          <DeviceContainer>
+            <DJPlayerOne
+              visiblePlayer={visiblePlayer}
+              setVisiblePlayer={setVisiblePlayer}
+              isDesktop={isDesktop}
+            />
+            <DJControls />
+            <DJPlayerTwo
+              visiblePlayer={visiblePlayer}
+              setVisiblePlayer={setVisiblePlayer}
+              isDesktop={isDesktop}
+            />
+          </DeviceContainer>
+        </PageContainer>
+      </NavAnimation>
     </>
   );
-
-  function handleNavigate() {
-    djPlayerOne.stop();
-    djPlayerTwo.stop();
-  }
 }
 
-const PageContainer = styled(BackgroundAnimation)`
+const PageContainer = styled.main`
+  display: flex;
+  place-items: center;
+  flex-direction: column;
+`;
+
+const DeviceContainer = styled(BackgroundAnimation)`
   position: relative;
   display: flex;
   place-content: center;
-  gap: 5px;
+
   padding: 5px;
-  @media (max-width: 800px) {
+  margin-top: 20px;
+  max-width: 1000px;
+  @media (max-width: 1000px) {
     display: grid;
     grid-template-rows: 1fr 1fr;
     grid-template-columns: 1fr;
   }
 `;
-const BackButtonImg = styled(StyledButtonImg)`
-  margin: 20px;
-`;
+
 const MIDIButton = styled.button`
+  grid-column: 2 / 3;
   align-self: center;
   justify-self: center;
   background-color: ${props =>
@@ -113,4 +107,8 @@ const MIDIButton = styled.button`
 const HeaderContainer = styled.header`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  margin-top: 20px;
+  @media (max-width: 1000px) {
+    display: none;
+  }
 `;

@@ -7,7 +7,6 @@ import { defaultSequencerSettings } from '../data';
 const useStore = create((set, get) => ({
   tone: null,
   dest: null,
-  navDirection: { start: 'initialBottom', end: 'outBottom' },
   recorder: null,
   monoSynth: null,
   synth: null,
@@ -15,6 +14,8 @@ const useStore = create((set, get) => ({
   allPads: defaultPadSettings,
   keyboardVolume: 5,
   mousePosition: { x: 0, y: 0 },
+  currentPage: null,
+  isBurgerMenuVisible: false,
   ///////// Drumloop-Player States //////
   loopPlayer: null,
   loopPlayerVolume: 5,
@@ -74,6 +75,13 @@ const useStore = create((set, get) => ({
 
   setMousePosition: (positionX, positionY) => {
     set({ mousePosition: { x: positionX, y: positionY } });
+  },
+  setCurrentPage: newPage => {
+    set({ currentPage: newPage });
+  },
+  setIsBurgerMenuVisible: () => {
+    const isBurgerMenuVisible = get().isBurgerMenuVisible;
+    set({ isBurgerMenuVisible: !isBurgerMenuVisible });
   },
 
   handleUserInteraction: () => {
@@ -295,15 +303,10 @@ const useStore = create((set, get) => ({
   setInstructionFiveVisible: isInstructionFiveVisible => {
     set({ isInstructionFiveVisible: isInstructionFiveVisible });
   },
-  ///////////////     NavDirection DrumMachine      ///////////////
-  setNavDirection: navDirection => {
-    set({ navDirection: navDirection });
-  },
   ///////////////     DJ Player      ///////////////
   initDJPlayerOne: () => {
     const { eqOneSettings, volumeFaderOnePosition } = get();
     const faderPosition = get().faderPosition - 63.5;
-    console.log(volumeFaderOnePosition);
     const highpassFilterPlayerOne = new Tone.Filter({
       frequency: 0,
       type: 'highpass',
@@ -320,7 +323,6 @@ const useStore = create((set, get) => ({
     if (faderPosition === 63.5 || volumeFaderOnePosition === 0) {
       djPlayerOne.mute = true;
     } else if (volumeFaderOnePosition !== 0) {
-      console.log('hallo');
       djPlayerOne.mute = false;
       if (faderPosition >= 0) {
         const conversionNumber = (1 / 63.5) * -faderPosition + 1;

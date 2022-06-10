@@ -8,12 +8,11 @@ import { motion } from 'framer-motion';
 import backround from '../images/background.jpg';
 
 export default function LandingPage() {
-  const setInstructionOneVisible = useStore(
-    state => state.setInstructionOneVisible
-  );
-  const setIsInstructionNavVisible = useStore(
-    state => state.setIsInstructionNavVisible
-  );
+  const {
+    setInstructionOneVisible,
+    setCurrentPage,
+    setIsInstructionNavVisible,
+  } = useStore(state => state);
 
   return (
     <NavAnimation end="outTop">
@@ -22,7 +21,11 @@ export default function LandingPage() {
           Welcome to <br />
           <span>NanoBeats</span>
         </H1>
-        <Link type="button" to="/drum-machine">
+        <Link
+          type="button"
+          to="/drum-machine"
+          onClick={() => setCurrentPage('drum-machine')}
+        >
           <LandingPageButton
             animate={{ x: [-1000, 50, 0] }}
             transition={{ duration: 0.4 }}
@@ -30,7 +33,11 @@ export default function LandingPage() {
             DrumMachine
           </LandingPageButton>
         </Link>
-        <Link type="button" to="/sequencer">
+        <Link
+          type="button"
+          to="/sequencer"
+          onClick={() => setCurrentPage('sequencer')}
+        >
           <LandingPageButton
             animate={{ x: [1000, -50, 0] }}
             transition={{ duration: 0.4, delay: 0.15 }}
@@ -38,7 +45,11 @@ export default function LandingPage() {
             Sequencer
           </LandingPageButton>
         </Link>
-        <Link type="button" to="/settings">
+        <Link
+          type="button"
+          to="/settings"
+          onClick={() => setCurrentPage('settings')}
+        >
           <LandingPageButton
             animate={{ x: [-1000, 50, 0] }}
             transition={{ duration: 0.4, delay: 0.3 }}
@@ -46,7 +57,7 @@ export default function LandingPage() {
             Settings
           </LandingPageButton>
         </Link>
-        <Link type="button" to="/dj">
+        <Link type="button" to="/dj" onClick={() => setCurrentPage('dj')}>
           <LandingPageButton
             animate={{ x: [1000, 50, 0] }}
             transition={{ duration: 0.4, delay: 0.45 }}
@@ -69,6 +80,7 @@ export default function LandingPage() {
   function instructionClick() {
     setInstructionOneVisible(true);
     setIsInstructionNavVisible(true);
+    setCurrentPage('drum-machine');
   }
 }
 

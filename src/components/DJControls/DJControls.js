@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import useStore from '../../hooks/useStore';
 import knobIcon from '../../images/control-knob.svg';
-import { BackgroundAnimation } from '../BackgroundAnimation';
+
 
 export default function DJControls() {
   const {

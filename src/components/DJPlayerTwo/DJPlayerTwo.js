@@ -30,7 +30,7 @@ export default function DJPlayer({
     <PlayerContainer
       initial={{ x: '-500px' }}
       animate={
-        visiblePlayer === 1 && isDesktop === false ? { x: -500 } : { x: 0 }
+        visiblePlayer === 1 && isDesktop === false ? { x: -700 } : { x: 0 }
       }
       transition={{
         type: 'tween',
@@ -179,7 +179,7 @@ const PlayerContainer = styled(motion.div)`
   box-shadow: inset 0 0 15px 5px var(--black);
   border: 1px solid var(--darkgray);
   background-color: var(--darkgray);
-  @media (max-width: 600px) {
+  @media (max-width: 1000px) {
     grid-row: 1/ 2;
     grid-column: 1 / 2;
   }
@@ -207,7 +207,7 @@ const PlayerSwitchButton = styled.button`
   align-self: center;
   justify-self: end;
   margin: 5px;
-  @media (min-width: 601px) {
+  @media (min-width: 1001px) {
     display: none;
   }
 `;

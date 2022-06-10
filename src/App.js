@@ -5,6 +5,7 @@ import RecordingsPage from './pages/RecordingsPage';
 import SequencerPage from './pages/SequencerPage';
 import LandingPage from './pages/LandingPage';
 import DJPage from './pages/DJPage';
+import Navbar from './components/Navbar/Navbar';
 
 import useLocalStorage from './hooks/useLocalStorage';
 import { useEffect } from 'react';
@@ -17,12 +18,18 @@ import { defaultPadSettings } from './data';
 
 export default function App() {
   const location = useLocation();
-  const handleUserInteraction = useStore(state => state.handleUserInteraction);
+
+  const {
+    isDevicePopUpVisible,
+    connectedMIDIDevices,
+    assignedMIDIControlMessage,
+    handleUserInteraction,
+    setAllPads,
+  } = useStore(state => state);
+
   useEffect(() => {
     handleUserInteraction();
   });
-
-  const setAllPads = useStore(state => state.setAllPads);
 
   const [storagedPadSettings, setStoragedPadSettings] = useLocalStorage(
     'storagedPadSettings',
@@ -40,12 +47,6 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const {
-    isDevicePopUpVisible,
-    connectedMIDIDevices,
-    assignedMIDIControlMessage,
-  } = useStore(state => state);
-
   return (
     <div>
       <DevicePopUp isVisible={isDevicePopUpVisible}>
@@ -60,9 +61,12 @@ export default function App() {
           <Route
             path="/drum-machine"
             element={
-              <InstrumentContainer>
-                <DrumMachinePage /> <KeyboardPage />
-              </InstrumentContainer>
+              <>
+                <Navbar />
+                <InstrumentContainer>
+                  <DrumMachinePage /> <KeyboardPage />
+                </InstrumentContainer>
+              </>
             }
           />
           <Route
