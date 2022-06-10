@@ -15,6 +15,7 @@ const useStore = create((set, get) => ({
   keyboardVolume: 5,
   mousePosition: { x: 0, y: 0 },
   currentPage: null,
+  isBurgerMenuVisible: false,
   ///////// Drumloop-Player States //////
   loopPlayer: null,
   loopPlayerVolume: 5,
@@ -75,8 +76,12 @@ const useStore = create((set, get) => ({
   setMousePosition: (positionX, positionY) => {
     set({ mousePosition: { x: positionX, y: positionY } });
   },
-  setCurrentPage: (newPage) => {
-    set({currentPage: newPage})
+  setCurrentPage: newPage => {
+    set({ currentPage: newPage });
+  },
+  setIsBurgerMenuVisible: () => {
+    const isBurgerMenuVisible = get().isBurgerMenuVisible;
+    set({ isBurgerMenuVisible: !isBurgerMenuVisible });
   },
 
   handleUserInteraction: () => {

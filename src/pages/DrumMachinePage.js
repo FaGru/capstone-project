@@ -15,7 +15,6 @@ import useStore from '../hooks/useStore';
 
 import volumeLogo from '../images/EQ.svg';
 
-
 export default function DrumMachinePage() {
   const [isControlsVisible, setIsControlsVisible] = useState(false);
 
@@ -34,7 +33,6 @@ export default function DrumMachinePage() {
 
   return (
     <div>
-      
       <NavAnimation start={'initialTop'} end={'initialTop'}>
         <DrumMachineContainer>
           <InstructionsDrumMachine />
@@ -95,7 +93,6 @@ export default function DrumMachinePage() {
   ////////////////////drumPad////////////////////
   function drumPadClick(playerNumber) {
     const { drumPadPlayers } = useStore.getState();
-    console.log(playerNumber);
     Tone.loaded().then(() => {
       drumPadPlayers.player(`Player${playerNumber}`).start();
     });

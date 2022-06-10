@@ -11,11 +11,15 @@ import drumMachineLogo from '../../images/drum-machine.svg';
 import nanoBeatsLogo from '../../images/nano-beats-logo.svg';
 import burgerMenuLogo from '../../images/burger-menu.svg';
 import useStore from '../../hooks/useStore';
-import { useState } from 'react';
+
 
 export default function Navbar() {
-  const { currentPage, setCurrentPage } = useStore(state => state);
-  const [isBurgerMenuVisible, setIsBurgerMenuVisible] = useState(false);
+  const {
+    currentPage,
+    isBurgerMenuVisible,
+    setCurrentPage,
+    setIsBurgerMenuVisible,
+  } = useStore(state => state);
 
   return (
     <div>
@@ -26,7 +30,7 @@ export default function Navbar() {
             height="70px"
             width="70px"
             alt="Nano-Beats"
-            currentPage={currentPage}
+            currentpage={currentPage}
             onClick={event => setCurrentPage(event.target.alt)}
           />
         </NavLink>
@@ -36,7 +40,7 @@ export default function Navbar() {
             height="55px"
             width="55px"
             alt="sequencer"
-            currentPage={currentPage}
+            currentpage={currentPage}
             onClick={event => setCurrentPage(event.target.alt)}
           />
         </NavigationLink>
@@ -46,7 +50,7 @@ export default function Navbar() {
             height="55px"
             width="55px"
             alt="drum-machine"
-            currentPage={currentPage}
+            currentpage={currentPage}
             onClick={event => setCurrentPage(event.target.alt)}
           />
         </NavigationLink>
@@ -56,7 +60,7 @@ export default function Navbar() {
             height="55px"
             width="55px"
             alt="dj"
-            currentPage={currentPage}
+            currentpage={currentPage}
             onClick={event => setCurrentPage(event.target.alt)}
           />
         </NavigationLink>
@@ -66,7 +70,7 @@ export default function Navbar() {
             height="55px"
             width="55px"
             alt="recordings"
-            currentPage={currentPage}
+            currentpage={currentPage}
             onClick={event => setCurrentPage(event.target.alt)}
           />
         </NavigationLink>
@@ -76,7 +80,7 @@ export default function Navbar() {
             height="55px"
             width="55px"
             alt="settings"
-            currentPage={currentPage}
+            currentpage={currentPage}
             onClick={event => setCurrentPage(event.target.alt)}
           />
         </NavigationLink>
@@ -102,6 +106,11 @@ const LinkContainer = styled.div`
   align-items: center;
   background-color: var(--darkgray);
   border-bottom: 1px solid var(--gray);
+  @media (max-width: 600px) {
+    justify-content: space-between;
+    padding-left: 20px;
+    padding-right: 10px;
+  }
 `;
 const NanoBeatsLogo = styled.img`
   text-decoration: none;
@@ -113,7 +122,7 @@ const NanoBeatsLogo = styled.img`
 `;
 const NavbarImage = styled(StyledButtonImg)`
   background-color: ${props =>
-    props.alt === props.currentPage && 'var(--blue)'};
+    props.alt === props.currentpage && 'var(--blue)'};
 `;
 const BurgerMenuButton = styled(InvisibleButton)`
   @media (min-width: 601px) {

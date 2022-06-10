@@ -1,70 +1,83 @@
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import useStore from '../../hooks/useStore';
-import { motion } from 'framer-motion';
+import closeLogo from '../../images/close.svg';
 
 export default function BurgerMenuNavbar() {
-  const { currentPage, setCurrentPage } = useStore(state => state);
+  const { currentPage, setCurrentPage, setIsBurgerMenuVisible } = useStore(
+    state => state
+  );
   return (
-    <Container
-      initial={{ scale: 0 }}
-      animate={{ scale: 1 }}
-      exit={{ scale: 0 }}
-    >
-      <Navigation
-        to="/sequencer"
-        name="sequencer"
-        currentPage={currentPage}
-        onClick={event => setCurrentPage(event.target.name)}
-      >
-        Sequencer
-      </Navigation>
-      <Navigation
-        to="/drum-machine"
-        name="drum-machine"
-        currentPage={currentPage}
-        onClick={event => setCurrentPage(event.target.name)}
-      >
-        DrumMachine
-      </Navigation>
-      <Navigation
-        to="/dj"
-        name="dj"
-        currentPage={currentPage}
-        onClick={event => setCurrentPage(event.target.name)}
-      >
-        DJ-Deck
-      </Navigation>
-      <Navigation
-        to="/recordings"
-        name="recordings"
-        currentPage={currentPage}
-        onClick={event => setCurrentPage(event.target.name)}
-      >
-        Recordings
-      </Navigation>
-      <Navigation
-        to="/settings"
-        name="settings"
-        currentPage={currentPage}
-        onClick={event => setCurrentPage(event.target.name)}
-      >
-        Settings
-      </Navigation>
-    </Container>
+    <>
+      <Container>
+        <CloseImage
+          src={closeLogo}
+          alt="close"
+          height="20px"
+          width="20px"
+          onClick={setIsBurgerMenuVisible}
+        />
+        <Navigation
+          to="/sequencer"
+          name="sequencer"
+          currentpage={currentPage}
+          onClick={event => setCurrentPage(event.target.name)}
+        >
+          Sequencer
+        </Navigation>
+        <Navigation
+          to="/drum-machine"
+          name="drum-machine"
+          currentpage={currentPage}
+          onClick={event => setCurrentPage(event.target.name)}
+        >
+          DrumMachine
+        </Navigation>
+        <Navigation
+          to="/dj"
+          name="dj"
+          currentpage={currentPage}
+          onClick={event => setCurrentPage(event.target.name)}
+        >
+          DJ-Deck
+        </Navigation>
+        <Navigation
+          to="/recordings"
+          name="recordings"
+          currentpage={currentPage}
+          onClick={event => setCurrentPage(event.target.name)}
+        >
+          Recordings
+        </Navigation>
+        <Navigation
+          to="/settings"
+          name="settings"
+          currentpage={currentPage}
+          onClick={event => setCurrentPage(event.target.name)}
+        >
+          Settings
+        </Navigation>
+      </Container>
+    </>
   );
 }
 
-const Container = styled(motion.section)`
+const Container = styled.section`
   display: flex;
   position: absolute;
-  flex-direction: column;
+
   top: 80px;
+  left: 50%;
+  transform: translate(-50%);
+  flex-direction: column;
   z-index: 5;
   width: 300px;
   border: 2px solid var(--lightgray);
   border-radius: 10px;
   background-color: var(--darkgray);
+  @media (min-width: 601px) {
+    display: none;
+  }
 `;
 
 const Navigation = styled(NavLink)`
@@ -75,11 +88,16 @@ const Navigation = styled(NavLink)`
   padding: 10px;
   border-radius: 10px;
   ${props =>
-    props.name === props.currentPage &&
+    props.name === props.currentpage &&
     'background-color: var(--blue); color: var(--black)'};
   &:hover {
     ${props =>
-      props.name !== props.currentPage &&
+      props.name !== props.currentpage &&
       'background-color: var(--yellow-active); color: var(--black)'};
   }
+`;
+const CloseImage = styled.img`
+  place-self: end;
+  margin: 10px 10px 2px 0;
+  cursor: pointer;
 `;
