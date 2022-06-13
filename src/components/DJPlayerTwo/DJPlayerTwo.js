@@ -7,7 +7,6 @@ import { InvisibleButton, StyledButtonImg } from '../Buttons';
 import playIcon from '../../images/play.svg';
 import pauseIcon from '../../images/pause.svg';
 import cueIcon from '../../images/cue.svg';
-import uploadIcon from '../../images/upload.svg';
 
 export default function DJPlayer({
   visiblePlayer,
@@ -24,7 +23,9 @@ export default function DJPlayer({
   } = useStore(state => state);
 
   const [twoIsPlaying, setTwoIsPlaying] = useState(0);
-  const [trackNameTwo, setTrackNameTwo] = useState('load up a track...');
+  const [trackNameTwo, setTrackNameTwo] = useState(
+    '- click to select a track -'
+  );
 
   return (
     <PlayerContainer
@@ -38,28 +39,30 @@ export default function DJPlayer({
         duration: 0.5,
       }}
     >
-      <TrackUploadLabel htmlFor="file upload two">
-        <img src={uploadIcon} alt="upload" />
-        <div>
-          {trackNameTwo.length >= 50
-            ? trackNameTwo.slice(0, 50) + '...'
-            : trackNameTwo}
-        </div>
-        <input
-          onChange={handleTrackTwo}
-          type="file"
-          accept="audio/*"
-          id="file upload two"
-          name="file upload two"
-          data-testid="file upload two"
-        />
-      </TrackUploadLabel>
+      <TrackUploadContainer>
+        <TrackUploadLabel htmlFor="file upload two">
+          <p>
+            {trackNameTwo.length >= 50
+              ? trackNameTwo.slice(0, 50) + '...'
+              : trackNameTwo}
+          </p>
+          <input
+            onChange={handleTrackTwo}
+            type="file"
+            accept="audio/*"
+            id="file upload two"
+            name="file upload two"
+            data-testid="file upload two"
+          />
+        </TrackUploadLabel>
+        <WaveformContainer id="waveformTwo"></WaveformContainer>
+      </TrackUploadContainer>
       <Vinyl
         rotate={twoIsPlaying}
         src={vinylIcon}
         alt="vinyl"
-        height="150px"
-        width="150px"
+        height="130px"
+        width="130px"
       />
       <PitchFaderLabel htmlFor="pitch fader two">
         <PitchFaderInput
@@ -126,12 +129,14 @@ export default function DJPlayer({
     </PlayerContainer>
   );
   function handlePlayTwo() {
-    const { djPlayerTwo } = useStore.getState();
+    const { djPlayerTwo, wavesurferTwo } = useStore.getState();
     if (djPlayerTwo.state === 'stopped') {
       djPlayerTwo.start();
+      wavesurferTwo.play();
       setTwoIsPlaying(1);
     } else {
       djPlayerTwo.stop();
+      wavesurferTwo.stop();
       setTwoIsPlaying(0);
     }
   }
@@ -211,18 +216,24 @@ const PlayerSwitchButton = styled.button`
     display: none;
   }
 `;
-const TrackUploadLabel = styled.label`
+const TrackUploadContainer = styled.div`
   grid-column: 1 / 4;
   grid-row: 1 / 2;
-  align-self: center;
-  justify-self: center;
-  max-width: 300px;
   display: flex;
-  gap: 10px;
-  margin: 5px;
+  flex-direction: column;
+  align-items: center;
+`;
+const TrackUploadLabel = styled.label`
+  margin: 10px;
+  cursor: pointer;
 
   input {
     display: none;
+  }
+  p {
+    margin: 0;
+    font-size: 0.8rem;
+    text-align: center;
   }
 `;
 const PitchFaderLabel = styled.label`
@@ -243,7 +254,7 @@ const PitchFaderInput = styled.input`
 `;
 
 const Vinyl = styled.img`
-  margin: 10px;
+  margin: 5px;
   grid-column: 1 / 4;
   grid-row: 3 / 4;
   justify-self: center;
@@ -263,8 +274,19 @@ const FXButton = styled.button`
       ? '0 0 20px 2px var(--blue)'
       : 'inset 0 0 20px 2px var(--blue-active)'};
   border-radius: 5px;
-  margin: 10px;
+  margin: 5px;
   ${props =>
     props.isMIDIAssignActive &&
     'background-color: var(--purple); box-shadow: inset 0 0 20px 2px var(--purple)'};
+`;
+const WaveformContainer = styled.div`
+  align-content: center;
+  justify-self: center;
+  padding-top: 8px;
+  width: 250px;
+  height: 50px;
+  border-radius: 10px;
+  background-color: var(--blue);
+  border: 1px solid var(--gray);
+  box-shadow: inset 0 0 10px 5px var(--black), 0 0 5px 0px var(--lightgray);
 `;
