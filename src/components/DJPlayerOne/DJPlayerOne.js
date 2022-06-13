@@ -7,7 +7,6 @@ import vinylIcon from '../../images/vinyl.svg';
 import playIcon from '../../images/play.svg';
 import pauseIcon from '../../images/pause.svg';
 import cueIcon from '../../images/cue.svg';
-import uploadIcon from '../../images/upload.svg';
 
 export default function DJPlayer({
   visiblePlayer,
@@ -24,7 +23,9 @@ export default function DJPlayer({
   } = useStore(state => state);
 
   const [oneIsPlaying, setOneIsPlaying] = useState(0);
-  const [trackNameOne, setTrackNameOne] = useState('load up a track...');
+  const [trackNameOne, setTrackNameOne] = useState(
+    '- click to select a track -'
+  );
 
   return (
     <PlayerContainer
@@ -38,29 +39,30 @@ export default function DJPlayer({
         duration: 0.5,
       }}
     >
-      <TrackUploadLabel htmlFor="file upload one">
-        <img src={uploadIcon} alt="upload" />
-        <div>
-          {trackNameOne.length >= 50
-            ? trackNameOne.slice(0, 50) + '...'
-            : trackNameOne}
-        </div>
-
-        <input
-          onChange={handleTrackOne}
-          type="file"
-          accept="audio/*"
-          id="file upload one"
-          name="file upload one"
-          data-testid="file upload one"
-        />
-      </TrackUploadLabel>
+      <TrackUploadContainer>
+        <TrackUploadLabel htmlFor="file upload one">
+          <p>
+            {trackNameOne.length >= 50
+              ? trackNameOne.slice(0, 50) + '...'
+              : trackNameOne}
+          </p>
+          <input
+            onChange={handleTrackOne}
+            type="file"
+            accept="audio/*"
+            id="file upload one"
+            name="file upload one"
+            data-testid="file upload one"
+          />
+        </TrackUploadLabel>
+        <WaveformContainer id="waveformOne"></WaveformContainer>
+      </TrackUploadContainer>
       <Vinyl
         rotate={oneIsPlaying}
         src={vinylIcon}
         alt="vinyl"
-        height="150px"
-        width="150px"
+        height="130px"
+        width="130px"
       />
       <PitchFaderLabel htmlFor="pitch fader one">
         <PitchFaderInput
@@ -128,12 +130,14 @@ export default function DJPlayer({
   );
 
   function handlePlayOne() {
-    const { djPlayerOne } = useStore.getState();
+    const { djPlayerOne, wavesurferOne } = useStore.getState();
     if (djPlayerOne.state === 'stopped') {
       djPlayerOne.start();
+      wavesurferOne.play();
       setOneIsPlaying(1);
     } else {
       djPlayerOne.stop();
+      wavesurferOne.stop();
       setOneIsPlaying(0);
     }
   }
@@ -217,18 +221,23 @@ const PlayerSwitchButton = styled.button`
     display: none;
   }
 `;
-const TrackUploadLabel = styled.label`
+const TrackUploadContainer = styled.div`
   grid-column: 1 / 4;
   grid-row: 1 / 2;
-  align-self: center;
-  justify-self: center;
-  max-width: 300px;
   display: flex;
-  gap: 10px;
-  margin: 5px;
+  flex-direction: column;
+  align-items: center;
+`;
+const TrackUploadLabel = styled.label`
+  margin: 10px;
 
   input {
     display: none;
+  }
+  p {
+    margin: 0;
+    font-size: 0.8rem;
+    text-align: center;
   }
 `;
 const PitchFaderLabel = styled.label`
@@ -236,7 +245,6 @@ const PitchFaderLabel = styled.label`
   grid-row: 3 / 4;
   justify-self: center;
   width: 120px;
-
   display: flex;
 `;
 const PitchFaderInput = styled.input`
@@ -250,7 +258,7 @@ const PitchFaderInput = styled.input`
 `;
 
 const Vinyl = styled.img`
-  margin: 10px;
+  margin: 5px;
   grid-column: 1 / 4;
   grid-row: 3 / 4;
   justify-self: center;
@@ -270,8 +278,19 @@ const FXButton = styled.button`
       ? '0 0 20px 2px var(--blue)'
       : 'inset 0 0 20px 2px var(--blue-active)'};
   border-radius: 5px;
-  margin: 10px;
+  margin: 5px;
   ${props =>
     props.isMIDIAssignActive &&
     'background-color: var(--purple); box-shadow: inset 0 0 20px 2px var(--purple)'};
+`;
+const WaveformContainer = styled.div`
+  align-content: center;
+  justify-self: center;
+  padding-top: 8px;
+  width: 250px;
+  height: 50px;
+  border-radius: 10px;
+  background-color: var(--blue);
+  border: 1px solid var(--gray);
+  box-shadow: inset 0 0 10px 5px var(--black), 0 0 5px 0px var(--lightgray);
 `;

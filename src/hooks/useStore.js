@@ -3,6 +3,7 @@ import * as Tone from 'tone';
 import { nanoid } from 'nanoid';
 import { defaultPadSettings } from '../data';
 import { defaultSequencerSettings } from '../data';
+import WaveSurfer from 'wavesurfer.js';
 
 const useStore = create((set, get) => ({
   tone: null,
@@ -72,6 +73,8 @@ const useStore = create((set, get) => ({
   volumeFaderOnePosition: 127,
   volumeFaderTwoPosition: 127,
   render: false,
+  wavesurferOne: null,
+  wavesurferTwo: null,
 
   setMousePosition: (positionX, positionY) => {
     set({ mousePosition: { x: positionX, y: positionY } });
@@ -307,6 +310,7 @@ const useStore = create((set, get) => ({
   initDJPlayerOne: () => {
     const { eqOneSettings, volumeFaderOnePosition } = get();
     const faderPosition = get().faderPosition - 63.5;
+
     const highpassFilterPlayerOne = new Tone.Filter({
       frequency: 0,
       type: 'highpass',
@@ -317,6 +321,25 @@ const useStore = create((set, get) => ({
     }).connect(highpassFilterPlayerOne);
     const eq3One = new Tone.EQ3(eqOneSettings).connect(lowpassFilterPlayerOne);
     const djPlayerOne = new Tone.Player(get().djTrackOne).connect(eq3One);
+
+    if (get().wavesurferOne) {
+      get().wavesurferOne.destroy();
+    }
+    const newWavesurfer = WaveSurfer.create({
+      container: '#waveformOne',
+      waveColor: 'white',
+      progressColor: 'gray',
+      height: '32',
+      width: '200px',
+      barWidth: 1,
+    });
+    newWavesurfer.load(get().djTrackOne);
+    newWavesurfer.setMute(true);
+    newWavesurfer.on('seek', function () {
+      const currentTime = newWavesurfer.getCurrentTime();
+      djPlayerOne.seek(currentTime);
+    });
+    set({ wavesurferOne: newWavesurfer });
 
     djPlayerOne.playbackRate = get().djPlayerOnePlaybackRate / 317.5 + 0.8;
 
@@ -350,6 +373,27 @@ const useStore = create((set, get) => ({
     }).connect(highpassFilterPlayerTwo);
     const eq3Two = new Tone.EQ3(eqTwoSettings).connect(lowpassFilterPlayerTwo);
     const djPlayerTwo = new Tone.Player(get().djTrackTwo).connect(eq3Two);
+
+    if (get().wavesurferTwo) {
+      get().wavesurferTwo.destroy();
+    }
+    const newWavesurfer = WaveSurfer.create({
+      container: '#waveformTwo',
+      waveColor: 'white',
+      progressColor: 'gray',
+      height: '32',
+      width: '200px',
+      barWidth: 1,
+    });
+    newWavesurfer.load(get().djTrackTwo);
+    newWavesurfer.setMute(true);
+    newWavesurfer.on('seek', function () {
+      const currentTime = newWavesurfer.getCurrentTime();
+      djPlayerTwo.seek(currentTime);
+      newWavesurfer.setPlayEnd(currentTime);
+    });
+    set({ wavesurferTwo: newWavesurfer });
+
     djPlayerTwo.playbackRate = get().djPlayerTwoPlaybackRate / 317.5 + 0.8;
 
     if (faderPosition === -63.5) {

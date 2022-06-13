@@ -14,6 +14,8 @@
     "startaudiocontext": "^1.2.1",
     "styled-components": "^5.3.3",
     "tone": "^14.7.77",
+    "wavesurfer-react": "^2.1.6",
+    "wavesurfer.js": "^6.2.0",
     "web-vitals": "^2.1.4",
     "zustand": "^3.7.1"
   },
