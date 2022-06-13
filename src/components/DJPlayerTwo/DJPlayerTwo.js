@@ -23,7 +23,9 @@ export default function DJPlayer({
   } = useStore(state => state);
 
   const [twoIsPlaying, setTwoIsPlaying] = useState(0);
-  const [trackNameTwo, setTrackNameTwo] = useState('load up a track...');
+  const [trackNameTwo, setTrackNameTwo] = useState(
+    '- click to select a track -'
+  );
 
   return (
     <PlayerContainer
@@ -223,6 +225,7 @@ const TrackUploadContainer = styled.div`
 `;
 const TrackUploadLabel = styled.label`
   margin: 10px;
+  cursor: pointer;
 
   input {
     display: none;

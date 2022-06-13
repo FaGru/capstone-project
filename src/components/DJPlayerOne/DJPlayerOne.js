@@ -230,6 +230,7 @@ const TrackUploadContainer = styled.div`
 `;
 const TrackUploadLabel = styled.label`
   margin: 10px;
+  cursor: pointer;
 
   input {
     display: none;
