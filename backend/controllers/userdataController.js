@@ -1,10 +1,15 @@
 const asyncHandler = require("express-async-handler");
+const { globalAgent } = require("http");
+
+const Userdata = require("../model/userdataModel");
 
 // @desc    Get userdata
 // @route   GET /api/userdata
 // @acces   Private
 const getUserdatas = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "Get Userdata" });
+  const userdatas = await Userdata.find({});
+
+  res.status(200).json(userdatas);
 });
 
 // @desc    Set userdata
@@ -16,21 +21,41 @@ const setUserdata = asyncHandler(async (req, res) => {
     throw new Error("Please add a text field");
   }
 
-  res.status(200).json({ message: "Set Userdata" });
+  const userdata = await Userdata.create({
+    text: req.body.text,
+  });
+
+  res.status(200).json(userdata);
 });
 
 // @desc    Update userdata
 // @route   PUT /api/userdata/id
 // @acces   Private
 const updateUserdata = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: `Update Userdata ${req.params.id}` });
+  const userdata = await Userdata.findById(req.params.id);
+
+  if (!userdata) {
+    res.status(400);
+    throw new Error("Userdata not found");
+  }
+  const updatedUserdata = await Userdata.findByIdAndUpdate(req.params.id, req.body, { new: true });
+
+  res.status(200).json(updatedUserdata);
 });
 
 // @desc    Delete userdata
 // @route   DELETE /api/userdata/id
 // @acces   Private
 const deleteUserdata = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: `Delete Userdata ${req.params.id}` });
+  const userdata = await Userdata.findById(req.params.id);
+
+  if (!userdata) {
+    res.status(400);
+    throw new Error("Userdata not found");
+  }
+  await userdata.remove();
+
+  res.status(200).json({ id: req.params.id });
 });
 
 module.exports = {
