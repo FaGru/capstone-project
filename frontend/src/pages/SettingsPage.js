@@ -1,13 +1,15 @@
 import PadSettings from '../components/PadSettings/PadSettings';
 import InstructionPadSettings from '../components/Instructions/InstructionsPadSettings';
+import useStore from '../hooks/useStore';
+import Navbar from '../components/Navbar/Navbar';
 import NavAnimation from '../components/FramerMotion';
+import SettingsNavbar from '../components/SettingsNavbar/SettingsNavbar';
+import UserSettings from '../components/UserSettings/UserSettings';
 import { BackgroundAnimation } from '../components/BackgroundAnimation';
 
 import { useState } from 'react';
 import styled from 'styled-components';
 import * as Tone from 'tone';
-import useStore from '../hooks/useStore';
-import Navbar from '../components/Navbar/Navbar';
 
 export default function SettingsPage({ setStoragedPadSettings }) {
   const [selectedPad, setSelectedPad] = useState('0');
@@ -15,27 +17,27 @@ export default function SettingsPage({ setStoragedPadSettings }) {
   const [selectedSample, setSelectedSample] = useState(
     './audio/Samples/Backspin1.wav'
   );
-  const allPads = useStore(state => state.allPads);
-  const setAllPads = useStore(state => state.setAllPads);
+  const { allPads, setAllPads, visibleSettings } = useStore(state => state);
 
   return (
     <>
       <Navbar />
       <NavAnimation start="initialBottom" end="outBottom">
         <PageContainer>
-          <HeadingContainer>
-            <Heading>Settings</Heading>
-          </HeadingContainer>
+          <SettingsNavbar />
           <SettingsContainer>
             <InstructionPadSettings />
-            <PadSettings
-              savePadClick={savePadClick}
-              colorChange={colorChange}
-              padChange={padChange}
-              sampleChange={sampleChange}
-              allPads={allPads}
-              samplePreview={samplePreview}
-            />
+            {visibleSettings === 'DrumPads' && (
+              <PadSettings
+                savePadClick={savePadClick}
+                colorChange={colorChange}
+                padChange={padChange}
+                sampleChange={sampleChange}
+                allPads={allPads}
+                samplePreview={samplePreview}
+              />
+            )}
+            {visibleSettings === 'User' && <UserSettings />}
           </SettingsContainer>
         </PageContainer>
       </NavAnimation>
@@ -85,20 +87,6 @@ const PageContainer = styled(BackgroundAnimation)`
   background-color: var(--darkgray);
   border-radius: 10px;
   box-shadow: inset 0 0 20px 1px var(--black);
-`;
-
-const HeadingContainer = styled.header`
-  grid-column: 1 / 4;
-  display: grid;
-  grid-template-columns: 15% 1fr 15%;
-  margin-left: 10px;
-  margin-right: 10px;
-`;
-
-const Heading = styled.h2`
-  text-align: center;
-  grid-column: 2 / 3;
-  align-self: center;
 `;
 
 const SettingsContainer = styled.main`
