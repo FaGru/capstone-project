@@ -6,10 +6,10 @@ const Userdata = require("../model/userdataModel");
 // @desc    Get userdata
 // @route   GET /api/userdata
 // @acces   Private
-const getUserdatas = asyncHandler(async (req, res) => {
+const getUserdata = asyncHandler(async (req, res) => {
   const userdatas = await Userdata.find({});
 
-  res.status(200).json(userdatas);
+  res.status(200).json(userdata);
 });
 
 // @desc    Set userdata
@@ -59,7 +59,7 @@ const deleteUserdata = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
-  getUserdatas,
+  getUserdata,
   setUserdata,
   updateUserdata,
   deleteUserdata,
