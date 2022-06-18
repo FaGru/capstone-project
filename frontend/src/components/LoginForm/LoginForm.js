@@ -10,35 +10,34 @@ export default function LoginForm() {
   const { isError, login } = backendStore(state => state);
   return (
     <>
-        <Form onSubmit={handleSubmit}>
-          <FormLabel htmlFor="email">
-            Email:
-            <br />
-            <input
-              onChange={handleChange}
-              value={formData.email}
-              type="email"
-              name="email"
-              placeholder="Enter your Email"
-              required
-            />
-          </FormLabel>
-          <FormLabel htmlFor="password">
-            Password:
-            <br />
-            <input
-              onChange={handleChange}
-              type="password"
-              value={formData.password}
-              name="password"
-              placeholder="Enter your password"
-              required
-            />
-          </FormLabel>
-          <SubmitButton type="submit">login</SubmitButton>
-          {isError && <ErrorMessage>{isError}</ErrorMessage>}
-        </Form>
-
+      <Form onSubmit={handleSubmit}>
+        <FormLabel htmlFor="email">
+          Email:
+          <br />
+          <input
+            onChange={handleChange}
+            value={formData.email}
+            type="email"
+            name="email"
+            placeholder="Enter your Email"
+            required
+          />
+        </FormLabel>
+        <FormLabel htmlFor="password">
+          Password:
+          <br />
+          <input
+            onChange={handleChange}
+            type="password"
+            value={formData.password}
+            name="password"
+            placeholder="Enter your password"
+            required
+          />
+        </FormLabel>
+        <SubmitButton type="submit">login</SubmitButton>
+        {isError && <ErrorMessage>{isError}</ErrorMessage>}
+      </Form>
     </>
   );
   function handleChange(event) {
@@ -58,12 +57,13 @@ const FormLabel = styled.label`
   text-align: left;
   margin: 3px;
   width: 50%;
+  font-size: 0.8rem;
 `;
 
 const SubmitButton = styled.button`
   border-radius: 5px;
-  background: var(--font-color-psychic);
-  color: var(--font-color-white);
+  background: white;
+  color: var(--black);
 
   align-self: center;
   margin: 10px;
