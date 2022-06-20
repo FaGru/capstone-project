@@ -1,12 +1,13 @@
 const path = require("path");
 const express = require("express");
-const dotenv = require("dotenv").config();
+const dotenv = require("dotenv");
 const { errorHandler } = require("./middleware/errorMiddleware");
 const connectDB = require("./config/db");
 const cors = require("cors");
-const port = process.env.PORT || 5000;
 
-connectDB();
+dotenv.config();
+
+const port = process.env.PORT || 5000;
 
 const app = express();
 
@@ -20,9 +21,11 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+
+connectDB();
+
 app.use("/api/userdata", require("./routes/userdataRoutes"));
 app.use("/api/user", require("./routes/userRoutes"));
-
 
 // // Serve frontend
 // if (process.env.NODE_ENV === "production") {
