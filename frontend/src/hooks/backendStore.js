@@ -10,7 +10,7 @@ const backendStore = create((set, get) => ({
   userLoginInformation: userLoginInformation,
   isError: '',
   isLoading: false,
-  API_URL: '/api/user/',
+  API_URL: process.env.REACT_APP_API_URL || '/api/user/',
 
   register: async formData => {
     set({ isLoading: true });
