@@ -2,6 +2,7 @@
   "name": "nanobeats",
   "version": "0.1.0",
   "license": "MIT",
+  "proxy": "http://localhost:5000",
   "private": true,
   "dependencies": {
     "audio-context-mock": "^0.1.3",
