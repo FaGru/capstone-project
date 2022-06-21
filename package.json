@@ -2,10 +2,10 @@
   "name": "capstone-project",
   "version": "1.0.0",
   "description": "nanobeats dj-app",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node backend/server.js",
-    "server": "nodemon backend/server.js",
+    "start": "node backend/index.js",
+    "server": "nodemon backend/index.js",
     "client": "npm start --prefix frontend"
   },
   "repository": {
