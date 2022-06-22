@@ -58,7 +58,7 @@ const backendStore = create((set, get) => ({
     } catch (error) {
       set({
         isLoading: false,
-        isError: 'Login or password is invaild',
+        isError: 'E-Mail or password is invalid',
       });
     }
   },

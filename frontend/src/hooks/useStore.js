@@ -17,7 +17,7 @@ const useStore = create((set, get) => ({
   mousePosition: { x: 0, y: 0 },
   currentPage: null,
   isBurgerMenuVisible: false,
-  visibleSettings: "DrumPads",
+  visibleSettings: 'DrumPads',
   ///////// Drumloop-Player States //////
   loopPlayer: null,
   loopPlayerVolume: 5,
@@ -76,6 +76,7 @@ const useStore = create((set, get) => ({
   render: false,
   wavesurferOne: null,
   wavesurferTwo: null,
+  loginRegister: 'login',
 
   setMousePosition: (positionX, positionY) => {
     set({ mousePosition: { x: positionX, y: positionY } });
@@ -87,8 +88,11 @@ const useStore = create((set, get) => ({
     const isBurgerMenuVisible = get().isBurgerMenuVisible;
     set({ isBurgerMenuVisible: !isBurgerMenuVisible });
   },
-  setVisibleSettings: (newVisibleSettings) => {
-    set({visibleSettings: newVisibleSettings})
+  setVisibleSettings: newVisibleSettings => {
+    set({ visibleSettings: newVisibleSettings });
+  },
+  setLoginRegister: newValue => {
+    set({ loginRegister: newValue });
   },
 
   handleUserInteraction: () => {
