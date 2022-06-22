@@ -41,7 +41,6 @@ const backendStore = create((set, get) => ({
     set({ isLoading: true });
     set({ isError: '' });
     const API_URL = get().API_URL + '/login';
-    console.log(API_URL);
     try {
       const response = await axios.post(API_URL, formData);
       if (response.data) {
