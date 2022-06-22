@@ -10,7 +10,8 @@ const backendStore = create((set, get) => ({
   userLoginInformation: userLoginInformation,
   isError: '',
   isLoading: false,
-  API_URL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api/user/',
+  // API_URL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api/user/',
+  API_URL: 'capstone-project-backend-alpha.vercel.app/api/user',
 
   register: async formData => {
     set({ isLoading: true });
