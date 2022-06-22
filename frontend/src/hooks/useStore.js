@@ -330,25 +330,6 @@ const useStore = create((set, get) => ({
     const eq3One = new Tone.EQ3(eqOneSettings).connect(lowpassFilterPlayerOne);
     const djPlayerOne = new Tone.Player(get().djTrackOne).connect(eq3One);
 
-    if (get().wavesurferOne) {
-      get().wavesurferOne.destroy();
-    }
-    const newWavesurfer = WaveSurfer.create({
-      container: '#waveformOne',
-      waveColor: 'white',
-      progressColor: 'gray',
-      height: '32',
-      width: '200px',
-      barWidth: 1,
-    });
-    newWavesurfer.load(get().djTrackOne);
-    newWavesurfer.setMute(true);
-    newWavesurfer.on('seek', function () {
-      const currentTime = newWavesurfer.getCurrentTime();
-      djPlayerOne.seek(currentTime);
-    });
-    set({ wavesurferOne: newWavesurfer });
-
     djPlayerOne.playbackRate = get().djPlayerOnePlaybackRate / 317.5 + 0.8;
 
     if (faderPosition === 63.5 || volumeFaderOnePosition === 0) {
@@ -382,6 +363,50 @@ const useStore = create((set, get) => ({
     const eq3Two = new Tone.EQ3(eqTwoSettings).connect(lowpassFilterPlayerTwo);
     const djPlayerTwo = new Tone.Player(get().djTrackTwo).connect(eq3Two);
 
+    djPlayerTwo.playbackRate = get().djPlayerTwoPlaybackRate / 317.5 + 0.8;
+
+    if (faderPosition === -63.5) {
+      djPlayerTwo.mute = true;
+    } else if (volumeFaderTwoPosition !== 0 || volumeFaderTwoPosition === 0) {
+      if (faderPosition <= 0) {
+        const conversionNumber = (1 / 63.5) * faderPosition + 1;
+        djPlayerTwo.volume.value =
+          (20 / 127) * volumeFaderTwoPosition * conversionNumber - 20;
+      }
+    }
+    set({
+      djPlayerTwo,
+      eq3Two,
+      lowpassFilterPlayerTwo,
+      highpassFilterPlayerTwo,
+    });
+  },
+  initWaveSurferOne: () => {
+    const djPlayerOne = get().djPlayerOne;
+
+    if (get().wavesurferOne) {
+      get().wavesurferOne.destroy();
+    }
+    const newWavesurfer = WaveSurfer.create({
+      container: '#waveformOne',
+      waveColor: 'white',
+      progressColor: 'gray',
+      height: '32',
+      width: '200px',
+      barWidth: 1,
+    });
+    newWavesurfer.load(get().djTrackOne);
+    newWavesurfer.setMute(true);
+    newWavesurfer.on('seek', function () {
+      const currentTime = newWavesurfer.getCurrentTime();
+      djPlayerOne.seek(currentTime);
+    });
+    set({ wavesurferOne: newWavesurfer });
+  },
+
+  initWaveSurferTwo: () => {
+    const djPlayerTwo = get().djPlayerTwo;
+
     if (get().wavesurferTwo) {
       get().wavesurferTwo.destroy();
     }
@@ -401,25 +426,8 @@ const useStore = create((set, get) => ({
       newWavesurfer.setPlayEnd(currentTime);
     });
     set({ wavesurferTwo: newWavesurfer });
-
-    djPlayerTwo.playbackRate = get().djPlayerTwoPlaybackRate / 317.5 + 0.8;
-
-    if (faderPosition === -63.5) {
-      djPlayerTwo.mute = true;
-    } else if (volumeFaderTwoPosition !== 0 || volumeFaderTwoPosition === 0) {
-      if (faderPosition <= 0) {
-        const conversionNumber = (1 / 63.5) * faderPosition + 1;
-        djPlayerTwo.volume.value =
-          (20 / 127) * volumeFaderTwoPosition * conversionNumber - 20;
-      }
-    }
-    set({
-      djPlayerTwo,
-      eq3Two,
-      lowpassFilterPlayerTwo,
-      highpassFilterPlayerTwo,
-    });
   },
+
   setCurrentEQName: newName => {
     set({ currentEQName: newName });
   },

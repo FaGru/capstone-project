@@ -20,6 +20,7 @@ export default function DJPlayer({
     isEchoOutTwoActive,
     setNewMIDIControlFunction,
     setDjTrackTwo,
+    initWaveSurferTwo
   } = useStore(state => state);
 
   const [twoIsPlaying, setTwoIsPlaying] = useState(0);
@@ -146,6 +147,7 @@ export default function DJPlayer({
     const files = e.target.files;
     setDjTrackTwo(URL.createObjectURL(files[0]));
     setTrackNameTwo(files[0].name);
+    initWaveSurferTwo()
   }
   function handlePitch(value) {
     const { djPlayerTwo, setDjPlayerTwoPlaybackRate } = useStore.getState();
