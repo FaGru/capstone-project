@@ -11,7 +11,7 @@ const backendStore = create((set, get) => ({
   isError: '',
   isLoading: false,
   // API_URL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api/user/',
-  API_URL: 'capstone-project-backend-alpha.vercel.app/api/user',
+  API_URL: 'https://capstone-project-backend-alpha.vercel.app/api/user',
 
   register: async formData => {
     set({ isLoading: true });
@@ -42,7 +42,7 @@ const backendStore = create((set, get) => ({
     set({ isLoading: true });
     set({ isError: '' });
     const API_URL = get().API_URL + '/login';
-    console.log(API_URL)
+    console.log(API_URL);
     try {
       const response = await axios.post(API_URL, formData);
       if (response.data) {
