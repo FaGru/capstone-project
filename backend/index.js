@@ -1,13 +1,14 @@
-const path = require("path");
 const express = require("express");
+const cors = require("cors");
+const path = require("path");
+
 const dotenv = require("dotenv");
 const { errorHandler } = require("./middleware/errorMiddleware");
 const connectDB = require("./config/db");
-const cors = require("cors");
 
 dotenv.config();
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3001;
 
 const app = express();
 
