@@ -1,31 +1,26 @@
 {
-  "name": "capstone-project",
+  "name": "node-backend-pokemon-app",
   "version": "1.0.0",
-  "description": "nanobeats dj-app",
+  "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/FaGru/capstone-project.git"
-  },
-  "author": "FaGru",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/FaGru/capstone-project/issues"
-  },
-  "homepage": "https://github.com/FaGru/capstone-project#readme",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "dotenv": "^16.0.1",
-    "express": "^4.18.1",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.1",
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.3.8"
-  },
-  "devDependencies": {
+    "mongoose": "^6.3.2",
     "nodemon": "^2.0.16"
   }
 }
