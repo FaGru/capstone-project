@@ -1,0 +1,32 @@
+{
+  "name": "capstone-project",
+  "version": "1.0.0",
+  "description": "nanobeats dj-app",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "server": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FaGru/capstone-project.git"
+  },
+  "author": "FaGru",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FaGru/capstone-project/issues"
+  },
+  "homepage": "https://github.com/FaGru/capstone-project#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "cors": "^2.8.5",
+    "express-async-handler": "^1.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.3.8"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  }
+}
