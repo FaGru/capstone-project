@@ -15,7 +15,7 @@ const backendStore = create((set, get) => ({
   register: async formData => {
     set({ isLoading: true });
     set({ isError: '' });
-    const API_URL = get().API_URL;
+    const API_URL = get().API_URL + 'user';
     try {
       const response = await axios.post(API_URL, formData);
       if (response.data) {
@@ -40,7 +40,7 @@ const backendStore = create((set, get) => ({
   login: async formData => {
     set({ isLoading: true });
     set({ isError: '' });
-    const API_URL = get().API_URL + '/login';
+    const API_URL = get().API_URL + 'user/login';
     try {
       const response = await axios.post(API_URL, formData);
       if (response.data) {
@@ -65,7 +65,7 @@ const backendStore = create((set, get) => ({
 
   getUserData: async token => {
     set({ isLoading: true, isError: '' });
-    const API_URL = get().API_URL + '/me';
+    const API_URL = get().API_URL + 'user/me';
     try {
       const response = await axios.get(API_URL, {
         //Pass Authentication Bearer token in header

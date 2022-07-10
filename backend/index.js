@@ -27,5 +27,5 @@ app.use(errorHandler);
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
 
-app.use("/api/userdata", require("./routes/userdataRoutes"));
-app.use("/api/user", require("./routes/userRoutes"));
+app.use("/userdata", require("./routes/userdataRoutes"));
+app.use("/user", require("./routes/userRoutes"));
