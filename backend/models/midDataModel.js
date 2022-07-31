@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const userdataSchema = mongoose.Schema(
+const midiDataSchema = mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -11,10 +11,14 @@ const userdataSchema = mongoose.Schema(
       type: String,
       required: [true, "Please add a text value"],
     },
+    midiControl: {
+      type: Array,
+      required: true,
+    }
   },
   {
     timestamps: true,
   }
 );
 
-module.exports = mongoose.model("Userdata", userdataSchema);
+module.exports = mongoose.model("MidiData", midiDataSchema);
