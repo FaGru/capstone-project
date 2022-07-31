@@ -7,9 +7,9 @@ const User = require("../models/userModel");
 // @route   GET /api/midiData
 // @acces   Private
 const getMidiData = asyncHandler(async (req, res) => {
-  const midiDatas = await MidiData.find({ user: req.user.id });
+  const midiData = await MidiData.find({ user: req.user.id });
 
-  res.status(200).json(midiDatas);
+  res.status(200).json(midiData);
 });
 
 // @desc    Set midiData
@@ -24,6 +24,7 @@ const setMidiData = asyncHandler(async (req, res) => {
   const midiData = await MidiData.create({
     text: req.body.text,
     user: req.user.id,
+    midiData: req.body.midiData,
   });
 
   res.status(200).json(midiData);

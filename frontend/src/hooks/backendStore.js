@@ -11,6 +11,8 @@ const backendStore = create((set, get) => ({
   isError: '',
   isLoading: false,
   API_URL: process.env.REACT_APP_API_URL || 'http://localhost:3001/',
+  savedMidiData: null,
+
 
   register: async formData => {
     set({ isLoading: true });
@@ -87,6 +89,35 @@ const backendStore = create((set, get) => ({
   logOut: () => {
     localStorage.removeItem('userLoginInformation');
     set({ userLoginInformation: {}, userData: null });
+  },
+
+
+  getSavedMidiData: async (token) => {
+
+    set({ isLoading: true, isError: '' });
+    const API_URL = get().API_URL + 'midiData';
+
+    try {
+      const response = await axios.get(API_URL, {
+        //Pass Authentication Bearer token in header
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data) {
+        set({
+          isLoading: false,
+          isError: '',
+          savedMidiData: response.data,
+        });
+      }
+    } catch {
+      set({
+        isLoading: false,
+        isError: "Can't load favorites. Please try again",
+      });
+    }
   },
 }));
 

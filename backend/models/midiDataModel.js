@@ -5,16 +5,16 @@ const midiDataSchema = mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: 'User'
+      ref: "User",
     },
     text: {
       type: String,
       required: [true, "Please add a text value"],
     },
-    midiControl: {
-      type: Array,
+    midiData: {
+      type: [],
       required: true,
-    }
+    },
   },
   {
     timestamps: true,
