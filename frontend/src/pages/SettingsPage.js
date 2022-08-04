@@ -5,6 +5,7 @@ import Navbar from '../components/Navbar/Navbar';
 import NavAnimation from '../components/FramerMotion';
 import SettingsNavbar from '../components/SettingsNavbar/SettingsNavbar';
 import UserSettings from '../components/UserSettings/UserSettings';
+import MidiSettings from '../components/MidiSettings/MidiSettings';
 import { BackgroundAnimation } from '../components/BackgroundAnimation';
 
 import { useState } from 'react';
@@ -38,6 +39,7 @@ export default function SettingsPage({ setStoragedPadSettings }) {
               />
             )}
             {visibleSettings === 'User' && <UserSettings />}
+            {visibleSettings === 'MIDI-Settings' && <MidiSettings />}
           </SettingsContainer>
         </PageContainer>
       </NavAnimation>

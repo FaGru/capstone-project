@@ -21,6 +21,11 @@ const setMidiData = asyncHandler(async (req, res) => {
     throw new Error("Please add a text field");
   }
 
+  if (!req.body.midiData) {
+    res.status(400);
+    throw new Error("Please add a text field");
+  }
+
   const midiData = await MidiData.create({
     text: req.body.text,
     user: req.user.id,

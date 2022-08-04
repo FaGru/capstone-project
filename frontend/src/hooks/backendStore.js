@@ -1,5 +1,6 @@
 import create from 'zustand';
 import axios from 'axios';
+import useStore from './useStore';
 
 const userLoginInformation = JSON.parse(
   localStorage.getItem('userLoginInformation') || '{}'
@@ -11,8 +12,7 @@ const backendStore = create((set, get) => ({
   isError: '',
   isLoading: false,
   API_URL: process.env.REACT_APP_API_URL || 'http://localhost:3001/',
-  savedMidiData: null,
-
+  userMidiData: null,
 
   register: async formData => {
     set({ isLoading: true });
@@ -78,6 +78,7 @@ const backendStore = create((set, get) => ({
 
       if (response.data) {
         set({ isLoading: false, isError: '', userData: response.data });
+        get().getMidiData(token);
       }
     } catch (error) {
       set({
@@ -91,9 +92,7 @@ const backendStore = create((set, get) => ({
     set({ userLoginInformation: {}, userData: null });
   },
 
-
-  getSavedMidiData: async (token) => {
-
+  getMidiData: async token => {
     set({ isLoading: true, isError: '' });
     const API_URL = get().API_URL + 'midiData';
 
@@ -109,13 +108,42 @@ const backendStore = create((set, get) => ({
         set({
           isLoading: false,
           isError: '',
-          savedMidiData: response.data,
+          userMidiData: response.data,
         });
+        console.log(response.data);
       }
     } catch {
       set({
         isLoading: false,
         isError: "Can't load favorites. Please try again",
+      });
+    }
+  },
+  setMidiData: async midiDataName => {
+    set({ isLoading: true });
+    set({ isError: '' });
+    const API_URL = get().API_URL + 'user';
+    const token = userLoginInformation.token;
+    const { assignedMIDIControls } = useStore.getState();
+    try {
+      const response = await axios.post(
+        API_URL,
+        { text: midiDataName },
+        { midiData: assignedMIDIControls },
+        {
+          //Pass Authentication Bearer token in header
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.data) {
+        console.log(response.data);
+      }
+    } catch (error) {
+      set({
+        isLoading: false,
+        isError: 'Something went wrong. Please try again!',
       });
     }
   },
