@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import backendStore from '../../hooks/backendStore';
+import close from '../../images/close.svg';
 
 export default function MidiSettings() {
   const { userMidiData, userData, setMidiData } = backendStore(state => state);
@@ -17,6 +18,13 @@ export default function MidiSettings() {
           {configPopUpVisible && (
             <>
               <NewConfigForm>
+                <CloseButton
+                  type="button"
+                  aria-label="close"
+                  onClick={() => setConfigPopUpVisible(!configPopUpVisible)}
+                >
+                  <img src={close} height="15px" width="15px" alt="close" />
+                </CloseButton>
                 <FormLabel>
                   Please add a name for your new MIDI-Config!
                   <input
@@ -38,9 +46,11 @@ export default function MidiSettings() {
               </NewConfigForm>
             </>
           )}
-          <button onClick={() => setConfigPopUpVisible(!configPopUpVisible)}>
+          <SaveMidiButton
+            onClick={() => setConfigPopUpVisible(!configPopUpVisible)}
+          >
             save current config
-          </button>
+          </SaveMidiButton>
           <ul>
             {userMidiData.map(data => (
               <MidiListElement key={data._id}>
@@ -106,9 +116,8 @@ const DeleteMidiButton = styled(LoadMidiButton)`
 
 const NewConfigForm = styled.form`
   position: absolute;
-  top: 40%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   width: 280px;
   padding: 20px;
   align-items: center;
@@ -116,16 +125,30 @@ const NewConfigForm = styled.form`
   box-shadow: inset 0 0 20px 1px var(--black);
   border: 2px solid var(--lightgray);
   border-radius: 10px;
+  transition: ease 0.5s;
+  animation: bounce 0.5s alternate;
+
+  @keyframes bounce {
+    0% {
+      transform: translate(-50%, -1000px);
+    }
+    40% {
+      transform: translate(-50%, 30px);
+    }
+    100% {
+      transform: translate(-50%);
+    }
+  }
 `;
 const FormLabel = styled.label`
   color: var(--white);
   font-size: 0.9rem;
   text-align: center;
-  margin: 3px;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   input {
-    margin: 5px;
+    margin: 10px;
     border: 1px solid var(--green);
     box-shadow: 0px 0px 5px 1px var(--green);
     border-radius: 5px;
@@ -146,4 +169,20 @@ const SubmitButton = styled(LoadMidiButton)`
   box-shadow: 1px 1px 5px 0.5px
     ${props => (props.disabled ? 'var(--gray)' : 'var(--green)')};
   padding: 8px 15px;
+`;
+const SaveMidiButton = styled(LoadMidiButton)`
+  margin: 10px;
+  color: ${props => (props.disabled ? 'var(--gray)' : 'gold')};
+  border: 1px solid ${props => (props.disabled ? 'var(--gray)' : 'gold')};
+  box-shadow: 1px 1px 5px 0.5px
+    ${props => (props.disabled ? 'var(--gray)' : 'gold')};
+  padding: 5px 10px;
+`;
+const CloseButton = styled.button`
+  position: absolute;
+  background: none;
+  border: none;
+  top: 8px;
+  right: 3px;
+  cursor: pointer;
 `;
