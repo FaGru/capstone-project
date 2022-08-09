@@ -4,48 +4,19 @@ import backendStore from '../../hooks/backendStore';
 import close from '../../images/close.svg';
 
 export default function MidiSettings() {
-  const { userMidiData, userData, setMidiData } = backendStore(state => state);
+  const { userMidiData, userData, setMidiData, deleteMidiData } = backendStore(
+    state => state
+  );
 
   const [configPopUpVisible, setConfigPopUpVisible] = useState(false);
   const [newConfigName, setNewConfigName] = useState('');
-
-  console.log(newConfigName);
+  const [confirmPopUpVisible, setConfirmPopUpVisible] = useState(false);
+  const [selectedMidiData, setSelectedMidiData] = useState(null);
 
   return (
     <UserSettingsContainer>
       {userData ? (
         <>
-          {configPopUpVisible && (
-            <>
-              <NewConfigForm>
-                <CloseButton
-                  type="button"
-                  aria-label="close"
-                  onClick={() => setConfigPopUpVisible(!configPopUpVisible)}
-                >
-                  <img src={close} height="15px" width="15px" alt="close" />
-                </CloseButton>
-                <FormLabel>
-                  Please add a name for your new MIDI-Config!
-                  <input
-                    name="config-name"
-                    type="text"
-                    placeholder="new config-name"
-                    required
-                    value={newConfigName}
-                    onChange={e => setNewConfigName(e.target.value)}
-                  />
-                </FormLabel>
-                <SubmitButton
-                  type="button"
-                  disabled={newConfigName.length === 0 ? true : false}
-                  onClick={saveNewConfig}
-                >
-                  save
-                </SubmitButton>
-              </NewConfigForm>
-            </>
-          )}
           <SaveMidiButton
             onClick={() => setConfigPopUpVisible(!configPopUpVisible)}
           >
@@ -56,7 +27,9 @@ export default function MidiSettings() {
               <MidiListElement key={data._id}>
                 <div>{data.text}</div>
                 <LoadMidiButton>load</LoadMidiButton>
-                <DeleteMidiButton>delete</DeleteMidiButton>
+                <DeleteMidiButton value={data._id} onClick={handleDelete}>
+                  delete
+                </DeleteMidiButton>
               </MidiListElement>
             ))}
           </ul>
@@ -64,12 +37,60 @@ export default function MidiSettings() {
       ) : (
         <p>Please login to load or save your MIDI-Settings</p>
       )}
+      {configPopUpVisible && (
+        <>
+          <NewConfigForm>
+            <CloseButton
+              type="button"
+              aria-label="close"
+              onClick={() => setConfigPopUpVisible(!configPopUpVisible)}
+            >
+              <img src={close} height="15px" width="15px" alt="close" />
+            </CloseButton>
+            <FormLabel>
+              Please add a name for your new MIDI-Config!
+              <input
+                name="config-name"
+                type="text"
+                placeholder="new config-name"
+                required
+                value={newConfigName}
+                onChange={e => setNewConfigName(e.target.value)}
+              />
+            </FormLabel>
+            <SubmitButton
+              type="button"
+              disabled={newConfigName.length === 0 ? true : false}
+              onClick={saveNewConfig}
+            >
+              save
+            </SubmitButton>
+          </NewConfigForm>
+        </>
+      )}
+      {confirmPopUpVisible && (
+        <ConfirmPopUp>
+          <p>Do you really want delete this MIDI-Config?</p>
+          <SubmitButton onClick={handleConfirm}>confirm</SubmitButton>
+          <CancelButton onClick={() => setConfirmPopUpVisible(false)}>
+            cancel
+          </CancelButton>
+        </ConfirmPopUp>
+      )}
     </UserSettingsContainer>
   );
 
   function saveNewConfig() {
     setMidiData(newConfigName);
     setConfigPopUpVisible(false);
+  }
+  function handleDelete(e) {
+    setSelectedMidiData(e.target.value);
+    setConfirmPopUpVisible(true);
+  }
+  function handleConfirm() {
+    deleteMidiData(selectedMidiData);
+    setConfirmPopUpVisible(false);
   }
 }
 
@@ -96,6 +117,7 @@ const MidiListElement = styled.li`
   grid-template-columns: 2.5fr 1fr 1fr auto;
   padding: 5px;
   border-bottom: 1px solid var(--white);
+  font-size: 0.9rem;
 `;
 
 const LoadMidiButton = styled.button`
@@ -185,4 +207,34 @@ const CloseButton = styled.button`
   top: 8px;
   right: 3px;
   cursor: pointer;
+`;
+const ConfirmPopUp = styled.div`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 280px;
+  padding: 20px;
+  align-items: center;
+  background-color: var(--darkgray);
+  box-shadow: inset 0 0 20px 1px var(--black);
+  border: 2px solid var(--lightgray);
+  border-radius: 10px;
+  transition: ease 0.5s;
+  animation: bounce 0.3s alternate;
+
+  @keyframes bounce {
+    0% {
+      transform: translate(-50%, -1000px);
+    }
+    40% {
+      transform: translate(-50%, 30px);
+    }
+    100% {
+      transform: translate(-50%);
+    }
+  }
+`;
+
+const CancelButton = styled(DeleteMidiButton)`
+  padding: 8px 15px;
 `;

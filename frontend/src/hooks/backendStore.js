@@ -111,7 +111,6 @@ const backendStore = create((set, get) => ({
           isError: '',
           userMidiData: response.data,
         });
-        console.log(response.data);
       }
     } catch {
       set({
@@ -126,11 +125,38 @@ const backendStore = create((set, get) => ({
     const API_URL = get().API_URL + 'midiData';
     const token = userLoginInformation.token;
     const { assignedMIDIControls } = useStore.getState();
+    
     try {
       const response = await axios.post(
         API_URL,
         { text: midiDataName, midiData: assignedMIDIControls },
 
+        {
+          //Pass Authentication Bearer token in header
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.data) {
+        get().getMidiData(token);
+      }
+    } catch (error) {
+      set({
+        isLoading: false,
+        isError: 'Something went wrong. Please try again!',
+      });
+    }
+  },
+  deleteMidiData: async (midiConfig) => {
+    set({ isLoading: true });
+    set({ isError: '' });
+    const API_URL = get().API_URL + `midiData/${midiConfig}`;
+    const token = userLoginInformation.token;
+
+    try {
+      const response = await axios.delete(
+        API_URL,
         {
           //Pass Authentication Bearer token in header
           headers: {
