@@ -12,9 +12,11 @@ import { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import useStore from './hooks/useStore';
+import backendStore from './hooks/backendStore';
 import { AnimatePresence } from 'framer-motion';
 
 import { defaultPadSettings } from './data';
+import loadingSpinner from './images/loadingSpinner.gif';
 
 export default function App() {
   const location = useLocation();
@@ -26,6 +28,8 @@ export default function App() {
     handleUserInteraction,
     setAllPads,
   } = useStore(state => state);
+
+  const { isLoading } = backendStore(state => state);
 
   useEffect(() => {
     handleUserInteraction();
@@ -54,6 +58,14 @@ export default function App() {
       </DevicePopUp>
       {assignedMIDIControlMessage && (
         <AssignMIDIMessage>{assignedMIDIControlMessage}</AssignMIDIMessage>
+      )}
+      {isLoading && (
+        <LoadingImage
+          src={loadingSpinner}
+          alt="loading"
+          height="80"
+          width="80"
+        ></LoadingImage>
       )}
       <AnimatePresence exitBeforeEnter>
         <Routes location={location} key={location.pathname}>
@@ -109,4 +121,11 @@ const AssignMIDIMessage = styled.div`
   background-color: var(--black);
   border-radius: 10px;
   padding: 5px;
+`;
+
+const LoadingImage = styled.img`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
