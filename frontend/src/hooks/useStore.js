@@ -497,7 +497,7 @@ const useStore = create((set, get) => ({
       const command = event.data[0];
       const midiButton = event.data[1];
       const value = event.data[2];
-      console.log(assignedMIDIControls, 'aktive midi');
+      console.log(assignedMIDIControls);
       //////// Assigning midi function /////////////////
       if (isMIDIAssignButtonActive) {
         const newMIDIControlFunction = get().newMIDIControlFunction;
@@ -529,7 +529,28 @@ const useStore = create((set, get) => ({
             control.command === command &&
             control.type === 'range'
           ) {
-            control.function(value, control.additionalProp);
+            // control.function(value, control.additionalProp);
+            // if (control.function === 'filterPlayerTwo') {
+            //   get().handleFilterPlayerTwo(value);
+            // }
+            switch (control.function) {
+              case 'filterPlayerTwo':
+                get().handleFilterPlayerTwo(value);
+                break;
+              case 'filterPlayerOne':
+                get().handleFilterPlayerOne(value);
+                break;
+              case 'crossFader':
+                get().handleCrossFader(value);
+                break;
+              case 'lineFader':
+                get().handleLineFader(value, control.additionalProp);
+                break;
+              case 'eqSetting':
+                get().handleEQSetting(value, control.additionalProp);
+                break;
+              default:
+            }
           }
         });
       }
@@ -567,9 +588,9 @@ const useStore = create((set, get) => ({
     const newMIDIControlCommand = get().newMIDIControlCommand;
     const newMIDIControls = assignedMIDIControls.filter(
       control =>
-        control.function !== newMIDIControlFunction &&
-        (control.name !== newMIDIControlName ||
-          control.command !== newMIDIControlCommand)
+        // control.function !== newMIDIControlFunction &&
+        control.name !== newMIDIControlName ||
+        control.command !== newMIDIControlCommand
     );
 
     set({
@@ -617,6 +638,146 @@ const useStore = create((set, get) => ({
   },
   setAssignedMIDIControls: backendMidiData => {
     set({ assignedMIDIControls: backendMidiData });
+  },
+
+  ///////////// midi integrated functions ////////////////////
+
+  handleFilterPlayerTwo: value => {
+    const {
+      lowpassFilterPlayerTwo,
+      highpassFilterPlayerTwo,
+      setFilterPositionTwo,
+    } = useStore.getState();
+    const newValue = value / 12.7 - 5;
+    setFilterPositionTwo(value);
+    newValue < 0
+      ? lowpassFilterPlayerTwo.set({
+          frequency: 5000 / Math.pow(2, -newValue),
+        })
+      : lowpassFilterPlayerTwo.set({
+          frequency: 22000,
+        });
+    newValue > 0
+      ? highpassFilterPlayerTwo.set({
+          frequency: 100 * Math.pow(2, newValue),
+        })
+      : highpassFilterPlayerTwo.set({
+          frequency: 0,
+        });
+  },
+  handleFilterPlayerOne: value => {
+    const {
+      lowpassFilterPlayerOne,
+      highpassFilterPlayerOne,
+      setFilterPositionOne,
+    } = useStore.getState();
+    const newValue = value / 12.7 - 5;
+    setFilterPositionOne(value);
+    newValue < 0
+      ? lowpassFilterPlayerOne.set({
+          frequency: 5000 / Math.pow(2, -newValue),
+        })
+      : lowpassFilterPlayerOne.set({
+          frequency: 22000,
+        });
+    newValue > 0
+      ? highpassFilterPlayerOne.set({
+          frequency: 100 * Math.pow(2, newValue),
+        })
+      : highpassFilterPlayerOne.set({
+          frequency: 0,
+        });
+  },
+  handleCrossFader: value => {
+    const {
+      djPlayerOne,
+      djPlayerTwo,
+      volumeFaderOnePosition,
+      volumeFaderTwoPosition,
+    } = useStore.getState();
+    const faderValue = Number(value) - 63.5;
+
+    if (faderValue === 63.5) {
+      djPlayerOne.mute = true;
+    } else if (volumeFaderOnePosition !== 0) {
+      djPlayerOne.mute = false;
+      if (faderValue >= 0) {
+        const conversionNumber = (1 / 63.5) * -faderValue + 1;
+        djPlayerOne.volume.value =
+          (20 / 127) * volumeFaderOnePosition * conversionNumber - 20;
+      }
+    }
+    if (faderValue === -63.5) {
+      djPlayerTwo.mute = true;
+    } else if (volumeFaderTwoPosition !== 0) {
+      if (faderValue <= 0) {
+        const conversionNumber = (1 / 63.5) * faderValue + 1;
+        djPlayerTwo.volume.value =
+          (20 / 127) * volumeFaderTwoPosition * conversionNumber - 20;
+      }
+    }
+    get().setFaderPosition(Number(value));
+  },
+  handleLineFader: (value, name) => {
+    const {
+      djPlayerOne,
+      djPlayerTwo,
+      faderPosition,
+      setVolumeFaderOnePosition,
+      setVolumeFaderTwoPosition,
+    } = useStore.getState();
+    const volumeFaderValue = Number(value);
+    const crossFaderValue = faderPosition - 63.5;
+    if (name === 'volume fader one') {
+      if (volumeFaderValue === 0) {
+        djPlayerOne.mute = true;
+      } else if (faderPosition !== 127) {
+        djPlayerOne.mute = false;
+        if (crossFaderValue >= 0) {
+          const conversionNumber = (1 / 63.5) * -crossFaderValue + 1;
+          djPlayerOne.volume.value =
+            (20 / 127) * volumeFaderValue * conversionNumber - 20;
+        } else {
+          djPlayerOne.volume.value = (20 / 127) * volumeFaderValue - 20;
+        }
+      }
+      setVolumeFaderOnePosition(Number(volumeFaderValue));
+    }
+
+    if (name === 'volume fader two') {
+      if (volumeFaderValue === 0) {
+        djPlayerTwo.mute = true;
+      } else if (faderPosition !== 0) {
+        djPlayerTwo.mute = false;
+        if (crossFaderValue <= 0) {
+          const conversionNumber = (1 / 63.5) * crossFaderValue + 1;
+          djPlayerTwo.volume.value =
+            (20 / 127) * volumeFaderValue * conversionNumber - 20;
+        } else {
+          djPlayerTwo.volume.value = (20 / 127) * volumeFaderValue - 20;
+        }
+      }
+      setVolumeFaderTwoPosition(Number(volumeFaderValue));
+    }
+  },
+
+  handleEQSetting: (value, name) => {
+    const { setRender, eq3One, eq3Two } = useStore.getState();
+    const newValue = value / 6.35 - 15;
+    if (name === 'high-one') {
+      eq3One.set({ high: newValue });
+    } else if (name === 'mid-one') {
+      eq3One.set({ mid: newValue });
+    } else if (name === 'low-one') {
+      eq3One.set({ low: newValue });
+    } else if (name === 'high-two') {
+      eq3Two.set({ high: newValue });
+    } else if (name === 'mid-two') {
+      eq3Two.set({ mid: newValue });
+    } else if (name === 'low-two') {
+      eq3Two.set({ low: newValue });
+    }
+    setRender();
   },
 }));
 
