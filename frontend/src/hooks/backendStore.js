@@ -125,7 +125,7 @@ const backendStore = create((set, get) => ({
     const API_URL = get().API_URL + 'midiData';
     const token = userLoginInformation.token;
     const { assignedMIDIControls } = useStore.getState();
-    
+    console.log('midi data bevor sie in backend gehen', assignedMIDIControls)
     try {
       const response = await axios.post(
         API_URL,

@@ -1,17 +1,20 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import backendStore from '../../hooks/backendStore';
+import useStore from '../../hooks/useStore';
 import close from '../../images/close.svg';
 
 export default function MidiSettings() {
   const { userMidiData, userData, setMidiData, deleteMidiData } = backendStore(
     state => state
   );
+  const {setAssignedMIDIControls} = useStore(state => state)
 
   const [configPopUpVisible, setConfigPopUpVisible] = useState(false);
   const [newConfigName, setNewConfigName] = useState('');
   const [confirmPopUpVisible, setConfirmPopUpVisible] = useState(false);
   const [selectedMidiData, setSelectedMidiData] = useState(null);
+  console.log(userMidiData, 'backenddata')
 
   return (
     <UserSettingsContainer>
@@ -26,7 +29,7 @@ export default function MidiSettings() {
             {userMidiData.map(data => (
               <MidiListElement key={data._id}>
                 <div>{data.text}</div>
-                <LoadMidiButton>load</LoadMidiButton>
+                <LoadMidiButton value={data.midiData} onClick={(e) => setAssignedMIDIControls(e.target.value)}>load</LoadMidiButton>
                 <DeleteMidiButton value={data._id} onClick={handleDelete}>
                   delete
                 </DeleteMidiButton>
@@ -152,7 +155,7 @@ const NewConfigForm = styled.form`
 
   @keyframes bounce {
     0% {
-      transform: translate(-50%, -1000px);
+      transform: translate(-50%, -600px);
     }
     40% {
       transform: translate(-50%, 30px);
@@ -210,10 +213,11 @@ const CloseButton = styled.button`
 `;
 const ConfirmPopUp = styled.div`
   position: absolute;
+  top: 10%;
   left: 50%;
   transform: translateX(-50%);
   width: 280px;
-  padding: 20px;
+  padding: 15px;
   align-items: center;
   background-color: var(--darkgray);
   box-shadow: inset 0 0 20px 1px var(--black);
@@ -224,13 +228,13 @@ const ConfirmPopUp = styled.div`
 
   @keyframes bounce {
     0% {
-      transform: translate(-50%, -1000px);
+      transform: translate(-50%) scale(0);
     }
-    40% {
-      transform: translate(-50%, 30px);
+    70% {
+      transform: translate(-50%) scale(1.1);
     }
     100% {
-      transform: translate(-50%);
+      transform: translate(-50%) scale(1);
     }
   }
 `;

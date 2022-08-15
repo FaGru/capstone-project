@@ -497,7 +497,7 @@ const useStore = create((set, get) => ({
       const command = event.data[0];
       const midiButton = event.data[1];
       const value = event.data[2];
-
+      console.log(assignedMIDIControls, 'aktive midi');
       //////// Assigning midi function /////////////////
       if (isMIDIAssignButtonActive) {
         const newMIDIControlFunction = get().newMIDIControlFunction;
@@ -614,6 +614,9 @@ const useStore = create((set, get) => ({
   setRender: () => {
     const render = get().render;
     set({ render: !render });
+  },
+  setAssignedMIDIControls: backendMidiData => {
+    set({ assignedMIDIControls: backendMidiData });
   },
 }));
 
