@@ -18,12 +18,16 @@ export default function DJPlayer({
     djPlayerOnePlaybackRate,
     isMIDIAssignButtonActive,
     isEchoOutOneActive,
+    oneIsPlaying,
+    setOneIsPlaying,
     setNewMIDIControlFunction,
     setDjTrackOne,
-    initWaveSurferOne
+    initWaveSurferOne,
+    handleEchoOutOne,
+    handlePlayOne,
+    handlePitchOne,
   } = useStore(state => state);
 
-  const [oneIsPlaying, setOneIsPlaying] = useState(0);
   const [trackNameOne, setTrackNameOne] = useState(
     '- click to select a track -'
   );
@@ -68,10 +72,10 @@ export default function DJPlayer({
       <PitchFaderLabel htmlFor="pitch fader one">
         <PitchFaderInput
           isMIDIAssignActive={isMIDIAssignButtonActive}
-          onChange={event => handlePitch(event.target.value)}
+          onChange={event => handlePitchOne(event.target.value)}
           onClick={() =>
             isMIDIAssignButtonActive &&
-            setNewMIDIControlFunction(handlePitch, 'range')
+            setNewMIDIControlFunction('pitchOne', 'range')
           }
           type="range"
           min="0"
@@ -92,10 +96,10 @@ export default function DJPlayer({
         isMIDIAssignActive={isMIDIAssignButtonActive}
         onMouseDown={() =>
           isMIDIAssignButtonActive
-            ? setNewMIDIControlFunction(handlePlayOne, 'tap')
+            ? setNewMIDIControlFunction('playOne', 'tap')
             : handlePlayOne()
         }
-        onMouseUp={handlePlayOne}
+        onMouseUp={() => !isMIDIAssignButtonActive && handlePlayOne()}
       >
         <StyledButtonImg src={cueIcon} alt="cue" height="50px" width="50px" />
       </CueButton>
@@ -105,7 +109,7 @@ export default function DJPlayer({
         isMIDIAssignActive={isMIDIAssignButtonActive}
         onClick={() =>
           isMIDIAssignButtonActive
-            ? setNewMIDIControlFunction(handlePlayOne, 'normal')
+            ? setNewMIDIControlFunction('playOne', 'normal')
             : handlePlayOne()
         }
       >
@@ -121,8 +125,8 @@ export default function DJPlayer({
         isMIDIAssignActive={isMIDIAssignButtonActive}
         onClick={() =>
           isMIDIAssignButtonActive
-            ? setNewMIDIControlFunction(handleEchoOut, 'normal')
-            : handleEchoOut()
+            ? setNewMIDIControlFunction('echoOutOne', 'normal')
+            : handleEchoOutOne()
         }
       >
         echo out
@@ -130,54 +134,13 @@ export default function DJPlayer({
     </PlayerContainer>
   );
 
-  function handlePlayOne() {
-    const { djPlayerOne, wavesurferOne } = useStore.getState();
-    if (djPlayerOne.state === 'stopped') {
-      djPlayerOne.start();
-      wavesurferOne.play();
-      setOneIsPlaying(1);
-    } else {
-      djPlayerOne.stop();
-      wavesurferOne.stop();
-      setOneIsPlaying(0);
-    }
-  }
-
   function handleTrackOne(e) {
     djPlayerOne.stop();
     oneIsPlaying === 1 && setOneIsPlaying(0);
     const files = e.target.files;
     setDjTrackOne(URL.createObjectURL(files[0]));
     setTrackNameOne(files[0].name);
-    initWaveSurferOne()
-  }
-
-  function handlePitch(value) {
-    const { djPlayerOne, setDjPlayerOnePlaybackRate } = useStore.getState();
-    setDjPlayerOnePlaybackRate(value);
-    djPlayerOne.playbackRate = value / 317.5 + 0.8;
-  }
-
-  function handleEchoOut() {
-    const {
-      djPlayerOne,
-      highpassFilterPlayerOne,
-      feedbackDelay,
-      isEchoOutOneActive,
-      setIsEchoOutOneActive,
-    } = useStore.getState();
-    setIsEchoOutOneActive();
-    if (isEchoOutOneActive === false) {
-      highpassFilterPlayerOne.connect(feedbackDelay);
-      setTimeout(function () {
-        djPlayerOne.mute = true;
-      }, 500);
-    }
-    if (isEchoOutOneActive === true) {
-      highpassFilterPlayerOne.disconnect(feedbackDelay);
-      highpassFilterPlayerOne.toDestination();
-      djPlayerOne.mute = false;
-    }
+    initWaveSurferOne();
   }
 }
 

@@ -50,6 +50,7 @@ const useStore = create((set, get) => ({
   ///////// DJ Deck States ////////////
   djPlayerOne: null,
   djPlayerTwo: null,
+  oneIsPlaying: 0,
   currentEQName: null,
   currentEQValue: null,
   currentDJControl: null,
@@ -517,13 +518,28 @@ const useStore = create((set, get) => ({
             control.command === command &&
             control.type === 'normal'
           ) {
-            value > 0 && control.function(control.additionalProp);
+            // value > 0 && control.function(control.additionalProp);
+            switch (control.function) {
+              case 'echoOutOne':
+                value > 0 && get().handleEchoOutOne();
+                break;
+              case 'playOne':
+                value > 0 && get().handlePlayOne();
+                break;
+              default:
+            }
           } else if (
             control.name === midiButton &&
             control.command === command &&
             control.type === 'tap'
           ) {
-            control.function();
+            // control.function();
+            switch (control.function) {
+              case 'playOne':
+                get().handlePlayOne();
+                break;
+              default:
+            }
           } else if (
             control.name === midiButton &&
             control.command === command &&
@@ -535,19 +551,22 @@ const useStore = create((set, get) => ({
             // }
             switch (control.function) {
               case 'filterPlayerTwo':
-                get().handleFilterPlayerTwo(value);
+                get().handleFilterPlayerTwo(value, control.additionalProp);
                 break;
               case 'filterPlayerOne':
-                get().handleFilterPlayerOne(value);
+                get().handleFilterPlayerOne(value, control.additionalProp);
                 break;
               case 'crossFader':
-                get().handleCrossFader(value);
+                get().handleCrossFader(value, control.additionalProp);
                 break;
               case 'lineFader':
                 get().handleLineFader(value, control.additionalProp);
                 break;
               case 'eqSetting':
                 get().handleEQSetting(value, control.additionalProp);
+                break;
+              case 'pitchOne':
+                get().handlePitchOne(value, control.additionalProp);
                 break;
               default:
             }
@@ -778,6 +797,44 @@ const useStore = create((set, get) => ({
       eq3Two.set({ low: newValue });
     }
     setRender();
+  },
+  handleEchoOutOne: () => {
+    const {
+      djPlayerOne,
+      highpassFilterPlayerOne,
+      feedbackDelay,
+      isEchoOutOneActive,
+      setIsEchoOutOneActive,
+    } = useStore.getState();
+    setIsEchoOutOneActive();
+    if (isEchoOutOneActive === false) {
+      highpassFilterPlayerOne.connect(feedbackDelay);
+      setTimeout(function () {
+        djPlayerOne.mute = true;
+      }, 500);
+    }
+    if (isEchoOutOneActive === true) {
+      highpassFilterPlayerOne.disconnect(feedbackDelay);
+      highpassFilterPlayerOne.toDestination();
+      djPlayerOne.mute = false;
+    }
+  },
+  handlePlayOne: () => {
+    const { djPlayerOne, wavesurferOne } = useStore.getState();
+    if (djPlayerOne.state === 'stopped') {
+      djPlayerOne.start();
+      wavesurferOne.play();
+      set({ oneIsPlaying: 1 });
+    } else {
+      djPlayerOne.stop();
+      wavesurferOne.stop();
+      set({ oneIsPlaying: 0 });
+    }
+  },
+  handlePitchOne: value => {
+    const { djPlayerOne, setDjPlayerOnePlaybackRate } = useStore.getState();
+    setDjPlayerOnePlaybackRate(value);
+    djPlayerOne.playbackRate = value / 317.5 + 0.8;
   },
 }));
 
