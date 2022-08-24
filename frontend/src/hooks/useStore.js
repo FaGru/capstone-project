@@ -51,6 +51,7 @@ const useStore = create((set, get) => ({
   djPlayerOne: null,
   djPlayerTwo: null,
   oneIsPlaying: 0,
+  twoIsPlaying: 0,
   currentEQName: null,
   currentEQValue: null,
   currentDJControl: null,
@@ -459,10 +460,12 @@ const useStore = create((set, get) => ({
   },
   setDjTrackOne: newTrack => {
     set({ djTrackOne: newTrack });
+    get().oneIsPlaying === 1 && set({ oneIsPlaying: 0 });
     get().initDJPlayerOne();
   },
   setDjTrackTwo: newTrack => {
     set({ djTrackTwo: newTrack });
+    get().twoIsPlaying === 1 && set({ twoIsPlaying: 0 });
     get().initDJPlayerTwo();
   },
   setIsEchoOutOneActive: () => {
@@ -526,6 +529,12 @@ const useStore = create((set, get) => ({
               case 'playOne':
                 value > 0 && get().handlePlayOne();
                 break;
+              case 'echoOutTwo':
+                value > 0 && get().handleEchoOutTwo();
+                break;
+              case 'playTwo':
+                value > 0 && get().handlePlayTwo();
+                break;
               default:
             }
           } else if (
@@ -537,6 +546,9 @@ const useStore = create((set, get) => ({
             switch (control.function) {
               case 'playOne':
                 get().handlePlayOne();
+                break;
+              case 'playTwo':
+                get().handlePlayTwo();
                 break;
               default:
             }
@@ -567,6 +579,9 @@ const useStore = create((set, get) => ({
                 break;
               case 'pitchOne':
                 get().handlePitchOne(value, control.additionalProp);
+                break;
+              case 'pitchTwo':
+                get().handlePitchTwo(value, control.additionalProp);
                 break;
               default:
             }
@@ -835,6 +850,44 @@ const useStore = create((set, get) => ({
     const { djPlayerOne, setDjPlayerOnePlaybackRate } = useStore.getState();
     setDjPlayerOnePlaybackRate(value);
     djPlayerOne.playbackRate = value / 317.5 + 0.8;
+  },
+  handlePlayTwo: () => {
+    const { djPlayerTwo, wavesurferTwo } = useStore.getState();
+    if (djPlayerTwo.state === 'stopped') {
+      djPlayerTwo.start();
+      wavesurferTwo.play();
+      set({ twoIsPlaying: 1 });
+    } else {
+      djPlayerTwo.stop();
+      wavesurferTwo.stop();
+      set({ twoIsPlaying: 0 });
+    }
+  },
+  handleEchoOutTwo: () => {
+    const setIsEchoOutTwoActive = useStore.getState().setIsEchoOutTwoActive;
+    const {
+      djPlayerTwo,
+      highpassFilterPlayerTwo,
+      feedbackDelay,
+      isEchoOutTwoActive,
+    } = useStore.getState();
+    setIsEchoOutTwoActive();
+    if (isEchoOutTwoActive === false) {
+      highpassFilterPlayerTwo.connect(feedbackDelay);
+      setTimeout(function () {
+        djPlayerTwo.mute = true;
+      }, 500);
+    }
+    if (isEchoOutTwoActive === true) {
+      highpassFilterPlayerTwo.disconnect(feedbackDelay);
+      highpassFilterPlayerTwo.toDestination();
+      djPlayerTwo.mute = false;
+    }
+  },
+  handlePitchTwo: value => {
+    const { djPlayerTwo, setDjPlayerTwoPlaybackRate } = useStore.getState();
+    setDjPlayerTwoPlaybackRate(value);
+    djPlayerTwo.playbackRate = value / 317.5 + 0.8;
   },
 }));
 

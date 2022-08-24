@@ -18,12 +18,15 @@ export default function DJPlayer({
     djPlayerTwoPlaybackRate,
     isMIDIAssignButtonActive,
     isEchoOutTwoActive,
+    twoIsPlaying,
     setNewMIDIControlFunction,
     setDjTrackTwo,
-    initWaveSurferTwo
+    initWaveSurferTwo,
+    handlePlayTwo,
+    handleEchoOutTwo,
+    handlePitchTwo,
   } = useStore(state => state);
 
-  const [twoIsPlaying, setTwoIsPlaying] = useState(0);
   const [trackNameTwo, setTrackNameTwo] = useState(
     '- click to select a track -'
   );
@@ -68,10 +71,10 @@ export default function DJPlayer({
       <PitchFaderLabel htmlFor="pitch fader two">
         <PitchFaderInput
           isMIDIAssignActive={isMIDIAssignButtonActive}
-          onChange={event => handlePitch(event.target.value)}
+          onChange={event => handlePitchTwo(event.target.value)}
           onClick={() =>
             isMIDIAssignButtonActive &&
-            setNewMIDIControlFunction(handlePitch, 'range')
+            setNewMIDIControlFunction('pitchTwo', 'range')
           }
           type="range"
           min="0"
@@ -92,7 +95,7 @@ export default function DJPlayer({
         isMIDIAssignActive={isMIDIAssignButtonActive}
         onMouseDown={() =>
           isMIDIAssignButtonActive
-            ? setNewMIDIControlFunction(handlePlayTwo, 'tap')
+            ? setNewMIDIControlFunction('playTwo', 'tap')
             : handlePlayTwo()
         }
         onMouseUp={handlePlayTwo}
@@ -105,7 +108,7 @@ export default function DJPlayer({
         isMIDIAssignActive={isMIDIAssignButtonActive}
         onMouseDown={() =>
           isMIDIAssignButtonActive
-            ? setNewMIDIControlFunction(handlePlayTwo, 'normal')
+            ? setNewMIDIControlFunction('playTwo', 'normal')
             : handlePlayTwo()
         }
       >
@@ -121,59 +124,21 @@ export default function DJPlayer({
         isMIDIAssignActive={isMIDIAssignButtonActive}
         onClick={() =>
           isMIDIAssignButtonActive
-            ? setNewMIDIControlFunction(handleEchoOut, 'normal')
-            : handleEchoOut()
+            ? setNewMIDIControlFunction('echoOutTwo', 'normal')
+            : handleEchoOutTwo()
         }
       >
         echo out
       </FXButton>
     </PlayerContainer>
   );
-  function handlePlayTwo() {
-    const { djPlayerTwo, wavesurferTwo } = useStore.getState();
-    if (djPlayerTwo.state === 'stopped') {
-      djPlayerTwo.start();
-      wavesurferTwo.play();
-      setTwoIsPlaying(1);
-    } else {
-      djPlayerTwo.stop();
-      wavesurferTwo.stop();
-      setTwoIsPlaying(0);
-    }
-  }
+
   function handleTrackTwo(e) {
     djPlayerTwo.stop();
-    twoIsPlaying === 1 && setTwoIsPlaying(0);
     const files = e.target.files;
     setDjTrackTwo(URL.createObjectURL(files[0]));
     setTrackNameTwo(files[0].name);
-    initWaveSurferTwo()
-  }
-  function handlePitch(value) {
-    const { djPlayerTwo, setDjPlayerTwoPlaybackRate } = useStore.getState();
-    setDjPlayerTwoPlaybackRate(value);
-    djPlayerTwo.playbackRate = value / 317.5 + 0.8;
-  }
-  function handleEchoOut() {
-    const setIsEchoOutTwoActive = useStore.getState().setIsEchoOutTwoActive;
-    const {
-      djPlayerTwo,
-      highpassFilterPlayerTwo,
-      feedbackDelay,
-      isEchoOutTwoActive,
-    } = useStore.getState();
-    setIsEchoOutTwoActive();
-    if (isEchoOutTwoActive === false) {
-      highpassFilterPlayerTwo.connect(feedbackDelay);
-      setTimeout(function () {
-        djPlayerTwo.mute = true;
-      }, 500);
-    }
-    if (isEchoOutTwoActive === true) {
-      highpassFilterPlayerTwo.disconnect(feedbackDelay);
-      highpassFilterPlayerTwo.toDestination();
-      djPlayerTwo.mute = false;
-    }
+    initWaveSurferTwo();
   }
 }
 const PlayerContainer = styled(motion.div)`

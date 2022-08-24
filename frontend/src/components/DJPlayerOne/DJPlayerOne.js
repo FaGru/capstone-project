@@ -19,7 +19,6 @@ export default function DJPlayer({
     isMIDIAssignButtonActive,
     isEchoOutOneActive,
     oneIsPlaying,
-    setOneIsPlaying,
     setNewMIDIControlFunction,
     setDjTrackOne,
     initWaveSurferOne,
@@ -136,7 +135,6 @@ export default function DJPlayer({
 
   function handleTrackOne(e) {
     djPlayerOne.stop();
-    oneIsPlaying === 1 && setOneIsPlaying(0);
     const files = e.target.files;
     setDjTrackOne(URL.createObjectURL(files[0]));
     setTrackNameOne(files[0].name);
