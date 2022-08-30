@@ -535,6 +535,9 @@ const useStore = create((set, get) => ({
               case 'playTwo':
                 value > 0 && get().handlePlayTwo();
                 break;
+              case 'drumPad':
+                value > 0 && get().handleDrumPad(control.additionalProp);
+                break;
               default:
             }
           } else if (
@@ -888,6 +891,13 @@ const useStore = create((set, get) => ({
     const { djPlayerTwo, setDjPlayerTwoPlaybackRate } = useStore.getState();
     setDjPlayerTwoPlaybackRate(value);
     djPlayerTwo.playbackRate = value / 317.5 + 0.8;
+  },
+
+  handleDrumPad: playerNumber => {
+    const { drumPadPlayers } = useStore.getState();
+    Tone.loaded().then(() => {
+      drumPadPlayers.player(`Player${playerNumber}`).start();
+    });
   },
 }));
 

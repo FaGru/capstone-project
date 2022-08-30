@@ -23,6 +23,7 @@ export default function DrumMachinePage() {
     loopPlayer,
     allPads,
     isMIDIAssignButtonActive,
+    handleDrumPad,
     initLoopPlayer,
     saveRecording,
     setCurrentDrumLoop,
@@ -70,7 +71,7 @@ export default function DrumMachinePage() {
                 id={pad.id}
                 color={pad.color}
                 sample={pad.sample}
-                drumPadClick={drumPadClick}
+                handleDrumPad={handleDrumPad}
               />
             ))}
           </PadList>
@@ -90,16 +91,6 @@ export default function DrumMachinePage() {
     </div>
   );
 
-  ////////////////////drumPad////////////////////
-  function drumPadClick(playerNumber) {
-    const { drumPadPlayers } = useStore.getState();
-    Tone.loaded().then(() => {
-      drumPadPlayers.player(`Player${playerNumber}`).start();
-    });
-  }
-  ////////////////////drumPad////////////////////
-
-  ////////////////////record////////////////////
   function recordStartClick() {
     recorder.start();
   }
@@ -108,9 +99,7 @@ export default function DrumMachinePage() {
     recorder.stop();
     saveRecording();
   }
-  ////////////////////record////////////////////
 
-  ////////////////////DrumLoop////////////////////
   function startDrumLoop(isPlaying) {
     isPlaying
       ? loopPlayer.stop()
