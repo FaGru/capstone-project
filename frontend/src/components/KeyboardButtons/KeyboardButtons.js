@@ -16,7 +16,7 @@ export default function KeyboardButtons({ keyboardClick }) {
           onMouseDown={event =>
             isMIDIAssignButtonActive
               ? setNewMIDIControlFunction(
-                  keyboardClick,
+                  'keyboard',
                   'normal',
                   event.target.value
                 )
@@ -30,7 +30,7 @@ export default function KeyboardButtons({ keyboardClick }) {
           onMouseDown={event =>
             isMIDIAssignButtonActive
               ? setNewMIDIControlFunction(
-                  keyboardClick,
+                  'keyboard',
                   'normal',
                   event.target.value
                 )
@@ -44,7 +44,7 @@ export default function KeyboardButtons({ keyboardClick }) {
           onMouseDown={event =>
             isMIDIAssignButtonActive
               ? setNewMIDIControlFunction(
-                  keyboardClick,
+                  'keyboard',
                   'normal',
                   event.target.value
                 )
@@ -58,7 +58,7 @@ export default function KeyboardButtons({ keyboardClick }) {
           onMouseDown={event =>
             isMIDIAssignButtonActive
               ? setNewMIDIControlFunction(
-                  keyboardClick,
+                  'keyboard',
                   'normal',
                   event.target.value
                 )
@@ -72,7 +72,7 @@ export default function KeyboardButtons({ keyboardClick }) {
           onMouseDown={event =>
             isMIDIAssignButtonActive
               ? setNewMIDIControlFunction(
-                  keyboardClick,
+                  'keyboard',
                   'normal',
                   event.target.value
                 )
@@ -86,7 +86,7 @@ export default function KeyboardButtons({ keyboardClick }) {
           onMouseDown={event =>
             isMIDIAssignButtonActive
               ? setNewMIDIControlFunction(
-                  keyboardClick,
+                  'keyboard',
                   'normal',
                   event.target.value
                 )
@@ -100,7 +100,7 @@ export default function KeyboardButtons({ keyboardClick }) {
           onMouseDown={event =>
             isMIDIAssignButtonActive
               ? setNewMIDIControlFunction(
-                  keyboardClick,
+                  'keyboard',
                   'normal',
                   event.target.value
                 )
@@ -114,7 +114,7 @@ export default function KeyboardButtons({ keyboardClick }) {
           onMouseDown={event =>
             isMIDIAssignButtonActive
               ? setNewMIDIControlFunction(
-                  keyboardClick,
+                  'keyboard',
                   'normal',
                   event.target.value
                 )
@@ -128,7 +128,7 @@ export default function KeyboardButtons({ keyboardClick }) {
           onMouseDown={event =>
             isMIDIAssignButtonActive
               ? setNewMIDIControlFunction(
-                  keyboardClick,
+                  'keyboard',
                   'normal',
                   event.target.value
                 )
@@ -142,7 +142,7 @@ export default function KeyboardButtons({ keyboardClick }) {
           onMouseDown={event =>
             isMIDIAssignButtonActive
               ? setNewMIDIControlFunction(
-                  keyboardClick,
+                  'keyboard',
                   'normal',
                   event.target.value
                 )
@@ -156,7 +156,7 @@ export default function KeyboardButtons({ keyboardClick }) {
           onMouseDown={event =>
             isMIDIAssignButtonActive
               ? setNewMIDIControlFunction(
-                  keyboardClick,
+                  'keyboard',
                   'normal',
                   event.target.value
                 )
@@ -170,7 +170,7 @@ export default function KeyboardButtons({ keyboardClick }) {
           onMouseDown={event =>
             isMIDIAssignButtonActive
               ? setNewMIDIControlFunction(
-                  keyboardClick,
+                  'keyboard',
                   'normal',
                   event.target.value
                 )
@@ -184,7 +184,7 @@ export default function KeyboardButtons({ keyboardClick }) {
           onMouseDown={event =>
             isMIDIAssignButtonActive
               ? setNewMIDIControlFunction(
-                  keyboardClick,
+                  'keyboard',
                   'normal',
                   event.target.value
                 )
@@ -198,7 +198,7 @@ export default function KeyboardButtons({ keyboardClick }) {
           onMouseDown={event =>
             isMIDIAssignButtonActive
               ? setNewMIDIControlFunction(
-                  keyboardClick,
+                  'keyboard',
                   'normal',
                   event.target.value
                 )
@@ -213,7 +213,7 @@ export default function KeyboardButtons({ keyboardClick }) {
             onMouseDown={event =>
               isMIDIAssignButtonActive
                 ? setNewMIDIControlFunction(
-                    keyboardClick,
+                    'keyboard',
                     'normal',
                     event.target.value
                   )
@@ -227,7 +227,7 @@ export default function KeyboardButtons({ keyboardClick }) {
             onMouseDown={event =>
               isMIDIAssignButtonActive
                 ? setNewMIDIControlFunction(
-                    keyboardClick,
+                    'keyboard',
                     'normal',
                     event.target.value
                   )
@@ -241,7 +241,7 @@ export default function KeyboardButtons({ keyboardClick }) {
             onMouseDown={event =>
               isMIDIAssignButtonActive
                 ? setNewMIDIControlFunction(
-                    keyboardClick,
+                    'keyboard',
                     'normal',
                     event.target.value
                   )
@@ -255,7 +255,7 @@ export default function KeyboardButtons({ keyboardClick }) {
             onMouseDown={event =>
               isMIDIAssignButtonActive
                 ? setNewMIDIControlFunction(
-                    keyboardClick,
+                    'keyboard',
                     'normal',
                     event.target.value
                   )
@@ -269,7 +269,7 @@ export default function KeyboardButtons({ keyboardClick }) {
             onMouseDown={event =>
               isMIDIAssignButtonActive
                 ? setNewMIDIControlFunction(
-                    keyboardClick,
+                    'keyboard',
                     'normal',
                     event.target.value
                   )
@@ -283,7 +283,7 @@ export default function KeyboardButtons({ keyboardClick }) {
             onMouseDown={event =>
               isMIDIAssignButtonActive
                 ? setNewMIDIControlFunction(
-                    keyboardClick,
+                    'keyboard',
                     'normal',
                     event.target.value
                   )
@@ -297,7 +297,7 @@ export default function KeyboardButtons({ keyboardClick }) {
             onMouseDown={event =>
               isMIDIAssignButtonActive
                 ? setNewMIDIControlFunction(
-                    keyboardClick,
+                    'keyboard',
                     'normal',
                     event.target.value
                   )
@@ -311,7 +311,7 @@ export default function KeyboardButtons({ keyboardClick }) {
             onMouseDown={event =>
               isMIDIAssignButtonActive
                 ? setNewMIDIControlFunction(
-                    keyboardClick,
+                    'keyboard',
                     'normal',
                     event.target.value
                   )
@@ -325,7 +325,7 @@ export default function KeyboardButtons({ keyboardClick }) {
             onMouseDown={event =>
               isMIDIAssignButtonActive
                 ? setNewMIDIControlFunction(
-                    keyboardClick,
+                    'keyboard',
                     'normal',
                     event.target.value
                   )
@@ -339,7 +339,7 @@ export default function KeyboardButtons({ keyboardClick }) {
             onMouseDown={event =>
               isMIDIAssignButtonActive
                 ? setNewMIDIControlFunction(
-                    keyboardClick,
+                    'keyboard',
                     'normal',
                     event.target.value
                   )

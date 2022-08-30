@@ -538,6 +538,9 @@ const useStore = create((set, get) => ({
               case 'drumPad':
                 value > 0 && get().handleDrumPad(control.additionalProp);
                 break;
+              case 'keyboard':
+                value > 0 && get().handleKeyboard(control.additionalProp);
+                break;
               default:
             }
           } else if (
@@ -898,6 +901,11 @@ const useStore = create((set, get) => ({
     Tone.loaded().then(() => {
       drumPadPlayers.player(`Player${playerNumber}`).start();
     });
+  },
+  handleKeyboard: value => {
+    const { monoSynth, synth } = useStore.getState();
+    monoSynth.triggerAttackRelease(value, '8n');
+    synth.triggerAttackRelease(value, '8n');
   },
 }));
 

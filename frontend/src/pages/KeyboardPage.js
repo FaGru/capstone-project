@@ -7,10 +7,9 @@ import { motion } from 'framer-motion';
 
 export default function KeyboardboardPage() {
   const {
-    synth,
-    monoSynth,
     keyboardVolume,
     isMIDIAssignButtonActive,
+    handleKeyboard,
     setKeyboardVolume,
     setIsMIDIAssignButtonActive,
   } = useStore(state => state);
@@ -39,14 +38,11 @@ export default function KeyboardboardPage() {
           value={keyboardVolume * 10}
           onChange={handleKeyboardVolume}
         ></VolumeRange>
-        <KeyboardButtons keyboardClick={keyboardClick} />
+        <KeyboardButtons handleKeyboard={handleKeyboard} />
       </KeyboardContainer>
     </motion.div>
   );
-  function keyboardClick(value) {
-    monoSynth.triggerAttackRelease(value, '8n');
-    synth.triggerAttackRelease(value, '8n');
-  }
+
   function handleKeyboardVolume(e) {
     setKeyboardVolume(e.target.value / 10);
   }
