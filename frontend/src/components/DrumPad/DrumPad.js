@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import useStore from '../../hooks/useStore';
 
-export default function DrumPad({ id, color, drumPadClick }) {
+export default function DrumPad({ id, color, handleDrumPad }) {
   const [isDesktop, setDesktop] = useState(false);
   const { isMIDIAssignButtonActive, setNewMIDIControlFunction } = useStore(
     state => state
@@ -35,8 +35,8 @@ export default function DrumPad({ id, color, drumPadClick }) {
           aria-label={`drum pad`}
           onMouseDown={event =>
             isMIDIAssignButtonActive
-              ? setNewMIDIControlFunction(drumPadClick, 'normal', id)
-              : drumPadClick(event.target.value)
+              ? setNewMIDIControlFunction('drumPad', 'normal', id)
+              : handleDrumPad(event.target.value)
           }
           value={id}
           color={color}
@@ -49,8 +49,8 @@ export default function DrumPad({ id, color, drumPadClick }) {
           aria-label={`drum pad`}
           onTouchStart={event =>
             isMIDIAssignButtonActive
-              ? setNewMIDIControlFunction(drumPadClick, 'normal', id)
-              : drumPadClick(event.target.value)
+              ? setNewMIDIControlFunction('drumPad', 'normal', id)
+              : handleDrumPad(event.target.value)
           }
           value={id}
           color={color}

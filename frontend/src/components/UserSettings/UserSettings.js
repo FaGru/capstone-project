@@ -24,7 +24,7 @@ export default function UserSettings() {
 
 const UserSettingsContainer = styled.section`
   text-align: center;
-  min-height: 400px;
+  min-height: 500px;
 
   p {
     margin: 20px;

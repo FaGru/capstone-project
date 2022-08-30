@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import useStore from '../../hooks/useStore';
 import knobIcon from '../../images/control-knob.svg';
 
-
 export default function DJControls() {
   const {
     faderPosition,
@@ -13,8 +12,12 @@ export default function DJControls() {
     filterPositionTwo,
     volumeFaderOnePosition,
     volumeFaderTwoPosition,
-    setFaderPosition,
     setNewMIDIControlFunction,
+    handleFilterPlayerOne,
+    handleFilterPlayerTwo,
+    handleCrossFader,
+    handleLineFader,
+    handleEQSetting,
   } = useStore(state => state);
 
   return (
@@ -29,11 +32,11 @@ export default function DJControls() {
           id="volume fader one"
           name="volume fader one"
           onChange={event =>
-            handleVolume(event.target.value, event.target.name)
+            handleLineFader(event.target.value, event.target.name)
           }
           onClick={event =>
             isMIDIAssignButtonActive &&
-            setNewMIDIControlFunction(handleVolume, 'range', event.target.name)
+            setNewMIDIControlFunction('lineFader', 'range', event.target.name)
           }
         />
       </VolumeOneLabel>
@@ -47,11 +50,11 @@ export default function DJControls() {
           id="volume fader two"
           name="volume fader two"
           onChange={event =>
-            handleVolume(event.target.value, event.target.name)
+            handleLineFader(event.target.value, event.target.name)
           }
           onClick={event =>
             isMIDIAssignButtonActive &&
-            setNewMIDIControlFunction(handleVolume, 'range', event.target.name)
+            setNewMIDIControlFunction('lineFader', 'range', event.target.name)
           }
         />
       </VolumeTwoLabel>
@@ -71,11 +74,7 @@ export default function DJControls() {
             onMouseDown={event => handleMouseDown(event, eq3One.high.value)}
             onClick={event =>
               isMIDIAssignButtonActive &&
-              setNewMIDIControlFunction(
-                handleEQSetting,
-                'range',
-                event.target.name
-              )
+              setNewMIDIControlFunction('eqSetting', 'range', event.target.name)
             }
             onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
           />
@@ -93,11 +92,7 @@ export default function DJControls() {
             onMouseDown={event => handleMouseDown(event, eq3One.mid.value)}
             onClick={event =>
               isMIDIAssignButtonActive &&
-              setNewMIDIControlFunction(
-                handleEQSetting,
-                'range',
-                event.target.name
-              )
+              setNewMIDIControlFunction('eqSetting', 'range', event.target.name)
             }
             onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
           />
@@ -115,11 +110,7 @@ export default function DJControls() {
             onMouseDown={event => handleMouseDown(event, eq3One.low.value)}
             onClick={event =>
               isMIDIAssignButtonActive &&
-              setNewMIDIControlFunction(
-                handleEQSetting,
-                'range',
-                event.target.name
-              )
+              setNewMIDIControlFunction('eqSetting', 'range', event.target.name)
             }
             onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
           />
@@ -138,7 +129,7 @@ export default function DJControls() {
             onClick={event =>
               isMIDIAssignButtonActive &&
               setNewMIDIControlFunction(
-                handleFilterPlayerOne,
+                'filterPlayerOne',
                 'range',
                 event.target.name
               )
@@ -161,11 +152,7 @@ export default function DJControls() {
             onMouseDown={event => handleMouseDown(event, eq3Two.high.value)}
             onClick={event =>
               isMIDIAssignButtonActive &&
-              setNewMIDIControlFunction(
-                handleEQSetting,
-                'range',
-                event.target.name
-              )
+              setNewMIDIControlFunction('eqSetting', 'range', event.target.name)
             }
             onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
           />
@@ -183,11 +170,7 @@ export default function DJControls() {
             onMouseDown={event => handleMouseDown(event, eq3Two.mid.value)}
             onClick={event =>
               isMIDIAssignButtonActive &&
-              setNewMIDIControlFunction(
-                handleEQSetting,
-                'range',
-                event.target.name
-              )
+              setNewMIDIControlFunction('eqSetting', 'range', event.target.name)
             }
             onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
           />
@@ -205,11 +188,7 @@ export default function DJControls() {
             onMouseDown={event => handleMouseDown(event, eq3Two.low.value)}
             onClick={event =>
               isMIDIAssignButtonActive &&
-              setNewMIDIControlFunction(
-                handleEQSetting,
-                'range',
-                event.target.name
-              )
+              setNewMIDIControlFunction('eqSetting', 'range', event.target.name)
             }
             onDoubleClick={event => handleEQSetting(63.5, event.target.name)}
           />
@@ -228,7 +207,7 @@ export default function DJControls() {
             onClick={event =>
               isMIDIAssignButtonActive &&
               setNewMIDIControlFunction(
-                handleFilterPlayerTwo,
+                'filterPlayerTwo',
                 'range',
                 event.target.name
               )
@@ -249,54 +228,12 @@ export default function DJControls() {
           onChange={event => handleCrossFader(event.target.value)}
           onClick={() =>
             isMIDIAssignButtonActive &&
-            setNewMIDIControlFunction(handleCrossFader, 'range')
+            setNewMIDIControlFunction('crossFader', 'range')
           }
         ></CrossFader>
       </CrossFaderLabel>
     </Container>
   );
-  function handleVolume(value, name) {
-    const {
-      djPlayerOne,
-      djPlayerTwo,
-      faderPosition,
-      setVolumeFaderOnePosition,
-      setVolumeFaderTwoPosition,
-    } = useStore.getState();
-    const volumeFaderValue = Number(value);
-    const crossFaderValue = faderPosition - 63.5;
-    if (name === 'volume fader one') {
-      if (volumeFaderValue === 0) {
-        djPlayerOne.mute = true;
-      } else if (faderPosition !== 127) {
-        djPlayerOne.mute = false;
-        if (crossFaderValue >= 0) {
-          const conversionNumber = (1 / 63.5) * -crossFaderValue + 1;
-          djPlayerOne.volume.value =
-            (20 / 127) * volumeFaderValue * conversionNumber - 20;
-        } else {
-          djPlayerOne.volume.value = (20 / 127) * volumeFaderValue - 20;
-        }
-      }
-      setVolumeFaderOnePosition(Number(volumeFaderValue));
-    }
-
-    if (name === 'volume fader two') {
-      if (volumeFaderValue === 0) {
-        djPlayerTwo.mute = true;
-      } else if (faderPosition !== 0) {
-        djPlayerTwo.mute = false;
-        if (crossFaderValue <= 0) {
-          const conversionNumber = (1 / 63.5) * crossFaderValue + 1;
-          djPlayerTwo.volume.value =
-            (20 / 127) * volumeFaderValue * conversionNumber - 20;
-        } else {
-          djPlayerTwo.volume.value = (20 / 127) * volumeFaderValue - 20;
-        }
-      }
-      setVolumeFaderTwoPosition(Number(volumeFaderValue));
-    }
-  }
 
   function handleMouseDown(event, eqValue) {
     const { setMousePosition, setCurrentEQName, setCurrentEQValue } =
@@ -379,103 +316,6 @@ export default function DJControls() {
       }
     }
     setMousePosition(e.pageX, e.pageY);
-  }
-
-  function handleEQSetting(value, name) {
-    const { setRender } = useStore.getState();
-    const newValue = value / 6.35 - 15;
-    if (name === 'high-one') {
-      eq3One.set({ high: newValue });
-    } else if (name === 'mid-one') {
-      eq3One.set({ mid: newValue });
-    } else if (name === 'low-one') {
-      eq3One.set({ low: newValue });
-    } else if (name === 'high-two') {
-      eq3Two.set({ high: newValue });
-    } else if (name === 'mid-two') {
-      eq3Two.set({ mid: newValue });
-    } else if (name === 'low-two') {
-      eq3Two.set({ low: newValue });
-    }
-    setRender();
-  }
-
-  function handleCrossFader(value) {
-    const {
-      djPlayerOne,
-      djPlayerTwo,
-      volumeFaderOnePosition,
-      volumeFaderTwoPosition,
-    } = useStore.getState();
-    const faderValue = Number(value) - 63.5;
-
-    if (faderValue === 63.5) {
-      djPlayerOne.mute = true;
-    } else if (volumeFaderOnePosition !== 0) {
-      djPlayerOne.mute = false;
-      if (faderValue >= 0) {
-        const conversionNumber = (1 / 63.5) * -faderValue + 1;
-        djPlayerOne.volume.value =
-          (20 / 127) * volumeFaderOnePosition * conversionNumber - 20;
-      }
-    }
-    if (faderValue === -63.5) {
-      djPlayerTwo.mute = true;
-    } else if (volumeFaderTwoPosition !== 0) {
-      if (faderValue <= 0) {
-        const conversionNumber = (1 / 63.5) * faderValue + 1;
-        djPlayerTwo.volume.value =
-          (20 / 127) * volumeFaderTwoPosition * conversionNumber - 20;
-      }
-    }
-    setFaderPosition(Number(value));
-  }
-
-  function handleFilterPlayerOne(value) {
-    const {
-      lowpassFilterPlayerOne,
-      highpassFilterPlayerOne,
-      setFilterPositionOne,
-    } = useStore.getState();
-    const newValue = value / 12.7 - 5;
-    setFilterPositionOne(value);
-    newValue < 0
-      ? lowpassFilterPlayerOne.set({
-          frequency: 5000 / Math.pow(2, -newValue),
-        })
-      : lowpassFilterPlayerOne.set({
-          frequency: 22000,
-        });
-    newValue > 0
-      ? highpassFilterPlayerOne.set({
-          frequency: 100 * Math.pow(2, newValue),
-        })
-      : highpassFilterPlayerOne.set({
-          frequency: 0,
-        });
-  }
-  function handleFilterPlayerTwo(value) {
-    const {
-      lowpassFilterPlayerTwo,
-      highpassFilterPlayerTwo,
-      setFilterPositionTwo,
-    } = useStore.getState();
-    const newValue = value / 12.7 - 5;
-    setFilterPositionTwo(value);
-    newValue < 0
-      ? lowpassFilterPlayerTwo.set({
-          frequency: 5000 / Math.pow(2, -newValue),
-        })
-      : lowpassFilterPlayerTwo.set({
-          frequency: 22000,
-        });
-    newValue > 0
-      ? highpassFilterPlayerTwo.set({
-          frequency: 100 * Math.pow(2, newValue),
-        })
-      : highpassFilterPlayerTwo.set({
-          frequency: 0,
-        });
   }
 }
 

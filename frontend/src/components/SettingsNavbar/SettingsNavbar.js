@@ -19,6 +19,12 @@ export default function SettingsNavbar() {
         >
           User
         </NavButton>
+        <NavButton
+          active={visibleSettings === 'MIDI-Settings' ? true : false}
+          onClick={handleClick}
+        >
+          MIDI-Settings
+        </NavButton>
       </NavList>
     </>
   );

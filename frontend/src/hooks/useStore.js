@@ -50,6 +50,8 @@ const useStore = create((set, get) => ({
   ///////// DJ Deck States ////////////
   djPlayerOne: null,
   djPlayerTwo: null,
+  oneIsPlaying: 0,
+  twoIsPlaying: 0,
   currentEQName: null,
   currentEQValue: null,
   currentDJControl: null,
@@ -458,10 +460,12 @@ const useStore = create((set, get) => ({
   },
   setDjTrackOne: newTrack => {
     set({ djTrackOne: newTrack });
+    get().oneIsPlaying === 1 && set({ oneIsPlaying: 0 });
     get().initDJPlayerOne();
   },
   setDjTrackTwo: newTrack => {
     set({ djTrackTwo: newTrack });
+    get().twoIsPlaying === 1 && set({ twoIsPlaying: 0 });
     get().initDJPlayerTwo();
   },
   setIsEchoOutOneActive: () => {
@@ -497,7 +501,7 @@ const useStore = create((set, get) => ({
       const command = event.data[0];
       const midiButton = event.data[1];
       const value = event.data[2];
-
+      console.log(assignedMIDIControls);
       //////// Assigning midi function /////////////////
       if (isMIDIAssignButtonActive) {
         const newMIDIControlFunction = get().newMIDIControlFunction;
@@ -517,19 +521,76 @@ const useStore = create((set, get) => ({
             control.command === command &&
             control.type === 'normal'
           ) {
-            value > 0 && control.function(control.additionalProp);
+            // value > 0 && control.function(control.additionalProp);
+            switch (control.function) {
+              case 'echoOutOne':
+                value > 0 && get().handleEchoOutOne();
+                break;
+              case 'playOne':
+                value > 0 && get().handlePlayOne();
+                break;
+              case 'echoOutTwo':
+                value > 0 && get().handleEchoOutTwo();
+                break;
+              case 'playTwo':
+                value > 0 && get().handlePlayTwo();
+                break;
+              case 'drumPad':
+                value > 0 && get().handleDrumPad(control.additionalProp);
+                break;
+              case 'keyboard':
+                value > 0 && get().handleKeyboard(control.additionalProp);
+                break;
+              default:
+            }
           } else if (
             control.name === midiButton &&
             control.command === command &&
             control.type === 'tap'
           ) {
-            control.function();
+            // control.function();
+            switch (control.function) {
+              case 'playOne':
+                get().handlePlayOne();
+                break;
+              case 'playTwo':
+                get().handlePlayTwo();
+                break;
+              default:
+            }
           } else if (
             control.name === midiButton &&
             control.command === command &&
             control.type === 'range'
           ) {
-            control.function(value, control.additionalProp);
+            // control.function(value, control.additionalProp);
+            // if (control.function === 'filterPlayerTwo') {
+            //   get().handleFilterPlayerTwo(value);
+            // }
+            switch (control.function) {
+              case 'filterPlayerTwo':
+                get().handleFilterPlayerTwo(value, control.additionalProp);
+                break;
+              case 'filterPlayerOne':
+                get().handleFilterPlayerOne(value, control.additionalProp);
+                break;
+              case 'crossFader':
+                get().handleCrossFader(value, control.additionalProp);
+                break;
+              case 'lineFader':
+                get().handleLineFader(value, control.additionalProp);
+                break;
+              case 'eqSetting':
+                get().handleEQSetting(value, control.additionalProp);
+                break;
+              case 'pitchOne':
+                get().handlePitchOne(value, control.additionalProp);
+                break;
+              case 'pitchTwo':
+                get().handlePitchTwo(value, control.additionalProp);
+                break;
+              default:
+            }
           }
         });
       }
@@ -567,9 +628,9 @@ const useStore = create((set, get) => ({
     const newMIDIControlCommand = get().newMIDIControlCommand;
     const newMIDIControls = assignedMIDIControls.filter(
       control =>
-        control.function !== newMIDIControlFunction &&
-        (control.name !== newMIDIControlName ||
-          control.command !== newMIDIControlCommand)
+        // control.function !== newMIDIControlFunction &&
+        control.name !== newMIDIControlName ||
+        control.command !== newMIDIControlCommand
     );
 
     set({
@@ -614,6 +675,237 @@ const useStore = create((set, get) => ({
   setRender: () => {
     const render = get().render;
     set({ render: !render });
+  },
+  setAssignedMIDIControls: backendMidiData => {
+    set({ assignedMIDIControls: backendMidiData });
+  },
+
+  ///////////// midi integrated functions ////////////////////
+
+  handleFilterPlayerTwo: value => {
+    const {
+      lowpassFilterPlayerTwo,
+      highpassFilterPlayerTwo,
+      setFilterPositionTwo,
+    } = useStore.getState();
+    const newValue = value / 12.7 - 5;
+    setFilterPositionTwo(value);
+    newValue < 0
+      ? lowpassFilterPlayerTwo.set({
+          frequency: 5000 / Math.pow(2, -newValue),
+        })
+      : lowpassFilterPlayerTwo.set({
+          frequency: 22000,
+        });
+    newValue > 0
+      ? highpassFilterPlayerTwo.set({
+          frequency: 100 * Math.pow(2, newValue),
+        })
+      : highpassFilterPlayerTwo.set({
+          frequency: 0,
+        });
+  },
+  handleFilterPlayerOne: value => {
+    const {
+      lowpassFilterPlayerOne,
+      highpassFilterPlayerOne,
+      setFilterPositionOne,
+    } = useStore.getState();
+    const newValue = value / 12.7 - 5;
+    setFilterPositionOne(value);
+    newValue < 0
+      ? lowpassFilterPlayerOne.set({
+          frequency: 5000 / Math.pow(2, -newValue),
+        })
+      : lowpassFilterPlayerOne.set({
+          frequency: 22000,
+        });
+    newValue > 0
+      ? highpassFilterPlayerOne.set({
+          frequency: 100 * Math.pow(2, newValue),
+        })
+      : highpassFilterPlayerOne.set({
+          frequency: 0,
+        });
+  },
+  handleCrossFader: value => {
+    const {
+      djPlayerOne,
+      djPlayerTwo,
+      volumeFaderOnePosition,
+      volumeFaderTwoPosition,
+    } = useStore.getState();
+    const faderValue = Number(value) - 63.5;
+
+    if (faderValue === 63.5) {
+      djPlayerOne.mute = true;
+    } else if (volumeFaderOnePosition !== 0) {
+      djPlayerOne.mute = false;
+      if (faderValue >= 0) {
+        const conversionNumber = (1 / 63.5) * -faderValue + 1;
+        djPlayerOne.volume.value =
+          (20 / 127) * volumeFaderOnePosition * conversionNumber - 20;
+      }
+    }
+    if (faderValue === -63.5) {
+      djPlayerTwo.mute = true;
+    } else if (volumeFaderTwoPosition !== 0) {
+      if (faderValue <= 0) {
+        const conversionNumber = (1 / 63.5) * faderValue + 1;
+        djPlayerTwo.volume.value =
+          (20 / 127) * volumeFaderTwoPosition * conversionNumber - 20;
+      }
+    }
+    get().setFaderPosition(Number(value));
+  },
+  handleLineFader: (value, name) => {
+    const {
+      djPlayerOne,
+      djPlayerTwo,
+      faderPosition,
+      setVolumeFaderOnePosition,
+      setVolumeFaderTwoPosition,
+    } = useStore.getState();
+    const volumeFaderValue = Number(value);
+    const crossFaderValue = faderPosition - 63.5;
+    if (name === 'volume fader one') {
+      if (volumeFaderValue === 0) {
+        djPlayerOne.mute = true;
+      } else if (faderPosition !== 127) {
+        djPlayerOne.mute = false;
+        if (crossFaderValue >= 0) {
+          const conversionNumber = (1 / 63.5) * -crossFaderValue + 1;
+          djPlayerOne.volume.value =
+            (20 / 127) * volumeFaderValue * conversionNumber - 20;
+        } else {
+          djPlayerOne.volume.value = (20 / 127) * volumeFaderValue - 20;
+        }
+      }
+      setVolumeFaderOnePosition(Number(volumeFaderValue));
+    }
+
+    if (name === 'volume fader two') {
+      if (volumeFaderValue === 0) {
+        djPlayerTwo.mute = true;
+      } else if (faderPosition !== 0) {
+        djPlayerTwo.mute = false;
+        if (crossFaderValue <= 0) {
+          const conversionNumber = (1 / 63.5) * crossFaderValue + 1;
+          djPlayerTwo.volume.value =
+            (20 / 127) * volumeFaderValue * conversionNumber - 20;
+        } else {
+          djPlayerTwo.volume.value = (20 / 127) * volumeFaderValue - 20;
+        }
+      }
+      setVolumeFaderTwoPosition(Number(volumeFaderValue));
+    }
+  },
+
+  handleEQSetting: (value, name) => {
+    const { setRender, eq3One, eq3Two } = useStore.getState();
+    const newValue = value / 6.35 - 15;
+    if (name === 'high-one') {
+      eq3One.set({ high: newValue });
+    } else if (name === 'mid-one') {
+      eq3One.set({ mid: newValue });
+    } else if (name === 'low-one') {
+      eq3One.set({ low: newValue });
+    } else if (name === 'high-two') {
+      eq3Two.set({ high: newValue });
+    } else if (name === 'mid-two') {
+      eq3Two.set({ mid: newValue });
+    } else if (name === 'low-two') {
+      eq3Two.set({ low: newValue });
+    }
+    setRender();
+  },
+  handleEchoOutOne: () => {
+    const {
+      djPlayerOne,
+      highpassFilterPlayerOne,
+      feedbackDelay,
+      isEchoOutOneActive,
+      setIsEchoOutOneActive,
+    } = useStore.getState();
+    setIsEchoOutOneActive();
+    if (isEchoOutOneActive === false) {
+      highpassFilterPlayerOne.connect(feedbackDelay);
+      setTimeout(function () {
+        djPlayerOne.mute = true;
+      }, 500);
+    }
+    if (isEchoOutOneActive === true) {
+      highpassFilterPlayerOne.disconnect(feedbackDelay);
+      highpassFilterPlayerOne.toDestination();
+      djPlayerOne.mute = false;
+    }
+  },
+  handlePlayOne: () => {
+    const { djPlayerOne, wavesurferOne } = useStore.getState();
+    if (djPlayerOne.state === 'stopped') {
+      djPlayerOne.start();
+      wavesurferOne.play();
+      set({ oneIsPlaying: 1 });
+    } else {
+      djPlayerOne.stop();
+      wavesurferOne.stop();
+      set({ oneIsPlaying: 0 });
+    }
+  },
+  handlePitchOne: value => {
+    const { djPlayerOne, setDjPlayerOnePlaybackRate } = useStore.getState();
+    setDjPlayerOnePlaybackRate(value);
+    djPlayerOne.playbackRate = value / 317.5 + 0.8;
+  },
+  handlePlayTwo: () => {
+    const { djPlayerTwo, wavesurferTwo } = useStore.getState();
+    if (djPlayerTwo.state === 'stopped') {
+      djPlayerTwo.start();
+      wavesurferTwo.play();
+      set({ twoIsPlaying: 1 });
+    } else {
+      djPlayerTwo.stop();
+      wavesurferTwo.stop();
+      set({ twoIsPlaying: 0 });
+    }
+  },
+  handleEchoOutTwo: () => {
+    const setIsEchoOutTwoActive = useStore.getState().setIsEchoOutTwoActive;
+    const {
+      djPlayerTwo,
+      highpassFilterPlayerTwo,
+      feedbackDelay,
+      isEchoOutTwoActive,
+    } = useStore.getState();
+    setIsEchoOutTwoActive();
+    if (isEchoOutTwoActive === false) {
+      highpassFilterPlayerTwo.connect(feedbackDelay);
+      setTimeout(function () {
+        djPlayerTwo.mute = true;
+      }, 500);
+    }
+    if (isEchoOutTwoActive === true) {
+      highpassFilterPlayerTwo.disconnect(feedbackDelay);
+      highpassFilterPlayerTwo.toDestination();
+      djPlayerTwo.mute = false;
+    }
+  },
+  handlePitchTwo: value => {
+    const { djPlayerTwo, setDjPlayerTwoPlaybackRate } = useStore.getState();
+    setDjPlayerTwoPlaybackRate(value);
+    djPlayerTwo.playbackRate = value / 317.5 + 0.8;
+  },
+
+  handleDrumPad: playerNumber => {
+    const { drumPadPlayers } = useStore.getState();
+    Tone.loaded().then(() => {
+      drumPadPlayers.player(`Player${playerNumber}`).start();
+    });
+  },
+  handleKeyboard: value => {
+    const { monoSynth, synth } = useStore.getState();
+    monoSynth.triggerAttackRelease(value, '8n');
+    synth.triggerAttackRelease(value, '8n');
   },
 }));
 
