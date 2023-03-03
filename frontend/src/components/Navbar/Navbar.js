@@ -33,16 +33,9 @@ export default function Navbar() {
             onClick={event => setCurrentPage(event.target.alt)}
           />
         </NavLink>
-        <NavLink to="localhost:4000/en">
-          <NanoBeatsLogo
-            src={nanoBeatsLogo}
-            height="70px"
-            width="70px"
-            alt="Nano-Beats"
-            currentpage={currentPage}
-            onClick={event => setCurrentPage(event.target.alt)}
-          />
-        </NavLink>
+        <a href="localhost:4000/en">
+          <div>test</div>
+        </a>
         <NavigationLink to="/sequencer">
           <NavbarImage
             src={sequencerLogo}
