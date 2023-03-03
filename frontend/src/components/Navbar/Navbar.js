@@ -33,7 +33,7 @@ export default function Navbar() {
             onClick={event => setCurrentPage(event.target.alt)}
           />
         </NavLink>
-        <a href="localhost:4000/en">
+        <a href="http://localhost:4000/en">
           <div>test</div>
         </a>
         <NavigationLink to="/sequencer">
