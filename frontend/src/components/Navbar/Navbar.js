@@ -12,7 +12,6 @@ import nanoBeatsLogo from '../../images/nano-beats-logo.svg';
 import burgerMenuLogo from '../../images/burger-menu.svg';
 import useStore from '../../hooks/useStore';
 
-
 export default function Navbar() {
   const {
     currentPage,
@@ -25,6 +24,16 @@ export default function Navbar() {
     <div>
       <LinkContainer>
         <NavLink to="/">
+          <NanoBeatsLogo
+            src={nanoBeatsLogo}
+            height="70px"
+            width="70px"
+            alt="Nano-Beats"
+            currentpage={currentPage}
+            onClick={event => setCurrentPage(event.target.alt)}
+          />
+        </NavLink>
+        <NavLink to="localhost:4000/en">
           <NanoBeatsLogo
             src={nanoBeatsLogo}
             height="70px"
